@@ -4,12 +4,17 @@
 
 #.gitignore
 
+# au cas où on décide de supprimer *.json
+# fichier contenant des credentials 
+credentials.json
+
 ## [ Dossiers a ignorer ]
 _3_software/_3-1_test*/
 _3_software/oldLibVers*/
 _5_*/
 _6_*/
 _7_*/
+**/99-*/
 *_v/
 __pycache__
 
@@ -19,6 +24,8 @@ __pycache__
 *.mkv
 *.mp4
 *.json
+*.ffs_db
+
 
 ## Compiled source
 *.com
@@ -43,6 +50,7 @@ __pycache__
 *.log
 *.sql
 *.sqlite
+
 
 ## OS generated files
 .DS_Store
