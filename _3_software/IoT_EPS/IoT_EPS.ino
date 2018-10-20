@@ -37,9 +37,10 @@ void setup(){
     DEBUGPORT.print(F("\n<VoLAB> Mode autoconnect :"));
     DEBUGPORT.println( WiFi.getAutoConnect()?"enabled":"disabled");
     DEBUGPORT.println( "<VoLAB> Wifi is connected ? " +  String(WiFi.isConnected()?"Yes":"No") );
-
+readWifiCredit();
+// DEBUGPORT.printf("SSID : %s, pass : %s", wifi_ssid_s.c_str(), wifipass_s.c_str());
     DEBUGPORT.print(F("\n<VoLAB> softAP :"));
-    DEBUGPORT.print(WiFi.softAP("PowerStrip", "XXXXXXXXX")?F("Ready"):F("Failed!"));
+    DEBUGPORT.println(WiFi.softAP(wifi_ssid_s.c_str(), wifipass_s.c_str())?F("Ready"):F("Failed!"));
 
 
 }
@@ -61,10 +62,10 @@ bool readWifiCredit(){
 
     if (SPIFFS.begin()) {
         DEBUGPORT.println(F("<VoLAB reading wifi credit.> mounted file system"));
-        if (SPIFFS.exists("/creditentials.json")) {
+        if (SPIFFS.exists("/credentials.json")) {
             //file exists, reading and loading
             DEBUGPORT.println(F("<VoLAB reading wifi credit.> reading config file"));
-            File configFile = SPIFFS.open("/creditentials.json", "r");
+            File configFile = SPIFFS.open("/credentials.json", "r");
             if (configFile) {
                 DEBUGPORT.println( F("\topened config file") );
                 size_t size = configFile.size();
@@ -86,7 +87,7 @@ bool readWifiCredit(){
                 return true;
             }
         } else {
-            DEBUGPORT.println(F("<VoLAB reading wifi credit.> failed to open /config.json"));
+            DEBUGPORT.println(F("<VoLAB reading wifi credit.> failed to open /ccredentials.json"));
             return false;
         }
 
