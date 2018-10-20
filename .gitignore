@@ -7,6 +7,8 @@
 # au cas où on décide de supprimer *.json
 # fichier contenant des credentials 
 credentials.json
+cred*.json
+credential.json
 
 ## [ Dossiers a ignorer ]
 _3_software/_3-1_test*/
@@ -17,6 +19,7 @@ _7_*/
 **/99-*/
 *_v/
 __pycache__
+
 
 ## [ listes des extentions a ignorer ]
 *.FCStd1
