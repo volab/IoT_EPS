@@ -15,6 +15,7 @@
 #include <ArduinoJson.h> //https://github.com/bblanchon/ArduinoJson
 #include <Wire.h>
 #include <RTClib.h>
+#include "credential.h"
 
 #define DEBUGPORT Serial
 
