@@ -18,14 +18,19 @@
 class Credential{
     public:
         Credential();
+        bool ready = false;
+        void begin( ready = readFromJson(); );
+       
         String getSsidString(){ return _ssid;};
         String getPassString(){ return _pass;};
         const char* getSsid(){ return _ssid.c_str(); };
         const char* getPass(){ return _pass.c_str(); };
-        bool readFromJson();
+        
     private:
         String _ssid;
         String _pass;
+        bool readFromJson();
+        String d_prompt = "<VoLAB reading credentials.>";
 };
 
 

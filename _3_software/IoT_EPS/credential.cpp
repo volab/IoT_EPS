@@ -19,22 +19,26 @@ Credential::Credential(){
     _pass = "";
 }
 
+
+
+
+
 /**
 @fn bool Credential::readFromJson()
 @brief the methodes to read the filebuf
 @return a booleen true on success  
 */
 bool Credential::readFromJson(){
-    DEBUGPORT.println(F("<VoLAB reading wifi credit.> mounting FS..."));
+    DEBUGPORT.println(d_prompt + F(" mounting FS..."));
 
     if (SPIFFS.begin()) {
-        DEBUGPORT.println(F("<VoLAB reading wifi credit.> mounted file system"));
+        DEBUGPORT.println(d_prompt + F(" file system mounted"));
         if (SPIFFS.exists("/credentials.json")) {
             //file exists, reading and loading
-            DEBUGPORT.println(F("<VoLAB reading wifi credit.> reading config file"));
+            DEBUGPORT.println(d_prompt + F(" reading config file"));
             File configFile = SPIFFS.open("/credentials.json", "r");
             if (configFile) {
-                DEBUGPORT.println( F("\topened config file") );
+                DEBUGPORT.println( F("\tconfig file is opened") );
                 size_t size = configFile.size();
                 // Allocate a buffer to store contents of the file.
                 std::unique_ptr<char[]> buf(new char[size]);
@@ -47,19 +51,19 @@ bool Credential::readFromJson(){
                     _ssid = json["ssid"].as<String>();
                     _pass = json["pass"].as<String>();
                 } else {
-                    DEBUGPORT.println(F("<VoLAB reading wifi credit.> failed to load json config"));
+                    DEBUGPORT.println(d_prompt + F(" failed to load json config"));
                     return false;
                 }
                 configFile.close();
                 return true;
             }
         } else {
-            DEBUGPORT.println(F("<VoLAB reading wifi credit.> failed to open /credentials.json"));
+            DEBUGPORT.println(d_prompt + F(" failed to open /credentials.json"));
             return false;
         }
 
     } else {
-        DEBUGPORT.println(F("<VoLAB reading wifi credit.> failed to mount FS"));
+        DEBUGPORT.println(d_prompt + F(" failed to mount FS"));
         return false;
     }
  

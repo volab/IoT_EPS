@@ -6,6 +6,8 @@
 
 
 
+
+
 /**
 @fn bool Credential::readFromJson()
 @brief the methodes to read the filebuf
@@ -32,6 +34,9 @@ bool ConfigParam::readFromJson(){
                 if (json.success()) {
                     _wifimode = json["wifimode"].as<String>();
                     _yellowPlugState = json["yellowPlugState"].as<String>();
+                    _RedPlugState = json["redPlugState"].as<String>();
+                    _greenPlugState = json["greenPlugState"].as<String>();
+                    _bluePlugState = json["bluePlugState"].as<String>();
                 } else {
                     DEBUGPORT.println(d_prompt + F(" failed to load json config"));
                     return false;
