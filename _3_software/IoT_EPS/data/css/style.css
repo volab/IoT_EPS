@@ -23,43 +23,44 @@ h1{
 
 /* RED */
 .redPlug{
-    margin: 0 2% 0 2%;
 }
 
-#fs_red{
+.redPlug fieldset{
     color: #b11721;
-    box-shadow: 6px 6px 0;
 }
 
 /* GREEN */
 .greenPlug{
-    margin: 0 2% 0 2%;
 }
 
-#fs_green{
+.greenPlug fieldset{
     color: #30880c;
-    box-shadow: 6px 6px 0;
 }
-
 
 /* Blue */
 .bluePlug{
-    margin: 0 2% 0 2%;
 }
 
-#fs_blue{
+.bluePlug fieldset{
     color: #0b40a9;
-    box-shadow: 6px 6px 0;
 }
 
     /* Yellow */
 .yellowPlug{
+}
+
+.yellowPlug fieldset{
+    color: #e4ff02;
+}
+
+.redPlug,.greenPlug,.bluePlug,.yellowPlug{
     margin: 0 2% 0 2%;
 }
 
-#fs_yellow{
-    color: #e4ff02;
+
+fieldset{
     box-shadow: 6px 6px 0;
+    border-radius:0 10px 0 10px;
 }
 
 /*
