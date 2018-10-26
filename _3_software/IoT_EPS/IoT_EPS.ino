@@ -18,6 +18,11 @@ Utilisation de la bibliothèque Wire version 1.0
 Utilisation de la bibliothèque RTClib version 1.2.0
 */
 
+
+
+
+
+
 #include "IoT_EPS.h"
 
 // String wifi_ssid_s;
@@ -30,11 +35,12 @@ RTC_DS3231 rtc;
 
 void setup(){
     DEBUGPORT.begin(9600);
-    
-    cParam.begin();
-    
     DEBUGPORT.println();
     DEBUGPORT.println( F("<VoLAB> Sketch start..."));
+    
+    cParam.begin();
+    wifiCred.begin();
+
     if (cParam.ready){
         DEBUGPORT.println( "Wifi mode = "+ cParam.getWifiMode() );
     }
@@ -48,16 +54,14 @@ void setup(){
     DEBUGPORT.println( WiFi.getAutoConnect()?"enabled":"disabled");
     DEBUGPORT.println( "<VoLAB> Wifi is connected ? " +  String(WiFi.isConnected()?"Yes":"No") );
 // readWifiCredit();
-    if ( wifiCred.readFromJson() ){
+    if ( wifiCred.ready ){
     // DEBUGPORT.printf("SSID : %s, pass : %s", wifi_ssid_s.c_str(), wifipass_s.c_str());
         DEBUGPORT.print(F("\n<VoLAB> softAP :"));
         DEBUGPORT.println(WiFi.softAP(wifiCred.getSsid(),
             wifiCred.getPass() )?F("Ready"):F("Failed!"));        
     }
-
-
-
 }
+
 
 void loop(){
     Serial.printf("Stations connected = %d\n", WiFi.softAPgetStationNum());

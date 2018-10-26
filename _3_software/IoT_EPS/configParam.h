@@ -16,7 +16,7 @@ class ConfigParam{
     private:
         String _wifimode = "softAP" ; //default value
         String _yellowPlugState;
-        String _redPlugstate;
+        String _redPlugState;
         String _greenPlugState;
         String _bluePlugState;
         bool readFromJson();
