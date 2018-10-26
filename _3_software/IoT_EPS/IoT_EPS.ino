@@ -53,7 +53,7 @@ void setup(){
     DEBUGPORT.print(F("\n<VoLAB> Mode autoconnect :"));
     DEBUGPORT.println( WiFi.getAutoConnect()?"enabled":"disabled");
     DEBUGPORT.println( "<VoLAB> Wifi is connected ? " +  String(WiFi.isConnected()?"Yes":"No") );
-// readWifiCredit();
+
     if ( wifiCred.ready ){
     // DEBUGPORT.printf("SSID : %s, pass : %s", wifi_ssid_s.c_str(), wifipass_s.c_str());
         DEBUGPORT.print(F("\n<VoLAB> softAP :"));
