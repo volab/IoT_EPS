@@ -17,7 +17,7 @@
 
 class Credential{
     public:
-        Credential(){};
+        Credential();
         String getSsidString(){ return _ssid;};
         String getPassString(){ return _pass;};
         const char* getSsid(){ return _ssid.c_str(); };

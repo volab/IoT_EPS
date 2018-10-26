@@ -23,14 +23,22 @@ Utilisation de la bibliothèque RTClib version 1.2.0
 // String wifi_ssid_s;
 // String wifipass_s;
 
+ConfigParam cParam;
 Credential wifiCred;
 
 RTC_DS3231 rtc;
 
 void setup(){
     DEBUGPORT.begin(9600);
+    
+    cParam.begin();
+    
     DEBUGPORT.println();
     DEBUGPORT.println( F("<VoLAB> Sketch start..."));
+    if (cParam.ready){
+        DEBUGPORT.println( "Wifi mode = "+ cParam.getWifiMode() );
+    }
+    
 
     DEBUGPORT.print(F("\n<VoLAB> Mode autoconnect :"));
     DEBUGPORT.println( WiFi.getAutoConnect()?"enabled":"disabled");

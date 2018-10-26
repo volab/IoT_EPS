@@ -1,0 +1,53 @@
+
+
+#include "IoT_EPS.h"
+// #include  "configParam.h"
+
+
+
+
+/**
+@fn bool Credential::readFromJson()
+@brief the methodes to read the filebuf
+@return a booleen true on success  
+*/
+bool ConfigParam::readFromJson(){
+    DEBUGPORT.println( d_prompt +F(" mounting FS..."));
+    if (SPIFFS.begin()) {
+        DEBUGPORT.println(d_prompt + F(" file system mounted "));
+        if (SPIFFS.exists("/config.json")) {
+            //file exists, reading and loading
+            DEBUGPORT.println(d_prompt + F(" reading config file"));
+            File configFile = SPIFFS.open("/config.json", "r");
+            if (configFile) {
+                DEBUGPORT.println( F("\tconfig file opened ") );
+                size_t size = configFile.size();
+                // Allocate a buffer to store contents of the file.
+                std::unique_ptr<char[]> buf(new char[size]);
+
+                configFile.readBytes(buf.get(), size);
+                DynamicJsonBuffer jsonBuffer;
+                JsonObject& json = jsonBuffer.parseObject(buf.get());
+                // json.printTo(DEBUGPORT);
+                if (json.success()) {
+                    _wifimode = json["wifimode"].as<String>();
+                    _yellowPlugState = json["yellowPlugState"].as<String>();
+                } else {
+                    DEBUGPORT.println(d_prompt + F(" failed to load json config"));
+                    return false;
+                }
+                configFile.close();
+                return true;
+            }
+        } else {
+            DEBUGPORT.println(d_prompt + F(" failed to open /config.json"));
+            return false;
+        }
+
+    } else {
+        DEBUGPORT.println( d_prompt + F(" failed to mount FS"));
+        return false;
+    }
+ 
+    
+}

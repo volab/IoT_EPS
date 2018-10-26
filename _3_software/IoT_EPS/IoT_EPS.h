@@ -16,6 +16,7 @@
 #include <Wire.h>
 #include <RTClib.h>
 #include "credential.h"
+#include "configParam.h"
 
 #define DEBUGPORT Serial
 

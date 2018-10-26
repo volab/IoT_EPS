@@ -9,6 +9,15 @@
 Credentials.json sould be in the data directory of your sketch in the SPIFFS of the ESP8266
 */
 
+/**
+@fn Credential::Credential()
+@brief only one constructor 
+*/
+
+Credential::Credential(){
+    _ssid ="";
+    _pass = "";
+}
 
 /**
 @fn bool Credential::readFromJson()
@@ -45,7 +54,7 @@ bool Credential::readFromJson(){
                 return true;
             }
         } else {
-            DEBUGPORT.println(F("<VoLAB reading wifi credit.> failed to open /ccredentials.json"));
+            DEBUGPORT.println(F("<VoLAB reading wifi credit.> failed to open /credentials.json"));
             return false;
         }
 
