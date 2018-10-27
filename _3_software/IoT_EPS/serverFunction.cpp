@@ -1,5 +1,10 @@
 
-#include "serverFunction.h"
+// #include "serverFunction.h"
+#include "IoT_EPS.h"
+
+extern RTC_DS3231 rtc;
+
+/*
 void handleRoot() {
 	char temp[400];
 	int sec = millis() / 1000;
@@ -20,13 +25,14 @@ void handleRoot() {
     <h1>Hello from Jojo ESP01. ESP8266!</h1>\
     <p>Uptime: %02d:%02d:%02d</p>\
     <img src=\"/test.svg\" />\
-  </bo0dy>\
+  </body>\
 </html>",
 
 		hr, min % 60, sec % 60
 	);
 	server.send ( 200, "text/html", temp );
 }
+*/
 
 void handleNotFound() {
 
@@ -45,4 +51,23 @@ void handleNotFound() {
 
 	server.send ( 404, "text/plain", message );
 
+}
+
+void displayTime(){
+    String page;
+    DateTime now;
+    now = rtc.now();
+    page = "<html><head>";
+    page += "<meta http-equiv='refresh' content='5'/>";
+    page += "<title>IoT EPS display Time</title>";
+    page += "<style>";
+    page += "body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }";
+    page += "</style></head><body><h1>IoT EPS time!</h1>";
+    page += "<a href=\"index.html\">Accueil</a><p>";
+    page += (String)now.day() +"/"+(String)now.month()+"/"+(String)now.year()+" ";
+    page += (String)now.hour()+":"+(String)now.minute()+":";
+    page += (String)now.second();
+    page += "</p></body></html>";
+    server.send ( 200, "text/html", page );
+    
 }
