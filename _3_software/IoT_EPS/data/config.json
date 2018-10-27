@@ -1,0 +1,7 @@
+{
+    "wifimode" : "softAP",
+    "yellowPlugState" : "ON",
+    "redPlugState" : "ON",
+    "greenPlugState" : "ON",
+    "bleuPlugState" : "ON"
+}
