@@ -8,11 +8,39 @@ body{
     background-color: #aeb6bf;
 }
 
-h1{
-    text-align: center;
+header{
+    /*max-height: 25%;*/
+    height: 200px;
 }
 
-nav{
+.logo_header{
+    float: left;
+    /*width: 25%;*/
+    width: 281px;
+    height: 199px;
+    /*vertical-align: middle;*/
+}
+
+.logo_header img{
+    /*width: 25%;*/
+    height: auto;
+    width: inherit;
+    vertical-align: middle;
+    }
+
+.titre_header{
+    margin-left: 25%;
+    vertical-align: middle;
+    line-height: 199px;
+}
+
+.titre_header h1{
+    text-align: center;
+    font-size: 500%;
+    vertical-align: middle;
+}
+
+nav, header{
     padding: 0 1% 0 1%;
 }
 
