@@ -12,6 +12,21 @@ h1{
     text-align: center;
 }
 
+nav{
+    padding: 0 1% 0 1%;
+}
+
+fieldset{
+    box-shadow: 6px 6px 0;
+    border: 2px ridge black;
+    border-radius:0 10px 0 10px;
+}
+
+.redPlug,.greenPlug,.bluePlug,.yellowPlug{
+    margin: 0 2% 0 2%;
+}
+
+
 /*
 *
 * Index.html
@@ -51,16 +66,6 @@ h1{
 
 .yellowPlug fieldset{
     color: #e4ff02;
-}
-
-.redPlug,.greenPlug,.bluePlug,.yellowPlug{
-    margin: 0 2% 0 2%;
-}
-
-
-fieldset{
-    box-shadow: 6px 6px 0;
-    border-radius:0 10px 0 10px;
 }
 
 /*
