@@ -3,14 +3,29 @@
 * Global
 *
 */
+html{
+    height: 100%
+}
 
 body{
     background-color: #aeb6bf;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
 }
 
 header{
     /*max-height: 25%;*/
     height: 200px;
+    margin-top: 1%;
+}
+
+nav{line-height: 30px;}
+
+footer{
+    position: absolute;
+    bottom: 0;
 }
 
 .logo_header{
