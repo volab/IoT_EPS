@@ -34,7 +34,7 @@ bool errRTCinit = true;
 void setup(){
     String d_prompt = "<VoLAB setup >";
     DateTime now;
-    DEBUGPORT.begin(9600);
+    DEBUGPORT.begin(DEBUGSPEED);
     DEBUGPORT.println();
     DEBUGPORT.println( d_prompt + F("Sketch start..."));
     
@@ -58,7 +58,7 @@ void setup(){
         DEBUGPORT.println( message);
     } 
     if (cParam.ready){
-        DEBUGPORT.println( "Wifi mode = "+ cParam.getWifiMode() );
+        DEBUGPORT.println( d_prompt + F("Wifi mode = ") + cParam.getWifiMode() );
     }
     
 
@@ -71,13 +71,26 @@ void setup(){
     DEBUGPORT.println( d_prompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
 
     if ( wifiCred.ready ){
-    // DEBUGPORT.printf("SSID : %s, pass : %s", wifi_ssid_s.c_str(), wifipass_s.c_str());
-        DEBUGPORT.print("\n" + d_prompt + F("softAP : "));
-        WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0)); 
-        DEBUGPORT.println(WiFi.softAP(wifiCred.getSsid(),
-            wifiCred.getPass() )?F("Ready"):F("Failed!"));
-        DEBUGPORT.println(  d_prompt + F("Adresse Wifi.localIP : ") + WiFi.localIP() );
-        DEBUGPORT.println(  d_prompt + F("Adresse configured IP : ") + apIP.toString() );            
+        if ( cParam.getWifiMode() == "client" ){
+            WiFi.mode(WIFI_STA);
+            WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
+            DEBUGPORT.println(  d_prompt + F("Try to join : ") + wifiCred.getSsid() );
+            while (WiFi.status() != WL_CONNECTED) {
+                delay(500);
+                DEBUGPORT.print(".");
+            }
+             DEBUGPORT.println();
+        } else { //mode softAP
+        // DEBUGPORT.printf("SSID : %s, pass : %s", wifi_ssid_s.c_str(), wifipass_s.c_str());
+            DEBUGPORT.print("\n" + d_prompt + F("softAP : "));
+            WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0)); 
+            DEBUGPORT.println(WiFi.softAP(wifiCred.getSsid(),
+                wifiCred.getPass() )?F("Ready"):F("Failed!"));
+              
+        }
+        DEBUGPORT.println(  d_prompt + F("Adresse Wifi.localIP : ") + WiFi.localIP().toString() );
+        // DEBUGPORT.println( WiFi.localIP() );
+        DEBUGPORT.println(  d_prompt + F("Adresse configured IP : ") + apIP.toString() );          
     }
     
     

@@ -10,10 +10,10 @@ Avancement
 #. Affichage d'un page html static: ok
 #. Affichage page html fichier SPIFFS : ok
 #. Affichage de l'heure à partir d'une page en dur dans le code : ok
-#. Affichage page avec CSS :
-#. Gestion des mode wifi SoftAP vs client : 
-#. reception d'une action via un bouton :
-#. lecture du fichier de configuration : 
+#. Affichage page avec CSS : ok
+#. Gestion des mode wifi SoftAP vs client : ok
+#. reception d'une action via un bouton : 
+#. lecture du fichier de configuration : ok
 
    
 Un peu de hardware

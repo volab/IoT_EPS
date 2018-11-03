@@ -22,5 +22,6 @@
 #include "serverFunction.h"
 
 #define DEBUGPORT Serial
+#define DEBUGSPEED 115200
 
 #endif

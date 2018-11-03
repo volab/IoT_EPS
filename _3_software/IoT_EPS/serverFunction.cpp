@@ -125,6 +125,7 @@ void handleFileCreate(){
 }
 
 void handleFileList() {
+    //usage ipaddr/list?dir=/
   if(!server.hasArg("dir")) {server.send(500, "text/plain", "BAD ARGS"); return;}
   
   String path = server.arg("dir");
@@ -135,7 +136,7 @@ void handleFileList() {
   String output = "[";
   while(dir.next()){
     File entry = dir.openFile("r");
-    if (output != "[") output += ',\n';
+    if (output != "[") output += ",\n";
     bool isDir = false;
     output += "{\"type\":\"";
     output += (isDir)?"dir":"file";
