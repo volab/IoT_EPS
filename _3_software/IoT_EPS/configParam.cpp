@@ -32,6 +32,7 @@ bool ConfigParam::readFromJson(){
                     _redPlugState = json["redPlugState"].as<String>();
                     _greenPlugState = json["greenPlugState"].as<String>();
                     _bluePlugState = json["bluePlugState"].as<String>();
+                    _host = json["hostName"].as<String>();
                 } else {
                     DEBUGPORT.println(d_prompt + F(" failed to load json config"));
                     return false;

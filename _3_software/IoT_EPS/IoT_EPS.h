@@ -16,6 +16,7 @@
 #include <ArduinoJson.h> //https://github.com/bblanchon/ArduinoJson
 #include <Wire.h>
 #include <RTClib.h>
+#include <ESP8266mDNS.h>
 #include "credential.h"
 #include "configParam.h"
 #include "serverFunction.h"

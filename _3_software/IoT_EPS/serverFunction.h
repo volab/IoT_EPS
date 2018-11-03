@@ -19,4 +19,13 @@ extern ESP8266WebServer server;
 // void handleRoot();
 void handleNotFound();
 void displayTime();
+
+String getContentType(String filename);
+bool handleFileRead(String path);
+void handleFileUpload();
+void handleFileDelete();
+void handleFileCreate();
+void handleFileList();
+
+
 #endif
