@@ -126,6 +126,9 @@ Serial.print(str);
     server.on("/edit", HTTP_GET, [](){
         if(!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
     });
+    server.on("/help", HTTP_GET, [](){
+        if(!handleFileRead("/help.htm")) server.send(404, "text/plain", "FileNotFound");
+    });
     server.on("/edit", HTTP_PUT, handleFileCreate);
     server.on("/edit", HTTP_DELETE, handleFileDelete);
     //first callback is called after the request has ended with all parsed arguments

@@ -16,23 +16,6 @@ Avancement
 #. lecture du fichier de configuration : ok
 
    
-Un peu de hardware
-==================
-Premier écueil: l'ESP peut-il s'alimenter en 5V ?
-
-Réponse : oui
-
-
-.. image:: ./image/alimWemosD1Mini.jpg
-
-Ajout d'un DS3231 comme dans le projet  `ESP_NTP_DS3231 <https://github.com/volab/ESP_NTP_DS3231>`_
-
-.. important::
-
-  D1 : SCL
-  D2   SDA
-
-####
 
 Choix dev soft
 ==============
@@ -43,6 +26,17 @@ Les pages html sont dans le file système SPIFFS
 WEMOS D1 MIN ARDUINO configurattion:
 
 .. image:: ./image/wemosD1Mini_configArduino.jpg
+
+Développement des page Web
+==========================
+HTML5 et css
+
+Serveur html ESP8266
+====================
+Repris de l'exemple fourni avec l'IDE ARDUINO : FSBrowser
+
+Cette exemple apporte un lot de fonction qui gérent l'envoie de fichier css, jpg et autres...
+
 
 
 Useful Documentation

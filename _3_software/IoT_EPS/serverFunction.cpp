@@ -71,9 +71,11 @@ bool handleFileRead(String path){
   }
   return false;
 }
-
+File fsUploadFile; // cette variable doit être globale
+//la fonction l'utilise plusieurs fois
+//eventuellement pourrait être static
 void handleFileUpload(){
-    File fsUploadFile;
+    
   if(server.uri() != "/edit") return;
   HTTPUpload& upload = server.upload();
   if(upload.status == UPLOAD_FILE_START){
