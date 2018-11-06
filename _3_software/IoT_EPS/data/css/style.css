@@ -3,13 +3,70 @@
 * Global
 *
 */
+html{
+    height: 100%
+}
 
 body{
     background-color: #aeb6bf;
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
 }
 
-h1{
+header{
+    /*max-height: 25%;*/
+    height: 200px;
+    margin-top: 1%;
+}
+
+nav{line-height: 30px;}
+
+footer{
+    position: absolute;
+    bottom: 0;
+}
+
+.logo_header{
+    float: left;
+    /*width: 25%;*/
+    width: 281px;
+    height: 199px;
+    /*vertical-align: middle;*/
+}
+
+.logo_header img{
+    /*width: 25%;*/
+    height: auto;
+    width: inherit;
+    vertical-align: middle;
+    }
+
+.titre_header{
+    margin-left: 25%;
+    vertical-align: middle;
+    line-height: 199px;
+}
+
+.titre_header h1{
     text-align: center;
+    font-size: 500%;
+    vertical-align: middle;
+}
+
+nav, header{
+    padding: 0 1% 0 1%;
+}
+
+fieldset{
+    box-shadow: 6px 6px 0;
+    border: 2px ridge black;
+    border-radius:0 10px 0 10px;
+}
+
+.redPlug,.greenPlug,.bluePlug,.yellowPlug{
+    margin: 0 2% 0 2%;
 }
 
 nav{
@@ -25,7 +82,6 @@ fieldset{
 .redPlug,.greenPlug,.bluePlug,.yellowPlug{
     margin: 0 2% 0 2%;
 }
-
 
 /*
 *
@@ -82,5 +138,7 @@ fieldset{
 * Responcive (pour les mobile et tablette)
 *
 */
+/*
 @media screen and (max-width: 1080px){
 }
+*/
