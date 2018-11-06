@@ -26,6 +26,7 @@ nav{line-height: 30px;}
 footer{
     position: absolute;
     bottom: 0;
+    padding: 0 1% 0 1% 0;
 }
 
 .logo_header{
@@ -125,5 +126,5 @@ fieldset{
 * Responcive (pour les mobile et tablette)
 *
 */
-@media screen and (max-width: 1080px){
-}
+/* @media screen and (max-width: 1080px){ */
+/* } */

@@ -26,7 +26,7 @@ __pycache__
 *.264
 *.mkv
 *.mp4
-*.json
+#*.json
 *.ffs_db
 
 

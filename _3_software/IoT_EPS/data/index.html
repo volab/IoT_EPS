@@ -2,23 +2,34 @@
 <html>
     <head>
         <meta charset="utf-8">
+
+        <!--Import css-->
+        <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
+        
         <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <link rel="icon" href="volab.ico" />
+
         <title>Accueil IoT_EPS</title>
     </head>
     
     <body>
         <header>
             <div class="logo_header">
-                <img src="images/logo_projet_alpha.png" alt="logo IoT_EPS">
+                <img class="responsive-img" src="images/logo_projet_alpha.png" alt="logo IoT_EPS">
             </div>
 
             <div class="titre_header">
-                <h1 id="index_h1">IoT_EPS</h1>
+                <h1 id="index_h1">Accueil IoT_EPS</h1>
             </div>
         </header>
         
         <nav> <!-- bare de menu horizontale -->
-            <a href="help.html">Help</a>
+            <a href="help.html" target="_blank">Help</a>
+            <a href="time" target="_blank">Time</a>
         </nav>
         
         <div class="redPlug">
@@ -45,9 +56,12 @@
             </fieldset>
         </div>
 
-        <footer>
+        <footer >
             <p>Powered by VoLab</p>
         </footer>
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="js/materialize.min.js"></script>
 
     </body>
 </html>
