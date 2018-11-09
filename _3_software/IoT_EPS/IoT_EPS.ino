@@ -30,6 +30,8 @@ ESP8266WebServer server ( 80 );
 
 IPAddress apIP(192, 168, 95, 42);
 
+Adafruit_MCP23017 mcp;
+
 bool errRTCinit = true;
 void setup(){
     String d_prompt = "<VoLAB setup >";
@@ -43,6 +45,12 @@ void setup(){
     rtc.begin();
     Wire.beginTransmission(DS3231_ADDRESS);
     errRTCinit = Wire.endTransmission();
+    
+    mcp.begin();
+    
+    mcp.pinMode( PLUG0, OUTPUT );
+    mcp.pinMode( PLUG1, OUTPUT );
+    mcp.pinMode( PLUG2, OUTPUT );
 
     if ( errRTCinit ) {
         DEBUGPORT.println(d_prompt + F("ERR : Couldn't find RTC"));
@@ -156,11 +164,17 @@ Serial.print(str);
 
 }
 
-
+unsigned long prevMillis = millis();
 void loop(){
+    static bool statePlug0 = false;
     // Serial.printf("Stations connected = %d\n", WiFi.softAPgetStationNum());
     server.handleClient();
     // delay(3000);
+    if ( millis() - prevMillis >= FLASHERTIME){
+        prevMillis = millis();
+        statePlug0 = !statePlug0 ;
+        mcp.digitalWrite( PLUG0, statePlug0 );
+    }
 
     yield();
 }

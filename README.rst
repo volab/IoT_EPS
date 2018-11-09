@@ -14,14 +14,14 @@ Informations générales IoT_EPS
 ####
 
 Description
-===========
+============
 
 IoT Electronic Power Strip : Une multiprise connectée sur laquelle chaque plot est configurable
 
 ####
 
 Arborescence du projet
-======================
+=======================
 
 Pour aider à la compréhension de mon organisation,voici un bref descriptif de l'arborescence de ce projet.Cette arborescence est à reproduire si vous récupérez cedépôt depuis GitHub. ::
 

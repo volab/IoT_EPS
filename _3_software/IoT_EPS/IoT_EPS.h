@@ -17,11 +17,25 @@
 #include <Wire.h>
 #include <RTClib.h>
 #include <ESP8266mDNS.h>
+#include <Adafruit_MCP23017.h>
 #include "credential.h"
 #include "configParam.h"
 #include "serverFunction.h"
 
 #define DEBUGPORT Serial
 #define DEBUGSPEED 115200
+
+#define FLASHERTIME 500
+
+#define PLUG0 0 // MPC23017 numbering pin21 PORTA.0
+#define PLUG1 1
+#define PLUG2 2
+#define PLUG3 3
+#define BP0 8 // MCP PORTB.0 pin 1
+#define BP1 9
+#define BP2 10
+#define BP3 11
+
+
 
 #endif
