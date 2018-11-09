@@ -3,14 +3,9 @@
 #include "IoT_EPS.h"
 // #include  "configParam.h"
 
-
-
-
-
-
 /**
-@fn bool Credential::readFromJson()
-@brief the methodes to read the filebuf
+@fn bool ConfigParam::readFromJson()
+@brief the methode to read the file config parameters
 @return a booleen true on success  
 */
 bool ConfigParam::readFromJson(){
@@ -34,9 +29,10 @@ bool ConfigParam::readFromJson(){
                 if (json.success()) {
                     _wifimode = json["wifimode"].as<String>();
                     _yellowPlugState = json["yellowPlugState"].as<String>();
-                    _RedPlugState = json["redPlugState"].as<String>();
+                    _redPlugState = json["redPlugState"].as<String>();
                     _greenPlugState = json["greenPlugState"].as<String>();
                     _bluePlugState = json["bluePlugState"].as<String>();
+                    _host = json["hostName"].as<String>();
                 } else {
                     DEBUGPORT.println(d_prompt + F(" failed to load json config"));
                     return false;

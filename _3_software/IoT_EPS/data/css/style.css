@@ -1,97 +1,47 @@
-/*
-*
-* Global
-*
-*/
 html{
-    height: 100%
+    height: 100%;
 }
 
 body{
     background-color: #aeb6bf;
-    min-height: 100%;
-    margin: 0;
-    padding: 0;
-    position: relative;
-}
+    }
 
-header{
-    /*max-height: 25%;*/
-    height: 200px;
-    margin-top: 1%;
+nav{
+    max-height: 30px
 }
-
-nav{line-height: 30px;}
 
 footer{
-    position: absolute;
-    bottom: 0;
-}
+      position: absolute;
+      bottom: 0;
+      }
 
-.logo_header{
-    float: left;
-    /*width: 25%;*/
-    width: 281px;
-    height: 199px;
-    /*vertical-align: middle;*/
-}
+header, nav, footer{padding: 0 1%;}
 
-.logo_header img{
-    /*width: 25%;*/
+.header_logo{
+    width: 100%;
     height: auto;
-    width: inherit;
     vertical-align: middle;
     }
 
-.titre_header{
-    margin-left: 25%;
+.header_h1{
     vertical-align: middle;
-    line-height: 199px;
-}
-
-.titre_header h1{
-    text-align: center;
-    font-size: 500%;
-    vertical-align: middle;
-}
-
-nav, header{
-    padding: 0 1% 0 1%;
-}
+    text-align:   center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 3em;
+    }
 
 fieldset{
     box-shadow: 6px 6px 0;
     border: 2px ridge black;
     border-radius:0 10px 0 10px;
-}
+    }
 
 .redPlug,.greenPlug,.bluePlug,.yellowPlug{
     margin: 0 2% 0 2%;
-}
-
-nav{
-    padding: 0 1% 0 1%;
-}
-
-fieldset{
-    box-shadow: 6px 6px 0;
-    border: 2px ridge black;
-    border-radius:0 10px 0 10px;
-}
-
-.redPlug,.greenPlug,.bluePlug,.yellowPlug{
-    margin: 0 2% 0 2%;
-}
-
-/*
-*
-* Index.html
-*
-*/
-
-#index_h1{
-}
-
+    }
+  
 /* RED */
 .redPlug{
 }
@@ -124,21 +74,25 @@ fieldset{
     color: #e4ff02;
 }
 
-/*
-*
-* help.html
-*
-*/
-
-#help_h1{
+@media only screen and (max-width: 414px) {
+  .header_h1 {
+    font-size: 2.3rem;
+    margin: 0;
+  }
 }
 
-/*
-*
-* Responcive (pour les mobile et tablette)
-*
-*/
-/*
-@media screen and (max-width: 1080px){
+@media only screen and (max-width: 375px) {
+  .header_h1 {
+    font-size: 2.2rem;
+    margin: 0;
+  }
 }
-*/
+
+
+@media only screen and (max-width: 360px) {
+  .header_h1 {
+    font-size: 2.1rem;
+    margin: 0;
+  }
+}
+

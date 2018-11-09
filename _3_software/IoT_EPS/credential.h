@@ -19,12 +19,12 @@ class Credential{
     public:
         Credential();
         bool ready = false;
-        void begin( ready = readFromJson(); );
+        void begin(){ ready = readFromJson(); }
        
-        String getSsidString(){ return _ssid;};
-        String getPassString(){ return _pass;};
-        const char* getSsid(){ return _ssid.c_str(); };
-        const char* getPass(){ return _pass.c_str(); };
+        String getSsidString(){ return _ssid;}
+        String getPassString(){ return _pass;}
+        const char* getSsid(){ return _ssid.c_str(); }
+        const char* getPass(){ return _pass.c_str(); }
         
     private:
         String _ssid;

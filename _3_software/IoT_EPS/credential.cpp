@@ -19,10 +19,6 @@ Credential::Credential(){
     _pass = "";
 }
 
-
-
-
-
 /**
 @fn bool Credential::readFromJson()
 @brief the methodes to read the filebuf
