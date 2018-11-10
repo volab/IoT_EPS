@@ -30,8 +30,10 @@
         </header>
 
         <nav> <!-- bare de menu horizontale -->
-            <a href="help.html" target="_blank">Help</a>
-            <a href="time" target="_blank">Time</a>
+            <ul>
+                <li><a href="help.html">Help</a></li>
+                <li><a href=#!>Time</a></li>
+            </ul>
         </nav>
 
         <main> <!-- corp de la page -->
@@ -41,7 +43,7 @@
                     <div class="row">
                         <div class="col s2">
                             <!-- Switch -->
-                            <div class="switch">
+                            <div class="switch" id="redPlug_switch">
                                 <label>
                                     Off
                                     <input type="checkbox">
@@ -50,8 +52,11 @@
                                 </label>
                               </div>
                         </div>
-                        <div class="col s8"></div>
-                        <div class="col s2"></div>
+                        <div class="col s9"></div>
+                        <div class="col s1">
+                            <img src="img/icons8-settings-button-64.png"></img>
+                            <a href=#!>Configuration</a> 
+                        </div>
                     </div>
                 </fieldset>
             </div>
@@ -59,18 +64,72 @@
             <div class="greenPlug">
                 <fieldset id="fs_green">
                     <legend><h2>Prise Verte</h2></legend>
+                    <div class="row">
+                        <div class="col s2">
+                            <!-- Switch -->
+                            <div class="switch" id="greenPlug_switch">
+                                <label>
+                                    Off
+                                    <input type="checkbox">
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+                              </div>
+                        </div>
+                        <div class="col s9"></div>
+                        <div class="col s1">
+                            <img src="img/icons8-settings-button-64.png"></img>
+                            <a href=#!>Configuration</a> 
+                        </div>
+                    </div>
                 </fieldset>
             </div>
 
            <div class="bluePlug">
                 <fieldset id="fs_blue">
                     <legend><h2>Prise Bleu</h2></legend>
+                    <div class="row">
+                        <div class="col s2">
+                            <!-- Switch -->
+                            <div class="switch" id="bluePlug_switch">
+                                <label>
+                                    Off
+                                    <input type="checkbox">
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+                              </div>
+                        </div>
+                        <div class="col s9"></div>
+                        <div class="col s1">
+                            <img src="img/icons8-settings-button-64.png"></img>
+                            <a href=#!>Configuration</a> 
+                        </div>
+                    </div>
                 </fieldset>
             </div>
 
            <div class="yellowPlug">
                 <fieldset id="fs_yellow">
                     <legend><h2>Prise Jaune</h2></legend>
+                    <div class="row">
+                        <div class="col s2">
+                            <!-- Switch -->
+                            <div class="switch" id="yellowPlug_switch">
+                                <label>
+                                    Off
+                                    <input type="checkbox">
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+                              </div>
+                        </div>
+                        <div class="col s9"></div>
+                        <div class="col s1">
+                            <img src="img/icons8-settings-button-64.png"></img>
+                            <a href=#!>Configuration</a> 
+                        </div>
+                    </div>
                 </fieldset>
             </div>
         </main>

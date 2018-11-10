@@ -7,7 +7,11 @@ body{
     }
 
 nav{
-    max-height: 30px
+    max-height: 30px;
+    list-style-type: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
 footer{
@@ -16,6 +20,10 @@ footer{
       }
 
 header, nav, footer{padding: 0 1%;}
+
+nav li{
+        display: inline-block;
+}
 
 .header_logo{
     width: 100%;

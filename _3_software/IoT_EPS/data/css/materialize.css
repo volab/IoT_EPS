@@ -4476,7 +4476,7 @@ nav .input-field label.active i {
     min-height: 64px;
   }
   nav, nav .nav-wrapper i, nav a.sidenav-trigger, nav a.sidenav-trigger i {
-    /*! height: 64px; */
+    height: 64px;
     /*! line-height: 64px; */
   }
   .navbar-fixed {
@@ -6098,7 +6098,7 @@ button:focus {
 
 label {
   font-size: 0.8rem;
-  color: #9e9e9e;
+  color: black;
 }
 
 /* Text Inputs + Textarea
