@@ -30,7 +30,10 @@ ESP8266WebServer server ( 80 );
 
 IPAddress apIP(192, 168, 95, 42);
 
-Adafruit_MCP23017 mcp;
+// Adafruit_MCP23017 mcp;
+
+// CPowerPlug plug0{ RED };
+CPowerPlug plug0( ROUGE );
 
 bool errRTCinit = true;
 void setup(){
@@ -46,11 +49,13 @@ void setup(){
     Wire.beginTransmission(DS3231_ADDRESS);
     errRTCinit = Wire.endTransmission();
     
-    mcp.begin();
+    // mcp.begin();
+    CPowerPlug::init();
+    plug0.begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, OFF );
     
-    mcp.pinMode( PLUG0, OUTPUT );
-    mcp.pinMode( PLUG1, OUTPUT );
-    mcp.pinMode( PLUG2, OUTPUT );
+    //mcp.pinMode( PLUG0, OUTPUT );
+    // mcp.pinMode( PLUG1, OUTPUT );
+    // mcp.pinMode( PLUG2, OUTPUT );
 
     if ( errRTCinit ) {
         DEBUGPORT.println(d_prompt + F("ERR : Couldn't find RTC"));
@@ -173,7 +178,7 @@ void loop(){
     if ( millis() - prevMillis >= FLASHERTIME){
         prevMillis = millis();
         statePlug0 = !statePlug0 ;
-        mcp.digitalWrite( PLUG0, statePlug0 );
+        // mcp.digitalWrite( PLUG0, statePlug0 );
     }
 
     yield();

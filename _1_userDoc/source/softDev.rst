@@ -102,6 +102,10 @@ Adresse par défaut: 0x20 (avec les 3 broches d'adresse à 0)
 En premier mouture, essai avec la librairie directement mais en deuxième monte, faire une classe
 qui prennent en charge la gestion du temps (classe Flasher dédiée au MCP)
 
+Deuxième mouture clréation de la class CPowerPlug avec utilisation de variable static
+
+_initDone et _mpc (mpc étant la ressource commune à toutes les instances de la classe)
+
 ===============================
 Useful Documentation
 ===============================

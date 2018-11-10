@@ -21,16 +21,21 @@
 #include "credential.h"
 #include "configParam.h"
 #include "serverFunction.h"
+#include "CPowerPlug.h"
 
 #define DEBUGPORT Serial
 #define DEBUGSPEED 115200
 
 #define FLASHERTIME 500
 
-#define PLUG0 0 // MPC23017 numbering pin21 PORTA.0
-#define PLUG1 1
-#define PLUG2 2
-#define PLUG3 3
+#define PLUG0PIN 0 // MPC23017 numbering pin21 PORTA.0
+#define PLUG1PIN 1
+#define PLUG2PIN 2
+#define PLUG3PIN 3
+#define PLUG0_ONOFFLEDPIN 4
+#define PLUG1_ONOFFLEDPIN 5
+#define PLUG2_ONOFFLEDPIN 6
+#define PLUG3_ONOFFLEDPIN 7
 #define BP0 8 // MCP PORTB.0 pin 1
 #define BP1 9
 #define BP2 10
