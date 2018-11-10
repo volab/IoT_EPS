@@ -18,10 +18,12 @@ Avancement
 ============
 #. alimentation ESP
 #. choix curent sensor: 
-#. horloge temps réelle
+#. horloge temps réelle : ok
 #. LED
 #. bouton poussoirs
 #. Affectation des io
+#. module relais : ok
+#. définition des modes de fonctionnement : ok
 
 ####
 
@@ -33,7 +35,10 @@ Premier écueil: l'ESP peut-il s'alimenter en 5V ?
 Réponse : oui
 
 
-.. image:: ./image/alimWemosD1Mini.jpg
+.. figure:: image/alimWemosD1Mini.jpg
+    :align: center
+    
+    Circuit d'alimentation WEMOS D1 mini
 
 ####
 
@@ -98,11 +103,28 @@ Exemple open source
 
 ####
 
+=======================
+Choix du module relais
+=======================
+
+Coupure des 2 voies en même temps (phase et neutre) donc soit des relais 2 voies soit 8 relais.
+
+Nous avons retenu l'option 8 relais car plus disponible dans l'écosphére ARDUINO.
+
+Disponible entre autres chez `Banggood 8 Channel Module Module Relais`_ 
+
+.. _`Banggood 8 Channel Module Module Relais` : https://www.banggood.com/fr/5Pcs-5V-8-Channel-Relay-Module-Board-For-Arduino-PIC-AVR-DSP-ARM-p-968931.html?rmmds=detail-left-hotproducts__2&cur_warehouse=CN
+
+.. figure:: image/moduleRelais8Chan.jpg
+    :align: center
+    
+    Photo module relais 8 voies de chez Banggod
+    
+####
+
 =====================
 Affectation des io
 =====================
-
-Suite...
 
 .. figure:: image/wemos-d1-mini-pinout_avecI2C.png
     :width: 600 px
