@@ -1,18 +1,115 @@
 {
-  "general": {
-    "wifimode": "client",
-    "hostName": "PowerStrip01"
+  "general" : {
+    "wifimode" : "client",
+    "hostName" : "PowerStrip01"
   },
   "redPlug": {
-    "redPlugState": "ON"
+    "redPlugState": "ON",
+    "Manuel": "OFF",
+    "Minuterie": {
+      "Status": "ON",
+      "Duree": "60"
+    },
+    "Cyclique": {
+      "Status": "OFF",
+      "hDebut": "",
+      "hFin": ""
+    },
+    "Hebdomadaire": {
+      "Status": "OFF",
+      "hDebut": "",
+      "hFin": "",
+      "Jours": {
+        "LU": "",
+        "MA": "",
+        "ME": "",
+        "JE": "",
+        "VE": "",
+        "SA": "",
+        "DI": ""
+      }
+    },
+    "": {}
   },
   "greenPlug": {
-    "greenPlugState": "ON"
+    "greenPlugState": "ON",
+    "Manuel": "OFF",
+    "Minuterie": {
+      "Status": "OFF",
+      "Duree": ""
+    },
+    "Cyclique": {
+      "Status": "ON",
+      "hDebut": "09:22",
+      "hFin": "18:22"
+    },
+    "Hebdomadaire": {
+      "Status": "OFF",
+      "hDebut": "",
+      "hFin": "",
+      "Jours": {
+        "LU": "",
+        "MA": "",
+        "ME": "",
+        "JE": "",
+        "VE": "",
+        "SA": "",
+        "DI": ""
+      }
+    }
   },
   "bluePlug": {
-    "bluePlugState": "ON"
+    "bluePlugState": "ON",
+    "Manuel": "OFF",
+    "Minuterie": {
+      "Status": "OFF",
+      "Duree": ""
+    },
+    "Cyclique": {
+      "Status": "OFF",
+      "hDebut": "",
+      "hFin": ""
+    },
+    "Hebdomadaire": {
+      "Status": "ON",
+      "hDebut": "08:30",
+      "hFin": "18:30",
+      "Jours": {
+        "LU": "ON",
+        "MA": "OFF",
+        "ME": "ON",
+        "JE": "OFF",
+        "VE": "ON",
+        "SA": "OFF",
+        "DI": "OFF"
+      }
+    }
   },
   "yellowPlug": {
-    "yellowPlugState": "ON"
+    "yellowPlugState": "ON",
+    "Manuel": "ON",
+    "Minuterie": {
+      "Status": "OFF",
+      "Duree": ""
+    },
+    "Cyclique": {
+      "Status": "OFF",
+      "hDebut": "",
+      "hFin": ""
+    },
+    "Hebdomadaire": {
+      "Status": "OFF",
+      "hDebut": "",
+      "hFin": "",
+      "Jours": {
+        "LU": "",
+        "MA": "",
+        "ME": "",
+        "JE": "",
+        "VE": "",
+        "SA": "",
+        "DI": ""
+      }
+    }
   }
 }
