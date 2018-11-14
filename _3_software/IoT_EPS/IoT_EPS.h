@@ -22,9 +22,8 @@
 #include "configParam.h"
 #include "serverFunction.h"
 #include "CPowerPlug.h"
+#include "debugSerialPort.h"
 
-#define DEBUGPORT Serial
-#define DEBUGSPEED 115200
 
 #define FLASHERTIME 500
 

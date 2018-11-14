@@ -38,6 +38,7 @@ Périodique/cyclique
 - duré on
 - durée off 
 - avec reprise de On après off indéfiniment jusqu'au repassage en commande manuelle.
+- avec champ heure de début (et 'Entrez une heure de début (facultatif)' par défaut)
 
 Hebdomadaire
 ==============
@@ -45,6 +46,14 @@ Hebdomadaire
 - heure de mise off
 - choix des jours de la semaine
 - un appui court sur BP met à OFF mais reste en mode calendaire pour le cycle suivant
+
+Evolutions possibles
+=====================
+- un mixte entre cyclique et hebo: clyclique mais seulement pendant un certaines 
+  période de la journée.
+- Sur le mode hebdo, prévoir la possibilité d'avoir plusieurs plage de fonctionnement par jours
+  et différentes chaque jour
+
 
 ==============
 Choix dev soft
@@ -105,6 +114,12 @@ qui prennent en charge la gestion du temps (classe Flasher dédiée au MCP)
 Deuxième mouture clréation de la class CPowerPlug avec utilisation de variable static
 
 _initDone et _mpc (mpc étant la ressource commune à toutes les instances de la classe)
+
+.. important::
+
+    J'ai choisi d'utiliser une broche dédiée pour la LED d'état des plugs.
+    On aurait pu utiliser la broche de commande du relais mais au cas où les 2
+    seraient inversées l'une par rapport à l'autre, cela apporte plus de liberté.
 
 ===============================
 Useful Documentation

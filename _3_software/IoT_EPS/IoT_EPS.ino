@@ -37,11 +37,15 @@ CPowerPlug plug0( ROUGE );
 
 bool errRTCinit = true;
 void setup(){
-    String d_prompt = "<VoLAB setup >";
+    #ifdef DEBUG
+    String dPrompt = F("<VoLAB setup >");
+    #else
+    String dPrompt = "";    
+    #endif
     DateTime now;
     DEBUGPORT.begin(DEBUGSPEED);
-    DEBUGPORT.println();
-    DEBUGPORT.println( d_prompt + F("Sketch start..."));
+    DSPL();
+    DSPL( dPrompt + F("Sketch start..."));
     
     cParam.begin();
     wifiCred.begin();
@@ -50,7 +54,7 @@ void setup(){
     errRTCinit = Wire.endTransmission();
     
     // mcp.begin();
-    CPowerPlug::init();
+    Cmcp::init();
     plug0.begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, OFF );
     
     //mcp.pinMode( PLUG0, OUTPUT );
@@ -58,70 +62,69 @@ void setup(){
     // mcp.pinMode( PLUG2, OUTPUT );
 
     if ( errRTCinit ) {
-        DEBUGPORT.println(d_prompt + F("ERR : Couldn't find RTC"));
+        DSPL(dPrompt + F("ERR : Couldn't find RTC"));
     } else {
         errRTCinit = false;
         now = rtc.now();
-        String message = d_prompt + F("DS3231 Start date : ");
+        String message = dPrompt + F("DS3231 Start date : ");
         // sprintf(buf, "<VoLAB> DS3231 Start date : %d/%d/%d %d:%d:%d", 
         message += (String)now.day()+"/"+(String)now.month()+"/";
         message += (String)now.year()+" ";
         message += (String)now.hour()+":"+ (String)now.minute()+":";
         message += (String)now.second();      
-        DEBUGPORT.println( message);
+        DSPL( message);
     } 
     if (cParam.ready){
-        DEBUGPORT.println( d_prompt + F("Wifi mode = ") + cParam.getWifiMode() );
+        DSPL( dPrompt + F("Wifi mode = ") + cParam.getWifiMode() );
     }
     
 
-    // DEBUGPORT.print( " \n" + d_prompt + F("Mode autoconnect :"));
-    // DEBUGPORT.println( WiFi.getAutoConnect()?"enabled":"disabled");
-    //DEBUGPORT.println( d_prompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
+    // DSP( " \n" + dPrompt + F("Mode autoconnect :"));
+    // DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
+    //DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
     WiFi.setAutoConnect(false);
-    DEBUGPORT.print("\n" + d_prompt + F("Mode autoconnect :"));
-    DEBUGPORT.println( WiFi.getAutoConnect()?"enabled":"disabled");
-    DEBUGPORT.println( d_prompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
+    DSP("\n" + dPrompt + F("Mode autoconnect :"));
+    DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
+    DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
 
     if ( wifiCred.ready ){
         if ( cParam.getWifiMode() == "client" ){
             WiFi.mode(WIFI_STA);
             WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
-            DEBUGPORT.println(  d_prompt + F("Try to join : ") + wifiCred.getSsid() );
+            DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
             while (WiFi.status() != WL_CONNECTED) {
                 delay(500);
-                DEBUGPORT.print(".");
+                DSP(".");
             }
-             DEBUGPORT.println();
+            DSPL();
+            DSPL(  dPrompt + F("Adresse configured IP : ") + apIP.toString() );
+            
         } else { //mode softAP
-        // DEBUGPORT.printf("SSID : %s, pass : %s", wifi_ssid_s.c_str(), wifipass_s.c_str());
-            DEBUGPORT.print("\n" + d_prompt + F("softAP : "));
+        // DSPf("SSID : %s, pass : %s", wifi_ssid_s.c_str(), wifipass_s.c_str());
+            DSP("\n" + dPrompt + F("softAP : "));
             WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0)); 
-            DEBUGPORT.println(WiFi.softAP(wifiCred.getSsid(),
+            DSPL(WiFi.softAP(wifiCred.getSsid(),
                 wifiCred.getPass() )?F("Ready"):F("Failed!"));
-              
+            DSPL(  dPrompt + F("Adresse Wifi.localIP : ") + WiFi.localIP().toString() );  
         }
-        DEBUGPORT.println(  d_prompt + F("Adresse Wifi.localIP : ") + WiFi.localIP().toString() );
-        // DEBUGPORT.println( WiFi.localIP() );
-        DEBUGPORT.println(  d_prompt + F("Adresse configured IP : ") + apIP.toString() );          
     }
     
     
     MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
     
     if (!SPIFFS.begin()){
-        DEBUGPORT.println(d_prompt + F("SPIFFS Mount failed"));
+        DSPL(dPrompt + F("SPIFFS Mount failed"));
     } else {
-        DEBUGPORT.println(d_prompt + F("SPIFFS Mount succesfull"));
+        DSPL(dPrompt + F("SPIFFS Mount succesfull"));
     }
   // reading file
 /////////////////////////////////////////////////////////////////////////////
 //  Debut test lecture fichier index.html                                  //
 /////////////////////////////////////////////////////////////////////////////
     if (SPIFFS.exists("/index.html")) {
-        DEBUGPORT.println( d_prompt + F("index file found."));
+        DSPL( dPrompt + F("html index file found."));
     } else {
-        DEBUGPORT.println( d_prompt + F("fichier index introuvable."));
+        DSPL( dPrompt + F("fichier html index introuvable."));
     }
 String str = "";
 Dir dir = SPIFFS.openDir("/");
