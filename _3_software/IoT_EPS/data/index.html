@@ -1,45 +1,147 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
+    <!-- Entête de la page -->
+        <meta charset="UTF-8" />
+        
+        <!--Import css-->
+        <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
+        
         <link rel="stylesheet" type="text/css" href="css/style.css" />
-        <title>Accueil IoT_EPS</title>
-    </head>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+        <link rel="icon" href="volab.ico" />
+
+        <title>Accueil IoT_EPS</title></head>
     
     <body>
-        <header>
-            <h1 id="index_h1">IoT_EPS</h1>
+        <header> <!-- Logo + Titre de la page -->
+            <div class="row">
+                <div class="col s3">
+                    <img class="header_logo" src="img/logo_projet_alpha.png" alt="logo IoT_EPS">
+                </div>
+                <div class="col s9">
+                    <h1 class="header_h1">Accueil IoT_EPS</h1>
+                </div>
+            </div>
+            
         </header>
-        
+
         <nav> <!-- bare de menu horizontale -->
-            <a href="help.html" target="_blank">Help</a>
-            <a href="time" target="_blank">Time</a>
+            <ul>
+                <li><a href="help.html">Help</a></li>
+                <li><a href=#!>Time</a></li>
+            </ul>
         </nav>
-        
-        <div class="redPlug">
-            <fieldset id="fs_red">
-                <legend><h2>Prise Rouge</h2></legend>
-            </fieldset>
-        </div>
 
-        <div class="greenPlug">
-            <fieldset id="fs_green">
-                <legend><h2>Prise Verte</h2></legend>
-            </fieldset>
-        </div>
+        <main> <!-- corp de la page -->
+            <div class="redPlug">
+                <fieldset id="fs_red">
+                    <legend><h2>Prise Rouge</h2></legend>
+                    <div class="row">
+                        <div class="col s2">
+                            <!-- Switch -->
+                            <div class="switch" id="redPlug_switch">
+                                <label>
+                                    Off
+                                    <input type="checkbox">
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+                              </div>
+                        </div>
+                        <div class="col s9"></div>
+                        <div class="col s1">
+                            <img src="img/icons8-settings-button-64.png"></img>
+                            <a href=#!>Configuration</a> 
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
 
-       <div class="bluePlug">
-            <fieldset id="fs_blue">
-                <legend><h2>Prise Bleu</h2></legend>
-            </fieldset>
-        </div>
+            <div class="greenPlug">
+                <fieldset id="fs_green">
+                    <legend><h2>Prise Verte</h2></legend>
+                    <div class="row">
+                        <div class="col s2">
+                            <!-- Switch -->
+                            <div class="switch" id="greenPlug_switch">
+                                <label>
+                                    Off
+                                    <input type="checkbox">
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+                              </div>
+                        </div>
+                        <div class="col s9"></div>
+                        <div class="col s1">
+                            <img src="img/icons8-settings-button-64.png"></img>
+                            <a href=#!>Configuration</a> 
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
 
-       <div class="yellowPlug">
-            <fieldset id="fs_yellow">
-                <legend><h2>Prise Jaune</h2></legend>
-            </fieldset>
-        </div>
+           <div class="bluePlug">
+                <fieldset id="fs_blue">
+                    <legend><h2>Prise Bleu</h2></legend>
+                    <div class="row">
+                        <div class="col s2">
+                            <!-- Switch -->
+                            <div class="switch" id="bluePlug_switch">
+                                <label>
+                                    Off
+                                    <input type="checkbox">
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+                              </div>
+                        </div>
+                        <div class="col s9"></div>
+                        <div class="col s1">
+                            <img src="img/icons8-settings-button-64.png"></img>
+                            <a href=#!>Configuration</a> 
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
 
+           <div class="yellowPlug">
+                <fieldset id="fs_yellow">
+                    <legend><h2>Prise Jaune</h2></legend>
+                    <div class="row">
+                        <div class="col s2">
+                            <!-- Switch -->
+                            <div class="switch" id="yellowPlug_switch">
+                                <label>
+                                    Off
+                                    <input type="checkbox">
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+                              </div>
+                        </div>
+                        <div class="col s9"></div>
+                        <div class="col s1">
+                            <img src="img/icons8-settings-button-64.png"></img>
+                            <a href=#!>Configuration</a> 
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </main>
+
+        <!--
+        <footer>
+            <p>Powered by VoLab</p>
+        </footer>
+        -->
+
+        <!--JavaScript at end of body for optimized loading-->
+        <script type="text/javascript" src="js/materialize.js"></script>
 
     </body>
 </html>

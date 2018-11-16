@@ -1,80 +1,106 @@
-/*
-*
-* Global
-*
-*/
+html{
+    height: 100%;
+}
 
 body{
     background-color: #aeb6bf;
-}
+    }
 
-h1{
+nav{
+    max-height: 30px;
+    list-style-type: none;
     text-align: center;
+    margin: 0;
+    padding: 0;
 }
 
-/*
-*
-* Index.html
-*
-*/
+footer{
+      position: absolute;
+      bottom: 0;
+      }
 
-#index_h1{
+header, nav, footer{padding: 0 1%;}
+
+nav li{
+        display: inline-block;
 }
 
+.header_logo{
+    width: 100%;
+    height: auto;
+    vertical-align: middle;
+    }
+
+.header_h1{
+    vertical-align: middle;
+    text-align:   center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 3em;
+    }
+
+fieldset{
+    box-shadow: 6px 6px 0;
+    border: 2px ridge black;
+    border-radius:0 10px 0 10px;
+    }
+
+.redPlug,.greenPlug,.bluePlug,.yellowPlug{
+    margin: 0 2% 0 2%;
+    }
+  
 /* RED */
 .redPlug{
-    margin: 0 2% 0 2%;
 }
 
-#fs_red{
+.redPlug fieldset{
     color: #b11721;
-    box-shadow: 6px 6px 0;
 }
 
 /* GREEN */
 .greenPlug{
-    margin: 0 2% 0 2%;
 }
 
-#fs_green{
+.greenPlug fieldset{
     color: #30880c;
-    box-shadow: 6px 6px 0;
 }
-
 
 /* Blue */
 .bluePlug{
-    margin: 0 2% 0 2%;
 }
 
-#fs_blue{
+.bluePlug fieldset{
     color: #0b40a9;
-    box-shadow: 6px 6px 0;
 }
 
     /* Yellow */
 .yellowPlug{
-    margin: 0 2% 0 2%;
 }
 
-#fs_yellow{
+.yellowPlug fieldset{
     color: #e4ff02;
-    box-shadow: 6px 6px 0;
 }
 
-/*
-*
-* help.html
-*
-*/
-
-#help_h1{
+@media only screen and (max-width: 414px) {
+  .header_h1 {
+    font-size: 2.3rem;
+    margin: 0;
+  }
 }
 
-/*
-*
-* Responcive (pour les mobile et tablette)
-*
-*/
-/* @media screen and (max-width: 1080px){ */
-/* } */
+@media only screen and (max-width: 375px) {
+  .header_h1 {
+    font-size: 2.2rem;
+    margin: 0;
+  }
+}
+
+
+@media only screen and (max-width: 360px) {
+  .header_h1 {
+    font-size: 2.1rem;
+    margin: 0;
+  }
+}
+

@@ -1,0 +1,18 @@
+{
+  "general": {
+    "wifimode": "client",
+    "hostName": "PowerStrip01"
+  },
+  "redPlug": {
+    "redPlugState": "ON"
+  },
+  "greenPlug": {
+    "greenPlugState": "ON"
+  },
+  "bluePlug": {
+    "bluePlugState": "ON"
+  },
+  "yellowPlug": {
+    "yellowPlugState": "ON"
+  }
+}
