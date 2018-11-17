@@ -26,6 +26,6 @@ void handleFileUpload();
 void handleFileDelete();
 void handleFileCreate();
 void handleFileList();
-
-
+void handlePlugConfig();
+void handleLedOnOff();
 #endif

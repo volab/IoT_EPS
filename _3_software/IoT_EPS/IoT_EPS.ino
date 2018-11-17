@@ -140,6 +140,8 @@ Serial.print(str);
 //  Fin                                                                       //
 /////////////////////////////////////////////////////////////////////////////
     server.on("/list", HTTP_GET, handleFileList);
+    server.on("/PlugConfig", HTTP_GET, handlePlugConfig );
+    server.on("/ledonoff", HTTP_POST, handleLedOnOff );
     server.on("/edit", HTTP_GET, [](){
         if(!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
     });

@@ -82,7 +82,7 @@ Les requetes html
 
 ipaddr/config?plug=redPlug
 
-/redPlugConfig?mode=manuel
+/PlugConfig?plug=red&mode=manuel
 /modeManuel?plug=redPlug
 
 ====================

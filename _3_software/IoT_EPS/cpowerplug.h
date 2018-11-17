@@ -9,7 +9,8 @@
 enum {
     MANUEL,
     TIMER,
-    CYCLE
+    CYCLE,
+    HEBDO
 };
 
 

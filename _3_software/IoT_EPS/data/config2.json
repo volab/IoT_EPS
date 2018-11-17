@@ -1,18 +1,130 @@
 {
-  "general": {
-    "wifimode": "client",
-    "hostName": "PowerStrip01"
+  "general" : {
+    "wifimode" : "client",
+    "hostName" : "PowerStrip01"
   },
   "redPlug": {
-    "redPlugState": "ON"
+    "State": "ON",
+    "Manuel": {
+        "Status": "OFF",
+        "On_Off": ""
+    },
+    "Minuterie": {
+      "Status": "ON",
+      "Duree": "60"
+    },
+    "Cyclique": {
+      "Status": "OFF",
+      "hDebut": "",
+      "dureeOn": "",
+      "dureeOff": ""
+    },
+    "Hebdomadaire": {
+      "Status": "OFF",
+      "hDebut": "",
+      "hFin": "",
+      "Jours": {
+        "LU": "",
+        "MA": "",
+        "ME": "",
+        "JE": "",
+        "VE": "",
+        "SA": "",
+        "DI": ""
+      }
+    }
   },
   "greenPlug": {
-    "greenPlugState": "ON"
+    "State": "ON",
+    "Manuel": {
+        "Status": "OFF",
+        "On_Off": ""
+    },
+    "Minuterie": {
+      "Status": "OFF",
+      "Duree": ""
+    },
+    "Cyclique": {
+      "Status": "ON",
+      "hDebut": "",
+      "dureeOn": "",
+      "dureeOff": ""
+      },
+    "Hebdomadaire": {
+      "Status": "OFF",
+      "hDebut": "",
+      "hFin": "",
+      "Jours": {
+        "LU": "",
+        "MA": "",
+        "ME": "",
+        "JE": "",
+        "VE": "",
+        "SA": "",
+        "DI": ""
+      }
+    }
   },
   "bluePlug": {
-    "bluePlugState": "ON"
+    "State": "ON",
+    "Manuel": {
+        "Status": "OFF",
+        "On_Off": ""
+        },
+    "Minuterie": {
+      "Status": "OFF",
+      "Duree": ""
+    },
+    "Cyclique": {
+      "Status": "OFF",
+      "hDebut": "",
+      "dureeOn": "",
+      "dureeOff": ""
+    },
+    "Hebdomadaire": {
+      "Status": "ON",
+      "hDebut": "08:30",
+      "hFin": "18:30",
+      "Jours": {
+        "LU": "ON",
+        "MA": "OFF",
+        "ME": "ON",
+        "JE": "OFF",
+        "VE": "ON",
+        "SA": "OFF",
+        "DI": "OFF"
+      }
+    }
   },
   "yellowPlug": {
-    "yellowPlugState": "ON"
+    "State": "ON",
+    "Manuel": {
+        "Status": "OFF",
+        "On_Off": "ON"
+    },
+    "Minuterie": {
+      "Status": "OFF",
+      "Duree": ""
+    },
+    "Cyclique": {
+      "Status": "OFF",
+      "hDebut": "",
+      "dureeOn": "",
+      "dureeOff": ""
+    },
+    "Hebdomadaire": {
+      "Status": "OFF",
+      "hDebut": "",
+      "hFin": "",
+      "Jours": {
+        "LU": "",
+        "MA": "",
+        "ME": "",
+        "JE": "",
+        "VE": "",
+        "SA": "",
+        "DI": ""
+      }
+    }
   }
 }
