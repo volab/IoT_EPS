@@ -46,6 +46,14 @@ fieldset{
     border-radius:0 10px 0 10px;
     }
 
+.plugStatus{
+    color: black;
+    }
+
+.plugStatus h5{
+    text-align: center;
+}
+
 .redPlug,.greenPlug,.bluePlug,.yellowPlug{
     margin: 0 2% 0 2%;
     }

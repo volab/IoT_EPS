@@ -4,8 +4,11 @@
     "hostName" : "PowerStrip01"
   },
   "redPlug": {
-    "redPlugState": "ON",
-    "Manuel": "OFF",
+    "State": "ON",
+    "Manuel": {
+        "Status": "OFF",
+        "On_Off": ""
+    },
     "Minuterie": {
       "Status": "ON",
       "Duree": "60"
@@ -13,7 +16,8 @@
     "Cyclique": {
       "Status": "OFF",
       "hDebut": "",
-      "hFin": ""
+      "dureeOn": "",
+      "dureeOff": ""
     },
     "Hebdomadaire": {
       "Status": "OFF",
@@ -32,17 +36,21 @@
     "": {}
   },
   "greenPlug": {
-    "greenPlugState": "ON",
-    "Manuel": "OFF",
+    "State": "ON",
+    "Manuel": {
+        "Status": "OFF",
+        "On_Off": ""
+    },
     "Minuterie": {
       "Status": "OFF",
       "Duree": ""
     },
     "Cyclique": {
       "Status": "ON",
-      "hDebut": "09:22",
-      "hFin": "18:22"
-    },
+      "hDebut": "",
+      "dureeOn": "",
+      "dureeOff": ""
+      },
     "Hebdomadaire": {
       "Status": "OFF",
       "hDebut": "",
@@ -59,8 +67,11 @@
     }
   },
   "bluePlug": {
-    "bluePlugState": "ON",
-    "Manuel": "OFF",
+    "State": "ON",
+    "Manuel": {
+        "Status": "OFF",
+        "On_Off": ""
+        },
     "Minuterie": {
       "Status": "OFF",
       "Duree": ""
@@ -68,7 +79,8 @@
     "Cyclique": {
       "Status": "OFF",
       "hDebut": "",
-      "hFin": ""
+      "dureeOn": "",
+      "dureeOff": ""
     },
     "Hebdomadaire": {
       "Status": "ON",
@@ -86,8 +98,11 @@
     }
   },
   "yellowPlug": {
-    "yellowPlugState": "ON",
-    "Manuel": "ON",
+    "State": "ON",
+    "Manuel": {
+        "Status": "OFF",
+        "On_Off": "ON"
+    },
     "Minuterie": {
       "Status": "OFF",
       "Duree": ""
@@ -95,7 +110,8 @@
     "Cyclique": {
       "Status": "OFF",
       "hDebut": "",
-      "hFin": ""
+      "dureeOn": "",
+      "dureeOff": ""
     },
     "Hebdomadaire": {
       "Status": "OFF",
