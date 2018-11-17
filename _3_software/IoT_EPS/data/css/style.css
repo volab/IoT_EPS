@@ -46,11 +46,11 @@ fieldset{
     border-radius:0 10px 0 10px;
     }
 
-.plugStatus{
+.plugSummary{
     color: black;
     }
 
-.plugStatus h5{
+.plugSummary h5{
     text-align: center;
 }
 

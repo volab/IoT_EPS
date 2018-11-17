@@ -32,8 +32,7 @@
         "SA": "",
         "DI": ""
       }
-    },
-    "": {}
+    }
   },
   "greenPlug": {
     "State": "ON",
@@ -100,7 +99,7 @@
   "yellowPlug": {
     "State": "ON",
     "Manuel": {
-        "Status": "OFF",
+        "Status": "ON",
         "On_Off": "ON"
     },
     "Minuterie": {
