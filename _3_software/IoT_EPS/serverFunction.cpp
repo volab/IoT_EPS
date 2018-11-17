@@ -197,15 +197,17 @@ void displayTime(){
 }
 
 void handlePlugConfig(){
-    String dPrompt = F("<Volab Plug config : >");
+    DEFDPROMPT(Plug config)
+    String dPrompt = "";
     DSPL( dPrompt + " nbr de parametres : "+(String)server.args() );
     DSPL( dPrompt + " plug = " + server.arg( "plug"));
     DSPL( dPrompt + " mode = " + server.arg( "mode"));
     server.send(200, "text/plain", "OK");
 }
 
-void handleLedOnOff(){
-    String dPrompt = F("<Volab led on/off : >");
+void handlePlugOnOff(){
+    DEFDPROMPT(Plug on/off)
+        String dPrompt = "";
     DSPL( dPrompt );
     server.send(200, "text/plain", "OK");    
 }

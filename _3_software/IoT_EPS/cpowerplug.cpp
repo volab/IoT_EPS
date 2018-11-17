@@ -12,6 +12,8 @@
 #include "debugSerialPort.h"
 
 
+
+
 void CPowerPlug::begin( int pin , int onOffLedPin, int mode ){
     if (!_initDone) init();
     _pin = pin;
@@ -51,3 +53,7 @@ void CPowerPlug::updateOutputs(){
     _mcp.digitalWrite( _pin, _state );
     _mcp.digitalWrite( _onOffLedPin, _state );    
 }
+
+
+
+        
