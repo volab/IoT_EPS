@@ -97,7 +97,8 @@ void setup(){
                 DSP(".");
             }
             DSPL();
-            DSPL(  dPrompt + F("Adresse configured IP : ") + apIP.toString() );
+            DSPL(  dPrompt + F("Adresse Wifi.localIP : ") + WiFi.localIP().toString() );
+            
             
         } else { //mode softAP
         // DSPf("SSID : %s, pass : %s", wifi_ssid_s.c_str(), wifipass_s.c_str());
@@ -105,7 +106,7 @@ void setup(){
             WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0)); 
             DSPL(WiFi.softAP(wifiCred.getSsid(),
                 wifiCred.getPass() )?F("Ready"):F("Failed!"));
-            DSPL(  dPrompt + F("Adresse Wifi.localIP : ") + WiFi.localIP().toString() );  
+            DSPL(  dPrompt + F("Adresse configured IP : ") + apIP.toString() );  
         }
     }
     

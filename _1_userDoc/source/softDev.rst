@@ -19,6 +19,8 @@ Avancement
 #. reception d'une action via un bouton : 
 #. lecture du fichier de configuration : ok
 #. intégration MCP23017 : ok
+#. lecture du fichier de configuration façon Pierre (config2.json) :
+#. gestion bouton poussoir mécanique : 
 
 ====================================
 Modes de fonctionnement des prises
@@ -31,6 +33,7 @@ Manuel
 Timer / minuteur / mode cuit oeuf
 ==================================
 - 1 seul paramètre la durée ON à partir de maintenant
+- 1 appui court lance ou relance la minuterie
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Périodique/cyclique
@@ -39,6 +42,8 @@ Périodique/cyclique
 - durée off 
 - avec reprise de On après off indéfiniment jusqu'au repassage en commande manuelle.
 - avec champ heure de début (et 'Entrez une heure de début (facultatif)' par défaut)
+- un appui court sur BP met à OFF mais reste en mode calendaire pour le cycle suivant
+- 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Hebdomadaire
 ==============
@@ -46,6 +51,7 @@ Hebdomadaire
 - heure de mise off
 - choix des jours de la semaine
 - un appui court sur BP met à OFF mais reste en mode calendaire pour le cycle suivant
+- 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Evolutions possibles
 =====================
@@ -70,6 +76,14 @@ WEMOS D1 MIN ARDUINO configurattion:
 Développement des page Web
 ==========================
 HTML5 et css
+
+Les requetes html
+=====================
+
+ipaddr/config?plug=redPlug
+
+/redPlugConfig?mode=manuel
+/modeManuel?plug=redPlug
 
 ====================
 Serveur html ESP8266
@@ -129,13 +143,20 @@ Exemples ESP html serveurs:
 
 C:\MountWD\Donnees\OneDrive\Donnees\008_iao_wrk\Arduino\Croquis\ESP01\HelloServer
 
-Documentation `arduino-esp8266 <https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/readme.html#class-description>`_
+Documentation `arduino-esp8266`_
 
-Gros gros tuto sur  `Web serveur <https://github.com/projetsdiy/ESP8266-Webserver-Tutorials>`_
+.. _`arduino-esp8266` : https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/readme.html#class-description
+
+Gros gros tuto sur  `Web serveur`_ 
+
+.. _`Web serveur` : https://github.com/projetsdiy/ESP8266-Webserver-Tutorials
 
 ========================
 Librairies utilisées
 ========================
+last update : 17/11/2018
+
+7 libs:
 
 - Utilisation de la bibliothèque ESP8266WiFi version 1.0
 - Utilisation de la bibliothèque ESP8266WebServer version 1.0 
@@ -144,3 +165,26 @@ Librairies utilisées
 - Utilisation de la bibliothèque RTClib version 1.2.0
 - Utilisation de la bibliothèque ESP8266mDNS
 - Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3
+
+===============================
+Eccueils et autres difficultés
+===============================
+
+Limite des longueurs de nom de fichier SPIFFS
+===============================================
+
+Les noms de fichiers dans SPIFFS sont limités par défaut à 32 caractères chemin compris.
+
+C'est court! voir `github issue #34 mkspiffs`_
+
+
+
+.. _`github issue #34 mkspiffs` : https://github.com/igrr/mkspiffs/issues/34
+
+
+=============
+Webographie
+=============
+
+.. target-notes::
+
