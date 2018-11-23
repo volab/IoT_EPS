@@ -178,7 +178,7 @@ void handleNotFound() {
 
 }
 */
-
+ 
 /** 
 @fn void displayTime()
 To display the current time from DS3231
@@ -216,8 +216,10 @@ void handlePlugConfig(){
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
     DSPL( dPrompt + " nbr de parametres : "+(String)server.args() );
-    String LEDVal = server.arg("LED");
-    DSPL( dPrompt + " LED val = " + LEDVal);
+    String plugColor = server.arg("COLOR");
+    DSPL( dPrompt + "Plug color = " + plugColor );
+    String plugVal = server.arg("PLUG");
+    DSPL( dPrompt + " Plug val = " + plugVal);
     String duree = server.arg("DUREE");
     DSPL( dPrompt + " Duree val = " + duree);
     server.send(200, "text/plain", "OK");    
