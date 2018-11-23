@@ -9,12 +9,14 @@
 @return a booleen true on success  
 */
 bool ConfigParam::readFromJson(){
-    DEBUGPORT.println( d_prompt +F(" mounting FS..."));
+    DEFDPROMPT("reading config param.")
+    // String dPrompt = "toto";
+    DSPL( dPrompt +F(" mounting FS..."));
     if (SPIFFS.begin()) {
-        DEBUGPORT.println(d_prompt + F(" file system mounted "));
+        DEBUGPORT.println(dPrompt + F(" file system mounted "));
         if (SPIFFS.exists("/config.json")) {
             //file exists, reading and loading
-            DEBUGPORT.println(d_prompt + F(" reading config file"));
+            DEBUGPORT.println(dPrompt + F(" reading config file"));
             File configFile = SPIFFS.open("/config.json", "r");
             if (configFile) {
                 DEBUGPORT.println( F("\tconfig file opened ") );
@@ -34,19 +36,19 @@ bool ConfigParam::readFromJson(){
                     _bluePlugState = json["bluePlugState"].as<String>();
                     _host = json["hostName"].as<String>();
                 } else {
-                    DEBUGPORT.println(d_prompt + F(" failed to load json config"));
+                    DEBUGPORT.println(dPrompt + F(" failed to load json config"));
                     return false;
                 }
                 configFile.close();
                 return true;
             }
         } else {
-            DEBUGPORT.println(d_prompt + F(" failed to open /config.json"));
+            DEBUGPORT.println(dPrompt + F(" failed to open /config.json"));
             return false;
         }
 
     } else {
-        DEBUGPORT.println( d_prompt + F(" failed to mount FS"));
+        DEBUGPORT.println( dPrompt + F(" failed to mount FS"));
         return false;
     }
  

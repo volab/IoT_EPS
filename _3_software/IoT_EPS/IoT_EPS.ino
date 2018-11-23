@@ -1,4 +1,3 @@
-
 /**
 * @file IoT_EPS.ino
 @mainpage
@@ -18,10 +17,11 @@ Utilisation de la bibliothèque Wire version 1.0
 Utilisation de la bibliothèque RTClib version 1.2.0
 */
 
+
 #include "IoT_EPS.h"
 
 
-ConfigParam cParam;
+ConfigParam cParam; /**< @brief to hold the configuration parameters*/
 Credential wifiCred;
 
 RTC_DS3231 rtc;
@@ -37,15 +37,18 @@ CPowerPlug plug0( ROUGE );
 
 bool errRTCinit = true;
 void setup(){
-    #ifdef DEBUG
-    String dPrompt = F("<VoLAB setup >");
-    #else
-    String dPrompt = "";    
-    #endif
+    // #ifdef DEBUG
+    // String dPrompt = F("<VoLAB setup >");
+    // #else
+    // String dPrompt = "";    
+    // #endif
+    DEFDPROMPT("setUp") // define dPrompt String
     DateTime now;
     DEBUGPORT.begin(DEBUGSPEED);
     DSPL();
     DSPL( dPrompt + F("Sketch start..."));
+
+    DSPL( dPrompt + " Build : " + __DATE__ + " @ " + __TIME__);
     
     cParam.begin();
     wifiCred.begin();

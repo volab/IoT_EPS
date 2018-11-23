@@ -16,7 +16,14 @@ Informations générales IoT_EPS
 Description
 ============
 
-IoT Electronic Power Strip : Une multiprise connectée sur laquelle chaque plot est configurable
+IoT Electronic Power Strip : Une multiprise connectée sur laquelle chaque plot est configurable.
+
+La connection se fait selon 2 modes possibles
+
+- le bloc de prise est un point d'accès Wifi (mode AP)
+- le bloc de prise se connecte à un réseau Wifi existant (mode Client)
+
+Pas de mode Cloud pour le moment.
 
 ####
 

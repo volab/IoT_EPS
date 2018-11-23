@@ -2,10 +2,9 @@
 * @file cpowerplug.cpp
 * @author J.Soranzo
 * @date 10/11/2018
-* @copyright see project readme
-* @project Electrical Strip Power 
+* @copyright see project readme 
 * @version 1.0
-* @brief This class is the plug class
+* @brief This class is the plug class for Electrical Power Strip project
 */
 
 #include "cpowerplug.h"
@@ -27,6 +26,8 @@ void CPowerPlug::begin( int pin , int onOffLedPin, int mode ){
 }
 
 void CPowerPlug::on(){
+    // String dPrompt = F("<VOLAB CPowerPlug >");
+    DEFDPROMPT( "CPOwerPlug")
     if (_pin == 0){
         DSPL( dPrompt + F(" plug not started (call .begin().") );
     }
@@ -35,11 +36,19 @@ void CPowerPlug::on(){
 }
 
 void CPowerPlug::off(){
+    DEFDPROMPT( "CPOwerPlug")
+    if (_pin == 0){
+        DSPL( dPrompt + F(" plug not started (call .begin().") );
+    }
     _state = OFF ;
     updateOutputs();
 }
 
 void CPowerPlug::toggle(){
+    DEFDPROMPT( "CPOwerPlug")
+    if (_pin == 0){
+        DSPL( dPrompt + F(" plug not started (call .begin().") );
+    }
     _state = !_state ;
     updateOutputs();
 }

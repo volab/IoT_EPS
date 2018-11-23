@@ -22,6 +22,14 @@ Avancement
 #. lecture du fichier de configuration façon Pierre (config2.json) :
 #. gestion bouton poussoir mécanique : 
 
+
+====================================
+Penser à:
+====================================
+
+#. terminer l'implémentation des méthodes de CPowerPlug ( isItTimeToSwitch )
+#. regarder javascript http request pour faire du DELETE
+
 ====================================
 Modes de fonctionnement des prises
 ====================================
@@ -53,12 +61,18 @@ Hebdomadaire
 - un appui court sur BP met à OFF mais reste en mode calendaire pour le cycle suivant
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
+Clone
+========
+Clone le fonctionnement d'une des 3 autres prises
+
 Evolutions possibles
 =====================
 - un mixte entre cyclique et hebo: clyclique mais seulement pendant un certaines 
   période de la journée.
 - Sur le mode hebdo, prévoir la possibilité d'avoir plusieurs plage de fonctionnement par jours
   et différentes chaque jour
+- Mode compte à rebour : le système est en mode manuel ON et on souhait qu'il s'éteigne
+  tout seul dans 2 heures
 
 
 ==============
@@ -150,6 +164,10 @@ Documentation `arduino-esp8266`_
 Gros gros tuto sur  `Web serveur`_ 
 
 .. _`Web serveur` : https://github.com/projetsdiy/ESP8266-Webserver-Tutorials
+
+Demonstrate using an http server and an HTML form to `control an LED`_. The http server runs on the ESP8266. 
+
+.. _`control an LED` : https://gist.github.com/bbx10/5a2885a700f30af75fc5
 
 ========================
 Librairies utilisées

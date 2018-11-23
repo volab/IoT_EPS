@@ -23,19 +23,12 @@
 #define DSPLF(X) 
 #endif
 
-#define DEFDPROMPT(X) \
-    #ifdef DEBUG \
-    Serial.println("X"); \
-    Serial.println(); \
-    #endif
+#ifdef DEBUG
+#define DEFDPROMPT(X) String dPrompt = F("<Volab "); \
+    dPrompt += X; dPrompt += F(" : >");
+#else
+#define DEFDPROMPT(X) String dPrompt = "";
+#endif    
 
-/*
-#define DEFDPROMPT(X) \
-    #ifdef DEBUG \
-    String dPrompt = F("<Volab X : >"); \
-    #else \
-    String dPrompt = ""; \
-    #endif  
-*/
 #endif
 

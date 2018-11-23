@@ -3,7 +3,7 @@
 //#pragma once
 #ifndef CONFIGPARAM_H
 #define CONFIGPARAM_H
-
+#include "debugSerialPort.h"
 
 
 class ConfigParam{
@@ -22,7 +22,8 @@ class ConfigParam{
         String _bluePlugState;
         String _host= "PowerStrip";
         bool readFromJson();
-        String d_prompt = "<VoLAB reading config param.>"; //stand for debug prompt
+        // String d_prompt = "<VoLAB reading config param.>"; //stand for debug prompt
+        
     
 };
 

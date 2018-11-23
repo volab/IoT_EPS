@@ -71,6 +71,8 @@ bool handleFileRead(String path){
   }
   return false;
 }
+
+
 File fsUploadFile; // cette variable doit être globale
 //la fonction l'utilise plusieurs fois
 //eventuellement pourrait être static
@@ -177,6 +179,12 @@ void handleNotFound() {
 }
 */
 
+/** 
+@fn void displayTime()
+To display the current time from DS3231
+
+HTML text is in the c code as String page var
+*/
 void displayTime(){
     String page;
     DateTime now;
@@ -197,8 +205,8 @@ void displayTime(){
 }
 
 void handlePlugConfig(){
-    DEFDPROMPT(Plug config)
-    String dPrompt = "";
+    
+    DEFDPROMPT("Plug config")
     DSPL( dPrompt + " nbr de parametres : "+(String)server.args() );
     DSPL( dPrompt + " plug = " + server.arg( "plug"));
     DSPL( dPrompt + " mode = " + server.arg( "mode"));
@@ -206,8 +214,11 @@ void handlePlugConfig(){
 }
 
 void handlePlugOnOff(){
-    DEFDPROMPT(Plug on/off)
-        String dPrompt = "";
-    DSPL( dPrompt );
+    DEFDPROMPT("Plug on/off")
+    DSPL( dPrompt + " nbr de parametres : "+(String)server.args() );
+    String LEDVal = server.arg("LED");
+    DSPL( dPrompt + " LED val = " + LEDVal);
+    String duree = server.arg("DUREE");
+    DSPL( dPrompt + " Duree val = " + duree);
     server.send(200, "text/plain", "OK");    
 }
