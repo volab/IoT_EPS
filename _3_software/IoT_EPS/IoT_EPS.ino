@@ -33,7 +33,8 @@ IPAddress apIP(192, 168, 95, 42);
 // Adafruit_MCP23017 mcp;
 
 // CPowerPlug plug0{ RED };
-CPowerPlug plug0( ROUGE );
+// CPowerPlug plug0( ROUGE );
+CPowerPlug plugs[4];
 
 bool errRTCinit = true;
 void setup(){
@@ -58,7 +59,8 @@ void setup(){
     
     // mcp.begin();
     Cmcp::init();
-    plug0.begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, OFF );
+    plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, OFF );
+    plugs[0].setColor( ROUGE );
     
     //mcp.pinMode( PLUG0, OUTPUT );
     // mcp.pinMode( PLUG1, OUTPUT );

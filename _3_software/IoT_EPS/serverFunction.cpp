@@ -178,6 +178,8 @@ void handleNotFound() {
 
 }
 */
+
+//==================================================================================================
  
 /** 
 @fn void displayTime()
@@ -213,14 +215,21 @@ void handlePlugConfig(){
     server.send(200, "text/plain", "OK");
 }
 
+extern CPowerPlug plugs[4];
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
     DSPL( dPrompt + " nbr de parametres : "+(String)server.args() );
     String plugColor = server.arg("COLOR");
-    DSPL( dPrompt + "Plug color = " + plugColor );
+    DSPL( dPrompt + " Plug color = " + plugColor );
     String plugVal = server.arg("PLUG");
     DSPL( dPrompt + " Plug val = " + plugVal);
     String duree = server.arg("DUREE");
     DSPL( dPrompt + " Duree val = " + duree);
+    String mode = server.arg("MODE");
+    DSPL( dPrompt + " Mode = " + mode);
+    
+    if (plugColor == "red"){
+        if ( plugVal == "1") plugs[0].on(); else plugs[0].off();
+    }
     server.send(200, "text/plain", "OK");    
 }

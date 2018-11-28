@@ -44,7 +44,7 @@ class CPowerPlug : public Cmcp {
         CPowerPlug( plugColor_t couleur ){ _couleur = couleur;}
         void begin( int pin , int onOffLedPin, int mode = MANUEL );
 
-        
+        void setColor( plugColor_t color ){ _couleur = color; }
         bool getstate(){ return _state; }
         plugColor_t getColor(){ return _couleur; }
         
