@@ -10,8 +10,10 @@ var v_diffSelector = document.getElementById("rDivDiffSelector");
 var v_divDiffAt = document.getElementById("rDivDiffAt");
 var v_divDiffIn = document.getElementById("rDivDiffIn");
 
-var v_rMA = document.getElementById("rMA");
+// var v_rMA = document.getElementById("rMA");
 var v_redManuel = document.getElementById("rManuel");
+var v_rRdOn = document.getElementById("rRdOn");
+var v_rRdOff = document.getElementById("rRdOff");
 var v_divDiffSelector = document.getElementsByClassName ("redPlug divDiffSelector");
 var v_rRdDiffAt = document.getElementById("rRdDiffAt");
 var v_rRdDiffIn = document.getElementById("rRdDiffIn");
@@ -36,28 +38,20 @@ f_displayNoneAll();
 v_redManuel.onclick = function (){
     if (v_redManuel.checked) {
          document.getElementsByClassName("redPlug div_Manuel")[0].style.display="block";
-         //document.getElementById("div_rManuel").style.display="block";
-        //document.querySelector("#div_rManuel .divManuel").style.display="block";
-        if (v_rMA.checked) {
-            v_divDiffSelector[0].style.display="block";
-        } else {
-            v_divDiffSelector[0].style.display="none";
-        }
-        
     } else {
         document.getElementsByClassName("redPlug div_Manuel")[0].style.display="none";
-        //document.getElementById("div_rManuel").style.display="none";
 }}
 
-v_rMA.onclick = function(){ 
-    if (!v_rMA.checked){ 
-        document.getElementById("rDivDiffSelector").style.display = "none";
-        v_divDiffIn.style.display = "none";
-        v_divDiffAt.style.display = "none";
-        document.getElementById("formMA").submit();
-     } else { 
-         document.getElementById("rDivDiffSelector").style.display = "block"; 
-        }
+v_rRdOn.onclick = function(){
+    document.getElementById("rDivDiffSelector").style.display = "block"; 
+    console.log("marche");
+    }
+
+v_rRdOff.onclick = function(){
+    document.getElementById("rDivDiffSelector").style.display = "none";
+    v_divDiffIn.style.display = "none";
+    v_divDiffAt.style.display = "none";
+    console.log("Arrêt");
     }
 
 v_rRdDiffAt.onclick = function(){

@@ -50,31 +50,36 @@
                                 <ul>
                                     <li><input type="radio" name="rMode" 
                                         class="redPlug radioManuel" 
-                                        id="rManuel"/>
+                                        id="rManuel"
+                                        value="Manuel"/>
                                         <label for="rManuel">
                                             Manuel
                                         </label></br></li>
                                     <li><input type="radio" name="rMode" 
                                         class="redPlug radioMinuterie" 
-                                        id="rMinuterie"/>
+                                        id="rMinuterie"
+                                        value="Minuterie"/>
                                         <label for="rMinuterie">
                                             Minuterie
                                         </label</br></li>
                                     <li><input type="radio" name="rMode" 
                                         class="redPlug radioCyclique"
-                                        id="rCyclique"/>
+                                        id="rCyclique"
+                                        value="Cyclique"/>
                                         <label for="rCyclique">
                                             Cyclique
                                         </label></br></li>
                                     <li><input type="radio" name="rMode"
                                         class="redPlug radioHebdo" 
-                                        id="rHebdo"/>
+                                        id="rHebdo"
+                                        value="Hebdo"/>
                                         <label for="rHebdo">
                                             Hedbomadaire
                                         </label></br></li>
                                     <li><input type="radio" name="rMode"
                                         class="redPlug radioClone" 
-                                        id="rClone"/>
+                                        id="rClone"
+                                        value="Clone"/>
                                         <label for="rClone">
                                             Clone
                                         </label></br></li>
@@ -87,62 +92,68 @@
 
                                 <!-- Red Manuel -->
                                 <div class="redPlug divSummary div_Manuel">
-                                        <h5>Mode Manuel</h5>
-                                    <div class="row">
-                                        <div class="redPlug switch col s4" id="rManSwitch">
-                                            <form id="formMA" method="get" action="">
+                                    <h5>Mode Manuel</h5>
+                                    <form id="formMA" method="post" action="plugonoff">
+                                        <input type="hidden" name="COLOR" value="ROUGE">
+                                        <div class="row">
+                                            <div class="redPlug switch col s4" id="rManSwitch">
                                                 <p>Marche arrêt immediat :</p>
-                                                <label>
-                                                    Off
-                                                    <input type="checkbox" name="rChkMA" id="rMA">
-                                                    <span class="lever"></span>
-                                                    On
-                                                </label>
-                                            </form>
-                                        </div>
+                                                <ul>
+                                                    <li><input type="radio" name="rdMA"
+                                                        class="redPlug rdMA"
+                                                        id="rRdOn"
+                                                        value="on"/>
+                                                        <label for="rRdOn">
+                                                            Marche
+                                                        </label></br></li>
+
+                                                    <li><input type="radio" name="rdMA"
+                                                        class="redPlug rdMA"
+                                                        id="rRdOff"
+                                                        value="off"/>
+                                                        <label for="rRdOff">
+                                                           Arrêt 
+                                                        </label></br></li>
+                                                </ul>
+                                            </div>
 
                                             <!-- Red divDiffSelector -->
                                             <div class="redPlug divDiffSelector col s4" id="rDivDiffSelector">
-                                                <form method="POST" action=""> 
-                                                    <p>Sélécion du mode d'arrêt différer : </p>
-                                                    <ul>    
-                                                        <li><input type="radio" name="rDiff" 
-                                                            class="redPlug rDiffSelector"
-                                                            id="rRdDiffAt"/>
-                                                            <label for="rRdDiffAt">
-                                                                    Heure d'arrêt
-                                                            </label</br></li>
+                                                <p>Sélécion du mode d'arrêt différer : </p>
+                                                <ul>    
+                                                    <li><input type="radio" name="rDiff" 
+                                                        class="redPlug rDiffSelector"
+                                                        id="rRdDiffAt"
+                                                        value="diffAt"/>
+                                                        <label for="rRdDiffAt">
+                                                                Heure d'arrêt
+                                                        </label</br></li>
 
-                                                        <li><input type="radio" name="rDiff" 
-                                                            class="redPlug rDiffSelector"
-                                                            id="rRdDiffIn"/>
-                                                            <label for="rRdDiffIn">
-                                                                    Durée avant arrêt
-                                                            </label</br></li>
-                                                    </ul>
-                                                </form>
+                                                    <li><input type="radio" name="rDiff" 
+                                                        class="redPlug rDiffSelector"
+                                                        id="rRdDiffIn"
+                                                        value="diffIn"/>
+                                                        <label for="rRdDiffIn">
+                                                                Durée avant arrêt
+                                                        </label</br></li>
+                                                </ul>
                                             </div>
 
                                             <!-- Red diffAt -->
                                             <div class="redPlug diffAt col s3" id="rDivDiffAt">
-                                                <form method="GET" action="">
                                                     <p>Arréter la prise à (Heure d'arrêt):</p>
                                                     <input type="time" name="rTxtDiffAt"/>
-                                                    <input type="submit"/>
-                                                    <input type="reset"/>
-                                                </form>
                                             </div>
 
                                             <!-- Red diffIn -->
                                             <div class="redPlug diffIn col s3" id="rDivDiffIn">
-                                                <form method="GET" action="">
                                                     <p>Arréter la prise dans (Durée en minute):</p>
                                                     <input type="time" name="rTxtDiffIn"/>
-                                                    <input type="submit"/>
-                                                    <input type="reset"/>
-                                                </form> 
                                             </div>
-                                    </div>
+                                        </div>
+                                        <input type="submit"/>
+                                        <input type="reset"/> 
+                                    </form>
                                 </div>
                                 <div class="redPlug divSummary div_Minuterie">
                                     <h5>Mode Minuterie</h5>
