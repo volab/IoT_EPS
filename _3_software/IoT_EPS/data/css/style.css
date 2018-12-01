@@ -46,11 +46,15 @@ fieldset{
     border-radius:0 10px 0 10px;
     }
 
-.plugSummary{
+.modeSelector{
+    color: black;
+}
+
+.divSummary{
     color: black;
     }
 
-.plugSummary h5{
+.divSummary h5{
     text-align: center;
 }
 

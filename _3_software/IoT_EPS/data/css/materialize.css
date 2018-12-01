@@ -2379,7 +2379,7 @@ textarea {
   /* 1 */
   line-height: 1.15;
   /* 1 */
-  margin: 0;
+  margin: 10px;
   /* 2 */
 }
 
@@ -6135,8 +6135,8 @@ input[type=number]:not(.browser-default),
 input[type=search]:not(.browser-default),
 textarea.materialize-textarea {
   background-color: transparent;
-  border: none;
-  border-bottom: 1px solid #9e9e9e;
+  /*! border: none; */
+  /*! border-bottom: 1px solid #9e9e9e; */
   border-radius: 0;
   outline: none;
   height: 3rem;
@@ -6719,8 +6719,9 @@ textarea.materialize-textarea {
 [type="radio"]:not(:checked),
 [type="radio"]:checked {
   position: absolute;
-  opacity: 0;
-  pointer-events: none;
+  /*! opacity: 50; */
+  /*! pointer-events: none; */
+  position: inherit;
 }
 
 [type="radio"]:not(:checked) + span,
