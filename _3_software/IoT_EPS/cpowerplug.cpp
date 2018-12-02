@@ -28,7 +28,8 @@ void CPowerPlug::begin( int pin , int onOffLedPin, int mode ){
 void CPowerPlug::on(){
     // String dPrompt = F("<VOLAB CPowerPlug >");
     DEFDPROMPT( "CPOwerPlug")
-    if ( _pin == 0){
+    // if ( _pin == 0){
+    if ( !_initDone){
         DSPL( dPrompt + F(" plug not started (call .begin().") );
     }
     _state = ON ;
@@ -37,7 +38,7 @@ void CPowerPlug::on(){
 
 void CPowerPlug::off(){
     DEFDPROMPT( "CPOwerPlug")
-    if (_pin == 0){
+    if (!_initDone){
         DSPL( dPrompt + F(" plug not started (call .begin().") );
     }
     _state = OFF ;

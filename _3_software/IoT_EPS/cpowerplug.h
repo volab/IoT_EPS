@@ -30,9 +30,14 @@ enum {
 * @brief un enum for color of the plugs
 */
 typedef enum plugColor_t{
-        ROUGE, VERT, BLEU, JAUNE
+        ROUGE, VERTE, BLEUE, JAUNE
 };
 
+static inline String stringFromColor(plugColor_t c){
+    static const String strings[] = { "ROUGE", "VERTE", "BLEUE", "JAUNE" };
+
+    return strings[c];
+}
 
 /**
 * @class CPowerPlug CpowerPlug.h
@@ -54,6 +59,7 @@ class CPowerPlug : public Cmcp {
         bool isItTimeToSwitch(); /**< For the loop of ARDUINO check millis()*/
         void setMode( int mode ){ _mode = mode; }
         int getMode(){ return _mode; }
+        
         void setOnOffTime( unsigned long onDelay, unsigned long offDelay ){
             _onDelay = onDelay; 
             _offDelay = offDelay;

@@ -61,10 +61,13 @@ void setup(){
     Cmcp::init();
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, OFF );
     plugs[0].setColor( ROUGE );
-    
-    //mcp.pinMode( PLUG0, OUTPUT );
-    // mcp.pinMode( PLUG1, OUTPUT );
-    // mcp.pinMode( PLUG2, OUTPUT );
+    plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, OFF );
+    plugs[1].setColor( VERTE );
+    plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, OFF );
+    plugs[2].setColor( BLEUE );
+    plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, OFF );
+    plugs[3].setColor( JAUNE );
+
 
     if ( errRTCinit ) {
         DSPL(dPrompt + F("ERR : Couldn't find RTC"));

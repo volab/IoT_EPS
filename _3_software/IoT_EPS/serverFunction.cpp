@@ -1,38 +1,9 @@
 
-// #include "serverFunction.h"
+
 #include "IoT_EPS.h"
 
 extern RTC_DS3231 rtc;
 
-/*
-void handleRoot() {
-	char temp[400];
-	int sec = millis() / 1000;
-	int min = sec / 60;
-	int hr = min / 60;
-
-	snprintf ( temp, 400,
-
-"<html>\
-  <head>\
-    <meta http-equiv='refresh' content='5'/>\
-    <title>ESP8266 Jojo Demo</title>\
-    <style>\
-      body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
-    </style>\
-  </head>\
-  <body>\
-    <h1>Hello from Jojo ESP01. ESP8266!</h1>\
-    <p>Uptime: %02d:%02d:%02d</p>\
-    <img src=\"/test.svg\" />\
-  </body>\
-</html>",
-
-		hr, min % 60, sec % 60
-	);
-	server.send ( 200, "text/html", temp );
-}
-*/
 //==================================================================================================
 // integration FSBrowser example functions
 // begin
@@ -158,27 +129,6 @@ void handleFileList() {
 //==================================================================================================
 
 
-/*
-void handleNotFound() {
-
-	String message = "File Not Found\n\n";
-	message += "URI: ";
-	message += server.uri();
-	message += "\nMethod: ";
-	message += ( server.method() == HTTP_GET ) ? "GET" : "POST";
-	message += "\nArguments: ";
-	message += server.args();
-	message += "\n";
-
-	for ( uint8_t i = 0; i < server.args(); i++ ) {
-		message += " " + server.argName ( i ) + ": " + server.arg ( i ) + "\n";
-	}
-
-	server.send ( 404, "text/plain", message );
-
-}
-*/
-
 //==================================================================================================
  
 /** 
@@ -218,7 +168,14 @@ void handlePlugConfig(){
 extern CPowerPlug plugs[4];
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
+    String uriReceived = server.uri();
+    DSPL( dPrompt + F(" Received uri = ") + uriReceived );
     DSPL( dPrompt + " nbr de parametres : "+(String)server.args() );
+    String allArgs = F(" Received args : ") ;
+    for ( int i = 0; i < server.args() ; i++ ){
+        allArgs += server.argName( i ) + "=" + server.arg( i ) + "/ ";
+    }
+    DSPL( dPrompt + allArgs);
     String plugColor = server.arg("COLOR");
     DSPL( dPrompt + " Plug color = " + plugColor );
     String plugVal = server.arg("PLUG");
@@ -227,9 +184,21 @@ void handlePlugOnOff(){
     DSPL( dPrompt + " Duree val = " + duree);
     String mode = server.arg("MODE");
     DSPL( dPrompt + " Mode = " + mode);
-    
-    if (plugColor == "red"){
-        if ( plugVal == "1") plugs[0].on(); else plugs[0].off();
+    int i;
+    for ( i = 0; i < 4 ; i++ ){
+        if ( stringFromColor(plugs[i].getColor()) == plugColor ) break;
     }
-    server.send(200, "text/plain", "OK");    
+    String returnVal;
+    if (i == 4){
+        returnVal = " couleur invalide";
+        DSPL( dPrompt + returnVal);
+        // server.send(200, "text/plain", "Couleur invalide");
+        // return;
+    } else {
+        if ( plugVal == "1") plugs[i].on(); else plugs[i].off();
+        returnVal = "OK";
+    }
+   
+    String returnPage = allArgs + "\n" + returnVal ;
+    server.send(200, "text/plain", returnPage );    
 }

@@ -16,11 +16,12 @@ Avancement
 #. Affichage de l'heure à partir d'une page en dur dans le code : ok
 #. Affichage page avec CSS : ok
 #. Gestion des mode wifi SoftAP vs client : ok
-#. reception d'une action via un bouton : 
+#. reception d'une action via un bouton :  
 #. lecture du fichier de configuration : ok
 #. intégration MCP23017 : ok
 #. lecture du fichier de configuration façon Pierre (config2.json) :
 #. gestion bouton poussoir mécanique : 
+#. Ecriture fichier json : 
 
 
 ====================================
@@ -74,6 +75,20 @@ Evolutions possibles
 - Mode compte à rebour : le système est en mode manuel ON et on souhait qu'il s'éteigne
   tout seul dans 2 heures
 
+  
+=====================================
+Comportement à la mise sous tension
+=====================================
+
+Soit l'interrupteur général est actif et on reprend où on en était.
+
+Soit l'interrupteur général est  inactif et on reprend en mode manuel.
+
+L'interrupteur général coupe le 220V des prise mais pas de l'ESP8266.
+
+Bien expliquer les 2 mode de fonctionnement dans l'interface WEB et donner le choix à l'utilisateur.
+
+Expliquer le coup de la coupure de courant.
 
 ==============
 Choix dev soft
@@ -98,6 +113,8 @@ ipaddr/config?plug=redPlug
 
 /PlugConfig?plug=red&mode=manuel
 /modeManuel?plug=redPlug
+
+Utilisation de formulaire
 
 ====================
 Serveur html ESP8266
@@ -169,12 +186,17 @@ Demonstrate using an http server and an HTML form to `control an LED`_. The http
 
 .. _`control an LED` : https://gist.github.com/bbx10/5a2885a700f30af75fc5
 
+`FastLed lib`_
+
+.. _`FastLed lib` : https://gi thub.com/FastLED/FastLED
+
+
 ========================
 Librairies utilisées
 ========================
-last update : 17/11/2018
+last update : 02/12/2018
 
-7 libs:
+8 libs:
 
 - Utilisation de la bibliothèque ESP8266WiFi version 1.0
 - Utilisation de la bibliothèque ESP8266WebServer version 1.0 
@@ -183,6 +205,7 @@ last update : 17/11/2018
 - Utilisation de la bibliothèque RTClib version 1.2.0
 - Utilisation de la bibliothèque ESP8266mDNS
 - Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3
+- Utilisation de la bibliothèque FastLED version 3.2.1
 
 ===============================
 Eccueils et autres difficultés
