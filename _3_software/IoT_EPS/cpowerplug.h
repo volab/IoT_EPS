@@ -1,11 +1,12 @@
 #ifndef _CPOWERPLUG_H
 #define _CPOWERPLUG_H
 
-
-#include <Arduino.h>
-#include <RTClib.h>
-#include <ESP8266WebServer.h>
-#include "Cmcp.h"
+#include "IoT_EPS.h"
+// #include <Arduino.h>
+// #include <RTClib.h>
+// #include <ESP8266WebServer.h>
+// #include "Cmcp.h"
+// #include <FastLED.h>
 
 /**
 a no named enumeration for plug mode
@@ -25,19 +26,23 @@ enum {
 #define ON true
 #define OFF false /*!< OFF alias for false*/
 
+
+
 /**
 * @typedef plugColor_t
 * @brief un enum for color of the plugs
 */
-typedef enum plugColor_t{
-        ROUGE, VERTE, BLEUE, JAUNE
-};
+// typedef enum plugColor_t{
+        // ROUGE, VERTE, BLEUE, JAUNE
+// };
 
-static inline String stringFromColor(plugColor_t c){
-    static const String strings[] = { "ROUGE", "VERTE", "BLEUE", "JAUNE" };
+typedef CRGB::HTMLColorCode plugColor_t;
 
-    return strings[c];
-}
+
+// static inline String stringFromColor(plugColor_t c){
+    // static const String strings[] = { "ROUGE", "VERTE", "BLEUE", "JAUNE" };
+    // return strings[c];
+// }
 
 /**
 * @class CPowerPlug CpowerPlug.h
@@ -45,6 +50,7 @@ static inline String stringFromColor(plugColor_t c){
 */
 class CPowerPlug : public Cmcp {
     public:
+ 
         CPowerPlug(){}
         CPowerPlug( plugColor_t couleur ){ _couleur = couleur;}
         void begin( int pin , int onOffLedPin, int mode = MANUEL );
@@ -52,6 +58,8 @@ class CPowerPlug : public Cmcp {
         void setColor( plugColor_t color ){ _couleur = color; }
         bool getstate(){ return _state; }
         plugColor_t getColor(){ return _couleur; }
+        String getPlugName(){return _plugName ; }
+        void setPlugName( String name ){ _plugName = name ; }
         
         void on();
         void off();
@@ -76,9 +84,11 @@ class CPowerPlug : public Cmcp {
 
         int _pin = 0; /**< @brief The relay command plug pin*/
         bool _state;
+        String _plugName ;
         int _mode = MANUEL;
         int _onOffLedPin;/**< a pin to display plug state diff of the cmd plug pin*/
-        plugColor_t _couleur = ROUGE;
+        // plugColor_t _couleur = ROUGE;
+        plugColor_t _couleur = CRGB::Red;
 
         uint8_t daysOnWeek;
         // heure de début

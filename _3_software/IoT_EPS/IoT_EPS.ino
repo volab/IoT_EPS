@@ -34,9 +34,15 @@ IPAddress apIP(192, 168, 95, 42);
 
 // CPowerPlug plug0{ RED };
 // CPowerPlug plug0( ROUGE );
-CPowerPlug plugs[4];
+CPowerPlug plugs[NBRPLUGS];
 
 bool errRTCinit = true;
+
+CRGB colorLeds[NUM_LEDS]; /**< @brief  not very satisfy for this globale ! It should be in the 
+CpowerPlug class*/
+/** @todo see for add colorLEd array in the class CPowerPlug as a static member*/
+
+
 void setup(){
     // #ifdef DEBUG
     // String dPrompt = F("<VoLAB setup >");
@@ -57,16 +63,29 @@ void setup(){
     Wire.beginTransmission(DS3231_ADDRESS);
     errRTCinit = Wire.endTransmission();
     
+    FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
+    
     // mcp.begin();
     Cmcp::init();
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, OFF );
-    plugs[0].setColor( ROUGE );
+    plugs[0].setColor( CRGB::Red );
+    plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
     plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, OFF );
-    plugs[1].setColor( VERTE );
+    plugs[1].setColor( CRGB::Green );
+    plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
     plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, OFF );
-    plugs[2].setColor( BLEUE );
+    plugs[2].setColor( CRGB::Blue );
+    plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
+    // plugs[2].setColor( CRGB::Purple );
     plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, OFF );
-    plugs[3].setColor( JAUNE );
+    plugs[3].setColor( CRGB::Yellow );
+    plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
+    for ( int i = 0; i < NBRPLUGS ; i++ ){
+        colorLeds[i] = plugs[i].getColor();
+    }
+    
+    FastLED.setBrightness(5); /**< @brief normaly in the json config file*/
+    /** @todo Read the general brightness of color LED in JSON config file*/
 
 
     if ( errRTCinit ) {
@@ -145,7 +164,7 @@ while (dir.next()) {
 }
 Serial.print(str);
 /////////////////////////////////////////////////////////////////////////////
-//  Fin                                                                       //
+//  Fin                                                                    //
 /////////////////////////////////////////////////////////////////////////////
     server.on("/list", HTTP_GET, handleFileList);
     server.on("/PlugConfig", HTTP_GET, handlePlugConfig );
@@ -194,7 +213,7 @@ void loop(){
         statePlug0 = !statePlug0 ;
         // mcp.digitalWrite( PLUG0, statePlug0 );
     }
-
+    FastLED.show();
     yield();
 }
 

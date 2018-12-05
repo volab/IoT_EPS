@@ -48,6 +48,7 @@ void CPowerPlug::off(){
 void CPowerPlug::toggle(){
     DEFDPROMPT( "CPOwerPlug")
     if (_pin == 0){
+        /** @todo  check _initDone fonctionality */
         DSPL( dPrompt + F(" plug not started (call .begin().") );
     }
     _state = !_state ;
@@ -55,7 +56,7 @@ void CPowerPlug::toggle(){
 }
 
 bool CPowerPlug::isItTimeToSwitch(){
-    
+    /** @todo complete isItTimeToSwitch */
     return (true); //to to change ths one ;-)
 }
 

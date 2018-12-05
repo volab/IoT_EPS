@@ -185,8 +185,10 @@ void handlePlugOnOff(){
     String mode = server.arg("MODE");
     DSPL( dPrompt + " Mode = " + mode);
     int i;
+    
     for ( i = 0; i < 4 ; i++ ){
-        if ( stringFromColor(plugs[i].getColor()) == plugColor ) break;
+        DSPL( dPrompt + "plugName : " + plugs[i].getPlugName() );
+        if ( plugs[i].getPlugName() == plugColor ) break;
     }
     String returnVal;
     if (i == 4){

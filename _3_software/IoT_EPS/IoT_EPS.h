@@ -18,12 +18,25 @@
 #include <RTClib.h>
 #include <ESP8266mDNS.h>
 #include <Adafruit_MCP23017.h>
+#include <FastLED.h>
+
 #include "credential.h"
 #include "configParam.h"
 #include "serverFunction.h"
+
+#define NBRPLUGS 4
+#define NUM_LEDS NBRPLUGS /**< for fastLED class */
+#define DATA_PIN D7 /**< for fastLED class strip data pin*/
+#define CLOCK_PIN D8 /**< for fastLED class strip data pin*/
+
+#include "Cmcp.h"
 #include "CPowerPlug.h"
 #include "debugSerialPort.h"
 
+#define HTML_JSON_REDPLUGNAME "redPlug"
+#define HTML_JSON_GREENPLUGNAME "greenPlug"
+#define HTML_JSON_BLUEPLUGNAME "bluePlug"
+#define HTML_JSON_YELLOWPLUGNAME "yellowPlug"
 
 #define FLASHERTIME 500
 
@@ -35,10 +48,12 @@
 #define PLUG1_ONOFFLEDPIN 5
 #define PLUG2_ONOFFLEDPIN 6
 #define PLUG3_ONOFFLEDPIN 7
-#define BP0 8 // MCP PORTB.0 pin 1
-#define BP1 9
-#define BP2 10
-#define BP3 11
+
+
+#define BP0 D3 
+#define BP1 D4
+#define BP2 D5
+#define BP3 D6
 
 
 

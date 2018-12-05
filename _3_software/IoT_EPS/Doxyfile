@@ -51,7 +51,7 @@ PROJECT_BRIEF          = "with timer functions build from a Wemos D1 mini"
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = 
+PROJECT_LOGO           = C:/MountWD/Donnees/OneDrive/Donnees/008_iao_wrk/VoRoboticsAsso/00-AutresProjetsDuLab/0044-Iot_ESP_PPlug/projet/_3_software/IoT_EPS/doc/logo_alpha2_reduced.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
