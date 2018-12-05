@@ -23,6 +23,12 @@ Avancement
 #. gestion bouton poussoir mécanique : 
 #. Ecriture fichier json : 
 
+====================================
+Convention de nommage
+====================================
+
+Référence : config2.json
+
 
 ====================================
 Penser à:
@@ -38,10 +44,12 @@ Modes de fonctionnement des prises
 Manuel
 ======
 - appui sur BP ON/OFF
+- durée avant arrêt : pour s'offrir la possibilité de couper la prise en cas de départ prématurer...
+- ou heure d'arrêt : dans le même état d'esprit mais pour fixer une heure absolue.
 
 Timer / minuteur / mode cuit oeuf
 ==================================
-- 1 seul paramètre la durée ON à partir de maintenant
+- 1 seul paramètre la durée ON à partir de maintenant (durée limité à 300mn)
 - 1 appui court lance ou relance la minuterie
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 

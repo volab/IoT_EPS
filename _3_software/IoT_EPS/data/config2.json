@@ -1,4 +1,4 @@
-       {
+{
   "general" : {
     "wifimode" : "client",
     "hostName" : "PowerStrip01"
@@ -6,8 +6,7 @@
   "redPlug": {
     "State": "ON",
     "Manuel": {
-        "Status": "OFF",
-        "On_Off": ""
+        "Status": "OFF"
     },
     "Minuterie": {
       "Status": "ON",
@@ -32,7 +31,12 @@
         "SA": "",
         "DI": ""
       }
-    }
+    },
+    "Clone" : {
+        "Status": "OFF",
+        "ClonedPlug" : ""
+    },
+    "OnOffCount" : "0"
   },
   "greenPlug": {
     "State": "ON",
@@ -63,7 +67,12 @@
         "SA": "",
         "DI": ""
       }
-    }
+    },
+    "Clone" : {
+        "Status": "OFF",
+        "ClonedPlug" : ""
+    },
+    "OnOffCount" : "0"
   },
   "bluePlug": {
     "State": "ON",
@@ -94,7 +103,12 @@
         "SA": "OFF",
         "DI": "OFF"
       }
-    }
+    },
+    "Clone" : {
+        "Status": "OFF",
+        "ClonedPlug" : ""
+    },
+    "OnOffCount" : "0"
   },
   "yellowPlug": {
     "State": "ON",
@@ -125,6 +139,11 @@
         "SA": "",
         "DI": ""
       }
-    }
+    },
+    "Clone" : {
+        "Status": "OFF",
+        "ClonedPlug" : ""
+    },
+    "OnOffCount" : "0"
   }
 }

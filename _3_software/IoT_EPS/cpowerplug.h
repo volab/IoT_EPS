@@ -47,6 +47,8 @@ typedef CRGB::HTMLColorCode plugColor_t;
 /**
 * @class CPowerPlug CpowerPlug.h
 * @brief a class to oparate power plugs
+
+Inherit of the Cmcp class that initialize mcp23711 I2C Io expander component
 */
 class CPowerPlug : public Cmcp {
     public:
@@ -54,7 +56,7 @@ class CPowerPlug : public Cmcp {
         CPowerPlug(){}
         CPowerPlug( plugColor_t couleur ){ _couleur = couleur;}
         void begin( int pin , int onOffLedPin, int mode = MANUEL );
-
+/** @todo rewrite a new begin methode to add plugName and _color*/
         void setColor( plugColor_t color ){ _couleur = color; }
         bool getstate(){ return _state; }
         plugColor_t getColor(){ return _couleur; }
@@ -90,25 +92,69 @@ class CPowerPlug : public Cmcp {
         // plugColor_t _couleur = ROUGE;
         plugColor_t _couleur = CRGB::Red;
 
-        uint8_t daysOnWeek;
-        // heure de début
+        
+
+        /**
+        * @var DateTime _startDate
+        @brief date to turn on for Hebdo and Cycle mode
+        * @var DateTime _endDate;
+        @brief date to turn off for Manual and Hebdo mode
+        
+        See softDef.rst for detail
+        * @var unsigned int _onDelay
+        @brief For cyclic mode. Max value 300mn
+         * @var unsigned int _offDelay;
+        @brief For cyclic and manual mode. Max value 300mn 
+        * @var uint8_t daysOnWeek;
+        @brief For HebdoMode each bit represent one day. bit0 represente Monday        
+        */
+        uint8_t daysOnWeek;        
         DateTime _startDate;
-        // heure de fin
         DateTime _endDate;
-        // duréeOn
-        unsigned long _onDelay;
-        unsigned long _offDelay;
-        // duréeOff
+        unsigned int _onDelay;
+        unsigned int _offDelay;
+
         void updateOutputs();
-        // #ifdef DEBUG
-        // String dPrompt = F("<VOLAB CPowerPlug >");
-        // #else
-        // String dPrompt = "";
-        // #endif
+
         
 };
 
-
+/*
+  "redPlug": {
+    "State": "ON",
+    "Manuel": {
+        "Status": "OFF"
+    },
+    "Minuterie": {
+      "Status": "ON",
+      "Duree": "60"
+    },
+    "Cyclique": {
+      "Status": "OFF",
+      "hDebut": "",
+      "dureeOn": "",
+      "dureeOff": ""
+    },
+    "Hebdomadaire": {
+      "Status": "OFF",
+      "hDebut": "",
+      "hFin": "",
+      "Jours": {
+        "LU": "",
+        "MA": "",
+        "ME": "",
+        "JE": "",
+        "VE": "",
+        "SA": "",
+        "DI": ""
+      }
+    },
+    "Clone" : {
+        "Status": "OFF",
+        "ClonedPlug" : ""
+    },
+    "OnOffCount" : "0"
+  },*/
 
 
 #endif

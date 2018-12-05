@@ -30,10 +30,10 @@ bool ConfigParam::readFromJson(){
                 // json.printTo(DEBUGPORT);
                 if (json.success()) {
                     _wifimode = json["wifimode"].as<String>();
-                    _yellowPlugState = json["yellowPlugState"].as<String>();
-                    _redPlugState = json["redPlugState"].as<String>();
-                    _greenPlugState = json["greenPlugState"].as<String>();
-                    _bluePlugState = json["bluePlugState"].as<String>();
+                    // _yellowPlugState = json["yellowPlugState"].as<String>();
+                    // _redPlugState = json["redPlugState"].as<String>();
+                    // _greenPlugState = json["greenPlugState"].as<String>();
+                    // _bluePlugState = json["bluePlugState"].as<String>();
                     _host = json["hostName"].as<String>();
                 } else {
                     DEBUGPORT.println(dPrompt + F(" failed to load json config"));
