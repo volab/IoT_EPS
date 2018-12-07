@@ -37,6 +37,7 @@ IPAddress apIP(192, 168, 95, 42);
 CPowerPlug plugs[NBRPLUGS];
 
 bool errRTCinit = true;
+bool errFS = true;
 
 CRGB colorLeds[NUM_LEDS]; /**< @brief  not very satisfy for this globale ! It should be in the 
 CpowerPlug class*/
@@ -44,11 +45,7 @@ CpowerPlug class*/
 
 
 void setup(){
-    // #ifdef DEBUG
-    // String dPrompt = F("<VoLAB setup >");
-    // #else
-    // String dPrompt = "";    
-    // #endif
+
     DEFDPROMPT("setUp") // define dPrompt String
     DateTime now;
     DEBUGPORT.begin(DEBUGSPEED);
@@ -56,6 +53,11 @@ void setup(){
     DSPL( dPrompt + F("Sketch start..."));
 
     DSPL( dPrompt + " Build : " + __DATE__ + " @ " + __TIME__);
+    errFS = !SPIFFS.begin(); // to check if it's possible to begin twice the SPIFFS
+    //next time is in cParam.begin
+    // The response was already in the code : about line
+    if (errFS) DSPL( dPrompt + F("error in Oping Fil System") );
+    else DSPL( dPrompt + F("File system corectly Open @ setup level") );
     
     cParam.begin();
     wifiCred.begin();
@@ -105,12 +107,8 @@ void setup(){
         DSPL( dPrompt + F("Wifi mode = ") + cParam.getWifiMode() );
     }
     
-
-    // DSP( " \n" + dPrompt + F("Mode autoconnect :"));
-    // DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
-    //DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
     WiFi.setAutoConnect(false);
-    DSP("\n" + dPrompt + F("Mode autoconnect :"));
+    DSP( dPrompt + F("Mode autoconnect : "));
     DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
     DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
 
@@ -147,24 +145,41 @@ void setup(){
     }
   // reading file
 /////////////////////////////////////////////////////////////////////////////
-//  Debut test lecture fichier index.html                                  //
+//  Start of the check index.html file presence                            //
 /////////////////////////////////////////////////////////////////////////////
+/** @todo cleanup tho .ino code to remove all unnecessary code like displaying SPIFFS health*/
     if (SPIFFS.exists("/index.html")) {
         DSPL( dPrompt + F("html index file found."));
     } else {
         DSPL( dPrompt + F("fichier html index introuvable."));
     }
-String str = "";
-Dir dir = SPIFFS.openDir("/");
-while (dir.next()) {
-    str += dir.fileName();
-    str += " / ";
-    str += dir.fileSize();
-    str += "\r\n";
-}
-Serial.print(str);
+    String str = "";
+    Dir dir = SPIFFS.openDir("/");
+    while (dir.next()) {
+        str += dir.fileName();
+        str += " / ";
+        str += dir.fileSize();
+        str += "\r\n";
+    }
+    Serial.print(str);
+    FSInfo filseSystemInfo;/**< @brief file system information to display it*/
+    SPIFFS.info( filseSystemInfo ); 
+    
+    DSPL( dPrompt + F("SPIFFS total bytes : ") + (String)filseSystemInfo.totalBytes );
+    DSPL( dPrompt + F("SPIFFS used bytes : ") + (String)filseSystemInfo.usedBytes );
+    DSPL( dPrompt + F("SPIFFS max open files : ") + (String)filseSystemInfo.maxOpenFiles );
+    DSPL( dPrompt + F("SPIFFS max path lenght : ") + (String)filseSystemInfo.maxPathLength );
+    
+    /*struct FSInfo {
+    size_t totalBytes;
+    size_t usedBytes;
+    size_t blockSize;
+    size_t pageSize;
+    size_t maxOpenFiles;
+    size_t maxPathLength;
+    };*/
 /////////////////////////////////////////////////////////////////////////////
-//  Fin                                                                    //
+//  End                                                                    //
 /////////////////////////////////////////////////////////////////////////////
     server.on("/list", HTTP_GET, handleFileList);
     server.on("/PlugConfig", HTTP_GET, handlePlugConfig );

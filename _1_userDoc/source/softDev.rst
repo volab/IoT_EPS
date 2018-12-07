@@ -178,6 +178,9 @@ _initDone et _mpc (mpc étant la ressource commune à toutes les instances de la
 Useful Documentation
 ===============================
 
+Html server
+=====================
+
 Exemples ESP html serveurs:
 
 C:\MountWD\Donnees\OneDrive\Donnees\008_iao_wrk\Arduino\Croquis\ESP01\HelloServer
@@ -194,10 +197,23 @@ Demonstrate using an http server and an HTML form to `control an LED`_. The http
 
 .. _`control an LED` : https://gist.github.com/bbx10/5a2885a700f30af75fc5
 
+fastLed
+=============
+
 `FastLed lib`_
 
 .. _`FastLed lib` : https://gi thub.com/FastLED/FastLED
 
+json (lectures / écritures)
+==============================
+
+La librairie utilisée: `ArduinoJson`_ version 5.13.2 
+
+.. _`ArduinoJson` : https://github.com/bblanchon/ArduinoJson
+
+Assistant plutôt efficace: `ArduinoJson Assistant`_
+
+.._`ArduinoJson Assistant`  : https://arduinojson.org/v5/assistant/
 
 ========================
 Librairies utilisées
@@ -229,6 +245,11 @@ C'est court! voir `github issue #34 mkspiffs`_
 
 
 .. _`github issue #34 mkspiffs` : https://github.com/igrr/mkspiffs/issues/34
+
+Prise en main de la librairie JSON
+======================================
+
+Nécessite un investissement personnel important.
 
 
 =============

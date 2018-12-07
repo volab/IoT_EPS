@@ -25,7 +25,7 @@
 
 #ifdef DEBUG
 #define DEFDPROMPT(X) String dPrompt = F("<Volab "); \
-    dPrompt += X; dPrompt += F(" : >");
+    dPrompt += X; dPrompt += F(" > ");
 #else
 #define DEFDPROMPT(X) String dPrompt = "";
 #endif    
