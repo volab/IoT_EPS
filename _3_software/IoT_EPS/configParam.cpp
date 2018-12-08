@@ -23,10 +23,10 @@ bool ConfigParam::readFromJson(){
     if (SPIFFS.begin()) {
         DEBUGPORT.println(dPrompt + F("File system mounted "));
         // if (SPIFFS.exists("/config.json")) {
-        if (SPIFFS.exists("/config2.json")) {
+        if (SPIFFS.exists( CONFIGFILENAME)) {
             //file exists, reading and loading
             DEBUGPORT.println(dPrompt + F("reading config file"));
-            File configFile = SPIFFS.open("/config2.json", "r");
+            File configFile = SPIFFS.open( CONFIGFILENAME, "r");
             
             if (configFile) {
                 DEBUGPORT.println( F("\tconfig file opened ") );
@@ -55,7 +55,9 @@ bool ConfigParam::readFromJson(){
                 return true;
             }
         } else {
-            DEBUGPORT.println(dPrompt + F("Failed to open /config2.json"));
+            dPrompt += F("Failed to open ");
+            dPrompt += CONFIGFILENAME;
+            DEBUGPORT.println(dPrompt);
             return false;
         }
 

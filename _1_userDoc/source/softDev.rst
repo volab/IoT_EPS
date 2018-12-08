@@ -27,7 +27,7 @@ Avancement
 Convention de nommage
 ====================================
 
-Référence : config2.json
+Référence : config3.json
 
 
 ====================================
@@ -83,6 +83,21 @@ Evolutions possibles
 - Mode compte à rebour : le système est en mode manuel ON et on souhait qu'il s'éteigne
   tout seul dans 2 heures
 
+Factorisation des varibales de mode
+=========================================
+
+::
+
+    redPlug
+      State = ON
+      Mode = Manuel | Minuterie | Cyclique | Hebdomadaire | Clone
+      hDebut =
+      hFin = 
+      dureeOn = 60 en minutes
+      dureeOff =  en minutes
+      Jours[] s = OFF,OFF,OFF,OFF,OFF,OFF,OFF
+      clonedPlug =
+      onOffCount = 10  
   
 =====================================
 Comportement à la mise sous tension

@@ -79,7 +79,7 @@ class CPowerPlug : public Cmcp {
             setOnOffTime( onDelay, offDelay );          
         }
         
-
+        bool readFromJson();
         
         
     private:

@@ -29,6 +29,9 @@
 #define DATA_PIN D7 /**< for fastLED class strip data pin*/
 #define CLOCK_PIN D8 /**< for fastLED class strip data pin*/
 
+#define CONFIGFILENAME "/config3.json"
+
+
 #include "Cmcp.h"
 #include "CPowerPlug.h"
 #include "debugSerialPort.h"

@@ -26,7 +26,7 @@ void CPowerPlug::begin( int pin , int onOffLedPin, int mode ){
 }
 
 void CPowerPlug::on(){
-    // String dPrompt = F("<VOLAB CPowerPlug >");
+
     DEFDPROMPT( "CPOwerPlug")
     // if ( _pin == 0){
     if ( !_initDone){
@@ -65,6 +65,49 @@ void CPowerPlug::updateOutputs(){
     _mcp.digitalWrite( _onOffLedPin, _state );    
 }
 
+bool CPowerPlug::readFromJson(){
+    String sState, sMode;
+    DEFDPROMPT("reading config values for " + getPlugName())
+    DSPL( dPrompt +F("Mounting FS..."));
+    if (SPIFFS.begin()) {
+        DEBUGPORT.println(dPrompt + F("File system mounted "));
+        if (SPIFFS.exists( CONFIGFILENAME )) {
+            //file exists, reading and loading
+            DSP(dPrompt + F("reading config file... "));
+            File configFile = SPIFFS.open( CONFIGFILENAME , "r");
+            if (configFile) {
+                DSPL( F("Config file is open ") );
+                size_t size = configFile.size();
+                // Allocate a buffer to store contents of the file.
+                std::unique_ptr<char[]> buf(new char[size]);
+                configFile.readBytes(buf.get(), size);
+                DynamicJsonBuffer jsonBuffer;
+                JsonObject& json = jsonBuffer.parseObject(buf.get());
+                // json.printTo(DEBUGPORT);
+                if (json.success()) {
+                    JsonObject& plug = json[getPlugName()];
+                    sState = plug["State"].as<String>();
+                    sMode = plug["Mode"].as<String>();
+                    DSPL( dPrompt + "Mode = " + sMode );
+                    DSPL( dPrompt + "Etat = " + sState );
+                } else {
+                    DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+                    return false;
+                }
+                configFile.close();
+                return true;
+            }
+        } else {
+            dPrompt += F("Failed to open ");
+            dPrompt += CONFIGFILENAME;
+            DEBUGPORT.println(dPrompt);
+            return false;
+        }
 
+    } else {
+        DEBUGPORT.println( dPrompt + F("Failed to mount FS"));
+        return false;
+    }
+}
 
         
