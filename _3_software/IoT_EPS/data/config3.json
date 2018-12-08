@@ -1,0 +1,82 @@
+{
+  "general": {
+    "wifimode": "client",
+    "hostName": "PowerStrip01"
+  },
+  "redPlug": {
+    "State": "ON",
+    "Mode": "Manuel",
+    "hDebut": "",
+    "hFin": "",
+    "dureeOn": "60",
+    "dureeOff": "",
+    "Jours": [
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "10"
+  },
+  "greenPlug": {
+    "State": "OFF",
+    "Mode": "Cyclique",
+    "hDebut": "14:35",
+    "hFin": "",
+    "dureeOn": "30",
+    "dureeOff": "245",
+    "Jours": [
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "100"
+  },
+  "bluePlug": {
+    "State": "ON",
+    "Mode": "Hebdomadaire",
+    "hDebut": "08:30",
+    "hFin": "18:30",
+    "dureeOn": "",
+    "dureeOff": "",
+    "Jours": [
+      "ON",
+      "ON",
+      "ON",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "3"
+  },
+  "yellowPlug": {
+    "State": "ON",
+    "Mode": "Minuterie",
+    "hDebut": "",
+    "hFin": "",
+    "dureeOn": "60",
+    "dureeOff": "",
+    "Jours": [
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "2"
+  }
+}

@@ -30,7 +30,7 @@ class Credential{
         String _ssid;
         String _pass;
         bool readFromJson();
-        String d_prompt = "<VoLAB reading credentials.>";
+
 };
 
 

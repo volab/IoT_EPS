@@ -25,16 +25,17 @@ Credential::Credential(){
 @return a booleen true on success  
 */
 bool Credential::readFromJson(){
-    DEBUGPORT.println(d_prompt + F(" mounting FS..."));
+    DEFDPROMPT("reading credentials")
+    DSPL(dPrompt + F("mounting FS..."));
 
     if (SPIFFS.begin()) {
-        DEBUGPORT.println(d_prompt + F(" file system mounted"));
+        DSPL(dPrompt + F("File system mounted"));
         if (SPIFFS.exists("/credentials.json")) {
             //file exists, reading and loading
-            DEBUGPORT.println(d_prompt + F(" reading config file"));
+            DSPL(dPrompt + F("Reading credit. file"));
             File configFile = SPIFFS.open("/credentials.json", "r");
             if (configFile) {
-                DEBUGPORT.println( F("\tconfig file is opened") );
+                DSPL( F("\tCredit. file is opened") );
                 size_t size = configFile.size();
                 // Allocate a buffer to store contents of the file.
                 std::unique_ptr<char[]> buf(new char[size]);
@@ -47,19 +48,19 @@ bool Credential::readFromJson(){
                     _ssid = json["ssid"].as<String>();
                     _pass = json["pass"].as<String>();
                 } else {
-                    DEBUGPORT.println(d_prompt + F(" failed to load json config"));
+                    DSPL(dPrompt + F("Failed to parse json credentials file."));
                     return false;
                 }
                 configFile.close();
                 return true;
             }
         } else {
-            DEBUGPORT.println(d_prompt + F(" failed to open /credentials.json"));
+            DSPL(dPrompt + F(" failed to open /credentials.json"));
             return false;
         }
 
     } else {
-        DEBUGPORT.println(d_prompt + F(" failed to mount FS"));
+        DSPL(dPrompt + F(" failed to mount FS"));
         return false;
     }
  

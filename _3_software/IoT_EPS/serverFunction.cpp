@@ -1,38 +1,9 @@
 
-// #include "serverFunction.h"
+
 #include "IoT_EPS.h"
 
 extern RTC_DS3231 rtc;
 
-/*
-void handleRoot() {
-	char temp[400];
-	int sec = millis() / 1000;
-	int min = sec / 60;
-	int hr = min / 60;
-
-	snprintf ( temp, 400,
-
-"<html>\
-  <head>\
-    <meta http-equiv='refresh' content='5'/>\
-    <title>ESP8266 Jojo Demo</title>\
-    <style>\
-      body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
-    </style>\
-  </head>\
-  <body>\
-    <h1>Hello from Jojo ESP01. ESP8266!</h1>\
-    <p>Uptime: %02d:%02d:%02d</p>\
-    <img src=\"/test.svg\" />\
-  </body>\
-</html>",
-
-		hr, min % 60, sec % 60
-	);
-	server.send ( 200, "text/html", temp );
-}
-*/
 //==================================================================================================
 // integration FSBrowser example functions
 // begin
@@ -71,6 +42,8 @@ bool handleFileRead(String path){
   }
   return false;
 }
+
+
 File fsUploadFile; // cette variable doit être globale
 //la fonction l'utilise plusieurs fois
 //eventuellement pourrait être static
@@ -156,27 +129,14 @@ void handleFileList() {
 //==================================================================================================
 
 
-/*
-void handleNotFound() {
+//==================================================================================================
+ 
+/** 
+@fn void displayTime()
+To display the current time from DS3231
 
-	String message = "File Not Found\n\n";
-	message += "URI: ";
-	message += server.uri();
-	message += "\nMethod: ";
-	message += ( server.method() == HTTP_GET ) ? "GET" : "POST";
-	message += "\nArguments: ";
-	message += server.args();
-	message += "\n";
-
-	for ( uint8_t i = 0; i < server.args(); i++ ) {
-		message += " " + server.argName ( i ) + ": " + server.arg ( i ) + "\n";
-	}
-
-	server.send ( 404, "text/plain", message );
-
-}
+HTML text is in the c code as String page var
 */
-
 void displayTime(){
     String page;
     DateTime now;
@@ -194,4 +154,59 @@ void displayTime(){
     page += "</p></body></html>";
     server.send ( 200, "text/html", page );
     
+}
+
+void handlePlugConfig(){
+    
+    DEFDPROMPT("Plug config")
+    DSPL( dPrompt + " nbr de parametres : "+(String)server.args() );
+    DSPL( dPrompt + " plug = " + server.arg( "plug"));
+    DSPL( dPrompt + " mode = " + server.arg( "mode"));
+    server.send(200, "text/plain", "OK");
+}
+
+extern CPowerPlug plugs[4];
+void handlePlugOnOff(){
+    DEFDPROMPT("Plug on/off")
+    /////////////////////////////////////////////////////////////////////////////
+    //      DISPLAY URI                                                        //
+    /////////////////////////////////////////////////////////////////////////////
+    String uriReceived = server.uri();
+    DSPL( dPrompt + F(" Received uri = ") + uriReceived );
+    DSPL( dPrompt + " nbr de parametres : "+(String)server.args() );
+    String allArgs = F(" Received args : ") ;
+    for ( int i = 0; i < server.args() ; i++ ){
+        allArgs += server.argName( i ) + "=" + server.arg( i ) + "/ ";
+    }
+    DSPL( dPrompt + allArgs);
+    /////////////////////////////////////////////////////////////////////////////
+
+    String plugColor = server.arg("COLOR");
+    DSPL( dPrompt + " Plug color = " + plugColor );
+    String plugVal = server.arg("PLUG");
+    DSPL( dPrompt + " Plug val = " + plugVal);
+    String duree = server.arg("DUREE");
+    DSPL( dPrompt + " Duree val = " + duree);
+    String mode = server.arg("MODE");
+    DSPL( dPrompt + " Mode = " + mode);
+    int i;
+    
+    for ( i = 0; i < 4 ; i++ ){
+        DSPL( dPrompt + "plugName : " + plugs[i].getPlugName() );
+        if ( plugs[i].getPlugName() == plugColor ) break;
+    }
+    String returnVal;
+    if (i == 4){
+        returnVal = " couleur invalide";
+        DSPL( dPrompt + returnVal);
+        // server.send(200, "text/plain", "Couleur invalide");
+        // return;
+    } else {
+        if ( plugVal == "1") plugs[i].on(); else plugs[i].off();
+        plugs[i].handleHtmlReq( allArgs ); 
+        returnVal = "OK";
+    }
+   
+    String returnPage = allArgs + "\n" + returnVal ;
+    server.send(200, "text/plain", returnPage );    
 }

@@ -32,16 +32,17 @@
         "DI": ""
       }
     },
-    "Clone":{
-      "Status": "OFF",
-      "ClonedPlug" : ""
+    "Clone" : {
+        "Status": "OFF",
+        "ClonedPlug" : ""
     },
     "OnOffCount" : "0"
   },
   "greenPlug": {
     "State": "ON",
     "Manuel": {
-        "Status": "OFF"
+        "Status": "OFF",
+        "On_Off": ""
     },
     "Minuterie": {
       "Status": "OFF",
@@ -67,16 +68,17 @@
         "DI": ""
       }
     },
-    "Clone": {
-      "Status": "OFF",
-      "ClonedPlug" : ""
+    "Clone" : {
+        "Status": "OFF",
+        "ClonedPlug" : ""
     },
     "OnOffCount" : "0"
   },
   "bluePlug": {
     "State": "ON",
     "Manuel": {
-        "Status": "OFF"
+        "Status": "OFF",
+        "On_Off": ""
         },
     "Minuterie": {
       "Status": "OFF",
@@ -102,16 +104,17 @@
         "DI": "OFF"
       }
     },
-    "Clone": {
-      "Status": "OFF",
-      "ClonedPlug" : ""
+    "Clone" : {
+        "Status": "OFF",
+        "ClonedPlug" : ""
     },
     "OnOffCount" : "0"
   },
   "yellowPlug": {
     "State": "ON",
     "Manuel": {
-        "Status": "ON"
+        "Status": "OFF",
+        "On_Off": "ON"
     },
     "Minuterie": {
       "Status": "OFF",
@@ -137,9 +140,9 @@
         "DI": ""
       }
     },
-    "Clone": {
-      "Status": "OFF",
-      "ClonedPlug" : ""
+    "Clone" : {
+        "Status": "OFF",
+        "ClonedPlug" : ""
     },
     "OnOffCount" : "0"
   }
