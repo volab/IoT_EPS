@@ -66,7 +66,9 @@ void CPowerPlug::updateOutputs(){
 }
 
 bool CPowerPlug::readFromJson(){
-    String sState, sMode;
+    String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
+    String sClonedPlug, sOnOffCount;
+    String sJours[7];
     DEFDPROMPT("reading config values for " + getPlugName())
     DSPL( dPrompt +F("Mounting FS..."));
     if (SPIFFS.begin()) {
@@ -88,8 +90,31 @@ bool CPowerPlug::readFromJson(){
                     JsonObject& plug = json[getPlugName()];
                     sState = plug["State"].as<String>();
                     sMode = plug["Mode"].as<String>();
+                    sHDebut = plug["hDebut"].as<String>();
+                    sHFin = plug["hFin"].as<String>();
+                    sDureeOn = plug["dureeOn"].as<String>();
+                    sDureeOff = plug["dureeOff"].as<String>();
+                    sClonedPlug = plug["clonedPlug"].as<String>();
+                    sOnOffCount = plug["onOffCount"].as<String>();
                     DSPL( dPrompt + "Mode = " + sMode );
                     DSPL( dPrompt + "Etat = " + sState );
+                    DSPL( dPrompt + "Start time = " + sHDebut );
+                    DSPL( dPrompt + "End time = " + sHFin );
+                    DSPL( dPrompt + "on duration = " + sDureeOn );
+                    DSPL( dPrompt + "off duration = " + sDureeOff );
+                    DSPL( dPrompt + "Cloned plug = " + sClonedPlug );
+                    DSPL( dPrompt + "Relay on off count = " + sOnOffCount );
+                    DSP( dPrompt + "Jours : ");
+                    JsonArray& plugJours = plug["Jours"];
+                    for ( int i = 0; i < 7 ; i++ ){
+                        sJours[i] = plugJours[i].as<String>();
+                        // DSPL( dPrompt + "jours " + (String)i + " = " + sJours[i] );
+                        if (sJours[i] == "ON"){
+                            DSP( "Jours " + (String)i + " est ON. " );
+                        }   
+                    }
+                    DSPL("");
+
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
                     return false;

@@ -74,6 +74,8 @@ void setup(){
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
     plugs[0].readFromJson();
     /** @todo improve error check from CPowerPlug::readFromJson*/
+    /** @todo ajouter pin, pinLed et couleur au json */
+    /** @todo + le nombre de plug pour rendre cette séquense dynamic*/
     plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, MANUEL );
     plugs[1].setColor( CRGB::Green );
     plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
@@ -81,6 +83,7 @@ void setup(){
     plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, MANUEL );
     plugs[2].setColor( CRGB::Blue );
     plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
+    plugs[2].readFromJson();
     // plugs[2].setColor( CRGB::Purple );
     plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, MANUEL );
     plugs[3].setColor( CRGB::Yellow );

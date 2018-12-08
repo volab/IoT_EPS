@@ -228,7 +228,11 @@ La librairie utilisée: `ArduinoJson`_ version 5.13.2
 
 Assistant plutôt efficace: `ArduinoJson Assistant`_
 
-.._`ArduinoJson Assistant`  : https://arduinojson.org/v5/assistant/
+.. _`ArduinoJson Assistant` : https://arduinojson.org/v5/assistant/
+
+Json genrator sur `ObjGen.com`_
+
+.. _`ObjGen.com` : http://www.objgen.com/json
 
 ========================
 Librairies utilisées
