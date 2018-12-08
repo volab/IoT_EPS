@@ -10,13 +10,14 @@ var v_diffSelector = document.getElementById("rDivDiffSelector");
 var v_divDiffAt = document.getElementById("rDivDiffAt");
 var v_divDiffIn = document.getElementById("rDivDiffIn");
 
-// var v_rMA = document.getElementById("rMA");
 var v_redManuel = document.getElementById("rManuel");
 var v_rRdOn = document.getElementById("rRdOn");
 var v_rRdOff = document.getElementById("rRdOff");
 var v_divDiffSelector = document.getElementsByClassName ("redPlug divDiffSelector");
 var v_rRdDiffAt = document.getElementById("rRdDiffAt");
 var v_rRdDiffIn = document.getElementById("rRdDiffIn");
+
+var v_redSubmit = document.getElementById("redSubmit");
 
 /* Fonction de masquage de tous les éléments */
 function f_displayNoneAll(){
@@ -36,11 +37,9 @@ f_displayNoneAll();
 
 /* Mode Manuel : onclick */
 v_redManuel.onclick = function (){
-    if (v_redManuel.checked) {
-         document.getElementsByClassName("redPlug div_Manuel")[0].style.display="block";
-    } else {
-        document.getElementsByClassName("redPlug div_Manuel")[0].style.display="none";
-}}
+    f_displayNoneAll();
+    document.getElementsByClassName("redPlug div_Manuel")[0].style.display="block";
+    }
 
 v_rRdOn.onclick = function(){
     document.getElementById("rDivDiffSelector").style.display = "block"; 
@@ -62,6 +61,43 @@ v_rRdDiffAt.onclick = function(){
 v_rRdDiffIn.onclick = function(){
     v_divDiffIn.style.display = "block";
     v_divDiffAt.style.display = "none";
+}
+
+v_redSubmit.onclick = function(){
+    document.getElementById("formMA").submit();
+    document.getElementById("formMA").reset();
+    }
+
+/* Mode Minuterie */
+var v_redMinuterie = document.getElementById("rMinuterie");
+
+v_redMinuterie.onclick = function(){
+    f_displayNoneAll();
+    document.getElementsByClassName("redPlug divSummary div_Minuterie")[0].style.display="block";
+}
+
+/* Mode Cyclique */
+var v_redCyclique = document.getElementById("rCyclique");
+
+v_redCyclique.onclick = function(){
+    f_displayNoneAll();
+    document.getElementsByClassName("redPlug divSummary div_Cyclique")[0].style.display="block";
+}
+
+/* Mode Hebdomadaire */
+var v_redHebdo = document.getElementById("rHebdo");
+
+v_redHebdo.onclick = function(){
+    f_displayNoneAll();
+    document.getElementsByClassName("redPlug divSummary div_Hebdo")[0].style.display="block";
+}
+
+/* Mode Clone */
+var v_redClone = document.getElementById("rClone");
+
+v_redClone.onclick = function(){
+    f_displayNoneAll();
+    document.getElementsByClassName("redPlug divSummary div_Clone")[0].style.display="block";
 }
 
 

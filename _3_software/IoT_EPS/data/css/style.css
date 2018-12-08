@@ -58,12 +58,24 @@ fieldset{
     text-align: center;
 }
 
+.labelDaySelector{
+    margin: 0 1% 0 1%;
+}
+
+.colorRed{
+    color:red;
+}
+
 .redPlug,.greenPlug,.bluePlug,.yellowPlug{
     margin: 0 2% 0 2%;
     }
   
 /* RED */
 .redPlug{
+}
+
+.redDivSubmitReset{
+    text-align: center;
 }
 
 .redPlug fieldset{

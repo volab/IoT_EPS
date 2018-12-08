@@ -39,14 +39,15 @@
         </nav>
 
         <main> <!-- corp de la page -->
+            <!-- redPlug -->
             <div class="redPlug">
                 <fieldset id="fs_red">
                     <legend><h2>Prise Rouge</h2></legend>
                     <div class="row">
                         <div class="col s2">
-                            <!-- radio -->
+                            <!-- radio Selection des Modes-->
                             <div class="redPlug modeSelector">
-                                <p>Séléction du mode :</p>
+                                <p>Séléction du Mode :</p>
                                 <ul>
                                     <li><input type="radio" name="rMode" 
                                         class="redPlug radioManuel" 
@@ -94,7 +95,8 @@
                                 <div class="redPlug divSummary div_Manuel">
                                     <h5>Mode Manuel</h5>
                                     <form id="formMA" method="post" action="plugonoff">
-                                        <input type="hidden" name="COLOR" value="ROUGE">
+                                        <input type="hidden" name="COLOR" value="redPlug">
+                                        <input type="hidden" name="Mode" value="Manuel">
                                         <div class="row">
                                             <div class="redPlug switch col s4" id="rManSwitch">
                                                 <p>Marche arrêt immediat :</p>
@@ -119,7 +121,7 @@
 
                                             <!-- Red divDiffSelector -->
                                             <div class="redPlug divDiffSelector col s4" id="rDivDiffSelector">
-                                                <p>Sélécion du mode d'arrêt différer : </p>
+                                                <p>Sélécion du Mode d'arrêt différer : </p>
                                                 <ul>    
                                                     <li><input type="radio" name="rDiff" 
                                                         class="redPlug rDiffSelector"
@@ -148,24 +150,153 @@
                                             <!-- Red diffIn -->
                                             <div class="redPlug diffIn col s3" id="rDivDiffIn">
                                                     <p>Arréter la prise dans (Durée en minute):</p>
-                                                    <input type="time" name="rTxtDiffIn"/>
+                                                    <!-- <input type="time" name="rTxtDiffIn"/> -->
+                                                    <input type="number" name="rTxtDiffIn" id="id_redNumMinuterie" min="1" max="300"> 
                                             </div>
                                         </div>
-                                        <input type="submit"/>
-                                        <input type="reset"/> 
+                                        <div class="redDivSubmitReset">
+                                            <input type="submit" id="redSubmit"/>
+                                            <input type="reset"/> 
+                                        </div>
                                     </form>
                                 </div>
+
+                                <!-- Red Minuterie -->
                                 <div class="redPlug divSummary div_Minuterie">
                                     <h5>Mode Minuterie</h5>
+                                    <form id="formMinuterie" method="post" action="plugonoff">
+                                        <input type="hidden" name="COLOR" value="redPlug">
+                                        <input type="hidden" name="Mode" value="Minuterie">
+                                        <div class="row">
+                                            <div class="redPlug col s4">
+                                                <p>Réglage de la minuterie (en minute):</p>
+                                                <input type="number" name="redNumMinuterie" id="id_redNumMinuterie" min="1" max="300">
+                                            </div>
+                                        </div>
+                                        <div class="redDivSubmitReset">
+                                            <input type="submit" id="redSubmit"/>
+                                            <input type="reset"/> 
+                                        </div>
+                                    </form>
                                 </div>
+
+                                <!-- Red Cylclique -->
                                 <div class="redPlug divSummary div_Cyclique">
                                     <h5>Mode Cyclique</h5>
+                                    <form id="formCyclique" method="post" action="plugonoff">
+                                        <input type="hidden" name="COLOR" value="redPlug">
+                                        <input type="hidden" name="Mode" value="Cyclique">
+                                        <div class="row">
+                                            <div class="redPlug">
+                                                <p>Réglage de la période de fonctionnement et de période de repos (en minute):</p>
+                                                <div class="redPlug cyliqueOn col s3" >
+                                                    <label for="id_redNumOnCyclique">Duréee ON</label>
+                                                    <input type="number" name="redNumOnCyclique" id="id_redNumOnCyclique" min="1" max="300">
+                                                </div>
+                                                <div class="redPlug cyliqueOff col s3" >
+                                                    <label for="id_redNumOffCyclique">Duréee OFF</label>
+                                                    <input type="number" name="redNumOffCyclique" id="id_redNumOffCyclique" min="1" max="300">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="redDivSubmitReset">
+                                            <input type="submit" id="redSubmit"/>
+                                            <input type="reset"/> 
+                                        </div>
+                                    </form>
                                 </div>
+
+                                <!-- Red Hebdo -->
                                 <div class="redPlug divSummary div_Hebdo">
                                     <h5>Mode Hebdomadaire</h5>
+                                    <form id="formHebdo" method="post" action="plugonoff">
+                                        <input type="hidden" name="COLOR" value="redPlug">
+                                        <input type="hidden" name="Mode" value="Hebdomadaire">
+                                        <p>Selection des jours d'activité :</p></br>
+                                        <div class="row">
+                                            <div class="redPlug col s12" id="div_redSelectAll">
+                                                <label class="labelDaySelector">
+                                                    <input type="checkbox" name="redChkHeboAll" id="id_redChkHeboAll" value="AllDays">
+                                                    <span>Sélectionner tous les jours</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="redPlug col s12" id="div_redDaySelector">
+                                                <label class="labelDaySelector">
+                                                    <input type="checkbox" name="redChkHeboLu" id="id_redChkHeboLu" value="Lundi">
+                                                    <span>Lundi</span>
+                                                </label>
+                                                <label class="labelDaySelector">
+                                                   <input type="checkbox" name="redChkHeboMa" id="id_redChkHeboMa" value="Mardi">
+                                                    <span>Mardi</span>
+                                                </label>    
+                                                <label class="labelDaySelector">
+                                                   <input type="checkbox" name="redChkHeboMe" id="id_redChkHeboMe" value="Mercredi">
+                                                    <span>Mercredi</span>
+                                                </label>    
+                                                <label class="labelDaySelector">
+                                                   <input type="checkbox" name="redChkHeboJe" id="id_redChkHeboJe" value="Jeudi">
+                                                    <span>Jeudi</span>
+                                                </label>    
+                                                <label class="labelDaySelector">
+                                                   <input type="checkbox" name="redChkHeboVe" id="id_redChkHeboVe" value="Vendredi">
+                                                    <span>Vendredi</span>
+                                                </label>    
+                                                <label class="labelDaySelector">
+                                                   <input type="checkbox" name="redChkHeboSa" id="id_redChkHeboSa" value="Samedi">
+                                                    <span>Samedi</span>
+                                                </label>    
+                                                <label class="labelDaySelector">
+                                                   <input type="checkbox" name="redChkHeboDi" id="id_redChkHeboDi" value="Dimanche">
+                                                    <span>Dimanche</span>
+                                                </label>    
+                                           </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="redPlug col s5">
+                                                <label>
+                                                    <span>Heure de début :</span>
+                                                    <input type="time" name="hDebut" id="id_redTimeHebdohDebut"/>
+                                                </label>
+                                            </div>
+                                            <div class="redPlug col s5">
+                                                <label>
+                                                    <span>Heure de fin :</span>
+                                                    <input type="time" name="hFin" id="id_redTimeHebdohFin"/>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="redDivSubmitReset">
+                                            <input type="submit" id="redSubmit"/>
+                                            <input type="reset"/> 
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="redPlug divSummary divClone">
+
+                                <!-- red Clone -->
+                                <div class="redPlug divSummary div_Clone">
                                     <h5>Mode Clone</h5>
+                                    <form id="formClone" method="post" action="plugonoff">
+                                        <input type="hidden" name="COLOR" value="redPlug">
+                                        <input type="hidden" name="Mode" value="Clone">
+                                        <div class="row">
+                                            <p>Sélctionner la prise à dupliquer :</p>
+                                            <div class="redPlug input-field col s12 m4">
+                                                <select id="id_plugSelector">
+                                                    <option value="" disabled selected>...</option>
+                                                    <option value="redPlug">Prise Rouge</option>
+                                                    <option value="greenPlug">Prise Verte</option>
+                                                    <option value="bluePlug">Prise Bleue</option>
+                                                    <option value="yellowPlug">Prise Jaune</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="redDivSubmitReset">
+                                            <input type="submit" id="redSubmit"/>
+                                            <input type="reset"/> 
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -173,18 +304,21 @@
                 </fieldset>
             </div>
 
+            <!-- greenPlug -->
             <div class="greenPlug">
                 <fieldset id="fs_green">
                     <legend><h2>Prise Verte</h2></legend>
                 </fieldset>
             </div>
 
+            <!-- bluePlug -->
            <div class="bluePlug">
                 <fieldset id="fs_blue">
                     <legend><h2>Prise Bleu</h2></legend>
                 </fieldset>
             </div>
 
+           <!-- yellowPlug --> 
            <div class="yellowPlug">
                 <fieldset id="fs_yellow">
                     <legend><h2>Prise Jaune</h2></legend>
