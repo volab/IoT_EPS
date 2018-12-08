@@ -8,16 +8,13 @@
 // #include "Cmcp.h"
 // #include <FastLED.h>
 
-/**
-a no named enumeration for plug mode
-*/
-enum {
-    MANUEL, /**< Manuel mode of the plug */
-    TIMER, /*!< Timer mode of the plug */
-    CYCLE, /*!< Cyclic mode of the plug */
-    HEBDO, /*!< Weekly mode of the plug */
-    CLONE /**< @brief  clone an other plug mode*/
-};
+// enum {
+    // MANUEL, /**< Manuel mode of the plug */
+    // TIMER, /*!< Timer mode of the plug */
+    // CYCLE, /*!< Cyclic mode of the plug */
+    // HEBDO, /*!< Weekly mode of the plug */
+    // CLONE /**< @brief  clone an other plug mode*/
+// };
 
 
 /**
@@ -55,7 +52,7 @@ class CPowerPlug : public Cmcp {
  
         CPowerPlug(){}
         CPowerPlug( plugColor_t couleur ){ _couleur = couleur;}
-        void begin( int pin , int onOffLedPin, int mode = MANUEL );
+        void begin( int pin , int onOffLedPin, int mode = 0 );
 /** @todo rewrite a new begin methode to add plugName and _color*/
         void setColor( plugColor_t color ){ _couleur = color; }
         bool getstate(){ return _state; }
@@ -80,18 +77,21 @@ class CPowerPlug : public Cmcp {
         }
         
         bool readFromJson();
+        void handleHtmlReq( String allRecParam );
+        
+        static int modeId( String mode );
         
         
     private:
-
+        static const String modes[5];
         int _pin = 0; /**< @brief The relay command plug pin*/
         bool _state;
         String _plugName ;
-        int _mode = MANUEL;
+        int _mode = 0;
         int _onOffLedPin;/**< a pin to display plug state diff of the cmd plug pin*/
         // plugColor_t _couleur = ROUGE;
         plugColor_t _couleur = CRGB::Red;
-
+        String extractParamFromHtmlReq( String allRecParam, String Param );
         
 
         /**

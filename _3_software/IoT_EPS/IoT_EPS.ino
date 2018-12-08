@@ -69,23 +69,24 @@ void setup(){
     
     // mcp.begin();
     Cmcp::init();
-    plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, MANUEL );
+    plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, CPowerPlug::modeId("MANUEL") );
     plugs[0].setColor( CRGB::Red );
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
     plugs[0].readFromJson();
     /** @todo improve error check from CPowerPlug::readFromJson*/
     /** @todo ajouter pin, pinLed et couleur au json */
     /** @todo + le nombre de plug pour rendre cette séquense dynamic*/
-    plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, MANUEL );
+    
+    plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, CPowerPlug::modeId("MANUEL") );
     plugs[1].setColor( CRGB::Green );
     plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
     plugs[1].readFromJson();
-    plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, MANUEL );
+    plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, CPowerPlug::modeId("MANUEL") );
     plugs[2].setColor( CRGB::Blue );
     plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
     plugs[2].readFromJson();
     // plugs[2].setColor( CRGB::Purple );
-    plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, MANUEL );
+    plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, CPowerPlug::modeId("MANUEL") );
     plugs[3].setColor( CRGB::Yellow );
     plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
     for ( int i = 0; i < NBRPLUGS ; i++ ){

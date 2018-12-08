@@ -19,6 +19,7 @@
 #include <ESP8266mDNS.h>
 #include <Adafruit_MCP23017.h>
 #include <FastLED.h>
+// #include <Array.h>
 
 #include "credential.h"
 #include "configParam.h"

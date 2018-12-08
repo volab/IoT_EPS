@@ -168,6 +168,9 @@ void handlePlugConfig(){
 extern CPowerPlug plugs[4];
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
+    /////////////////////////////////////////////////////////////////////////////
+    //      DISPLAY URI                                                        //
+    /////////////////////////////////////////////////////////////////////////////
     String uriReceived = server.uri();
     DSPL( dPrompt + F(" Received uri = ") + uriReceived );
     DSPL( dPrompt + " nbr de parametres : "+(String)server.args() );
@@ -176,6 +179,8 @@ void handlePlugOnOff(){
         allArgs += server.argName( i ) + "=" + server.arg( i ) + "/ ";
     }
     DSPL( dPrompt + allArgs);
+    /////////////////////////////////////////////////////////////////////////////
+
     String plugColor = server.arg("COLOR");
     DSPL( dPrompt + " Plug color = " + plugColor );
     String plugVal = server.arg("PLUG");
@@ -198,6 +203,7 @@ void handlePlugOnOff(){
         // return;
     } else {
         if ( plugVal == "1") plugs[i].on(); else plugs[i].off();
+        plugs[i].handleHtmlReq( allArgs ); 
         returnVal = "OK";
     }
    

@@ -10,8 +10,16 @@
 #include "cpowerplug.h"
 #include "debugSerialPort.h"
 
+const String CPowerPlug::modes[5] = { "MANUEL", "TIMER", "CYCLE", "HEBDO", "CLONE"};
 
 
+int CPowerPlug::modeId( String mode ){
+    int i;
+    for ( i = 0; i <  5 ; i++ ){
+        if ( mode == modes[i] ) break;
+    }
+    return i;
+}
 
 void CPowerPlug::begin( int pin , int onOffLedPin, int mode ){
     if (!_initDone) init();
@@ -70,15 +78,15 @@ bool CPowerPlug::readFromJson(){
     String sClonedPlug, sOnOffCount;
     String sJours[7];
     DEFDPROMPT("reading config values for " + getPlugName())
-    DSPL( dPrompt +F("Mounting FS..."));
+    // DSPL( dPrompt +F("Mounting FS..."));
     if (SPIFFS.begin()) {
-        DEBUGPORT.println(dPrompt + F("File system mounted "));
+        // DEBUGPORT.println(dPrompt + F("File system mounted "));
         if (SPIFFS.exists( CONFIGFILENAME )) {
             //file exists, reading and loading
-            DSP(dPrompt + F("reading config file... "));
+            // DSP(dPrompt + F("reading config file... "));
             File configFile = SPIFFS.open( CONFIGFILENAME , "r");
             if (configFile) {
-                DSPL( F("Config file is open ") );
+                // DSPL( F("Config file is open ") );
                 size_t size = configFile.size();
                 // Allocate a buffer to store contents of the file.
                 std::unique_ptr<char[]> buf(new char[size]);
@@ -135,4 +143,27 @@ bool CPowerPlug::readFromJson(){
     }
 }
 
+/** 
+@fn void CPowerPlug::handleHtmlReq()
+@brief treat all html received parameter and write in json config file
+@param allRecParam Received parameters as a String
+@return nothing
+*/
+void CPowerPlug::handleHtmlReq( String allRecParam ){
+    DEFDPROMPT( "CPlug handle html param");
+    DSPL( dPrompt + allRecParam);
+    String param = "MODE";
+    String mode = extractParamFromHtmlReq( allRecParam, param );
+    DSPL( dPrompt + "Mode = " + mode );
+    _mode = modeId( mode );
+    DSPL( dPrompt + "_mode =" + (String)_mode);
+    // allRecParam = 
+}
+
+String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
+    param +="=";
+    int pos = allRecParam.indexOf( param ) + param.length();
+    int fin = allRecParam.indexOf( "/", pos );
+    return allRecParam.substring( pos, fin );
+}
         
