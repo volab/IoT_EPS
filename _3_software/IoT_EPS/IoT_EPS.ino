@@ -8,13 +8,14 @@
 * @brief EPS Electrical Power Strip software
 
 @section dependencies Lib dependencies
-Utilisation de la bibliothèque ESP8266WiFi version 1.0
-
-Utilisation de la bibliothèque ArduinoJson version 5.13.2
-
-Utilisation de la bibliothèque Wire version 1.0
-
-Utilisation de la bibliothèque RTClib version 1.2.0
+- Utilisation de la bibliothèque ESP8266WiFi version 1.0
+- Utilisation de la bibliothèque ESP8266WebServer version 1.0 
+- Utilisation de la bibliothèque ArduinoJson version 5.13.2 
+- Utilisation de la bibliothèque Wire version 1.0
+- Utilisation de la bibliothèque RTClib version 1.2.0
+- Utilisation de la bibliothèque ESP8266mDNS
+- Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3
+- Utilisation de la bibliothèque FastLED version 3.2.1
 */
 
 

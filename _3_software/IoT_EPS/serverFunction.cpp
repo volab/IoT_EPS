@@ -165,6 +165,17 @@ void handlePlugConfig(){
     server.send(200, "text/plain", "OK");
 }
 
+/** 
+@fn void handlePlugOnOff()
+@brief this the handler for html request
+@return nothing and no parameter
+
+This function is activated when a request is received from the client's browser.
+
+It creats a concatened String of all parameters.
+
+This the allArgs local var that is passed to CPowerPlug::extractParamFromHtmlReq.
+*/
 extern CPowerPlug plugs[4];
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")

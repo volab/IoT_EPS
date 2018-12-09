@@ -10,7 +10,7 @@
 #include "cpowerplug.h"
 #include "debugSerialPort.h"
 
-const String CPowerPlug::modes[5] = { "MANUEL", "TIMER", "CYCLE", "HEBDO", "CLONE"};
+const String CPowerPlug::modes[5] = { "Manuel", "Minuterie", "Cyclique", "Hebdomadaire", "Clone"};
 
 
 int CPowerPlug::modeId( String mode ){
@@ -63,16 +63,34 @@ void CPowerPlug::toggle(){
     updateOutputs();
 }
 
+/** 
+@fn bool CPowerPlug::isItTimeToSwitch()
+@brief when completed, this function check if it is time to switch the plug
+@return no return value and no parameter
+*/
 bool CPowerPlug::isItTimeToSwitch(){
     /** @todo complete isItTimeToSwitch */
-    return (true); //to to change ths one ;-)
+    return (true); //to do change this one ;-)
 }
 
+/** 
+@fn void CPowerPlug::updateOutputs()
+@brief update the state of the physical outputs
+@return no return value and no parameter
+*/
 void CPowerPlug::updateOutputs(){
     _mcp.digitalWrite( _pin, _state );
-    _mcp.digitalWrite( _onOffLedPin, _state );    
+    _mcp.digitalWrite( _onOffLedPin, _state );   
+/** @todo write the state in the config json file*/    
 }
 
+/** 
+@fn bool CPowerPlug::readFromJson()
+@brief read from json  configuration file the parameters for the instancied plug
+
+Search are made in the file on the name of the plug as redPlug for exemple
+@return a booleen true if all is ok
+*/
 bool CPowerPlug::readFromJson(){
     String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
     String sClonedPlug, sOnOffCount;
@@ -122,7 +140,7 @@ bool CPowerPlug::readFromJson(){
                         }   
                     }
                     DSPL("");
-
+/** @todo converts and store the string parameter in the members of the class*/
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
                     return false;
@@ -152,18 +170,61 @@ bool CPowerPlug::readFromJson(){
 void CPowerPlug::handleHtmlReq( String allRecParam ){
     DEFDPROMPT( "CPlug handle html param");
     DSPL( dPrompt + allRecParam);
-    String param = "MODE";
+    String param = JSON_PARAMNAME_MODE;
     String mode = extractParamFromHtmlReq( allRecParam, param );
     DSPL( dPrompt + "Mode = " + mode );
     _mode = modeId( mode );
     DSPL( dPrompt + "_mode =" + (String)_mode);
+    writeToJson( param, mode );
     // allRecParam = 
 }
-
+/** 
+@fn String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param )
+@brief to extract a parameter from all parameter
+@param allRecParam a concatened String containing all received parameters build in handlePlugOnOff()
+@param param the parameter to extract
+@return the value of the parameter
+*/
 String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
     param +="=";
     int pos = allRecParam.indexOf( param ) + param.length();
     int fin = allRecParam.indexOf( "/", pos );
     return allRecParam.substring( pos, fin );
+    /** @todo improve error check*/
 }
-        
+
+/** 
+@fn void CPowerPlug::writeToJson( String param, String value )
+@brief this function write a parameter to json config file for the _name plug
+@param param name of the parameter to be written
+@param value the value of the parameter to be written in the json file
+@return nothing
+*/
+void CPowerPlug::writeToJson( String param, String value ){
+    DEFDPROMPT( "write to jSon");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    DSPL( dPrompt);
+    if (configFile) {
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+        configFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+            JsonObject& plug = json[getPlugName()]; 
+            DSPL( dPrompt + param + " = " + value);
+            plug[param] = value; 
+            configFile.seek(0, SeekSet);
+            json.prettyPrintTo(configFile);
+            // plug.prettyPrintTo(Serial);
+            DSPL();
+        } else {
+            DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+            // return false;
+        }
+        configFile.close();
+        // return true;  
+/** @todo perhaps add error handling as in readFromJson()*/        
+    }    
+}

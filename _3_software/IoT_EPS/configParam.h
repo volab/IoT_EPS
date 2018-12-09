@@ -1,4 +1,11 @@
-
+/**
+* @file configParam.h
+* @author J.SORANZO
+* @date 2018
+* @copyright 2018 CC0
+* @version 1.0
+* @brief header file of the ConfigParam class
+*/
 
 //#pragma once
 #ifndef CONFIGPARAM_H

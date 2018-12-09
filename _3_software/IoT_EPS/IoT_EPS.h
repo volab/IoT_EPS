@@ -42,6 +42,11 @@
 #define HTML_JSON_BLUEPLUGNAME "bluePlug"
 #define HTML_JSON_YELLOWPLUGNAME "yellowPlug"
 
+/** @todo define other parameters Json names*/
+#define JSON_PARAMNAME_MODE "Mode"
+#define JSON_PARAMNAME_STATE "State"
+
+
 #define FLASHERTIME 500
 
 #define PLUG0PIN 0 // MPC23017 numbering pin21 PORTA.0

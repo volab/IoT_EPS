@@ -77,6 +77,7 @@ class CPowerPlug : public Cmcp {
         }
         
         bool readFromJson();
+        void writeToJson( String param, String val );
         void handleHtmlReq( String allRecParam );
         
         static int modeId( String mode );
@@ -85,9 +86,9 @@ class CPowerPlug : public Cmcp {
     private:
         static const String modes[5];
         int _pin = 0; /**< @brief The relay command plug pin*/
-        bool _state;
-        String _plugName ;
-        int _mode = 0;
+        bool _state; /**< @brief on off state of the physical plug*/
+        String _plugName ; /**< @brief redPlug, greenPlug... as it is named in the html page*/
+        int _mode = 0; /**< @brief MANUAL, CYCLIC... in int form see modeId method*/
         int _onOffLedPin;/**< a pin to display plug state diff of the cmd plug pin*/
         // plugColor_t _couleur = ROUGE;
         plugColor_t _couleur = CRGB::Red;
@@ -115,6 +116,7 @@ class CPowerPlug : public Cmcp {
         unsigned int _offDelay;
 
         void updateOutputs();
+        
 
         
 };
