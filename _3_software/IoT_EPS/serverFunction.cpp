@@ -203,7 +203,7 @@ void handlePlugOnOff(){
     int i;
     
     for ( i = 0; i < 4 ; i++ ){
-        DSPL( dPrompt + "plugName : " + plugs[i].getPlugName() );
+        // DSPL( dPrompt + "plugName : " + plugs[i].getPlugName() );
         if ( plugs[i].getPlugName() == plugColor ) break;
     }
     String returnVal;

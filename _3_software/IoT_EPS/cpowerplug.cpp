@@ -10,7 +10,7 @@
 #include "cpowerplug.h"
 #include "debugSerialPort.h"
 
-const String CPowerPlug::modes[5] = { "Manuel", "Minuterie", "Cyclique", "Hebdomadaire", "Clone"};
+const String CPowerPlug::modes[5] = { MANUAL_MODE, TIMER_MODE, CYCLIC_MODE, HEBDO_MODE, CLONE_MODE };
 
 
 int CPowerPlug::modeId( String mode ){
@@ -168,14 +168,43 @@ bool CPowerPlug::readFromJson(){
 @return nothing
 */
 void CPowerPlug::handleHtmlReq( String allRecParam ){
+    String param, mode, state;
     DEFDPROMPT( "CPlug handle html param");
     DSPL( dPrompt + allRecParam);
-    String param = JSON_PARAMNAME_MODE;
-    String mode = extractParamFromHtmlReq( allRecParam, param );
+    DSPL( dPrompt + "Traitements pour : " + _plugName );
+    param = JSON_PARAMNAME_MODE;
+    mode = extractParamFromHtmlReq( allRecParam, param );
     DSPL( dPrompt + "Mode = " + mode );
-    _mode = modeId( mode );
-    DSPL( dPrompt + "_mode =" + (String)_mode);
+    // _mode = modeId( mode );
+    // DSPL( dPrompt + "_mode =" + (String)_mode);
     writeToJson( param, mode );
+    if ( mode == MANUAL_MODE){
+        DSPL( dPrompt + "Manual mode actions ");
+        //manual mode parameters :
+        //State
+        param = JSON_PARAMNAME_STATE;
+        state = extractParamFromHtmlReq( allRecParam, param );
+        DSPL( dPrompt + _plugName + " : extracted state = " + state);
+        //duree avant arret dureeOff
+        //ou
+        //heure arret : hFin
+        // ou rien
+    } else if ( mode == TIMER_MODE ){
+        DSPL( dPrompt + "Timer mode actiuons" );
+        //Timer mode parameters
+        //dureeOn
+    } else if ( mode == CYCLIC_MODE ){
+        DSPL( dPrompt + "Cyclic mode actions" ); 
+        //cyclic mode parameters
+        //dureeOn//dureeOff//hDebut
+    } else if ( HEBDO_MODE ){
+        DSPL( dPrompt + "Hebdo mode actions" );
+        //hebdo mode parameters
+        //hdebut hFin
+    } else if ( mode ==  CLONE_MODE){
+        DSPL( dPrompt + "clone mode actions" );
+        //clode mode parameters
+    }
     // allRecParam = 
 }
 /** 
@@ -203,7 +232,7 @@ String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
 void CPowerPlug::writeToJson( String param, String value ){
     DEFDPROMPT( "write to jSon");
     File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
-    DSPL( dPrompt);
+    // DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
         // Allocate a buffer to store contents of the file.
@@ -212,13 +241,13 @@ void CPowerPlug::writeToJson( String param, String value ){
         DynamicJsonBuffer jsonBuffer;
         JsonObject& json = jsonBuffer.parseObject(buf.get());
         if (json.success()) {
-            JsonObject& plug = json[getPlugName()]; 
-            DSPL( dPrompt + param + " = " + value);
+            JsonObject& plug = json[_plugName]; 
+            DSPL( dPrompt + _plugName + " : " + param + " = " + value);
             plug[param] = value; 
             configFile.seek(0, SeekSet);
             json.prettyPrintTo(configFile);
             // plug.prettyPrintTo(Serial);
-            DSPL();
+            // DSPL();
         } else {
             DEBUGPORT.println(dPrompt + F("Failed to load json config"));
             // return false;

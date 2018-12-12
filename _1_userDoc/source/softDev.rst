@@ -19,9 +19,11 @@ Avancement
 #. reception d'une action via un bouton :  
 #. lecture du fichier de configuration : ok
 #. intégration MCP23017 : ok
-#. lecture du fichier de configuration façon Pierre (config2.json) :
+
+#. lecture du fichier de configuration façon Pierre (config3.json) : 70%
 #. gestion bouton poussoir mécanique : 
-#. Ecriture fichier json : 
+#. Ecriture fichier json : 60%
+#. Traitement de la requete html avec analyze, exécution et écriture json: 10%
 
 ====================================
 Convention de nommage
@@ -59,7 +61,7 @@ Périodique/cyclique
 - durée off 
 - avec reprise de On après off indéfiniment jusqu'au repassage en commande manuelle.
 - avec champ heure de début (et 'Entrez une heure de début (facultatif)' par défaut)
-- un appui court sur BP met à OFF mais reste en mode calendaire pour le cycle suivant
+- un appui court sur BP met à OFF mais reste en mode cyclique pour le cycle suivant
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Hebdomadaire
@@ -67,7 +69,7 @@ Hebdomadaire
 - heure de mise on
 - heure de mise off
 - choix des jours de la semaine
-- un appui court sur BP met à OFF mais reste en mode calendaire pour le cycle suivant
+- un appui court sur BP met à OFF mais reste en mode Hebdomadaire pour le cycle suivant
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Clone

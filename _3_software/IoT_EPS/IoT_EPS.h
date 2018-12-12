@@ -44,8 +44,16 @@
 
 /** @todo define other parameters Json names*/
 #define JSON_PARAMNAME_MODE "Mode"
+#define MANUAL_MODE "Manuel"
+#define TIMER_MODE "Minuterie"
+#define CYCLIC_MODE "Cyclique"
+#define HEBDO_MODE "Hebdomadaire"
+#define CLONE_MODE "Clone"
 #define JSON_PARAMNAME_STATE "State"
-
+#define JSON_PARAMNAME_ONDURATION "dureeOn"
+#define JSON_PARAMNAME_OFFDURATION "dureeOff"
+#define JSON_PARAMNAME_STARTTIME "hDebut"
+#define JSON_PARAMNAME_ENDTIME "hFin"
 
 #define FLASHERTIME 500
 
