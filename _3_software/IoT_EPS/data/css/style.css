@@ -5,7 +5,6 @@ html{
 body{
     background-color: #aeb6bf;
     }
-<<<<<<< HEAD
 
 nav{
     max-height: 30px;
@@ -51,23 +50,16 @@ fieldset{
     color: black;
 }
 
-.divSummary{
+.div_subSummary{
     color: black;
     }
 
-.divSummary h5{
-=======
-
-nav{
-    max-height: 30px;
-    list-style-type: none;
->>>>>>> dev_jojo
+.div_subSummary h5{
     text-align: center;
     margin: 0;
     padding: 0;
 }
 
-<<<<<<< HEAD
 .labelDaySelector{
     margin: 0 1% 0 1%;
 }
@@ -76,40 +68,6 @@ nav{
     color:red;
 }
 
-=======
-footer{
-      position: absolute;
-      bottom: 0;
-      }
-
-header, nav, footer{padding: 0 1%;}
-
-nav li{
-        display: inline-block;
-}
-
-.header_logo{
-    width: 100%;
-    height: auto;
-    vertical-align: middle;
-    }
-
-.header_h1{
-    vertical-align: middle;
-    text-align:   center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 3em;
-    }
-
-fieldset{
-    box-shadow: 6px 6px 0;
-    border: 2px ridge black;
-    border-radius:0 10px 0 10px;
-    }
-
->>>>>>> dev_jojo
 .redPlug,.greenPlug,.bluePlug,.yellowPlug{
     margin: 0 2% 0 2%;
     }
@@ -118,13 +76,10 @@ fieldset{
 .redPlug{
 }
 
-<<<<<<< HEAD
 .redDivSubmitReset{
     text-align: center;
 }
 
-=======
->>>>>>> dev_jojo
 .redPlug fieldset{
     color: #b11721;
 }
