@@ -21,6 +21,17 @@
 
 #include "IoT_EPS.h"
 
+/** 
+@fn void wifiLedFlash( int speed )
+@brief a simple function to flash wifi led n times before connection
+@param flashing speed
+@return nothing
+
+function is defined at the end of this file.
+
+There is 2 flashing speeds one for AP mode and one for Station mode
+*/
+void wifiLedFlash( int speed, int count );
 
 ConfigParam cParam; /**< @brief to hold the configuration parameters*/
 Credential wifiCred;
@@ -62,46 +73,25 @@ void setup(){
     
     cParam.begin();
     wifiCred.begin();
+    
+    /////////////////////////////////////////////////////////////////////////////
+    //     rtc DS3231 start                                                           //
+    /////////////////////////////////////////////////////////////////////////////
     rtc.begin();
     Wire.beginTransmission(DS3231_ADDRESS);
     errRTCinit = Wire.endTransmission();
-    
-    FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
-    
-    // mcp.begin();
-    Cmcp::init();
-    plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, CPowerPlug::modeId("MANUEL") );
-    plugs[0].setColor( CRGB::Red );
-    plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
-    plugs[0].readFromJson();
-    /** @todo improve error check from CPowerPlug::readFromJson*/
-    /** @todo ajouter pin, pinLed et couleur au json */
-    /** @todo + le nombre de plug pour rendre cette séquense dynamic*/
-    
-    plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, CPowerPlug::modeId("MANUEL") );
-    plugs[1].setColor( CRGB::Green );
-    plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
-    plugs[1].readFromJson();
-    plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, CPowerPlug::modeId("MANUEL") );
-    plugs[2].setColor( CRGB::Blue );
-    plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
-    plugs[2].readFromJson();
-    // plugs[2].setColor( CRGB::Purple );
-    plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, CPowerPlug::modeId("MANUEL") );
-    plugs[3].setColor( CRGB::Yellow );
-    plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
-    for ( int i = 0; i < NBRPLUGS ; i++ ){
-        colorLeds[i] = plugs[i].getColor();
+    if ( !errRTCinit ){
+        if (rtc.lostPower()){
+            DSPL( dPrompt + "une remise à l'heure est nécessaire");
+            //errRTCinit = true;
+            /** @todo enable or not ? errRTCinit due to lots power*/
+        }
     }
-    
-    FastLED.setBrightness(5); /**< @brief normaly in the json config file*/
-    /** @todo Read the general brightness of color LED in JSON config file*/
-
-
     if ( errRTCinit ) {
         DSPL(dPrompt + F("ERR : Couldn't find RTC"));
     } else {
         errRTCinit = false;
+        /** @todo check time validity */
         now = rtc.now();
         String message = dPrompt + F("DS3231 Start date : ");
         // sprintf(buf, "<VoLAB> DS3231 Start date : %d/%d/%d %d:%d:%d", 
@@ -110,56 +100,94 @@ void setup(){
         message += (String)now.hour()+":"+ (String)now.minute()+":";
         message += (String)now.second();      
         DSPL( message);
-    } 
+    }
+    
+    /////////////////////////////////////////////////////////////////////////////
+    //     Plugs config                                                        //
+    /////////////////////////////////////////////////////////////////////////////
+    FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
+    
+    Cmcp::init();
+    plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CPowerPlug::modeId("MANUEL") );
+    plugs[0].setColor( CRGB::Red );
+    plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
+    plugs[0].readFromJson();
+    /** @todo improve error check from CPowerPlug::readFromJson*/
+    /** @todo add pin, pinLed and color to json file*/
+    /** @todo + le nombre de plug pour rendre cette séquense dynamic*/
+    
+    plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, BP1, CPowerPlug::modeId("MANUEL") );
+    plugs[1].setColor( CRGB::Green );
+    plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
+    plugs[1].readFromJson();
+    plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, BP2, CPowerPlug::modeId("MANUEL") );
+    plugs[2].setColor( CRGB::Blue );
+    plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
+    plugs[2].readFromJson();
+    // plugs[2].setColor( CRGB::Purple );
+    plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, BP3, CPowerPlug::modeId("MANUEL") );
+    plugs[3].setColor( CRGB::Yellow );
+    plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
+    for ( int i = 0; i < NBRPLUGS ; i++ ){
+        colorLeds[i] = plugs[i].getColor();
+        /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/
+    }
+    FastLED.setBrightness(5); /**< @brief normaly in the json config file*/
+    /** @todo Read the general brightness of color LED in JSON config file*/
+    FastLED.show();
+    
+    /////////////////////////////////////////////////////////////////////////////
+    //  WIFI start                                                             //
+    /////////////////////////////////////////////////////////////////////////////
+    digitalWrite( WIFILED, LOW );
+    pinMode( WIFILED, OUTPUT );
     if (cParam.ready){
         DSPL( dPrompt + F("Wifi mode = ") + cParam.getWifiMode() );
     }
-    
     WiFi.setAutoConnect(false);
     DSP( dPrompt + F("Mode autoconnect : "));
     DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
     DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
 
-    if ( wifiCred.ready ){
+    if ( wifiCred.ready ){ // Station wIFI mode
         if ( cParam.getWifiMode() == "client" ){
             WiFi.mode(WIFI_STA);
             WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
             DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
+            wifiLedFlash( WIFILED_FLASH_FAST, WIFILED_FLASH_COUNT );
             while (WiFi.status() != WL_CONNECTED) {
                 delay(500);
+                digitalWrite( WIFILED , !digitalRead( WIFILED ) );
                 DSP(".");
             }
+            digitalWrite( WIFILED, HIGH);
             DSPL();
-            DSPL(  dPrompt + F("Adresse Wifi.localIP : ") + WiFi.localIP().toString() );
-            
-            
-        } else { //mode softAP
-        // DSPf("SSID : %s, pass : %s", wifi_ssid_s.c_str(), wifipass_s.c_str());
+            DSPL(  dPrompt + F("Adresse Wifi.localIP : ") + WiFi.localIP().toString() );  
+        } else { //WIFI soft Access Point mode
+            wifiLedFlash( WIFILED_FLASH_SLOW, WIFILED_FLASH_COUNT/2 );
             DSP("\n" + dPrompt + F("softAP : "));
             WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0)); 
             DSPL(WiFi.softAP(wifiCred.getSsid(),
                 wifiCred.getPass() )?F("Ready"):F("Failed!"));
-            DSPL(  dPrompt + F("Adresse configured IP : ") + apIP.toString() );  
+            DSPL(  dPrompt + F("Adresse configured IP : ") + apIP.toString() ); 
+            digitalWrite( WIFILED, HIGH);
         }
     }
-    
-    
     MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
     
+   /////////////////////////////////////////////////////////////////////////////
+    //  Start of the check index.html file presence  (check file system)       //
+    /////////////////////////////////////////////////////////////////////////////
     if (!SPIFFS.begin()){
         DSPL(dPrompt + F("SPIFFS Mount failed"));
     } else {
         DSPL(dPrompt + F("SPIFFS Mount succesfull"));
     }
-  // reading file
-/////////////////////////////////////////////////////////////////////////////
-//  Start of the check index.html file presence                            //
-/////////////////////////////////////////////////////////////////////////////
 /** @todo cleanup the .ino code to remove all unnecessary code like displaying SPIFFS health*/
     if (SPIFFS.exists("/index.html")) {
         DSPL( dPrompt + F("html index file found."));
     } else {
-        DSPL( dPrompt + F("fichier html index introuvable."));
+        DSPL( dPrompt + F("html index file not found."));
     }
     String str = "";
     Dir dir = SPIFFS.openDir("/");
@@ -178,17 +206,9 @@ void setup(){
     DSPL( dPrompt + F("SPIFFS max open files : ") + (String)filseSystemInfo.maxOpenFiles );
     DSPL( dPrompt + F("SPIFFS max path lenght : ") + (String)filseSystemInfo.maxPathLength );
     
-    /*struct FSInfo {
-    size_t totalBytes;
-    size_t usedBytes;
-    size_t blockSize;
-    size_t pageSize;
-    size_t maxOpenFiles;
-    size_t maxPathLength;
-    };*/
-/////////////////////////////////////////////////////////////////////////////
-//  End                                                                    //
-/////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
+    //  Server configurations                                                  //
+    /////////////////////////////////////////////////////////////////////////////
     server.on("/list", HTTP_GET, handleFileList);
     server.on("/PlugConfig", HTTP_GET, handlePlugConfig );
     server.on("/plugonoff", HTTP_POST, handlePlugOnOff );
@@ -237,6 +257,25 @@ void loop(){
         // mcp.digitalWrite( PLUG0, statePlug0 );
     }
     FastLED.show();
+    for ( int i = 0; i < NBRPLUGS ; i++ ) plugs[i].bp.update();
+    for ( int i = 0; i < NBRPLUGS ; i++ ){
+        String sMode = plugs[i].readFromJson( JSON_PARAMNAME_MODE );
+        if ( plugs[i].bp.clic() ){
+            if (sMode == MANUAL_MODE){
+                plugs[i].toggle();
+                plugs[i].bp.acquit();
+            }
+            
+        }
+    }
     yield();
+}
+
+void wifiLedFlash( int speed, int count ){
+    for ( int i = 0; i < count ; i++ ){
+        digitalWrite( WIFILED , !digitalRead( WIFILED ) );
+        delay( speed );        
+    }
+    digitalWrite( WIFILED, LOW);
 }
 

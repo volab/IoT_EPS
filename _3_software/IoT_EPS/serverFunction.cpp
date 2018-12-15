@@ -194,7 +194,7 @@ void handlePlugOnOff(){
 
     String plugColor = server.arg("COLOR");
     DSPL( dPrompt + " Plug color = " + plugColor );
-    String plugVal = server.arg("PLUG");
+    String plugVal = server.arg("State");
     DSPL( dPrompt + " Plug val = " + plugVal);
     String duree = server.arg("DUREE");
     DSPL( dPrompt + " Duree val = " + duree);
@@ -213,7 +213,7 @@ void handlePlugOnOff(){
         // server.send(200, "text/plain", "Couleur invalide");
         // return;
     } else {
-        if ( plugVal == "1") plugs[i].on(); else plugs[i].off();
+        if ( plugVal == "ON") plugs[i].on(); else plugs[i].off();
         plugs[i].handleHtmlReq( allArgs ); 
         returnVal = "OK";
     }

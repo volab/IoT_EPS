@@ -2,20 +2,12 @@
 #define _CPOWERPLUG_H
 
 #include "IoT_EPS.h"
-// #include <Arduino.h>
-// #include <RTClib.h>
-// #include <ESP8266WebServer.h>
-// #include "Cmcp.h"
-// #include <FastLED.h>
 
-// enum {
-    // MANUEL, /**< Manuel mode of the plug */
-    // TIMER, /*!< Timer mode of the plug */
-    // CYCLE, /*!< Cyclic mode of the plug */
-    // HEBDO, /*!< Weekly mode of the plug */
-    // CLONE /**< @brief  clone an other plug mode*/
-// };
-
+ /**
+* @def RETURN_NOT_FOUND_VALUE
+When a function need to return a not found value
+*/
+#define RETURN_NOT_FOUND_VALUE "nf"
 
 /**
 * @def ON alias of true
@@ -52,7 +44,7 @@ class CPowerPlug : public Cmcp {
  
         CPowerPlug(){}
         CPowerPlug( plugColor_t couleur ){ _couleur = couleur;}
-        void begin( int pin , int onOffLedPin, int mode = 0 );
+        void begin( int pin , int onOffLedPin, int bpPin, int mode = 0 );
 /** @todo rewrite a new begin methode to add plugName and _color*/
         void setColor( plugColor_t color ){ _couleur = color; }
         bool getstate(){ return _state; }
@@ -77,11 +69,12 @@ class CPowerPlug : public Cmcp {
         }
         
         bool readFromJson();
+        String readFromJson( String param );
         void writeToJson( String param, String val );
         void handleHtmlReq( String allRecParam );
         
         static int modeId( String mode );
-        
+        bouton bp;
         
     private:
         static const String modes[5];
@@ -93,6 +86,7 @@ class CPowerPlug : public Cmcp {
         // plugColor_t _couleur = ROUGE;
         plugColor_t _couleur = CRGB::Red;
         String extractParamFromHtmlReq( String allRecParam, String Param );
+        
         
 
         /**

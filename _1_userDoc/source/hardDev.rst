@@ -20,14 +20,17 @@ Avancement
 #. choix curent sensor: 75%
 #. horloge temps réelle : ok
 #. LED
-#. bouton poussoirs : 50%
+#. bouton poussoirs : ok
 #. Affectation des io : 90%
 #. module relais : ok
 #. définition des modes de fonctionnement : ok
 #. récup paramètre via form submit html : ok
-#. Ecrire dans le json
-#. Piloter les LED WS2801
+#. add  WS2801 LED
 #. Alimentation du module relais en 5V (choix du conver.) : 60%
+#. add power led
+#. add wifi led : ok
+#. add LDR
+#. add I2C nano expander with analog inputs
 
 
 ####
@@ -155,13 +158,13 @@ Affectation des io
     ===== =============
     pins  affectation
     ===== =============
-    D0
+    D0    WIFI LED
     D1    I2C SCL
     D2    I2C data
-    D3    BP0
-    D4    BP1
-    D5    BP2
-    D6    BP3
+    D3    BP3
+    D4    BP2
+    D5    BP1
+    D6    BP0
     D7    DATA WS2801
     D8    CLK WS2801
     ===== =============

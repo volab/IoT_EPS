@@ -10,6 +10,8 @@
 #include "cpowerplug.h"
 #include "debugSerialPort.h"
 
+extern RTC_DS3231 rtc;
+
 const String CPowerPlug::modes[5] = { MANUAL_MODE, TIMER_MODE, CYCLIC_MODE, HEBDO_MODE, CLONE_MODE };
 
 
@@ -21,7 +23,7 @@ int CPowerPlug::modeId( String mode ){
     return i;
 }
 
-void CPowerPlug::begin( int pin , int onOffLedPin, int mode ){
+void CPowerPlug::begin( int pin , int onOffLedPin, int bpPin, int mode ){
     if (!_initDone) init();
     _pin = pin;
     _onOffLedPin = onOffLedPin;
@@ -30,37 +32,41 @@ void CPowerPlug::begin( int pin , int onOffLedPin, int mode ){
     updateOutputs();
     _mcp.pinMode( _pin, OUTPUT );
     _mcp.pinMode( _onOffLedPin, OUTPUT );
+    bp.begin( bpPin );
 
 }
 
-void CPowerPlug::on(){
 
+void CPowerPlug::on(){
     DEFDPROMPT( "CPOwerPlug")
     // if ( _pin == 0){
     if ( !_initDone){
-        DSPL( dPrompt + F(" plug not started (call .begin().") );
+        DSPL( dPrompt + F(" plug not started, call .begin().") );
     }
     _state = ON ;
     updateOutputs();
+    writeToJson( JSON_PARAMNAME_STATE, "ON" );
 }
 
 void CPowerPlug::off(){
     DEFDPROMPT( "CPOwerPlug")
     if (!_initDone){
-        DSPL( dPrompt + F(" plug not started (call .begin().") );
+        DSPL( dPrompt + F(" plug not started, call .begin().") );
     }
     _state = OFF ;
     updateOutputs();
+    writeToJson( JSON_PARAMNAME_STATE, "OFF" );
 }
 
 void CPowerPlug::toggle(){
     DEFDPROMPT( "CPOwerPlug")
-    if (_pin == 0){
+    if (!_initDone){
         /** @todo  check _initDone fonctionality */
-        DSPL( dPrompt + F(" plug not started (call .begin().") );
+        DSPL( dPrompt + F(" plug not started, call .begin().") );
     }
     _state = !_state ;
     updateOutputs();
+    writeToJson( JSON_PARAMNAME_STATE, _state?"ON":"OFF" );
 }
 
 /** 
@@ -162,6 +168,48 @@ bool CPowerPlug::readFromJson(){
 }
 
 /** 
+@fn String CPowerPlug::readFromJson( String param )
+@brief second implementation of this function, to read only one parameter of the curent plug
+@param parma the parameter to retrieve
+@return the value of the parameter or "nf" if not found
+*/
+String CPowerPlug::readFromJson( String param ){
+    String sRetValue;
+    DEFDPROMPT("reading from Json for " + getPlugName() + "pamameter : " + param )
+    if (SPIFFS.begin()) {
+        if (SPIFFS.exists( CONFIGFILENAME )) {
+            File configFile = SPIFFS.open( CONFIGFILENAME , "r");
+            if (configFile) {
+                size_t size = configFile.size();
+                // Allocate a buffer to store contents of the file.
+                std::unique_ptr<char[]> buf(new char[size]);
+                configFile.readBytes(buf.get(), size);
+                DynamicJsonBuffer jsonBuffer;
+                JsonObject& json = jsonBuffer.parseObject(buf.get());
+                if (json.success()) {
+                    JsonObject& plug = json[getPlugName()];
+                    sRetValue = plug[param].as<String>();
+                } else {
+                    DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+                    return RETURN_NOT_FOUND_VALUE;
+                }
+                configFile.close();
+                return sRetValue;
+            }
+        } else {
+            dPrompt += F("Failed to open ");
+            dPrompt += CONFIGFILENAME;
+            DEBUGPORT.println(dPrompt);
+            return RETURN_NOT_FOUND_VALUE;
+        }
+
+    } else {
+        DEBUGPORT.println( dPrompt + F("Failed to mount FS"));
+        return RETURN_NOT_FOUND_VALUE;
+    }    
+}
+
+/** 
 @fn void CPowerPlug::handleHtmlReq()
 @brief treat all html received parameter and write in json config file
 @param allRecParam Received parameters as a String
@@ -185,10 +233,24 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         param = JSON_PARAMNAME_STATE;
         state = extractParamFromHtmlReq( allRecParam, param );
         DSPL( dPrompt + _plugName + " : extracted state = " + state);
-        //duree avant arret dureeOff
+        if (state != "nf"){
+            if (state == "ON") on(); else off();
+            //writeToJson( param, state );
+        }
+        param = JSON_PARAMNAME_OFFDURATION;
+        String dureeOff = extractParamFromHtmlReq( allRecParam, param );
+        //possible value : a number of minutes before off
+        // max value = MANUEL_MODE_MAXOFFDURATION
+        // "nf" parameter not found
+        // "en minutes" or something like that
+        DSPL( dPrompt + _plugName + " : extracted dureeoff as int = " + dureeOff.toInt() );
+        //duree avant arret dureeOff si dureeOff then calculate hFin and work only with hFin
         //ou
         //heure arret : hFin
         // ou rien
+        
+        //valid hFin or dureeOff
+        //write to json and clean other data
     } else if ( mode == TIMER_MODE ){
         DSPL( dPrompt + "Timer mode actiuons" );
         //Timer mode parameters
@@ -205,21 +267,27 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         DSPL( dPrompt + "clone mode actions" );
         //clode mode parameters
     }
-    // allRecParam = 
+/** @todo complete this function !*/ 
 }
 /** 
 @fn String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param )
 @brief to extract a parameter from all parameter
 @param allRecParam a concatened String containing all received parameters build in handlePlugOnOff()
 @param param the parameter to extract
-@return the value of the parameter
+@return the value of the parameter or "nf" for not found or "" empty
 */
 String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
+    DEFDPROMPT("extract param");
+    DSPL( dPrompt + "Search for : " + param);
     param +="=";
-    int pos = allRecParam.indexOf( param ) + param.length();
+    int pos = allRecParam.indexOf( param );
+    DSPL( dPrompt + "Pos brut = " + (String)pos);
+    if ( pos == -1 ) return RETURN_NOT_FOUND_VALUE;
+    pos += param.length();
     int fin = allRecParam.indexOf( "/", pos );
+    DSPL( dPrompt + "fin = " +(String)fin );
     return allRecParam.substring( pos, fin );
-    /** @todo improve error check*/
+    /** @todo remove debug informations*/
 }
 
 /** 
@@ -228,6 +296,8 @@ String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
 @param param name of the parameter to be written
 @param value the value of the parameter to be written in the json file
 @return nothing
+
+Writes value on parma for _plugName plug of course !
 */
 void CPowerPlug::writeToJson( String param, String value ){
     DEFDPROMPT( "write to jSon");

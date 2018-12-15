@@ -24,6 +24,7 @@
 #include "credential.h"
 #include "configParam.h"
 #include "serverFunction.h"
+#include "bouton.h"
 
 #define NBRPLUGS 4
 #define NUM_LEDS NBRPLUGS /**< for fastLED class */
@@ -55,6 +56,9 @@
 #define JSON_PARAMNAME_STARTTIME "hDebut"
 #define JSON_PARAMNAME_ENDTIME "hFin"
 
+#define MANUEL_MODE_MAXOFFDURATION 300 //mn
+#define TIMER_MODE_MAXONDURATION 300 //mn
+
 #define FLASHERTIME 500
 
 #define PLUG0PIN 0 // MPC23017 numbering pin21 PORTA.0
@@ -67,11 +71,15 @@
 #define PLUG3_ONOFFLEDPIN 7
 
 
-#define BP0 D3 
-#define BP1 D4
-#define BP2 D5
-#define BP3 D6
+#define BP0 D6 
+#define BP1 D5
+#define BP2 D4
+#define BP3 D3
 
+#define WIFILED D0
+#define WIFILED_FLASH_FAST 100
+#define WIFILED_FLASH_SLOW 500
+#define WIFILED_FLASH_COUNT 20
 
 
 #endif
