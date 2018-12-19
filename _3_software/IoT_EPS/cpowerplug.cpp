@@ -29,23 +29,30 @@ void CPowerPlug::begin( int pin , int onOffLedPin, int bpPin, int mode ){
     _onOffLedPin = onOffLedPin;
     _mode = mode;
     _state = OFF;
-    updateOutputs();
+    updateOutputs( false );
     _mcp.pinMode( _pin, OUTPUT );
     _mcp.pinMode( _onOffLedPin, OUTPUT );
     bp.begin( bpPin );
-
 }
 
+/** 
+@fn void CPowerPlug::on()
+@brief méthode qui met le plug sur ON mais n'effectue pas la sortie physique
+@return pas de paramètre ni de valeur de retour. Travail sur les membres de la classe
 
+Cette méthode lit et écrit directment dans le fichier json pour l'état du plug
+*/
 void CPowerPlug::on(){
     DEFDPROMPT( "CPOwerPlug")
     // if ( _pin == 0){
     if ( !_initDone){
         DSPL( dPrompt + F(" plug not started, call .begin().") );
     }
+    bool prevState = _state;
     _state = ON ;
-    updateOutputs();
+    updateOutputs( prevState != _state ); //to count only real plug switch
     writeToJson( JSON_PARAMNAME_STATE, "ON" );
+
 }
 
 void CPowerPlug::off(){
@@ -54,7 +61,8 @@ void CPowerPlug::off(){
         DSPL( dPrompt + F(" plug not started, call .begin().") );
     }
     _state = OFF ;
-    updateOutputs();
+    bool prevState = _state;
+    updateOutputs( prevState != _state ); //to count only real plug switch
     writeToJson( JSON_PARAMNAME_STATE, "OFF" );
 }
 
@@ -82,12 +90,25 @@ bool CPowerPlug::isItTimeToSwitch(){
 /** 
 @fn void CPowerPlug::updateOutputs()
 @brief update the state of the physical outputs
-@return no return value and no parameter
+@param writeToJsonCount a booleen to enable onOff counter to be inc in json (for begin purpose)
+@return no return value 
+
+This function read and write onoffcount in the json file
 */
-void CPowerPlug::updateOutputs(){
+void CPowerPlug::updateOutputs( bool writeToJsonCount ){
+    DEFDPROMPT( "updateOutputs");
     _mcp.digitalWrite( _pin, _state );
-    _mcp.digitalWrite( _onOffLedPin, _state );   
-/** @todo write the state in the config json file*/    
+    _mcp.digitalWrite( _onOffLedPin, _state );
+    if ( writeToJsonCount ){
+        String strCount = readFromJson( JSON_PARAMNAME_ONOFCOUNT );
+        // int iCount = strCount.toInt();
+        // strCount = String( iCount++ );
+        strCount = String( strCount.toInt() + 1 );
+        DSPL(dPrompt + "nouvelle valeur du compteur : " + strCount);
+        writeToJson( JSON_PARAMNAME_ONOFCOUNT, strCount );        
+    }
+
+   
 }
 
 /** 
@@ -147,6 +168,7 @@ bool CPowerPlug::readFromJson(){
                     }
                     DSPL("");
 /** @todo converts and store the string parameter in the members of the class*/
+/** @todo update output regarless of mode and the state of main power switch*/
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
                     return false;
@@ -170,7 +192,7 @@ bool CPowerPlug::readFromJson(){
 /** 
 @fn String CPowerPlug::readFromJson( String param )
 @brief second implementation of this function, to read only one parameter of the curent plug
-@param parma the parameter to retrieve
+@param param the parameter to retrieve
 @return the value of the parameter or "nf" if not found
 */
 String CPowerPlug::readFromJson( String param ){
@@ -217,6 +239,7 @@ String CPowerPlug::readFromJson( String param ){
 */
 void CPowerPlug::handleHtmlReq( String allRecParam ){
     String param, mode, state;
+    String prevMode;
     DEFDPROMPT( "CPlug handle html param");
     DSPL( dPrompt + allRecParam);
     DSPL( dPrompt + "Traitements pour : " + _plugName );
@@ -225,11 +248,13 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     DSPL( dPrompt + "Mode = " + mode );
     // _mode = modeId( mode );
     // DSPL( dPrompt + "_mode =" + (String)_mode);
+    prevMode = readFromJson( param );
     writeToJson( param, mode );
     if ( mode == MANUAL_MODE){
         DSPL( dPrompt + "Manual mode actions ");
         //manual mode parameters :
         //State
+        if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
         param = JSON_PARAMNAME_STATE;
         state = extractParamFromHtmlReq( allRecParam, param );
         DSPL( dPrompt + _plugName + " : extracted state = " + state);

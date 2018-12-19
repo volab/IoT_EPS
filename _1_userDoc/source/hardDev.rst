@@ -119,6 +119,9 @@ Coupure des 2 voies en même temps (phase et neutre) donc soit des relais 2 voie
 
 Nous avons retenu l'option 8 relais car plus disponible dans l'écosphére ARDUINO.
 
+The real need is a DPST relay but its very difficlut to find more with a 5V cmd and not with 
+a breakout board form. A possible solution would be to make our own relays pcb.
+
 Disponible entre autres chez `Banggood 8 Channel Module Module Relais`_ 
 
 .. _`Banggood 8 Channel Module Module Relais` : https://www.banggood.com/fr/5Pcs-5V-8-Channel-Relay-Module-Board-For-Arduino-PIC-AVR-DSP-ARM-p-968931.html?rmmds=detail-left-hotproducts__2&cur_warehouse=CN

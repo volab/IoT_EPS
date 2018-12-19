@@ -56,8 +56,10 @@ class CPowerPlug : public Cmcp {
         void off();
         void toggle();
         bool isItTimeToSwitch(); /**< For the loop of ARDUINO check millis()*/
+        
         void setMode( int mode ){ _mode = mode; }
         int getMode(){ return _mode; }
+        /** @todo check if _mode is always usefull and if it is allways updated !*/
         
         void setOnOffTime( unsigned long onDelay, unsigned long offDelay ){
             _onDelay = onDelay; 
@@ -109,7 +111,7 @@ class CPowerPlug : public Cmcp {
         unsigned int _onDelay;
         unsigned int _offDelay;
 
-        void updateOutputs();
+        void updateOutputs( bool writeToJsonCount = true );
         
 
         
