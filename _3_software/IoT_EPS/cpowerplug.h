@@ -5,9 +5,9 @@
 
  /**
 * @def RETURN_NOT_FOUND_VALUE
-When a function need to return a not found value
+When a function need to return or test a not found value 
 */
-#define RETURN_NOT_FOUND_VALUE "nf"
+#define RETURN_NOT_FOUND_VALUE NOT_FOUND //alias definition
 
 /**
 * @def ON alias of true
@@ -108,6 +108,7 @@ class CPowerPlug : public Cmcp {
         uint8_t daysOnWeek;        
         DateTime _startDate;
         DateTime _endDate;
+        //DateTime _nextTimeToSwitch; //for reflexion
         unsigned int _onDelay;
         unsigned int _offDelay;
 

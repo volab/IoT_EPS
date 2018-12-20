@@ -8,6 +8,9 @@
 
 #ifndef IOT_EPS_HEADER
 #define  IOT_EPS_HEADER
+
+#define NOT_FOUND "nf" //return code for extractParam()
+
 #include <Arduino.h>
 #include <FS.h> //this needs to be first, or it all crashes and burns...
 #include <ESP8266WiFi.h> //https://github.com/esp8266/Arduino
@@ -25,6 +28,7 @@
 #include "configParam.h"
 #include "serverFunction.h"
 #include "bouton.h"
+#include "cEpsStrTime.h"
 
 #define NBRPLUGS 4
 #define NUM_LEDS NBRPLUGS /**< for fastLED class */
@@ -43,7 +47,9 @@
 #define HTML_JSON_BLUEPLUGNAME "bluePlug"
 #define HTML_JSON_YELLOWPLUGNAME "yellowPlug"
 
-/** @todo define other parameters Json names*/
+
+
+
 #define JSON_PARAMNAME_MODE "Mode"
 #define MANUAL_MODE "Manuel"
 #define TIMER_MODE "Minuterie"
@@ -57,10 +63,15 @@
 #define JSON_PARAMNAME_ENDTIME "hFin"
 #define JSON_PARAMNAME_ONOFCOUNT "onOffCount"
 
+#define TIME_STRING_SEPARATOR ":"
+
+#define HTML_OFFDURATION_DEFAULT_VALUE "en minutes"
+
+
 #define MANUEL_MODE_MAXOFFDURATION 300 //mn
 #define TIMER_MODE_MAXONDURATION 300 //mn
 
-#define FLASHERTIME 500
+#define FLASHERTIME 500 //ms
 
 #define PLUG0PIN 0 // MPC23017 numbering pin21 PORTA.0
 #define PLUG1PIN 1

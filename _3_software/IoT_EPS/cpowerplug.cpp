@@ -258,22 +258,39 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         param = JSON_PARAMNAME_STATE;
         state = extractParamFromHtmlReq( allRecParam, param );
         DSPL( dPrompt + _plugName + " : extracted state = " + state);
-        if (state != "nf"){
+        if (state != NOT_FOUND ){
             if (state == "ON") on(); else off();
+            /** @todo review this statement it should not be so easy it should take into account time and perhaps previous state*/
             //writeToJson( param, state );
         }
         param = JSON_PARAMNAME_OFFDURATION;
-        String dureeOff = extractParamFromHtmlReq( allRecParam, param );
+        // String dureeOff = extractParamFromHtmlReq( allRecParam, param );
+        CEpsStrTime dureeOff = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
         //possible value : a number of minutes before off
         // max value = MANUEL_MODE_MAXOFFDURATION
-        // "nf" parameter not found
+        // "nf" parameter not found NOT_FOUND
         // "en minutes" or something like that
         DSPL( dPrompt + _plugName + " : extracted dureeoff as int = " + dureeOff.toInt() );
+        /** @todo add a function to check time validity format mm:ss or hh:mm or only mmm, mm or m*/
+        /** @todo replace above code with class members CEpsStrTime*/
+        if ( dureeOff != NOT_FOUND && dureeOff != HTML_OFFDURATION_DEFAULT_VALUE ){
+            int minutes = 0;
+            int seconds = 0;
+            int pos = dureeOff.indexOf( TIME_STRING_SEPARATOR );
+            if (pos != -1 ){
+                minutes = dureeOff.substring( 0, pos -1 ).toInt();
+                seconds = minutes*60 + dureeOff.substring( pos +1 ).toInt();
+                DSPL( dPrompt + "Secondes converties : " + seconds );
+            } else seconds = 60 * dureeOff.toInt();
+            DSPL( dPrompt + "Secondes converties : " + seconds );
+        }
         //duree avant arret dureeOff si dureeOff then calculate hFin and work only with hFin
         //ou
         //heure arret : hFin
         // ou rien
-        
+        param = JSON_PARAMNAME_ENDTIME;
+        String hFin = extractParamFromHtmlReq( allRecParam, param );        
+        DSPL( dPrompt + _plugName + " : extracted dureeoff as int = " + dureeOff.toInt() );
         //valid hFin or dureeOff
         //write to json and clean other data
     } else if ( mode == TIMER_MODE ){
