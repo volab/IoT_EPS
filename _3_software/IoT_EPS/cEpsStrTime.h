@@ -12,7 +12,7 @@
 
 #include <Arduino.h>
 
-
+#define TIME_MAX_DURATION 300
 
 /**
 * @class CEpsStrTime cEpsStrTime.h
@@ -27,19 +27,25 @@ Minutes files in MMM is limited to 300
 class CEpsStrTime : public String
 {
 public:
-	
+    enum Mode_t { MMMSS = 1, HHMM };
+
     CEpsStrTime();
-    CEpsStrTime( String val ){ _sValue = val; }
-    bool checkValidity();
-    long getSeconds(){ return _seconds; };
+    CEpsStrTime( String val );
+    bool isValid = false;
+    void setValue( String val );
+    void setMode( Mode_t mode ){ _mode = mode; }
+    long getSeconds(){ return _seconds; }
+    void setMaxDuration( long val ){ _maxDuration = val; } 
     String getStringVal(){ return _sValue; }/**< @brief to get the String format of the time
     value for json write purposes*/
 
 private:
 	
+    Mode_t _mode = MMMSS ; 
     String _sValue;
-    long _seconds;    
-    
+    long _seconds;
+    long _maxDuration = TIME_MAX_DURATION ;
+    bool checkValidity();
 };
 
 #endif

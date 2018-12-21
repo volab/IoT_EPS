@@ -24,6 +24,7 @@
 #include <FastLED.h>
 // #include <Array.h>
 
+#include "debugSerialPort.h"
 #include "credential.h"
 #include "configParam.h"
 #include "serverFunction.h"
@@ -37,18 +38,13 @@
 
 #define CONFIGFILENAME "/config3.json"
 
-
 #include "Cmcp.h"
 #include "CPowerPlug.h"
-#include "debugSerialPort.h"
 
 #define HTML_JSON_REDPLUGNAME "redPlug"
 #define HTML_JSON_GREENPLUGNAME "greenPlug"
 #define HTML_JSON_BLUEPLUGNAME "bluePlug"
 #define HTML_JSON_YELLOWPLUGNAME "yellowPlug"
-
-
-
 
 #define JSON_PARAMNAME_MODE "Mode"
 #define MANUAL_MODE "Manuel"
@@ -70,6 +66,7 @@
 
 #define MANUEL_MODE_MAXOFFDURATION 300 //mn
 #define TIMER_MODE_MAXONDURATION 300 //mn
+
 
 #define FLASHERTIME 500 //ms
 

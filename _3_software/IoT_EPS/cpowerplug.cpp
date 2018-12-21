@@ -281,7 +281,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 minutes = dureeOff.substring( 0, pos -1 ).toInt();
                 seconds = minutes*60 + dureeOff.substring( pos +1 ).toInt();
                 DSPL( dPrompt + "Secondes converties : " + seconds );
-            } else seconds = 60 * dureeOff.toInt();
+            } else { seconds = 60 * dureeOff.toInt(); }
             DSPL( dPrompt + "Secondes converties : " + seconds );
         }
         //duree avant arret dureeOff si dureeOff then calculate hFin and work only with hFin
