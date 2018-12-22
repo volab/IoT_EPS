@@ -42,7 +42,9 @@ public:
     value for json write purposes*/
     
     uint32_t computeNextTime();
-    /** @todo write a method to display _nextTimeToSwitch in human readable form*/
+    
+    static void displayUnixTime( uint32_t time2Display ); /**< @brief for debug purpose*/
+    static String unixTime2String( uint32_t time2Display );
 
 private:
 	
@@ -51,7 +53,7 @@ private:
     long _seconds;
     long _maxDuration = TIME_MAX_DURATION ;
     bool checkValidity();
-    uint32_t _nextTimeToSwitch;
+    
 };
 
 #endif

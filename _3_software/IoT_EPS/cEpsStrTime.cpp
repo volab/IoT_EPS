@@ -12,12 +12,11 @@
 // #include "cEpsStrTime.h"
 // #include "debugSerialPort.h"
 
-extern DateTime rtc;
 
 /** 
 @fn CEpsStrTime::CEpsStrTime( String val )
-@brief second constructor that set the valu and check validity
-@param Time value as String
+@brief second constructor that set the value, check validity and convert to seconds
+@param val Time value as String
 @return nothing of course
 */
 CEpsStrTime::CEpsStrTime( String val ){
@@ -25,8 +24,8 @@ CEpsStrTime::CEpsStrTime( String val ){
 }
 
 /** 
-@fn _completeFunctionPrototype
-@brief Set the string time value, checkvalidity and convert to seconds
+@fn void CEpsStrTime::setValue( String val )
+@brief Set the string time value, check validity and convert to seconds
 @param val the String time value
 @return nothing
 */
@@ -75,7 +74,15 @@ bool CEpsStrTime::checkValidity(){
     return isValid;
 }
 
+/** 
+@fn uint32_t  CEpsStrTime::computeNextTime()
+@brief calculate next time to switch the plug
 
+@return unix time form
+
+In this first implementation for manual mode it takes no input param ,
+but in future, it should take into account others mode
+*/
 uint32_t  CEpsStrTime::computeNextTime(){
     /** @todo take into account other modes*/
     DEFDPROMPT( "CEpsStrTime::computeNextTime" );
@@ -84,18 +91,44 @@ uint32_t  CEpsStrTime::computeNextTime(){
     DateTime future;
     now = rtc.now();
     String page = "";
-    page += (String)now.day() +"/"+(String)now.month()+"/"+(String)now.year()+" ";
-    page += (String)now.hour()+":"+(String)now.minute()+":";
-    page += (String)now.second();
-    DSPL( dPrompt + page );
+    // page += (String)now.day() +"/"+(String)now.month()+"/"+(String)now.year()+" ";
+    // page += (String)now.hour()+":"+(String)now.minute()+":";
+    // page += (String)now.second();
+    // DSPL( dPrompt + page );
+    displayUnixTime( now.unixtime() );
     future = DateTime( now.unixtime() + _seconds );
     page = "future = ";
     page += (String)future.day() +"/"+(String)future.month()+"/"+(String)future.year()+" ";
     page += (String)future.hour()+":"+(String)future.minute()+":";
     page += (String)future.second();
     DSPL( dPrompt + page );  
-    _nextTimeToSwitch = future.unixtime();
-    return _nextTimeToSwitch;
+    return future.unixtime();
+}
+
+/** 
+@fn void CEpsStrTime::displayUnixTime()
+@brief A function to dsiplay in debug consol the time in a human readable form
+@param time2Display the inpput time in unix form
+@return nothing
+*/
+void CEpsStrTime::displayUnixTime( uint32_t time2Display ){
+    DEFDPROMPT( "disp. time : ");
+    String sDate = unixTime2String( time2Display );
+    DSPL( dPrompt + sDate );
 }
 
 
+/** 
+@fn String CEpsStrTime::UnixTime2String( uint32_t time2Display )
+@brief Converts a unix time to a human readable string
+@param time2Display must be in unix time 
+@return String in french format jj/mm/aaaa hh:mm:ss
+*/
+String CEpsStrTime::unixTime2String( uint32_t time2Display ){
+    DateTime now = DateTime( time2Display );
+    String sDate = "";
+    sDate += (String)now.day() +"/"+(String)now.month()+"/"+(String)now.year()+" ";
+    sDate += (String)now.hour()+":"+(String)now.minute()+":";
+    sDate += (String)now.second();
+    return sDate;    
+} 

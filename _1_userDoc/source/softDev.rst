@@ -88,8 +88,7 @@ Evolutions possibles
   période de la journée.
 - Sur le mode hebdo, prévoir la possibilité d'avoir plusieurs plage de fonctionnement par jours
   et différentes chaque jour
-- Mode compte à rebour : le système est en mode manuel ON et on souhait qu'il s'éteigne
-  tout seul dans 2 heures
+
 
 Factorisation des varibales de mode
 =========================================

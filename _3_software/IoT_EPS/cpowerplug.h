@@ -113,7 +113,7 @@ class CPowerPlug : public Cmcp {
         unsigned int _offDelay;
 
         void updateOutputs( bool writeToJsonCount = true );
-        
+        uint32_t _nextTimeToSwitch;
 
         
 };

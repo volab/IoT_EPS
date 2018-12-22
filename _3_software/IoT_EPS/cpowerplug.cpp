@@ -120,7 +120,7 @@ Search are made in the file on the name of the plug as redPlug for exemple
 */
 bool CPowerPlug::readFromJson(){
     String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
-    String sClonedPlug, sOnOffCount;
+    String sClonedPlug, sOnOffCount, sNextTime2switch;
     String sJours[7];
     DEFDPROMPT("reading config values for " + getPlugName())
     // DSPL( dPrompt +F("Mounting FS..."));
@@ -149,14 +149,24 @@ bool CPowerPlug::readFromJson(){
                     sDureeOff = plug["dureeOff"].as<String>();
                     sClonedPlug = plug["clonedPlug"].as<String>();
                     sOnOffCount = plug["onOffCount"].as<String>();
+                    sNextTime2switch = plug[JSON_PARAMNAME_NEXTSWITCH].as<String>();
                     DSPL( dPrompt + "Mode = " + sMode );
+                    _mode = modeId( sMode );
                     DSPL( dPrompt + "Etat = " + sState );
+                    _state = (sState == "ON");
                     DSPL( dPrompt + "Start time = " + sHDebut );
                     DSPL( dPrompt + "End time = " + sHFin );
                     DSPL( dPrompt + "on duration = " + sDureeOn );
                     DSPL( dPrompt + "off duration = " + sDureeOff );
                     DSPL( dPrompt + "Cloned plug = " + sClonedPlug );
                     DSPL( dPrompt + "Relay on off count = " + sOnOffCount );
+                    
+                    _nextTimeToSwitch = sNextTime2switch.toInt();
+                    if ( _nextTimeToSwitch ){
+                        DSPL( dPrompt + "Next time to switch : " + \
+                        CEpsStrTime::unixTime2String( _nextTimeToSwitch ));
+                    }
+
                     DSP( dPrompt + "Jours : ");
                     JsonArray& plugJours = plug["Jours"];
                     for ( int i = 0; i < 7 ; i++ ){
@@ -246,9 +256,9 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     param = JSON_PARAMNAME_MODE;
     mode = extractParamFromHtmlReq( allRecParam, param );
     DSPL( dPrompt + "Mode = " + mode );
-    // _mode = modeId( mode );
+    _mode = modeId( mode );
     // DSPL( dPrompt + "_mode =" + (String)_mode);
-    prevMode = readFromJson( param ); //why ? for bp acquit
+    prevMode = readFromJson( param ); //why ? For bp acquit
     writeToJson( param, mode );
     if ( mode == MANUAL_MODE){
         DSPL( dPrompt + "Manual mode actions ");
@@ -260,7 +270,8 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         DSPL( dPrompt + _plugName + " : extracted state = " + state);
         if (state != NOT_FOUND ){
             if (state == "ON") on(); else off();
-            /** @todo review this statement it should not be so easy it should take into account time and perhaps previous state*/
+            /** @todo review this statement it should not be so easy it should take into 
+            account time and perhaps previous state*/
             //writeToJson( param, state ); //done in on off methods
         }
         
@@ -270,12 +281,11 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         dureeOff = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
         DSPL( dPrompt + _plugName + " : extracted dureeoff en secondes = " + (String)dureeOff.getSeconds() );
         if (dureeOff.isValid){
-            //write to json
             writeToJson( param, dureeOff.getStringVal() );
             //Calculate nextTimeToSwith and write to json
-            DSPL( dPrompt + "nt2s (in unix time) = " + (String)dureeOff.computeNextTime() );
-            writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)dureeOff.computeNextTime() );
-            /** @todo activate write to json next time to switch*/
+            _nextTimeToSwitch = dureeOff.computeNextTime();
+            DSPL( dPrompt + "nt2s : " + CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
+            writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
         }
         //duree avant arret dureeOff if dureeOff then calculate hFin and work only with hFin
         //ou
