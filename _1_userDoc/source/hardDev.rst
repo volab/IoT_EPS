@@ -20,14 +20,17 @@ Avancement
 #. choix curent sensor: 75%
 #. horloge temps réelle : ok
 #. LED
-#. bouton poussoirs : 50%
+#. bouton poussoirs : ok
 #. Affectation des io : 90%
 #. module relais : ok
 #. définition des modes de fonctionnement : ok
 #. récup paramètre via form submit html : ok
-#. Ecrire dans le json
-#. Piloter les LED WS2801
+#. add  WS2801 LED
 #. Alimentation du module relais en 5V (choix du conver.) : 60%
+#. add power led
+#. add wifi led : ok
+#. add LDR
+#. add I2C nano expander with analog inputs
 
 
 ####
@@ -116,6 +119,9 @@ Coupure des 2 voies en même temps (phase et neutre) donc soit des relais 2 voie
 
 Nous avons retenu l'option 8 relais car plus disponible dans l'écosphére ARDUINO.
 
+The real need is a DPST relay but its very difficlut to find more with a 5V cmd and not with 
+a breakout board form. A possible solution would be to make our own relays pcb.
+
 Disponible entre autres chez `Banggood 8 Channel Module Module Relais`_ 
 
 .. _`Banggood 8 Channel Module Module Relais` : https://www.banggood.com/fr/5Pcs-5V-8-Channel-Relay-Module-Board-For-Arduino-PIC-AVR-DSP-ARM-p-968931.html?rmmds=detail-left-hotproducts__2&cur_warehouse=CN
@@ -155,13 +161,13 @@ Affectation des io
     ===== =============
     pins  affectation
     ===== =============
-    D0
+    D0    WIFI LED
     D1    I2C SCL
     D2    I2C data
-    D3    BP0
-    D4    BP1
-    D5    BP2
-    D6    BP3
+    D3    BP3
+    D4    BP2
+    D5    BP1
+    D6    BP0
     D7    DATA WS2801
     D8    CLK WS2801
     ===== =============

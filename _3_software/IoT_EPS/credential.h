@@ -4,7 +4,9 @@
 * @date 24 Oct 2018
 * @copyright 2018 CC0
 * @version 1.0
-* @brief a class to read wifi credential from credentials.json
+* @brief header file of the Credential class
+
+@details a class to read wifi credential from credentials.json
 
 */
 

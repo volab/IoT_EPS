@@ -1,4 +1,13 @@
+/**
+* @file configParam.cpp
+* @author J.SORANZO
+* @date dec, 2018
+* @copyright 2018 CC0
+* @version git versionning
+* @brief Implementation file of the ConfigParam class
 
+@details This class read from json file and store wifi mode and host name 
+*/
 
 #include "IoT_EPS.h"
 // #include  "configParam.h"

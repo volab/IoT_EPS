@@ -19,9 +19,14 @@ Avancement
 #. reception d'une action via un bouton :  
 #. lecture du fichier de configuration : ok
 #. intégration MCP23017 : ok
-#. lecture du fichier de configuration façon Pierre (config2.json) :
-#. gestion bouton poussoir mécanique : 
-#. Ecriture fichier json : 
+#. lecture du fichier de configuration config3.json : 70%
+#. gestion bouton poussoir mécanique : 80%
+#. Ecriture fichier json : 60%
+#. Traitement de la requete html avec analyze, exécution et écriture json: 20%
+#. Réflèchir à la gestion des erreurs
+#. manage wif led : ok
+#. interate nano expander with analog inputs : 0%
+
 
 ====================================
 Convention de nommage
@@ -37,21 +42,24 @@ Penser à:
 #. terminer l'implémentation des méthodes de CPowerPlug ( isItTimeToSwitch )
 #. regarder javascript http request pour faire du DELETE
 
+
+
 ====================================
 Modes de fonctionnement des prises
-====================================
+==================================== 
 
 Manuel
 ======
 - appui sur BP ON/OFF
-- durée avant arrêt : pour s'offrir la possibilité de couper la prise en cas de départ prématurer...
+- durée avant arrêt (durée limité à 300mn): pour s'offrir la possibilité de couper la prise en cas de départ prématurer...
 - ou heure d'arrêt : dans le même état d'esprit mais pour fixer une heure absolue.
 
 Timer / minuteur / mode cuit oeuf
 ==================================
-- 1 seul paramètre la durée ON à partir de maintenant (durée limité à 300mn)
+- 1 seul paramètre la durée ON à partir de maintenant (durée limité à 300mn00s)
 - 1 appui court lance ou relance la minuterie
 - 1 appui sur BP (long) met OFF et repasse en manuelle
+- la minuterie peut être avec des secondes exmple 2mn30s (2:30 dans la requête)
 
 Périodique/cyclique
 =====================
@@ -59,7 +67,7 @@ Périodique/cyclique
 - durée off 
 - avec reprise de On après off indéfiniment jusqu'au repassage en commande manuelle.
 - avec champ heure de début (et 'Entrez une heure de début (facultatif)' par défaut)
-- un appui court sur BP met à OFF mais reste en mode calendaire pour le cycle suivant
+- un appui court sur BP met à OFF mais reste en mode cyclique pour le cycle suivant
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Hebdomadaire
@@ -67,12 +75,12 @@ Hebdomadaire
 - heure de mise on
 - heure de mise off
 - choix des jours de la semaine
-- un appui court sur BP met à OFF mais reste en mode calendaire pour le cycle suivant
+- un appui court sur BP met à OFF mais reste en mode Hebdomadaire pour le cycle suivant
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Clone
 ========
-Clone le fonctionnement d'une des 3 autres prises
+Clone le fonctionnement d'une des 3 autres prises.
 
 Evolutions possibles
 =====================
@@ -103,7 +111,8 @@ Factorisation des varibales de mode
 Comportement à la mise sous tension
 =====================================
 
-Soit l'interrupteur général est actif et on reprend où on en était.
+Soit l'interrupteur général est actif et on reprend où on en était sauf
+(le mode manuel "étendu" durée off ou heure de coupure pas dans le json).
 
 Soit l'interrupteur général est  inactif et on reprend en mode manuel.
 
@@ -112,6 +121,9 @@ L'interrupteur général coupe le 220V des prise mais pas de l'ESP8266.
 Bien expliquer les 2 mode de fonctionnement dans l'interface WEB et donner le choix à l'utilisateur.
 
 Expliquer le coup de la coupure de courant.
+
+
+
 
 ==============
 Choix dev soft
@@ -124,9 +136,17 @@ WEMOS D1 MIN ARDUINO configurattion:
 
 .. image:: ./image/wemosD1Mini_configArduino.jpg
 
-==========================
+==================
+WIFI LED
+==================
+In Station mode, fast flashing and after slow flashing while waiting for connection.
+
+In Access Point Slow flashing and led of while waiting for connection. Cause WiFi.softAPConfig
+function is a blocking function.
+
+===========================
 Développement des page Web
-==========================
+===========================
 HTML5 et css
 
 Les requetes html

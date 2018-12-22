@@ -2,20 +2,12 @@
 #define _CPOWERPLUG_H
 
 #include "IoT_EPS.h"
-// #include <Arduino.h>
-// #include <RTClib.h>
-// #include <ESP8266WebServer.h>
-// #include "Cmcp.h"
-// #include <FastLED.h>
 
-// enum {
-    // MANUEL, /**< Manuel mode of the plug */
-    // TIMER, /*!< Timer mode of the plug */
-    // CYCLE, /*!< Cyclic mode of the plug */
-    // HEBDO, /*!< Weekly mode of the plug */
-    // CLONE /**< @brief  clone an other plug mode*/
-// };
-
+ /**
+* @def RETURN_NOT_FOUND_VALUE
+When a function need to return or test a not found value 
+*/
+#define RETURN_NOT_FOUND_VALUE NOT_FOUND //alias definition
 
 /**
 * @def ON alias of true
@@ -52,7 +44,7 @@ class CPowerPlug : public Cmcp {
  
         CPowerPlug(){}
         CPowerPlug( plugColor_t couleur ){ _couleur = couleur;}
-        void begin( int pin , int onOffLedPin, int mode = 0 );
+        void begin( int pin , int onOffLedPin, int bpPin, int mode = 0 );
 /** @todo rewrite a new begin methode to add plugName and _color*/
         void setColor( plugColor_t color ){ _couleur = color; }
         bool getstate(){ return _state; }
@@ -64,8 +56,10 @@ class CPowerPlug : public Cmcp {
         void off();
         void toggle();
         bool isItTimeToSwitch(); /**< For the loop of ARDUINO check millis()*/
+        
         void setMode( int mode ){ _mode = mode; }
         int getMode(){ return _mode; }
+        /** @todo check if _mode is always usefull and if it is allways updated !*/
         
         void setOnOffTime( unsigned long onDelay, unsigned long offDelay ){
             _onDelay = onDelay; 
@@ -77,21 +71,24 @@ class CPowerPlug : public Cmcp {
         }
         
         bool readFromJson();
+        String readFromJson( String param );
+        void writeToJson( String param, String val );
         void handleHtmlReq( String allRecParam );
         
         static int modeId( String mode );
-        
+        bouton bp;
         
     private:
         static const String modes[5];
         int _pin = 0; /**< @brief The relay command plug pin*/
-        bool _state;
-        String _plugName ;
-        int _mode = 0;
+        bool _state; /**< @brief on off state of the physical plug*/
+        String _plugName ; /**< @brief redPlug, greenPlug... as it is named in the html page*/
+        int _mode = 0; /**< @brief MANUAL, CYCLIC... in int form see modeId method*/
         int _onOffLedPin;/**< a pin to display plug state diff of the cmd plug pin*/
         // plugColor_t _couleur = ROUGE;
         plugColor_t _couleur = CRGB::Red;
         String extractParamFromHtmlReq( String allRecParam, String Param );
+        
         
 
         /**
@@ -111,10 +108,12 @@ class CPowerPlug : public Cmcp {
         uint8_t daysOnWeek;        
         DateTime _startDate;
         DateTime _endDate;
+        //DateTime _nextTimeToSwitch; //for reflexion
         unsigned int _onDelay;
         unsigned int _offDelay;
 
-        void updateOutputs();
+        void updateOutputs( bool writeToJsonCount = true );
+        
 
         
 };

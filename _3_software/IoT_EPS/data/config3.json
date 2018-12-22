@@ -1,7 +1,9 @@
 {
   "general": {
     "wifimode": "client",
-    "hostName": "PowerStrip01"
+    "hostName": "PowerStrip01",
+    "numberOfPlugs": "4",
+    "rtcValidity": "true"
   },
   "redPlug": {
     "State": "ON",
@@ -20,7 +22,8 @@
       "OFF"
     ],
     "clonedPlug": "",
-    "onOffCount": "10"
+    "onOffCount": "70",
+    "nextTimeToSwitch": "0"
   },
   "greenPlug": {
     "State": "OFF",
@@ -39,7 +42,8 @@
       "OFF"
     ],
     "clonedPlug": "",
-    "onOffCount": "100"
+    "onOffCount": "109",
+    "nextTimeToSwitch": "0"
   },
   "bluePlug": {
     "State": "ON",
@@ -58,7 +62,8 @@
       "OFF"
     ],
     "clonedPlug": "",
-    "onOffCount": "3"
+    "onOffCount": "18",
+    "nextTimeToSwitch": "0"
   },
   "yellowPlug": {
     "State": "ON",
@@ -77,6 +82,7 @@
       "OFF"
     ],
     "clonedPlug": "",
-    "onOffCount": "2"
+    "onOffCount": "9",
+    "nextTimeToSwitch": "0"
   }
 }

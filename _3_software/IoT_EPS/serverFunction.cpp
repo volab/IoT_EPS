@@ -165,6 +165,17 @@ void handlePlugConfig(){
     server.send(200, "text/plain", "OK");
 }
 
+/** 
+@fn void handlePlugOnOff()
+@brief this the handler for html request
+@return nothing and no parameter
+
+This function is activated when a request is received from the client's browser.
+
+It creats a concatened String of all parameters.
+
+This the allArgs local var that is passed to CPowerPlug::extractParamFromHtmlReq.
+*/
 extern CPowerPlug plugs[4];
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
@@ -183,16 +194,16 @@ void handlePlugOnOff(){
 
     String plugColor = server.arg("COLOR");
     DSPL( dPrompt + " Plug color = " + plugColor );
-    String plugVal = server.arg("PLUG");
-    DSPL( dPrompt + " Plug val = " + plugVal);
+    String plugVal = server.arg("State");
+    DSPL( dPrompt + " State = " + plugVal);
     String duree = server.arg("DUREE");
     DSPL( dPrompt + " Duree val = " + duree);
-    String mode = server.arg("MODE");
+    String mode = server.arg(JSON_PARAMNAME_MODE);
     DSPL( dPrompt + " Mode = " + mode);
     int i;
     
     for ( i = 0; i < 4 ; i++ ){
-        DSPL( dPrompt + "plugName : " + plugs[i].getPlugName() );
+        // DSPL( dPrompt + "plugName : " + plugs[i].getPlugName() );
         if ( plugs[i].getPlugName() == plugColor ) break;
     }
     String returnVal;
@@ -202,7 +213,7 @@ void handlePlugOnOff(){
         // server.send(200, "text/plain", "Couleur invalide");
         // return;
     } else {
-        if ( plugVal == "1") plugs[i].on(); else plugs[i].off();
+        //if ( plugVal == "ON") plugs[i].on(); else plugs[i].off();
         plugs[i].handleHtmlReq( allArgs ); 
         returnVal = "OK";
     }
