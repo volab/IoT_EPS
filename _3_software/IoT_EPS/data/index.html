@@ -49,40 +49,55 @@
                             <div class="redPlug modeSelector">
                                 <p>Séléction du Mode :</p>
                                 <ul>
-                                    <li><input type="radio" name="rMode" 
-                                        class="redPlug radioManuel" 
-                                        id="rManuel"
-                                        value="Manuel"/>
-                                        <label for="rManuel">
-                                            Manuel
+                                    <li>
+                                        <label>
+                                            <input 
+                                                type="radio" 
+                                                name="rMode" 
+                                                value="Manuel"
+                                                id="rManuel"
+                                                class="redPlug radioManuel">
+                                            <span>Manuel</span>
                                         </label></br></li>
-                                    <li><input type="radio" name="rMode" 
-                                        class="redPlug radioMinuterie" 
-                                        id="rMinuterie"
-                                        value="Minuterie"/>
-                                        <label for="rMinuterie">
-                                            Minuterie
+                                    <li>
+                                        <label>
+                                            <input 
+                                                type="radio" 
+                                                name="rMode" 
+                                                value="Minuterie"
+                                                id="rMinuterie"
+                                                class="redPlug radioMinuterie">
+                                            <span>Minuterie</span>
                                         </label</br></li>
-                                    <li><input type="radio" name="rMode" 
-                                        class="redPlug radioCyclique"
-                                        id="rCyclique"
-                                        value="Cyclique"/>
-                                        <label for="rCyclique">
-                                            Cyclique
+                                    <li>
+                                        <label>
+                                            <input 
+                                                type="radio" 
+                                                name="rMode" 
+                                                value="Cyclique"
+                                                id="rCyclique"
+                                                class="redPlug radioCyclique">
+                                            <span>Cyclique</span>
                                         </label></br></li>
-                                    <li><input type="radio" name="rMode"
-                                        class="redPlug radioHebdo" 
-                                        id="rHebdo"
-                                        value="Hebdo"/>
-                                        <label for="rHebdo">
-                                            Hedbomadaire
+                                    <li>
+                                        <label>
+                                            <input 
+                                                type="radio" 
+                                                name="rMode"
+                                                value="Hebdo"
+                                                id="rHebdo"
+                                                class="redPlug radioHebdo">
+                                            <span>Hedbomadaire</span>
                                         </label></br></li>
-                                    <li><input type="radio" name="rMode"
-                                        class="redPlug radioClone" 
-                                        id="rClone"
-                                        value="Clone"/>
-                                        <label for="rClone">
-                                            Clone
+                                    <li>
+                                        <label>
+                                            <input 
+                                                type="radio" 
+                                                name="rMode"
+                                                value="Clone"
+                                                id="rClone"
+                                                class="redPlug radioClone">
+                                            <span>Clone</span>
                                         </label></br></li>
                                 </ul>
                             </div>
@@ -92,72 +107,92 @@
                             <div class="Summary">
 
                                 <!-- Red Manuel -->
-                                <div class="redPlug div_subSummary Manuel">
+                                <div class="redPlug Manuel div_subSummary">
                                     <h5>Mode Manuel</h5>
-                                    <form id="formMA" method="post" action="/plugonoff">
+                                    <form id="formManuel" method="post" action="/plugonoff">
                                         <input type="hidden" name="COLOR" value="redPlug">
                                         <input type="hidden" name="Mode" value="Manuel">
                                         <div class="row">
                                             <div class="redPlug switch col s4" id="rManSwitch">
                                                 <p>Marche arrêt immediat :</p>
                                                 <ul>
-                                                    <li><input type="radio" name="State"
-                                                        class="redPlug rdMA"
-                                                        id="rRdOn"
-                                                        value="ON"/>
-                                                        <label for="rRdOn">
-                                                            Marche
+                                                    <li>
+                                                        <label>
+                                                            <input 
+                                                                type="radio"
+                                                                name="State"
+                                                                value="ON"
+                                                                id="rRdOn"
+                                                                class="redPlug rdMA">
+                                                            <span>Marche</span>
                                                         </label></br></li>
 
-                                                    <li><input type="radio" name="State"
-                                                        class="redPlug rdMA"
-                                                        id="rRdOff"
-                                                        value="OFF"/>
-                                                        <label for="rRdOff">
-                                                           Arrêt 
+                                                    <li>
+                                                        <label>
+                                                            <input 
+                                                                type="radio" 
+                                                                name="State"
+                                                                value="OFF"
+                                                                id="rRdOff"
+                                                                class="redPlug rdMA">
+                                                            <span>Arrêt</span>
                                                         </label></br></li>
                                                 </ul>
                                             </div>
 
                                             <!-- Red div_DiffSelector (arrêt différer) -->
-                                            <div class="redPlug div_DiffSelector col s4" id="rdiv_DiffSelector">
+                                            <div class="redPlug Manuel div_DiffSelector col s4" id="rdiv_DiffSelector">
                                                 <p>Sélécion du Mode d'arrêt différer : </p>
                                                 <ul>    
-                                                    <li><input type="radio" name="rDiff" 
-                                                        class="redPlug rDiffSelector"
-                                                        id="rRdDiffAt"
-                                                        value="diffAt"/>
+                                                    <li>
+                                                        <label>
+                                                            <input 
+                                                                type="radio" 
+                                                                name="rDiff" 
+                                                                value="diffAt"
+                                                                id="rRdDiffAt"
+                                                                class="redPlug rDiffSelector">
+                                                                <span>Heure d'arrêt</span>
                                                         <label for="rRdDiffAt">
-                                                                Heure d'arrêt
                                                         </label</br></li>
 
-                                                    <li><input type="radio" name="rDiff" 
-                                                        class="redPlug rDiffSelector"
-                                                        id="rRdDiffIn"
-                                                        value="diffIn"/>
-                                                        <label for="rRdDiffIn">
-                                                                Durée avant arrêt
+                                                    <li>
+                                                        <label>
+                                                            <input 
+                                                                type="radio" 
+                                                                name="rDiff" 
+                                                                value="diffIn"
+                                                                id="rRdDiffIn"
+                                                                class="redPlug rDiffSelector">
+                                                                <span>Durée avant arrêt</span>
                                                         </label</br></li>
                                                 </ul>
                                             </div>
 
                                             <!-- Red Manuel hFin -->
-                                            <div class="redPlug div_hFin col s3" id="rDivDiffAt">
+                                            <div class="redPlug Manuel div_hFin col s3" id="rDivDiffAt">
                                                 <label>
                                                     <span>Arréter la prise à ... </br>(Heure d'arrêt -- hh:mm):</span>
-                                                    <input type="text" name="hFin" value="hh:mm"/>
+                                                    <input 
+                                                        type="text" 
+                                                        name="hFin" 
+                                                        value="hh:mm">
                                                 </label>
                                             </div>
 
                                             <!-- Red Manuel dureeOff -->
-                                            <div class="redPlug div_dureeOff col s3" id="rDivDiffIn">
+                                            <div class="redPlug Manuel div_dureeOff col s3" id="rDivDiffIn">
                                                 <label>
                                                     <span>Arréter la prise dans ... </br>(Durée en minute, 300 minutes Max):</span>
-                                                    <input type="text" name="dureeOff" value="mmm"> 
+                                                    <input 
+                                                        type="text" 
+                                                        name="dureeOff" 
+                                                        value="mmm" 
+                                                        class="dureeOff dureeNoSec"> 
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="redDivSubmitReset">
+                                        <div class="submitReset">
                                             <input type="submit" id="redSubmit"/>
                                             <input type="reset"/> 
                                         </div>
@@ -165,20 +200,26 @@
                                 </div>
 
                                 <!-- Red Minuterie -->
-                                <div class="redPlug div_subSummary Minuterie">
+                                <div class="redPlug Minuterie div_subSummary">
                                     <h5>Mode Minuterie</h5>
                                     <form id="formMinuterie" method="post" action="/plugonoff">
                                         <input type="hidden" name="COLOR" value="redPlug">
                                         <input type="hidden" name="Mode" value="Minuterie">
                                         <div class="row">
-                                            <div class="redPlug col s4">
+                                            <div class="redPlug Minuterie col s4">
                                                 <label>
-                                                    <span> Réglage de la minuterie (Durée en minute, 300 minutes Max -- mmm:ss):</br></span>
-                                                    <input type="text" name="dureeOn" value="mmm:ss" id="id_redNumMinuterie"> 
+                                                    <span> Réglage de la minuterie (Durée en minute, 300 minutes Max -- mmm:ss ou mmm):</br></span>
+                                                    <input 
+                                                        type="text"
+                                                        name="dureeOn" 
+                                                        value="mmm:ss ou mmm" 
+                                                        id="id_redNumMinuterie" 
+                                                        class="redPlug Minuterie dureeOn duree" 
+                                                        required> 
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="redDivSubmitReset">
+                                        <div class="submitReset">
                                             <input type="submit" id="redSubmit"/>
                                             <input type="reset"/> 
                                         </div>
@@ -186,33 +227,49 @@
                                 </div>
 
                                 <!-- Red Cylclique -->
-                                <div class="redPlug div_subSummary Cyclique">
+                                <div class="redPlug Cyclique div_subSummary">
                                     <h5>Mode Cyclique</h5>
                                     <form id="formCyclique" method="post" action="/plugonoff">
                                         <input type="hidden" name="COLOR" value="redPlug">
                                         <input type="hidden" name="Mode" value="Cyclique">
                                         <p>Réglage de la période de fonctionnement et de période de repos (en minute):</p>
                                         <div class="row">
-                                            <div class="redPlug cyliqueOn col s3" >
+                                            <div class="redPlug Cyclique cyliqueOn col s3" >
                                                 <label>
                                                     <span>Durée ON</br>(Durée en minute, 300 minutes Max) :</br></label>
-                                                    <input type="text" name="dureeOn" value="mmm" id="id_redNumOnCyclique" required>
+                                                    <input 
+                                                        type="text"
+                                                        name="dureeOn"
+                                                        value="mmm" 
+                                                        id="id_redNumOnCyclique"
+                                                        class="redPlug Cyclique dureeOn dureeNoSec" 
+                                                        required>
                                                 </label>
                                             </div>
-                                            <div class="redPlug cyliqueOff col s3" >
+                                            <div class="redPlug Cyclique cyliqueOff col s3" >
                                                 <label>
                                                     <span>Durée OFF</br>(Durée en minute, 300 minutes Max) :</br></span>
-                                                    <input type="text" name="dureeOff" value="mmm" id="id_redNumOffCyclique" required>
+                                                    <input 
+                                                        type="text"
+                                                        name="dureeOff"
+                                                        value="mmm"
+                                                        id="id_redNumOffCyclique"
+                                                        class="redPlug Cyclique dureeOff dureeNoSec"
+                                                        required>
                                                 </label>
                                             </div>
-                                            <div class="redPlug cycliqueHdebut col s3">
+                                            <div class="redPlug Cyclique cycliqueHdebut col s3">
                                                 <label>
                                                     <span>Heure de début</br>(facultatif)</br></span>
-                                                    <input type="text" name="hDebut" value="hh:mm" id="id_redTimeStartCyclique">
+                                                    <input 
+                                                        type="text" 
+                                                        name="hDebut" 
+                                                        value="hh:mm" 
+                                                        id="id_redTimeStartCyclique">
                                             </label>
                                             </div>
                                         </div>
-                                        <div class="redDivSubmitReset">
+                                        <div class="submitReset">
                                             <input type="submit" id="redSubmit"/>
                                             <input type="reset"/> 
                                         </div>
@@ -220,67 +277,119 @@
                                 </div>
 
                                 <!-- Red Hebdo -->
-                                <div class="redPlug div_subSummary Hebdomadaire">
+                                <div class="redPlug Hebdomadaire div_subSummary">
                                     <h5>Mode Hebdomadaire</h5>
                                     <form id="formHebdo" method="post" action="/plugonoff">
                                         <input type="hidden" name="COLOR" value="redPlug">
                                         <input type="hidden" name="Mode" value="Hebdomadaire">
+
+                                        <!-- Day selector -->
                                         <p>Selection des jours d'activité :</p></br>
                                         <div class="row">
                                             <div class="redPlug col s12" id="div_redSelectAll">
                                                 <label class="labelDaySelector">
-                                                    <input type="checkbox" name="checkAll" id="id_redChkHeboAll" value="AllDays">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        name="checkAll" 
+                                                        value="AllDays"
+                                                        id="id_redChkHeboAll"
+                                                        class="redPlug daySelector">
                                                     <span>Sélectionner tous les jours</span>
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="redPlug col s12" id="div_redDaySelector">
+                                            <div class="redPlug Hebdomadaire weekDay col s12" id="div_redDaySelector">
                                                 <label class="labelDaySelector">
-                                                    <input type="checkbox" name="Lundi" id="id_redChkHeboLu">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        name="Lundi" 
+                                                        value="Lundi"
+                                                        id="id_redChkHeboLu"
+                                                        class="redPlug daySelector">
                                                     <span>Lundi</span>
                                                 </label>
                                                 <label class="labelDaySelector">
-                                                   <input type="checkbox" name="Mardi" id="id_redChkHeboMa">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        name="Mardi" 
+                                                        value="Mardi" 
+                                                        id="id_redChkHeboMa"
+                                                        class="redPlug daySelector">
                                                     <span>Mardi</span>
                                                 </label>    
                                                 <label class="labelDaySelector">
-                                                   <input type="checkbox" name="Mercredi" id="id_redChkHeboMe">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        name="Mercredi" 
+                                                        value="Mercredi" 
+                                                        id="id_redChkHeboMe"
+                                                        class="redPlug daySelector">
                                                     <span>Mercredi</span>
                                                 </label>    
                                                 <label class="labelDaySelector">
-                                                   <input type="checkbox" name="redChkHeboJe" id="id_redChkHeboJe" value="Jeudi">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        name="Jeudi" 
+                                                        value="Jeudi"
+                                                        id="id_redChkHeboJe"
+                                                        class="redPlug daySelector">
                                                     <span>Jeudi</span>
                                                 </label>    
                                                 <label class="labelDaySelector">
-                                                   <input type="checkbox" name="Jeudi" id="id_redChkHeboVe">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        name="Vendredi" 
+                                                        value="Vendredi" 
+                                                        id="id_redChkHeboVe"
+                                                        class="redPlug daySelector">
                                                     <span>Vendredi</span>
                                                 </label>    
                                                 <label class="labelDaySelector">
-                                                   <input type="checkbox" name="Samedi" id="id_redChkHeboSa">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        name="Samedi" 
+                                                        value="Samedi" 
+                                                        id="id_redChkHeboSa"
+                                                        class="redPlug daySelector">
                                                     <span>Samedi</span>
                                                 </label>    
                                                 <label class="labelDaySelector">
-                                                   <input type="checkbox" name="Dimanche" id="id_redChkHeboDi">
+                                                    <input 
+                                                        type="checkbox" 
+                                                        name="Dimanche" 
+                                                        value="Dimanche" 
+                                                        id="id_redChkHeboDi"
+                                                        class="redPlug daySelector">
                                                     <span>Dimanche</span>
                                                 </label>    
                                            </div>
                                         </div>
+
+                                        <!-- Hour Selector -->
                                         <div class="row">
-                                            <div class="redPlug col s5">
+                                            <div class="redPlug Hebdomadaire col s5">
                                                 <label>
                                                     <span>Heure de début : (hh:mm)</br></span>
-                                                    <input type="time" name="hDebut" id="id_redTimeHebdohDebut" value="hh:mm"/>
+                                                    <input 
+                                                        type="text" 
+                                                        name="hDebut" 
+                                                        value="hh:mm"
+                                                        id="id_redTimeHebdohDebut">
                                                 </label>
                                             </div>
-                                            <div class="redPlug col s5">
+                                            <div class="redPlug Hebdomadaire col s5">
                                                 <label>
                                                     <span>Heure de fin : ((hh:mm)</br></span>
-                                                    <input type="time" name="hFin" id="id_redTimeHebdohFin"/>
+                                                    <input 
+                                                        type="text" 
+                                                        name="hFin" 
+                                                        value="hh:mm"
+                                                        id="id_redTimeHebdohFin"/>
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="redDivSubmitReset">
+                                        <div class="submitReset">
                                             <input type="submit" id="redSubmit"/>
                                             <input type="reset"/> 
                                         </div>
@@ -288,7 +397,7 @@
                                 </div>
 
                                 <!-- red Clone -->
-                                <div class="redPlug div_subSummary Clone">
+                                <div class="redPlug Clone div_subSummary">
                                     <h5>Mode Clone</h5>
                                     <form id="formClone" method="post" action="/plugonoff">
                                         <input type="hidden" name="COLOR" value="redPlug">
@@ -305,7 +414,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="redDivSubmitReset">
+                                        <div class="submitReset">
                                             <input type="submit" id="redSubmit"/>
                                             <input type="reset"/> 
                                         </div>

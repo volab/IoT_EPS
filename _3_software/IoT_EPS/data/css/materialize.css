@@ -6719,7 +6719,7 @@ textarea.materialize-textarea {
 [type="radio"]:not(:checked),
 [type="radio"]:checked {
   position: absolute;
-  /*! opacity: 50; */
+  opacity: 0;
   /*! pointer-events: none; */
   position: inherit;
 }

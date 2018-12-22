@@ -94,6 +94,22 @@ v_redHebdo.onclick = function(){
     document.getElementsByClassName("redPlug div_subSummary Hebdomadaire")[0].style.display="block";
 }
 
+var v_daySelector = document.querySelectorAll(".redPlug .daySelector");
+v_daySelector[0].addEventListener("click", function(event){ 
+    if (v_daySelector[0].checked){ 
+        for (var i=1; i<(v_daySelector.length); i++){
+            v_daySelector[i].checked = true;
+        }} }, false);
+
+
+var v_weekDay = document.querySelector(".redPlug .Hebdomadaire .weekDay")
+v_weekDay.addEventListener("click", function(event){
+    if (!event.target.checked){
+        v_daySelector[0].checked = false;
+    }
+}, false);
+        
+
 /* Mode Clone */
 var v_redClone = document.getElementById("rClone");
 
@@ -103,5 +119,47 @@ v_redClone.onclick = function(){
 }
 
 
-/* code permettant de cocher (checked) un éléments */
-//document.getElementById('_1234').checked = true;
+// code permettant de cocher (checked) un éléments 
+/*
+document.getElementById('_1234').checked = true;
+*/
+
+
+// Code de validation du format pour les durées (pour le mode Minuterie)
+/*
+var v_regExDuree = /^(300|[0-2]{0,1}\d{0,2}|300:00|[0-2]{0,1}\d{0,2}:[0-5]\d{1})$/;
+    // /!\Attention/!\:
+    //      - les minutes sont comprises entre 0 et 300
+    //      - les secondes sont comprises entre 0 et 59
+    //          --> si les minutes sont égales à 300, les secondes doivent être égale à 0
+
+var dOn = document.getElementsByClassName("redPlug Minuterie dureeOn"); 
+    // attention il sagit d'un Objet, pas d'un tableau.
+    // On ne peut donc pas faire de "foreach" dessus, mais seulement un "for"
+
+dOn[0].addEventListener("input", function(event){
+    if (regExDuree.test(dOn[0].value)){
+        console.log("True");
+    } else {
+        console.log("format non valide");
+    }
+}, false);
+*/
+
+
+/* /!\Attention/!\ */ 
+// Le format de durée pour le mode Manuel et pour le mode Cyclique est sur 3 digit, pas de secondes
+/*
+var regExDureeNoSec = /^(300|[0-2]{0,1}\d{0,2})$/;
+    // /!\Attention/!\:
+    //      - les minutes sont comprises entre 0 et 300
+*/
+
+
+// Code de validation du format pour les heures
+/*
+var regExHeure = /^([0-2]{0,1}\d{1}:[0-5]\d{1})$/;
+    // /!\Attention/!\:
+    //      - Les heures sont comprises entre 0 et 23
+    //      - Les minutes sont comprises entre 0 et 59
+*/
