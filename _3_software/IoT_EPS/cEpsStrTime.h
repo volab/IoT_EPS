@@ -14,6 +14,8 @@
 
 #define TIME_MAX_DURATION 300
 
+
+
 /**
 * @class CEpsStrTime cEpsStrTime.h
 * @brief a class to hold and manipulate our different time values in String format
@@ -24,12 +26,12 @@ They can be H:M, H:MM, HH:M, HH:MM, MMM, MM, M, M:S, M:SS, MM:S, MM:SS, MMM:S, M
 
 Minutes files in MMM is limited to 300
 */
-class CEpsStrTime : public String
+class CEpsStrTime //: public String
 {
 public:
     enum Mode_t { MMMSS = 1, HHMM };
 
-    CEpsStrTime();
+    CEpsStrTime(){};
     CEpsStrTime( String val );
     bool isValid = false;
     void setValue( String val );
@@ -38,6 +40,9 @@ public:
     void setMaxDuration( long val ){ _maxDuration = val; } 
     String getStringVal(){ return _sValue; }/**< @brief to get the String format of the time
     value for json write purposes*/
+    
+    uint32_t computeNextTime();
+    /** @todo write a method to display _nextTimeToSwitch in human readable form*/
 
 private:
 	
@@ -46,6 +51,7 @@ private:
     long _seconds;
     long _maxDuration = TIME_MAX_DURATION ;
     bool checkValidity();
+    uint32_t _nextTimeToSwitch;
 };
 
 #endif

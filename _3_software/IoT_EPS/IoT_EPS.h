@@ -58,6 +58,7 @@
 #define JSON_PARAMNAME_STARTTIME "hDebut"
 #define JSON_PARAMNAME_ENDTIME "hFin"
 #define JSON_PARAMNAME_ONOFCOUNT "onOffCount"
+#define JSON_PARAMNAME_NEXTSWITCH "nextTimeToSwitch"
 
 #define TIME_STRING_SEPARATOR ":"
 

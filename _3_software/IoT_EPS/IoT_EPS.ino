@@ -56,6 +56,7 @@ CpowerPlug class*/
 /** @todo see for add colorLEd array in the class CPowerPlug as a static member*/
 
 
+
 void setup(){
 
     DEFDPROMPT("setUp") // define dPrompt String
@@ -89,6 +90,8 @@ void setup(){
     }
     if ( errRTCinit ) {
         DSPL(dPrompt + F("ERR : Couldn't find RTC"));
+        /** @todo Stop EPS and warn with colors aand others LED ,
+        cause without right time EPS dosen't work. No manual mode shall work */
     } else {
         errRTCinit = false;
         /** @todo check time validity */

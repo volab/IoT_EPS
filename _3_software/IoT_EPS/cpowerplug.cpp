@@ -248,7 +248,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     DSPL( dPrompt + "Mode = " + mode );
     // _mode = modeId( mode );
     // DSPL( dPrompt + "_mode =" + (String)_mode);
-    prevMode = readFromJson( param );
+    prevMode = readFromJson( param ); //why ? for bp acquit
     writeToJson( param, mode );
     if ( mode == MANUAL_MODE){
         DSPL( dPrompt + "Manual mode actions ");
@@ -261,36 +261,29 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         if (state != NOT_FOUND ){
             if (state == "ON") on(); else off();
             /** @todo review this statement it should not be so easy it should take into account time and perhaps previous state*/
-            //writeToJson( param, state );
+            //writeToJson( param, state ); //done in on off methods
         }
+        
         param = JSON_PARAMNAME_OFFDURATION;
-        // String dureeOff = extractParamFromHtmlReq( allRecParam, param );
-        CEpsStrTime dureeOff = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
-        //possible value : a number of minutes before off
-        // max value = MANUEL_MODE_MAXOFFDURATION
-        // "nf" parameter not found NOT_FOUND
-        // "en minutes" or something like that
-        DSPL( dPrompt + _plugName + " : extracted dureeoff as int = " + dureeOff.toInt() );
-        /** @todo add a function to check time validity format mm:ss or hh:mm or only mmm, mm or m*/
-        /** @todo replace above code with class members CEpsStrTime*/
-        if ( dureeOff != NOT_FOUND && dureeOff != HTML_OFFDURATION_DEFAULT_VALUE ){
-            int minutes = 0;
-            int seconds = 0;
-            int pos = dureeOff.indexOf( TIME_STRING_SEPARATOR );
-            if (pos != -1 ){
-                minutes = dureeOff.substring( 0, pos -1 ).toInt();
-                seconds = minutes*60 + dureeOff.substring( pos +1 ).toInt();
-                DSPL( dPrompt + "Secondes converties : " + seconds );
-            } else { seconds = 60 * dureeOff.toInt(); }
-            DSPL( dPrompt + "Secondes converties : " + seconds );
+        CEpsStrTime dureeOff;
+        dureeOff.setMode( CEpsStrTime::MMMSS );
+        dureeOff = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
+        DSPL( dPrompt + _plugName + " : extracted dureeoff en secondes = " + (String)dureeOff.getSeconds() );
+        if (dureeOff.isValid){
+            //write to json
+            writeToJson( param, dureeOff.getStringVal() );
+            //Calculate nextTimeToSwith and write to json
+            DSPL( dPrompt + "nt2s (in unix time) = " + (String)dureeOff.computeNextTime() );
+            writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)dureeOff.computeNextTime() );
+            /** @todo activate write to json next time to switch*/
         }
-        //duree avant arret dureeOff si dureeOff then calculate hFin and work only with hFin
+        //duree avant arret dureeOff if dureeOff then calculate hFin and work only with hFin
         //ou
         //heure arret : hFin
         // ou rien
         param = JSON_PARAMNAME_ENDTIME;
         String hFin = extractParamFromHtmlReq( allRecParam, param );        
-        DSPL( dPrompt + _plugName + " : extracted dureeoff as int = " + dureeOff.toInt() );
+        DSPL( dPrompt + _plugName + " : extracted hFin as int = " + hFin.toInt() );
         //valid hFin or dureeOff
         //write to json and clean other data
     } else if ( mode == TIMER_MODE ){
@@ -323,11 +316,11 @@ String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
     DSPL( dPrompt + "Search for : " + param);
     param +="=";
     int pos = allRecParam.indexOf( param );
-    DSPL( dPrompt + "Pos brut = " + (String)pos);
+    //DSPL( dPrompt + "Pos brut = " + (String)pos);
     if ( pos == -1 ) return RETURN_NOT_FOUND_VALUE;
     pos += param.length();
     int fin = allRecParam.indexOf( "/", pos );
-    DSPL( dPrompt + "fin = " +(String)fin );
+    //DSPL( dPrompt + "fin = " +(String)fin );
     return allRecParam.substring( pos, fin );
     /** @todo remove debug informations*/
 }

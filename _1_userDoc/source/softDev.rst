@@ -20,12 +20,13 @@ Avancement
 #. lecture du fichier de configuration : ok
 #. intégration MCP23017 : ok
 #. lecture du fichier de configuration config3.json : 70%
-#. gestion bouton poussoir mécanique : 60%
+#. gestion bouton poussoir mécanique : 80%
 #. Ecriture fichier json : 60%
-#. Traitement de la requete html avec analyze, exécution et écriture json: 10%
+#. Traitement de la requete html avec analyze, exécution et écriture json: 20%
 #. Réflèchir à la gestion des erreurs
 #. manage wif led : ok
-#. interate nano expander with analog inputs : 
+#. interate nano expander with analog inputs : 0%
+
 
 ====================================
 Convention de nommage
@@ -120,6 +121,9 @@ L'interrupteur général coupe le 220V des prise mais pas de l'ESP8266.
 Bien expliquer les 2 mode de fonctionnement dans l'interface WEB et donner le choix à l'utilisateur.
 
 Expliquer le coup de la coupure de courant.
+
+
+
 
 ==============
 Choix dev soft
