@@ -84,6 +84,9 @@ void CPowerPlug::toggle(){
 */
 bool CPowerPlug::isItTimeToSwitch(){
     /** @todo complete isItTimeToSwitch */
+    if ( _nextTimeToSwitch == 0 ) return false;
+    RTC_DS3231 rtc;
+    if ( rtc.now().unixtime() > _nextTimeToSwitch ) return true;
     return (true); //to do change this one ;-)
 }
 
@@ -280,22 +283,25 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         dureeOff.setMode( CEpsStrTime::MMMSS );
         dureeOff = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
         DSPL( dPrompt + _plugName + " : extracted dureeoff en secondes = " + (String)dureeOff.getSeconds() );
+        
+        _nextTimeToSwitch = 0;
         if (dureeOff.isValid){
             writeToJson( param, dureeOff.getStringVal() );
             //Calculate nextTimeToSwith and write to json
             _nextTimeToSwitch = dureeOff.computeNextTime();
-            DSPL( dPrompt + "nt2s : " + CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
-            writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
         }
-        //duree avant arret dureeOff if dureeOff then calculate hFin and work only with hFin
-        //ou
-        //heure arret : hFin
-        // ou rien
+
         param = JSON_PARAMNAME_ENDTIME;
-        String hFin = extractParamFromHtmlReq( allRecParam, param );        
+        String hFin = extractParamFromHtmlReq( allRecParam, param );    
+/** @todo hFin in manual mode with CEpsStrTime class*/        
         DSPL( dPrompt + _plugName + " : extracted hFin as int = " + hFin.toInt() );
-        //valid hFin or dureeOff
+        // if ( hFin.isValid && !dureeOff.isValid ){
+            // _nextTimeToSwitch = hFin.computeNextTime();
+        // }
+// it is necessary to reset _nextTimeToSwitch and its json version but 
         //write to json and clean other data
+        DSPL( dPrompt + "nt2s : " + CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
+        writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
     } else if ( mode == TIMER_MODE ){
         DSPL( dPrompt + "Timer mode actiuons" );
         //Timer mode parameters

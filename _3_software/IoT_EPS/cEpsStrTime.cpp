@@ -91,18 +91,12 @@ uint32_t  CEpsStrTime::computeNextTime(){
     DateTime future;
     now = rtc.now();
     String page = "";
-    // page += (String)now.day() +"/"+(String)now.month()+"/"+(String)now.year()+" ";
-    // page += (String)now.hour()+":"+(String)now.minute()+":";
-    // page += (String)now.second();
-    // DSPL( dPrompt + page );
     displayUnixTime( now.unixtime() );
-    future = DateTime( now.unixtime() + _seconds );
+    uint32_t future = now.unixtime() + _seconds;
     page = "future = ";
-    page += (String)future.day() +"/"+(String)future.month()+"/"+(String)future.year()+" ";
-    page += (String)future.hour()+":"+(String)future.minute()+":";
-    page += (String)future.second();
+    page += unixTime2String( future );
     DSPL( dPrompt + page );  
-    return future.unixtime();
+    return future;
 }
 
 /** 

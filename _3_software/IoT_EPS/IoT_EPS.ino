@@ -254,6 +254,7 @@ void loop(){
     // Serial.printf("Stations connected = %d\n", WiFi.softAPgetStationNum());
     server.handleClient();
     // delay(3000);
+    
     if ( millis() - prevMillis >= FLASHERTIME){
         prevMillis = millis();
         statePlug0 = !statePlug0 ;
@@ -263,12 +264,19 @@ void loop(){
     for ( int i = 0; i < NBRPLUGS ; i++ ) plugs[i].bp.update();
     for ( int i = 0; i < NBRPLUGS ; i++ ){
         String sMode = plugs[i].readFromJson( JSON_PARAMNAME_MODE );
+        /** @todo replace usage of reading in json by _mode member of pplug class*/
         if ( plugs[i].bp.clic() ){
             if (sMode == MANUAL_MODE){
                 plugs[i].toggle();
                 plugs[i].bp.acquit();
             }
             
+        }
+        // else if plugs[i].bp.longClic(){ plugs[i].return2ManuelMode() }
+        /** @todo developp return2ManuelMode of the  CPowerPlug class*/
+        if ( plugs[i].isItTimeToSwitch() ){
+            //plugs[i].switch or improved version of toggle();
+            /** @todo creat switch() method or improve toggle() of the CPowerPlug class*/
         }
     }
     yield();
