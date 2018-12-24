@@ -59,7 +59,9 @@ Ajout d'un DS3231 comme dans le projet  `ESP_NTP_DS3231 <https://github.com/vola
 .. important::
 
   D1 : SCL
-  D2   SDA
+  D2 : SDA
+  
+I2C pullup ? Visiblement sur le DS3231, il y en a !
 
 ####
 

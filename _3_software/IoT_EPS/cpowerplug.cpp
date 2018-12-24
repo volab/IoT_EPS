@@ -14,10 +14,28 @@ extern RTC_DS3231 rtc;
 
 const String CPowerPlug::modes[5] = { MANUAL_MODE, TIMER_MODE, CYCLIC_MODE, HEBDO_MODE, CLONE_MODE };
 
+/** 
+@fn int CPowerPlug::modeId( String mode )
+@brief A method to convert String mode into its id
+@param mode the mode in String format
+@return the equivalent id
 
+The purpose of this is to replace an enum caus here we have the need to gat both the text form
+for all json and html and the its id in numericla form for other functionnality like for loop.
+
+A possible workaround will be:
+
+@code {.cpp}
+	for ( String s : CPowerPlug::modes){
+		if (sMode == s);//do the job
+	}
+
+@endcode
+*/
 int CPowerPlug::modeId( String mode ){
     int i;
     for ( i = 0; i <  5 ; i++ ){
+	//for ( i : modes ){
         if ( mode == modes[i] ) break;
     }
     return i;
@@ -37,10 +55,12 @@ void CPowerPlug::begin( int pin , int onOffLedPin, int bpPin, int mode ){
 
 /** 
 @fn void CPowerPlug::on()
-@brief méthode qui met le plug sur ON mais n'effectue pas la sortie physique
-@return pas de paramètre ni de valeur de retour. Travail sur les membres de la classe
+@brief  method that change state of the plug but not only
+@return nothig and no input paramter
 
-Cette méthode lit et écrit directment dans le fichier json pour l'état du plug
+This methods doesn't change physical output but call updateOutputs.
+
+It also update json file
 */
 void CPowerPlug::on(){
     DEFDPROMPT( "CPOwerPlug")
@@ -55,6 +75,16 @@ void CPowerPlug::on(){
 
 }
 
+
+/** 
+@fn void CPowerPlug::off()
+@brief method that change state of the plug but not only
+@return nothig and no input paramter
+
+This methods doesn't change physical output but call updateOutputs.
+
+It also update json file
+*/
 void CPowerPlug::off(){
     DEFDPROMPT( "CPOwerPlug")
     if (!_initDone){
@@ -66,10 +96,16 @@ void CPowerPlug::off(){
     writeToJson( JSON_PARAMNAME_STATE, "OFF" );
 }
 
+/** 
+@fn void CPowerPlug::toggle()
+@brief toggle stat
+
+see on() and off() methode
+
+*/
 void CPowerPlug::toggle(){
     DEFDPROMPT( "CPOwerPlug")
     if (!_initDone){
-        /** @todo  check _initDone fonctionality */
         DSPL( dPrompt + F(" plug not started, call .begin().") );
     }
     _state = !_state ;
@@ -79,15 +115,16 @@ void CPowerPlug::toggle(){
 
 /** 
 @fn bool CPowerPlug::isItTimeToSwitch()
-@brief when completed, this function check if it is time to switch the plug
-@return no return value and no parameter
+@brief this function check if it is time to switch the plug
+@return return true if it is time to switch the plug value and no parameter
+
+Do not compute new time to switch
 */
 bool CPowerPlug::isItTimeToSwitch(){
-    /** @todo complete isItTimeToSwitch */
     if ( _nextTimeToSwitch == 0 ) return false;
     RTC_DS3231 rtc;
     if ( rtc.now().unixtime() > _nextTimeToSwitch ) return true;
-    return (true); //to do change this one ;-)
+    return (true);
 }
 
 /** 
@@ -157,16 +194,16 @@ bool CPowerPlug::readFromJson(){
                     _mode = modeId( sMode );
                     DSPL( dPrompt + "Etat = " + sState );
                     _state = (sState == "ON");
-                    DSPL( dPrompt + "Start time = " + sHDebut );
-                    DSPL( dPrompt + "End time = " + sHFin );
-                    DSPL( dPrompt + "on duration = " + sDureeOn );
-                    DSPL( dPrompt + "off duration = " + sDureeOff );
-                    DSPL( dPrompt + "Cloned plug = " + sClonedPlug );
-                    DSPL( dPrompt + "Relay on off count = " + sOnOffCount );
+                    DSPL( dPrompt + F("Start time = ") + sHDebut );
+                    DSPL( dPrompt + F("End time = ") + sHFin );
+                    DSPL( dPrompt + F("on duration = ") + sDureeOn );
+                    DSPL( dPrompt + F("off duration = ") + sDureeOff );
+                    DSPL( dPrompt + F("Cloned plug = ") + sClonedPlug );
+                    DSPL( dPrompt + F("Relay on off count = ") + sOnOffCount );
                     
                     _nextTimeToSwitch = sNextTime2switch.toInt();
                     if ( _nextTimeToSwitch ){
-                        DSPL( dPrompt + "Next time to switch : " + \
+                        DSPL( dPrompt + F("Next time to switch : ") + \
                         CEpsStrTime::unixTime2String( _nextTimeToSwitch ));
                     }
 
@@ -255,7 +292,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     String prevMode;
     DEFDPROMPT( "CPlug handle html param");
     DSPL( dPrompt + allRecParam);
-    DSPL( dPrompt + "Traitements pour : " + _plugName );
+    DSPL( dPrompt + F("Traitements pour : ") + _plugName );
     param = JSON_PARAMNAME_MODE;
     mode = extractParamFromHtmlReq( allRecParam, param );
     DSPL( dPrompt + "Mode = " + mode );
@@ -264,13 +301,13 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     prevMode = readFromJson( param ); //why ? For bp acquit
     writeToJson( param, mode );
     if ( mode == MANUAL_MODE){
-        DSPL( dPrompt + "Manual mode actions ");
+        DSPL( dPrompt + F("Manual mode actions ") );
         //manual mode parameters :
         //State
         if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
         param = JSON_PARAMNAME_STATE;
         state = extractParamFromHtmlReq( allRecParam, param );
-        DSPL( dPrompt + _plugName + " : extracted state = " + state);
+        DSPL( dPrompt + _plugName + F(" : extracted state = ") + state);
         if (state != NOT_FOUND ){
             if (state == "ON") on(); else off();
             /** @todo review this statement it should not be so easy it should take into 
@@ -294,7 +331,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         param = JSON_PARAMNAME_ENDTIME;
         String hFin = extractParamFromHtmlReq( allRecParam, param );    
 /** @todo hFin in manual mode with CEpsStrTime class*/        
-        DSPL( dPrompt + _plugName + " : extracted hFin as int = " + hFin.toInt() );
+        DSPL( dPrompt + _plugName + F(" : extracted hFin as int = ") + hFin.toInt() );
         // if ( hFin.isValid && !dureeOff.isValid ){
             // _nextTimeToSwitch = hFin.computeNextTime();
         // }
@@ -303,19 +340,19 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         DSPL( dPrompt + "nt2s : " + CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
         writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
     } else if ( mode == TIMER_MODE ){
-        DSPL( dPrompt + "Timer mode actiuons" );
+        DSPL( dPrompt + F("Timer mode actiuons") );
         //Timer mode parameters
         //dureeOn
     } else if ( mode == CYCLIC_MODE ){
-        DSPL( dPrompt + "Cyclic mode actions" ); 
+        DSPL( dPrompt + F("Cyclic mode actions") ); 
         //cyclic mode parameters
         //dureeOn//dureeOff//hDebut
     } else if ( HEBDO_MODE ){
-        DSPL( dPrompt + "Hebdo mode actions" );
+        DSPL( dPrompt + F("Hebdo mode actions") );
         //hebdo mode parameters
         //hdebut hFin
     } else if ( mode ==  CLONE_MODE){
-        DSPL( dPrompt + "clone mode actions" );
+        DSPL( dPrompt + F("clone mode actions") );
         //clode mode parameters
     }
 /** @todo complete this function !*/ 
@@ -329,7 +366,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
 */
 String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
     DEFDPROMPT("extract param");
-    DSPL( dPrompt + "Search for : " + param);
+    DSPL( dPrompt + F("Search for : ") + param);
     param +="=";
     int pos = allRecParam.indexOf( param );
     //DSPL( dPrompt + "Pos brut = " + (String)pos);

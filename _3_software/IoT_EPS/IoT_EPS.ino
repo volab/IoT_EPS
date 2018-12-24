@@ -16,6 +16,14 @@
 - Utilisation de la bibliothèque ESP8266mDNS
 - Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3
 - Utilisation de la bibliothèque FastLED version 3.2.1
+
+@section wifi WIFIs connexions
+
+If credentials are found in SPIFFS are found plugs try to connect about 20 times (time out = 10s).
+
+If it can't reach WIFI network it switch to acces point mode.
+
+In Access point mode default add is 192.168.95.42. Ssid and pas are those store in the SPIFFS credential.json
 */
 
 
@@ -41,11 +49,9 @@ RTC_DS3231 rtc;
 ESP8266WebServer server ( 80 );
 
 IPAddress apIP(192, 168, 95, 42);
+/** @todo put softAP IP add and server port in config.json*/
 
-// Adafruit_MCP23017 mcp;
 
-// CPowerPlug plug0{ RED };
-// CPowerPlug plug0( ROUGE );
 CPowerPlug plugs[NBRPLUGS];
 
 bool errRTCinit = true;
@@ -55,7 +61,7 @@ CRGB colorLeds[NUM_LEDS]; /**< @brief  not very satisfy for this globale ! It sh
 CpowerPlug class*/
 /** @todo see for add colorLEd array in the class CPowerPlug as a static member*/
 
-
+bool simpleManualMode = false;
 
 void setup(){
 
@@ -74,6 +80,8 @@ void setup(){
     
     cParam.begin();
     wifiCred.begin();
+	
+	
     
     /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                           //
@@ -83,14 +91,14 @@ void setup(){
     errRTCinit = Wire.endTransmission();
     if ( !errRTCinit ){
         if (rtc.lostPower()){
-            DSPL( dPrompt + "une remise à l'heure est nécessaire");
+            DSPL( dPrompt + "une remise a l'heure est necessaire");
             //errRTCinit = true;
             /** @todo enable or not ? errRTCinit due to lots power*/
         }
     }
     if ( errRTCinit ) {
         DSPL(dPrompt + F("ERR : Couldn't find RTC"));
-        /** @todo Stop EPS and warn with colors aand others LED ,
+        /** @todo Stop EPS and warn with colors and others LED ,
         cause without right time EPS dosen't work. No manual mode shall work */
     } else {
         errRTCinit = false;
@@ -138,45 +146,65 @@ void setup(){
     FastLED.setBrightness(5); /**< @brief normaly in the json config file*/
     /** @todo Read the general brightness of color LED in JSON config file*/
     FastLED.show();
-    
-    /////////////////////////////////////////////////////////////////////////////
+	
+    simpleManualMode = plugs[0].bp.directRead();
+	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
+	/** @todo implement special check bp to bypass wifi connection and work in simple manual mode*/
     digitalWrite( WIFILED, LOW );
     pinMode( WIFILED, OUTPUT );
-    if (cParam.ready){
-        DSPL( dPrompt + F("Wifi mode = ") + cParam.getWifiMode() );
-    }
-    WiFi.setAutoConnect(false);
-    DSP( dPrompt + F("Mode autoconnect : "));
-    DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
-    DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
+	
+	if ( !simpleManualMode ){
+		int tryCount = 0;
+		if (cParam.ready){
+			DSPL( dPrompt + F("Wifi mode = ") + cParam.getWifiMode() );
+		}
+		WiFi.setAutoConnect(false); //to allways control wifi connection
+		DSP( dPrompt + F("Mode autoconnect : "));
+		DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
+		DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
 
-    if ( wifiCred.ready ){ // Station wIFI mode
-        if ( cParam.getWifiMode() == "client" ){
-            WiFi.mode(WIFI_STA);
-            WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
-            DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
-            wifiLedFlash( WIFILED_FLASH_FAST, WIFILED_FLASH_COUNT );
-            while (WiFi.status() != WL_CONNECTED) {
-                delay(500);
-                digitalWrite( WIFILED , !digitalRead( WIFILED ) );
-                DSP(".");
-            }
-            digitalWrite( WIFILED, HIGH);
-            DSPL();
-            DSPL(  dPrompt + F("Adresse Wifi.localIP : ") + WiFi.localIP().toString() );  
-        } else { //WIFI soft Access Point mode
-            wifiLedFlash( WIFILED_FLASH_SLOW, WIFILED_FLASH_COUNT/2 );
-            DSP("\n" + dPrompt + F("softAP : "));
-            WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0)); 
-            DSPL(WiFi.softAP(wifiCred.getSsid(),
-                wifiCred.getPass() )?F("Ready"):F("Failed!"));
-            DSPL(  dPrompt + F("Adresse configured IP : ") + apIP.toString() ); 
-            digitalWrite( WIFILED, HIGH);
-        }
-    }
-    MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
+		if ( wifiCred.ready ){ 
+			if ( cParam.getWifiMode() == "client" ){ // Station WIFI mode
+				WiFi.mode(WIFI_STA);
+				WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
+				DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
+				wifiLedFlash( WIFILED_FLASH_FAST, WIFILED_FLASH_COUNT );
+				
+				while (WiFi.status() != WL_CONNECTED) {
+					delay(500);
+					digitalWrite( WIFILED , !digitalRead( WIFILED ) );
+					DSP(".");
+					//a normal acces should came in 10 try
+					tryCount++;
+					if (tryCount == MAX_WIFI_CONNECT_RETRY ) break;
+					
+				}
+				digitalWrite( WIFILED, HIGH);
+				DSPL();
+				DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
+					+ WiFi.localIP().toString() );  
+			}
+			if ( cParam.getWifiMode() == "softAP" || tryCount == MAX_WIFI_CONNECT_RETRY ){
+				//WIFI soft Access Point mode
+				wifiLedFlash( WIFILED_FLASH_SLOW, WIFILED_FLASH_COUNT/2 );
+				DSP("\n" + dPrompt + F("softAP : "));
+				WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0)); 
+				DSPL(WiFi.softAP(wifiCred.getSsid(),
+					wifiCred.getPass() )?F("Ready"):F("Failed!"));
+				DSPL(  dPrompt + F("Adresse configured IP : ") + apIP.toString() ); 
+				digitalWrite( WIFILED, HIGH);
+			}
+		}
+		/** @todo complete wifi accessPoint mode when normal wifi is not reachable*/
+		/** @todo review bahavior when wifi is not reachable to allow simple bp manual mode*/
+		MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
+	
+	} else {
+		DSPL(  dPrompt + F("Enter in simple manual mode") );
+		simpleManualModeChaser();
+	}
     
    /////////////////////////////////////////////////////////////////////////////
     //  Start of the check index.html file presence  (check file system)       //
@@ -212,54 +240,52 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     //  Server configurations                                                  //
     /////////////////////////////////////////////////////////////////////////////
-    server.on("/list", HTTP_GET, handleFileList);
-    server.on("/PlugConfig", HTTP_GET, handlePlugConfig );
-    server.on("/plugonoff", HTTP_POST, handlePlugOnOff );
-    server.on("/edit", HTTP_GET, [](){
-        if(!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
-    });
-    server.on("/help", HTTP_GET, [](){
-        if(!handleFileRead("/help.htm")) server.send(404, "text/plain", "FileNotFound");
-    });
-    server.on("/edit", HTTP_PUT, handleFileCreate);
-    server.on("/edit", HTTP_DELETE, handleFileDelete);
-    //first callback is called after the request has ended with all parsed arguments
-    //second callback handles file uploads at that location
-    server.on("/edit", HTTP_POST, [](){ server.send(200, "text/plain", ""); }, handleFileUpload);
+	if ( !simpleManualMode ){
+		server.on("/list", HTTP_GET, handleFileList);
+		server.on("/PlugConfig", HTTP_GET, handlePlugConfig );
+		server.on("/plugonoff", HTTP_POST, handlePlugOnOff );
+		server.on("/edit", HTTP_GET, [](){
+			if(!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
+		});
+		server.on("/help", HTTP_GET, [](){
+			if(!handleFileRead("/help.htm")) server.send(404, "text/plain", "FileNotFound");
+		});
+		server.on("/edit", HTTP_PUT, handleFileCreate);
+		server.on("/edit", HTTP_DELETE, handleFileDelete);
+		//first callback is called after the request has ended with all parsed arguments
+		//second callback handles file uploads at that location
+		server.on("/edit", HTTP_POST, [](){ server.send(200, "text/plain", ""); }, handleFileUpload);
 
-    //called when the url is not defined here
-    //use it to load content from SPIFFS
-    server.onNotFound([](){
-    if(!handleFileRead(server.uri()))
-        server.send(404, "text/plain", "FileNotFound");
-    });    
+		//called when the url is not defined here
+		//use it to load content from SPIFFS
+		server.onNotFound([](){
+		if(!handleFileRead(server.uri()))
+			server.send(404, "text/plain", "FileNotFound");
+		});    
 
-    // server.serveStatic("/", SPIFFS, "/index.html");
-    // server.serveStatic("/index.html", SPIFFS, "/index.html");
-    // server.serveStatic("/help.html", SPIFFS, "/help.html");
-    server.on( "/time", displayTime );
+		server.on( "/time", displayTime );
 
-	server.on ( "/inline", []() {
-		server.send ( 200, "text/plain", "this works as well" );
-	} );
-	// server.onNotFound ( handleNotFound );
-	server.begin();
-	Serial.println ( "HTTP server started" );
+		server.on ( "/inline", []() {
+			server.send ( 200, "text/plain", "this works as well" );
+		} );
+		// server.onNotFound ( handleNotFound );
+		server.begin();
+		Serial.println ( "HTTP server started" );
+	
+	}
 
 }
 
+/////////////////////////////////////////////////////////////////////////////
+//        LOOP                                                             //
+/////////////////////////////////////////////////////////////////////////////
 unsigned long prevMillis = millis();
 void loop(){
-    static bool statePlug0 = false;
-    // Serial.printf("Stations connected = %d\n", WiFi.softAPgetStationNum());
-    server.handleClient();
-    // delay(3000);
+
+    if ( !simpleManualMode ) server.handleClient();
+
     
-    if ( millis() - prevMillis >= FLASHERTIME){
-        prevMillis = millis();
-        statePlug0 = !statePlug0 ;
-        // mcp.digitalWrite( PLUG0, statePlug0 );
-    }
+
     FastLED.show();
     for ( int i = 0; i < NBRPLUGS ; i++ ) plugs[i].bp.update();
     for ( int i = 0; i < NBRPLUGS ; i++ ){
@@ -282,6 +308,11 @@ void loop(){
     yield();
 }
 
+
+/////////////////////////////////////////////////////////////////////////////
+//  Simple local functions                                                 //
+/////////////////////////////////////////////////////////////////////////////
+
 void wifiLedFlash( int speed, int count ){
     for ( int i = 0; i < count ; i++ ){
         digitalWrite( WIFILED , !digitalRead( WIFILED ) );
@@ -290,3 +321,21 @@ void wifiLedFlash( int speed, int count ){
     digitalWrite( WIFILED, LOW);
 }
 
+void simpleManualModeChaser(){
+	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+	FastLED.show();
+	delay(500);
+	
+	for (int i=0; i < 20; i++){
+		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+		FastLED.show();
+		delay(200);	
+		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Red;
+		FastLED.show();
+		delay(200);				
+	}
+	
+	//restaur Color Leds state
+	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = plugs[i].getColor();    
+	FastLED.show();
+}

@@ -131,6 +131,12 @@ wifi access point
 
 Les pages html sont dans le file système SPIFFS
 
+Pourquoi ne pas utiliser wifi manager ?
+=========================================
+
+
+
+
 WEMOS D1 MIN ARDUINO configurattion:
 
 .. image:: ./image/wemosD1Mini_configArduino.jpg
@@ -138,10 +144,18 @@ WEMOS D1 MIN ARDUINO configurattion:
 ==================
 WIFI LED
 ==================
-In Station mode, fast flashing and after slow flashing while waiting for connection.
+In Station mode, fast flashing (20 times) and after slow flashing while waiting for connection (500ms with a 20 times time out - new in 24/12/2018).
 
-In Access Point Slow flashing and led of while waiting for connection. Cause WiFi.softAPConfig
-function is a blocking function.
+In Access Point Slow flashing (10 times) and led off while waiting for connection.
+
+Cause WiFi.softAPConfig function is a blocking function. This is wrong : test on 24/12/2018 softAP is
+non blocking !
+
+So if power led is on and WIFI Led is off it means that plugs wait for connection in AP mode. WRONG
+
+It rises a new problem : in this state it is not possible to use plugs even in simple  manual mode with push button.
+
+Possible solution : check push button at startup if a particular combination is pressed, plugs do not try to connect to wifi and mork in simple manual mode.
 
 ===========================
 Développement des page Web

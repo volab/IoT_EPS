@@ -90,6 +90,7 @@
 #define WIFILED_FLASH_FAST 100
 #define WIFILED_FLASH_SLOW 500
 #define WIFILED_FLASH_COUNT 20
+#define MAX_WIFI_CONNECT_RETRY 20 /**< @brief In Station mode number of try before to switch to access point connection*/
 
 
 #endif

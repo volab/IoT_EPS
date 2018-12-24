@@ -55,7 +55,7 @@ bool CEpsStrTime::checkValidity(){
         if (sTmp.length() > 3) return isValid; //max 3 digits
         /** @todo Warning if Minutes max value becomes > 999*/
         minutes = sTmp.toInt();
-        DSPL( dPrompt + "minutes : " + sTmp );
+        DSPL( dPrompt + F("minutes : ") + sTmp );
         sTmp = _sValue.substring( pos +1 );
         sTmp.trim();
         _seconds = sTmp.toInt();
@@ -65,7 +65,7 @@ bool CEpsStrTime::checkValidity(){
         }
         _seconds = minutes*60 + _seconds;
     } else _seconds = 60 * _sValue.toInt();
-    DSPL( dPrompt + "Secondes converties : " + _seconds );
+    DSPL( dPrompt + F("Secondes converties : ") + _seconds );
     if (_seconds > (_maxDuration*60) && _mode == MMMSS){
         _seconds = -1;
         return isValid;
@@ -88,7 +88,6 @@ uint32_t  CEpsStrTime::computeNextTime(){
     DEFDPROMPT( "CEpsStrTime::computeNextTime" );
     RTC_DS3231 rtc;
     DateTime now;
-    DateTime future;
     now = rtc.now();
     String page = "";
     displayUnixTime( now.unixtime() );
@@ -113,7 +112,7 @@ void CEpsStrTime::displayUnixTime( uint32_t time2Display ){
 
 
 /** 
-@fn String CEpsStrTime::UnixTime2String( uint32_t time2Display )
+@fn String CEpsStrTime::unixTime2String( uint32_t time2Display )
 @brief Converts a unix time to a human readable string
 @param time2Display must be in unix time 
 @return String in french format jj/mm/aaaa hh:mm:ss

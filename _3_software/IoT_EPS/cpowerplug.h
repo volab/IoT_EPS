@@ -25,7 +25,7 @@ When a function need to return or test a not found value
         // ROUGE, VERTE, BLEUE, JAUNE
 // };
 
-typedef CRGB::HTMLColorCode plugColor_t;
+typedef CRGB::HTMLColorCode plugColor_t; /**< @brief see FastLed lib pixelstype.h for colors*/
 
 
 // static inline String stringFromColor(plugColor_t c){
