@@ -24,12 +24,15 @@
 #include <FastLED.h>
 // #include <Array.h>
 
+#include "SerialCommand.h"
 #include "debugSerialPort.h"
 #include "credential.h"
 #include "configParam.h"
 #include "serverFunction.h"
 #include "bouton.h"
 #include "cEpsStrTime.h"
+#include "Flasher.h"
+#include "CRtc.h"
 
 #define NBRPLUGS 4
 #define NUM_LEDS NBRPLUGS /**< for fastLED class */
@@ -70,6 +73,7 @@
 
 
 #define FLASHERTIME 500 //ms
+
 
 #define PLUG0PIN 0 // MPC23017 numbering pin21 PORTA.0
 #define PLUG1PIN 1

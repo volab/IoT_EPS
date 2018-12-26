@@ -7,6 +7,8 @@
 * @version 1.0
 * @brief EPS Electrical Power Strip software
 
+@tableofcontents
+
 @section dependencies Lib dependencies
 - Utilisation de la bibliothèque ESP8266WiFi version 1.0
 - Utilisation de la bibliothèque ESP8266WebServer version 1.0 
@@ -44,7 +46,7 @@ void wifiLedFlash( int speed, int count );
 ConfigParam cParam; /**< @brief to hold the configuration parameters*/
 Credential wifiCred;
 
-RTC_DS3231 rtc;
+CRtc rtc;
 
 ESP8266WebServer server ( 80 );
 
@@ -54,7 +56,7 @@ IPAddress apIP(192, 168, 95, 42);
 
 CPowerPlug plugs[NBRPLUGS];
 
-bool errRTCinit = true;
+// bool errRTCinit = true;
 bool errFS = true;
 
 CRGB colorLeds[NUM_LEDS]; /**< @brief  not very satisfy for this globale ! It should be in the 
@@ -62,6 +64,8 @@ CpowerPlug class*/
 /** @todo see for add colorLEd array in the class CPowerPlug as a static member*/
 
 bool simpleManualMode = false;
+
+Flasher wifiLed;
 
 void setup(){
 
@@ -78,6 +82,8 @@ void setup(){
     if (errFS) DSPL( dPrompt + F("error in Oping Fil System") );
     else DSPL( dPrompt + F("File system corectly Open @ setup level") );
     
+	SerialCommand::init();
+	
     cParam.begin();
     wifiCred.begin();
 	
@@ -87,21 +93,21 @@ void setup(){
     //     rtc DS3231 start                                                           //
     /////////////////////////////////////////////////////////////////////////////
     rtc.begin();
-    Wire.beginTransmission(DS3231_ADDRESS);
-    errRTCinit = Wire.endTransmission();
-    if ( !errRTCinit ){
+    // Wire.beginTransmission(DS3231_ADDRESS);
+    // errRTCinit = Wire.endTransmission();
+    if ( !rtc.initErr ){
         if (rtc.lostPower()){
             DSPL( dPrompt + "une remise a l'heure est necessaire");
             //errRTCinit = true;
             /** @todo enable or not ? errRTCinit due to lots power*/
         }
     }
-    if ( errRTCinit ) {
+    if ( rtc.initErr ) {
         DSPL(dPrompt + F("ERR : Couldn't find RTC"));
         /** @todo Stop EPS and warn with colors and others LED ,
         cause without right time EPS dosen't work. No manual mode shall work */
     } else {
-        errRTCinit = false;
+        // errRTCinit = false;
         /** @todo check time validity */
         now = rtc.now();
         String message = dPrompt + F("DS3231 Start date : ");
@@ -152,8 +158,10 @@ void setup(){
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
 	/** @todo implement special check bp to bypass wifi connection and work in simple manual mode*/
-    digitalWrite( WIFILED, LOW );
-    pinMode( WIFILED, OUTPUT );
+    // digitalWrite( WIFILED, LOW );
+    // pinMode( WIFILED, OUTPUT );
+
+	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
 	
 	if ( !simpleManualMode ){
 		int tryCount = 0;
@@ -170,36 +178,47 @@ void setup(){
 				WiFi.mode(WIFI_STA);
 				WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
 				DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
-				wifiLedFlash( WIFILED_FLASH_FAST, WIFILED_FLASH_COUNT );
-				
+				wifiLedFlash( wifiLed, WIFILED_FLASH_COUNT );
+				// wifiLedFlash( WIFILED_FLASH_FAST, WIFILED_FLASH_COUNT );
+				wifiLed.begin( WIFILED, WIFILED_FLASH_SLOW, WIFILED_FLASH_SLOW );
 				while (WiFi.status() != WL_CONNECTED) {
 					delay(500);
-					digitalWrite( WIFILED , !digitalRead( WIFILED ) );
+					// digitalWrite( WIFILED , !digitalRead( WIFILED ) );
+					wifiLed.update();
 					DSP(".");
 					//a normal acces should came in 10 try
 					tryCount++;
 					if (tryCount == MAX_WIFI_CONNECT_RETRY ) break;
 					
 				}
+				wifiLed.stop();
 				digitalWrite( WIFILED, HIGH);
 				DSPL();
-				DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
-					+ WiFi.localIP().toString() );  
+				if ( WiFi.status() == WL_CONNECTED){
+					DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
+						+ WiFi.localIP().toString() );  
+				}
 			}
 			if ( cParam.getWifiMode() == "softAP" || tryCount == MAX_WIFI_CONNECT_RETRY ){
 				//WIFI soft Access Point mode
-				wifiLedFlash( WIFILED_FLASH_SLOW, WIFILED_FLASH_COUNT/2 );
+				DSPL( dPrompt + F("Try softAccess") );
+				wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
+				wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
 				DSP("\n" + dPrompt + F("softAP : "));
 				WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0)); 
 				DSPL(WiFi.softAP(wifiCred.getSsid(),
 					wifiCred.getPass() )?F("Ready"):F("Failed!"));
-				DSPL(  dPrompt + F("Adresse configured IP : ") + apIP.toString() ); 
-				digitalWrite( WIFILED, HIGH);
+				DSPL(  dPrompt + F("Adresse configured IP : ") + apIP.toString() );
+				cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
+				DSPL( dPrompt + F("SSID = ") + wifiCred.getSsid() );
+				// digitalWrite( WIFILED, LOW);
+				wifiLed.begin( WIFILED, 50, 2000 ); // to prepare for loop
 			}
 		}
 		/** @todo complete wifi accessPoint mode when normal wifi is not reachable*/
 		/** @todo review bahavior when wifi is not reachable to allow simple bp manual mode*/
 		MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
+		DSPL( dPrompt + F("Host name that not work with Android is : ") + cParam.getHostName() );
 	
 	} else {
 		DSPL(  dPrompt + F("Enter in simple manual mode") );
@@ -273,6 +292,8 @@ void setup(){
 		Serial.println ( "HTTP server started" );
 	
 	}
+	
+	SerialCommand::displayCommandsList();
 
 }
 
@@ -284,7 +305,9 @@ void loop(){
 
     if ( !simpleManualMode ) server.handleClient();
 
-    
+    SerialCommand::process();
+	
+	if ( cParam.getWifiMode() == "softAP" ) wifiLed.update();
 
     FastLED.show();
     for ( int i = 0; i < NBRPLUGS ; i++ ) plugs[i].bp.update();
@@ -319,6 +342,15 @@ void wifiLedFlash( int speed, int count ){
         delay( speed );        
     }
     digitalWrite( WIFILED, LOW);
+}
+
+//second implementation with Flasher
+void wifiLedFlash( Flasher led, int count ){
+	while ( led.getChangeStateCpt() < count ){
+		led.update();
+		yield();
+	}
+    led.stop();
 }
 
 void simpleManualModeChaser(){
