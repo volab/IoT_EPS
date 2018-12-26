@@ -25,6 +25,7 @@ public:
 	bool begin( void );
 	static bool initErr; 
 	static void displayTime(); /**< @brief a static function to display time in debug screen*/
+	static void adjust( char *c );
 };
 
 

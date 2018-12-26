@@ -14,7 +14,7 @@
  
 < C > check DS3231 time
 
-< D > for date, format JJ MM AAAA HH MM SS
+< S > for set DS3231 date, format JJ MM AAAA HH MM SS
 
 < H HH > set DS3231 hours
 
@@ -76,11 +76,14 @@ void SerialCommand::process(){
 ///////////////////////////////////////////////////////////////////////////////
 
 void SerialCommand::parse(char *com){
-  
+		
+ /** @todo instnaciate command for set Hours, minutes, seconds separatly */
+ /** @todo perhaps instanciate other commands to check hardware */
+ /** @todo add commands to change and/or display config.json keys */
     switch(com[0]){
-		case 'S': 
-			// trame.send();
-			INTERFACE.print("<S>\n");
+		case 'S':
+		// INTERFACE.println("here in SerialCommand::parse");
+			CRtc::adjust( com+1 );
 			break;
 		case 'C':   
 			CRtc::displayTime();
@@ -90,12 +93,6 @@ void SerialCommand::parse(char *com){
 			INTERFACE.print("<c>\n");
 			break;
 		case 's':      // <s>
-/*
- *    returns status messages containing track power status, throttle status, turn-out status, and a version number
- *    NOTE: this is very useful as a first command for an interface to send to this sketch in order to verify connectivity and update any GUI to reflect actual throttle and turn-out settings
- *    
- *    returns: series of status messages that can be read by an interface to determine status of DCC++ Base Station and important settings
- */
 			INTERFACE.print("<iElectrical Power Strip ");
 			// INTERFACE.print(ARDUINO_TYPE);
 			INTERFACE.print(": BUILD ");
@@ -108,11 +105,9 @@ void SerialCommand::parse(char *com){
   
 			break;        
 		case 'b':      // <b CAB CV BIT VALUE>
-			// mRegs->writeCVBitMain(com+1);
+
 			break;      
 		case '0':     // <0>
-			// digitalWrite(SIGNAL_ENABLE_PIN_PROG,LOW);
-			// digitalWrite(SIGNAL_ENABLE_PIN_MAIN,LOW);
 			INTERFACE.print("<p0>");
 			break;
  
@@ -129,6 +124,7 @@ void SerialCommand::displayCommandsList(){
 	String list = "Serial Command list :\n";
 	list += F("<s> display status\n");
 	list += F("<C> Check DS3231 date\n");
+	list += F("<S JJ/MM/AAAA HH:MM:SS> returns code <O>");
 	INTERFACE.println( list );
 }
 

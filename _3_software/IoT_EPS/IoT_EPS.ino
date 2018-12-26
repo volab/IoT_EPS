@@ -25,7 +25,9 @@ If credentials are found in SPIFFS are found plugs try to connect about 20 times
 
 If it can't reach WIFI network it switch to acces point mode.
 
-In Access point mode default add is 192.168.95.42. Ssid and pas are those store in the SPIFFS credential.json
+In Access point mode default add is 192.168.95.42. Ssid and pass are those store in the SPIFFS credential.json
+
+In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI LED fash shortly in 2s period.
 */
 
 
@@ -212,7 +214,8 @@ void setup(){
 				cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
 				DSPL( dPrompt + F("SSID = ") + wifiCred.getSsid() );
 				// digitalWrite( WIFILED, LOW);
-				wifiLed.begin( WIFILED, 50, 2000 ); // to prepare for loop
+				wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
+				// to prepare for loop
 			}
 		}
 		/** @todo complete wifi accessPoint mode when normal wifi is not reachable*/
@@ -325,6 +328,8 @@ void loop(){
         /** @todo developp return2ManuelMode of the  CPowerPlug class*/
         if ( plugs[i].isItTimeToSwitch() ){
             //plugs[i].switch or improved version of toggle();
+			//what sould be improvments of toggle ?
+			//it sould compute nextTime2 switch if necessary regardless of mode
             /** @todo creat switch() method or improve toggle() of the CPowerPlug class*/
         }
     }

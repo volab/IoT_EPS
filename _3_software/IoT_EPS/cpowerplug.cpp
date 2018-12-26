@@ -217,7 +217,7 @@ bool CPowerPlug::readFromJson(){
                         }   
                     }
                     DSPL("");
-/** @todo converts and store the string parameter in the members of the class*/
+/** @todo continue to converts and store the string parameter in the members of the class*/
 /** @todo update output regarless of mode and the state of main power switch*/
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));

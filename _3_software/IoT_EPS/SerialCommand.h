@@ -23,8 +23,8 @@ COPYRIGHT (c) 2013-2015 Gregg E. Berman
 
 #define INTERFACE Serial /**< @brief Only for SerialCommand usage*/
 
-#define  MAX_COMMAND_LENGTH         30
-//<D JJ MM AAAA HH MM SS>
+#define  MAX_COMMAND_LENGTH         35
+//<D JJ/MM/AAAA HH:MM:SS>
 //1234567890123456789012345
 
 struct SerialCommand{

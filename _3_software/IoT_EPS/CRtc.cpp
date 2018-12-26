@@ -46,3 +46,30 @@ void CRtc::displayTime(){
 	DSPL( dPrompt + sDate );
 	
 }
+
+/** 
+ @fn void CRtc::adjust( char *c )
+ @brief a function to manualy adjust DS3231 when there is no WIFI at all
+ @param c a c_string that containt JJ/MM/AAAA HH:MM:SS
+ @return no return value
+
+It converts the input c string into de DateTime class and call DS3231::adjust
+*/
+void CRtc::adjust( char *c ){
+	int a;
+	int j, m, hh, mm, ss;
+	DEFDPROMPT( "CRtc::adjsut");
+	DSP( dPrompt );
+	DSPL( c );
+	switch (sscanf( c, "%d/%d/%d %d:%d:%d", &j,&m,&a,&hh,&mm,&ss) ){
+		case 6:
+		// DSPL( dPrompt + "case 6");
+		//DateTime::DateTime (uint16_t year, uint8_t month, uint8_t day, uint8_t hour, uint8_t min, uint8_t sec)
+			RTC_DS3231::adjust( DateTime( a, m, j, hh, mm, ss) );
+			DSPL("<O>");
+			displayTime();
+			break;
+		default :
+			DSPL( "<X>");
+	}
+}
