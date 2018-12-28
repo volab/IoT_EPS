@@ -90,8 +90,8 @@ void CPowerPlug::off(){
     if (!_initDone){
         DSPL( dPrompt + F(" plug not started, call .begin().") );
     }
-    _state = OFF ;
     bool prevState = _state;
+    _state = OFF ;
     updateOutputs( prevState != _state ); //to count only real plug switch
     writeToJson( JSON_PARAMNAME_STATE, "OFF" );
 }

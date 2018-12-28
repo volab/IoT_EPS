@@ -97,7 +97,7 @@
 #define WIFILED_FLASH_COUNT 20
 #define WIFILED_SOFTAP_FLASH 50
 #define WIFILED_SOFTAP_PERIOD 2000
-#define MAX_WIFI_CONNECT_RETRY 20 /**< @brief In Station mode number of try before to switch to access point connection*/
+#define MAX_WIFI_CONNECT_RETRY 30 /**< @brief In Station mode number of try before to switch to access point connection*/
 
 
 #endif

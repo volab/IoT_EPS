@@ -148,6 +148,7 @@ void setup(){
     plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, BP3, CPowerPlug::modeId("MANUEL") );
     plugs[3].setColor( CRGB::Yellow );
     plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
+    plugs[3].readFromJson();
     for ( int i = 0; i < NBRPLUGS ; i++ ){
         colorLeds[i] = plugs[i].getColor();
         /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/
@@ -192,8 +193,9 @@ void setup(){
 					
 				}
 				wifiLed.stop();
+                pinMode( WIFILED, OUTPUT );
 				digitalWrite( WIFILED, HIGH);
-				DSPL();
+				DSPL( dPrompt + F("Number of Station wifi try : ") + (String)tryCount );
 				if ( WiFi.status() == WL_CONNECTED){
 					DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
 						+ WiFi.localIP().toString() );  
@@ -294,6 +296,7 @@ void setup(){
 	}
 	
 	SerialCommand::displayCommandsList();
+    
 
 }
 
