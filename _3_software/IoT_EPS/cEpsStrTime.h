@@ -33,6 +33,7 @@ public:
 
     CEpsStrTime(){};
     CEpsStrTime( String val );
+	CEpsStrTime( String val, Mode_t mode );
     bool isValid = false;
     void setValue( String val );
     void setMode( Mode_t mode ){ _mode = mode; }

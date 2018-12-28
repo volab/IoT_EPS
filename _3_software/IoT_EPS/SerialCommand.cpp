@@ -10,13 +10,14 @@
  * reused for Electrical Power Strip (EPS) :
  * all command are suppressed from DCC++
  
- * New command for EPS:
+ * New command for EPS: for real complete list see SerialCommand::displayCommandsList
  
 < C > check DS3231 time
 
 < S > for set DS3231 date, format JJ MM AAAA HH MM SS
 
 < H HH > set DS3231 hours
+@todo implement this
 
 < s > for station status and COM connections
 
@@ -40,9 +41,10 @@ return see in the code for all informations.
 
 #include "SerialCommand.h"
 #include "CRtc.h"
+#include "configParam.h"
 
 extern int __heap_start, *__brkval;
-
+extern ConfigParam cParam; /**< @brief to display wifi mode non static member ! */
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -82,15 +84,14 @@ void SerialCommand::parse(char *com){
  /** @todo add commands to change and/or display config.json keys */
     switch(com[0]){
 		case 'S':
-		// INTERFACE.println("here in SerialCommand::parse");
 			CRtc::adjust( com+1 );
 			break;
 		case 'C':   
 			CRtc::displayTime();
 			break;
-		case 'c':
-			// trame.continusSwitch = OFF;
-			INTERFACE.print("<c>\n");
+		case 'J': //display config.json
+		case 'j':
+			ConfigParam::displayJson();
 			break;
 		case 's':      // <s>
 			INTERFACE.print("<iElectrical Power Strip ");
@@ -99,16 +100,15 @@ void SerialCommand::parse(char *com){
 			INTERFACE.print(__DATE__);
 			INTERFACE.print(" ");
 			INTERFACE.print(__TIME__);
-
-
 			INTERFACE.println(", COM TYPE : SERIAL >");
-  
 			break;        
-		case 'b':      // <b CAB CV BIT VALUE>
-
+		case 'h': 
+		case 'H':
+			displayCommandsList();
 			break;      
-		case '0':     // <0>
-			INTERFACE.print("<p0>");
+		case 'W':
+		case 'w':
+			cParam.displayWifiMode();
 			break;
  
 /***** PRINT CARRIAGE RETURN IN SERIAL MONITOR WINDOW  ****/       
@@ -122,10 +122,13 @@ void SerialCommand::parse(char *com){
 
 void SerialCommand::displayCommandsList(){
 	String list = "Serial Command list :\n";
+	list += F("<h> ou <H> display this list\n");
 	list += F("<s> display status\n");
 	list += F("<C> Check DS3231 date\n");
-	list += F("<S JJ/MM/AAAA HH:MM:SS> returns code <O>");
-	INTERFACE.println( list );
+	list += F("<S JJ/MM/AAAA HH:MM:SS> returns code <O>\n");
+	list += F("<J> or <j> for display config.json\n");
+	list += F("<W> or <w> display WIFI mode\n");
+	INTERFACE.print( list );
 }
 
 

@@ -35,6 +35,22 @@ Avancement
 
 ####
 
+============================
+AC power plug in the world 
+============================
+
+It's incredible !
+
+See in `wikipedia power plug`_
+
+and in French : `prise secteur sur wikipedia`_
+
+.. _`wikipedia power plug` : https://en.wikipedia.org/wiki/AC_power_plugs_and_sockets
+
+.. _`prises secteur sur wikipedia` : https://fr.wikipedia.org/wiki/Prise_%C3%A9lectrique#Plusieurs_normes_diff%C3%A9rentes
+
+####
+
 ==================   
 Alimentation ESP
 ==================
@@ -49,6 +65,9 @@ Réponse : oui
     Circuit d'alimentation WEMOS D1 mini
 
 ####
+
+
+
 
 ====================
 Horloge temps réelle
@@ -200,7 +219,7 @@ MCP23017 I2C 16 bits IO expander
     GPA5  LED1
     GPA6  LED2
     GPA7  LED3
-    GBP0  
+    GBP0  MAIN POWER SWITCH STATE
     GPB1  
     GPB2  
     GPB3  

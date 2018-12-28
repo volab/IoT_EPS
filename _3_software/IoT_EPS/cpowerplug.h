@@ -47,7 +47,7 @@ class CPowerPlug : public Cmcp {
         void begin( int pin , int onOffLedPin, int bpPin, int mode = 0 );
 /** @todo rewrite a new begin methode to add plugName and _color*/
         void setColor( plugColor_t color ){ _couleur = color; }
-        bool getstate(){ return _state; }
+        bool getState(){ return _state; }
         plugColor_t getColor(){ return _couleur; }
         String getPlugName(){return _plugName ; }
         void setPlugName( String name ){ _plugName = name ; }
@@ -56,10 +56,10 @@ class CPowerPlug : public Cmcp {
         void off();
         void toggle();
         bool isItTimeToSwitch(); /**< For the loop of ARDUINO check millis()*/
+        void switchAtTime();
         
         void setMode( int mode ){ _mode = mode; }
         int getMode(){ return _mode; }
-        /** @todo check if _mode is always usefull and if it is allways updated !*/
         
         void setOnOffTime( unsigned long onDelay, unsigned long offDelay ){
             _onDelay = onDelay; 
@@ -77,6 +77,9 @@ class CPowerPlug : public Cmcp {
         
         static int modeId( String mode );
         bouton bp;
+        uint32_t getNextT2Switch(){ return _nextTimeToSwitch; }
+        String getStringMode(){ return modes[ _mode ]; }
+        void handleBpClic();
         
     private:
         static const String modes[5];
@@ -99,7 +102,7 @@ class CPowerPlug : public Cmcp {
         
         See softDef.rst for detail
         * @var unsigned int _onDelay
-        @brief For cyclic mode. Max value 300mn
+        @brief For cyclic mode. Max value 300mn possibly not used
          * @var unsigned int _offDelay;
         @brief For cyclic and manual mode. Max value 300mn 
         * @var uint8_t daysOnWeek;

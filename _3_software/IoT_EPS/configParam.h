@@ -20,6 +20,8 @@ class ConfigParam{
         String getWifiMode(){ return _wifimode; }
 		void setWifiMode( String mode ){ _wifimode = mode ; }
         String getHostName(){ return _host; }
+		static void displayJson();
+		void displayWifiMode();
     
     private:
         String _wifimode = "softAP" ; //default value

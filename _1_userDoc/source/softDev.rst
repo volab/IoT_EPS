@@ -61,6 +61,9 @@ Timer / minuteur / mode cuit oeuf
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 - la minuterie peut être avec des secondes exmple 2mn30s (2:30 dans la requête)
 
+La minuterie est-elle uniquement lancée par BP ? Sinon comment on fait la diff
+If state == On immediat start 
+
 Périodique/cyclique
 =====================
 - duré on
@@ -146,16 +149,27 @@ WIFI LED
 ==================
 In Station mode, fast flashing (20 times) and after slow flashing while waiting for connection (500ms with a 20 times time out - new in 24/12/2018).
 
-In Access Point Slow flashing (10 times) and led off while waiting for connection.
+In Access Point LED FLash quickly (20 times) and led flash slowly while waiting for connection.
 
-Cause WiFi.softAPConfig function is a blocking function. This is wrong : test on 24/12/2018 softAP is
-non blocking !
+Cause WiFi.softAPConfig function is a blocking function. This is wrong : test on 24/12/2018 softAP is non blocking !
 
-So if power led is on and WIFI Led is off it means that plugs wait for connection in AP mode. WRONG
+So if power led is on and WIFI Led flash WIFI wait for connection in AP mode. 
 
-It rises a new problem : in this state it is not possible to use plugs even in simple  manual mode with push button.
+It rises a new problem : in this state it is not possible to use plugs even in simple  manual mode with push button. 
 
-Possible solution : check push button at startup if a particular combination is pressed, plugs do not try to connect to wifi and mork in simple manual mode.
+Possible solution : check push button at startup if a particular combination is pressed, plugs do not try to connect to wifi and mork in simple manual mode. In Dec 2018, push button added on plug 0 while strating cause no WIFI mode (color LED FLASH in RED to confirm)
+
+====================================
+Displaying plugs mode only with LED
+====================================
+
+Problem : how to displays functionnal mode of a plug without the web interface
+
+Problem2 : is it really necessary ?
+
+Solution1: Use de little plug red LED. When OFF flash 1 shortly one time for mode 1 manual to five time for mode Clone. When ON invert ton and toff of the flasher
+
+Solution2: use color LED with flash capability one time for mode manual to 5 times to mode Clone with a long periode between group of flash 3 seconds for example.
 
 ===========================
 Développement des page Web
@@ -170,7 +184,15 @@ ipaddr/config?plug=redPlug
 /PlugConfig?plug=red&mode=manuel
 /modeManuel?plug=redPlug
 
-Utilisation de formulaire
+Utilisation de formulaires
+
+Possible requests:
+
+- Mode=Manuel&State=ON&dureeOff=299 : dureeOff on minutes only
+- Mode=Manuel&State=ON&dureeOff=299:59 : dureeOff on minutes and seconds
+- Mode=Manuel&State=ON&hFin=23:59 : hFin only one format HH:MM
+- Mode=Manuel&State=OFF
+- Mode=Manuel&State=ON
 
 ====================
 Serveur html ESP8266

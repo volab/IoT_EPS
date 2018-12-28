@@ -52,8 +52,8 @@ CRtc rtc;
 
 ESP8266WebServer server ( 80 );
 
-IPAddress apIP(192, 168, 95, 42);
 /** @todo put softAP IP add and server port in config.json*/
+IPAddress apIP(192, 168, 95, 42);
 
 
 CPowerPlug plugs[NBRPLUGS];
@@ -61,9 +61,10 @@ CPowerPlug plugs[NBRPLUGS];
 // bool errRTCinit = true;
 bool errFS = true;
 
+/** @todo see for add colorLEd array in the class CPowerPlug as a static member*/
 CRGB colorLeds[NUM_LEDS]; /**< @brief  not very satisfy for this globale ! It should be in the 
 CpowerPlug class*/
-/** @todo see for add colorLEd array in the class CPowerPlug as a static member*/
+
 
 bool simpleManualMode = false;
 
@@ -159,9 +160,6 @@ void setup(){
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
-	/** @todo implement special check bp to bypass wifi connection and work in simple manual mode*/
-    // digitalWrite( WIFILED, LOW );
-    // pinMode( WIFILED, OUTPUT );
 
 	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
 	
@@ -199,7 +197,7 @@ void setup(){
 				if ( WiFi.status() == WL_CONNECTED){
 					DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
 						+ WiFi.localIP().toString() );  
-				}
+				} else { WiFi.disconnect(); }
 			}
 			if ( cParam.getWifiMode() == "softAP" || tryCount == MAX_WIFI_CONNECT_RETRY ){
 				//WIFI soft Access Point mode
@@ -218,13 +216,12 @@ void setup(){
 				// to prepare for loop
 			}
 		}
-		/** @todo complete wifi accessPoint mode when normal wifi is not reachable*/
-		/** @todo review bahavior when wifi is not reachable to allow simple bp manual mode*/
 		MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
 		DSPL( dPrompt + F("Host name that not work with Android is : ") + cParam.getHostName() );
 	
 	} else {
 		DSPL(  dPrompt + F("Enter in simple manual mode") );
+		cParam.setWifiMode( "No wifi" );
 		simpleManualModeChaser();
 	}
     
@@ -306,6 +303,7 @@ void setup(){
 unsigned long prevMillis = millis();
 void loop(){
 
+    DEFDPROMPT("in the loop")
     if ( !simpleManualMode ) server.handleClient();
 
     SerialCommand::process();
@@ -315,22 +313,16 @@ void loop(){
     FastLED.show();
     for ( int i = 0; i < NBRPLUGS ; i++ ) plugs[i].bp.update();
     for ( int i = 0; i < NBRPLUGS ; i++ ){
-        String sMode = plugs[i].readFromJson( JSON_PARAMNAME_MODE );
+
         /** @todo replace usage of reading in json by _mode member of pplug class*/
         if ( plugs[i].bp.clic() ){
-            if (sMode == MANUAL_MODE){
-                plugs[i].toggle();
-                plugs[i].bp.acquit();
-            }
-            
+            plugs[i].handleBpClic();
         }
         // else if plugs[i].bp.longClic(){ plugs[i].return2ManuelMode() }
         /** @todo developp return2ManuelMode of the  CPowerPlug class*/
         if ( plugs[i].isItTimeToSwitch() ){
-            //plugs[i].switch or improved version of toggle();
-			//what sould be improvments of toggle ?
-			//it sould compute nextTime2 switch if necessary regardless of mode
-            /** @todo creat switch() method or improve toggle() of the CPowerPlug class*/
+            DSPL( dPrompt + "It is time for : " + plugs[i].getPlugName() );
+            plugs[i].switchAtTime();
         }
     }
     yield();
