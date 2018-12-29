@@ -312,9 +312,9 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     writeToJson( param, mode );
     /** @todo review time to write in json : only after validity check of parameters but...*/
     if ( mode == MANUAL_MODE){
-		/////////////////////////////////////////////////////////////////////////////
-		//    Compute MANUAL MODE                                                  //
-		/////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////
+        //    Compute MANUAL MODE                                                  //
+        /////////////////////////////////////////////////////////////////////////////
         DSPL( dPrompt + F("Manual mode actions ") );
         //manual mode parameters :
         //State
@@ -324,56 +324,56 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         DSPL( dPrompt + _plugName + F(" : extracted state = ") + state);
         if (state != NOT_FOUND ){
             if (state == "ON") {
-				on(); 
-				/////////////////////////////////////////////////////////////////////////////
-				//    Compute MANUAL MODE  : dureeOff                                      //
-				/////////////////////////////////////////////////////////////////////////////
-				param = JSON_PARAMNAME_OFFDURATION;
-				CEpsStrTime dureeOff;
-				dureeOff.setMode( CEpsStrTime::MMMSS );
-				dureeOff = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
-				_nextTimeToSwitch = 0;
-				DSPL( dPrompt + "dureeOff validity : " + \
+                on(); 
+                /////////////////////////////////////////////////////////////////////////////
+                //    Compute MANUAL MODE  : dureeOff                                      //
+                /////////////////////////////////////////////////////////////////////////////
+                param = JSON_PARAMNAME_OFFDURATION;
+                CEpsStrTime dureeOff;
+                dureeOff.setMode( CEpsStrTime::MMMSS );
+                dureeOff = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
+                _nextTimeToSwitch = 0;
+                DSPL( dPrompt + "dureeOff validity : " + \
                     (dureeOff.isValid?"valid":"invalid") );
-				if (dureeOff.isValid){
-					DSPL( dPrompt + _plugName + " : extracted dureeoff en secondes = " + \
-						(String)dureeOff.getSeconds() );
-					writeToJson( param, dureeOff.getStringVal() );
-					_nextTimeToSwitch = dureeOff.computeNextTime();
-				} else writeToJson( param, "" );
-				/////////////////////////////////////////////////////////////////////////////
-				//    Compute MANUAL MODE  : hFin                                          //
-				/////////////////////////////////////////////////////////////////////////////
-				param = JSON_PARAMNAME_ENDTIME;
-				// String hFin = extractParamFromHtmlReq( allRecParam, param );    
-				CEpsStrTime hFin;
-				// hFin.setMode( CEpsStrTime::HHMM );
-				hFin = CEpsStrTime(extractParamFromHtmlReq( allRecParam, param ),\
-					CEpsStrTime::HHMM );
-				DSPL( dPrompt + "hFin validity : " + (hFin.isValid?"valid":"invalid") );
-				if ( hFin.isValid && !dureeOff.isValid ){
-					_nextTimeToSwitch = hFin.computeNextTime();
-					writeToJson( param, hFin.getStringVal() );
-					DSPL( dPrompt + _plugName + F(" : extracted hFin as String = ") + \
-						(String)hFin.getStringVal() ); 
-				}
-				DSPL( dPrompt + "nt2s : " + CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
-				writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
-				
-			}else { //state == "OFF"
-				_nextTimeToSwitch = 0;
+                if (dureeOff.isValid){
+                    DSPL( dPrompt + _plugName + " : extracted dureeoff en secondes = " + \
+                        (String)dureeOff.getSeconds() );
+                    writeToJson( param, dureeOff.getStringVal() );
+                    _nextTimeToSwitch = dureeOff.computeNextTime();
+                } else writeToJson( param, "" );
+                /////////////////////////////////////////////////////////////////////////////
+                //    Compute MANUAL MODE  : hFin                                          //
+                /////////////////////////////////////////////////////////////////////////////
+                param = JSON_PARAMNAME_ENDTIME;
+                // String hFin = extractParamFromHtmlReq( allRecParam, param );    
+                CEpsStrTime hFin;
+                // hFin.setMode( CEpsStrTime::HHMM );
+                hFin = CEpsStrTime(extractParamFromHtmlReq( allRecParam, param ),\
+                    CEpsStrTime::HHMM );
+                DSPL( dPrompt + "hFin validity : " + (hFin.isValid?"valid":"invalid") );
+                if ( hFin.isValid && !dureeOff.isValid ){
+                    _nextTimeToSwitch = hFin.computeNextTime();
+                    writeToJson( param, hFin.getStringVal() );
+                    DSPL( dPrompt + _plugName + F(" : extracted hFin as String = ") + \
+                        (String)hFin.getStringVal() ); 
+                }
+                DSPL( dPrompt + "nt2s : " + CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
+                writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+                
+            }else { //state == "OFF"
+                _nextTimeToSwitch = 0;
                 writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
                 writeToJson( JSON_PARAMNAME_ENDTIME, "" );
-				writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
+                writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
                 writeToJson( JSON_PARAMNAME_ONDURATION, "" );
                 writeToJson( JSON_PARAMNAME_STARTTIME, "" );
-				off();
-			}
+                off();
+            }
         }
     } else if ( mode == TIMER_MODE ){
-		/////////////////////////////////////////////////////////////////////////////
-		//    Compute TIMER MODE                                                  //
-		/////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////
+        //    Compute TIMER MODE                                                  //
+        /////////////////////////////////////////////////////////////////////////////
         DSPL( dPrompt + F("Timer mode actions") );
         if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
         param = JSON_PARAMNAME_ONDURATION;
@@ -410,9 +410,9 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         }        
            
     } else if ( mode == CYCLIC_MODE ){
-		/////////////////////////////////////////////////////////////////////////////
-		//    Compute CYCLIC MODE                                                  //
-		/////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////////////////
+        //    Compute CYCLIC MODE                                                  //
+        /////////////////////////////////////////////////////////////////////////////
         DSPL( dPrompt + F("Cyclic mode actions") ); 
         if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
         CEpsStrTime dureeOn;
@@ -438,7 +438,6 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 writeToJson( JSON_PARAMNAME_STARTTIME, "" );
                 _nextTimeToSwitch = dureeOn.computeNextTime();
             }
-            
             writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
             writeToJson( JSON_PARAMNAME_ONDURATION, dureeOn.getStringVal() );
             writeToJson( JSON_PARAMNAME_OFFDURATION, dureeOff.getStringVal() ); 
@@ -455,8 +454,18 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         } 
     } else if ( HEBDO_MODE ){
         DSPL( dPrompt + F("Hebdo mode actions") );
+        /////////////////////////////////////////////////////////////////////////////
+        //    Compute HEBDO MODE                                                  //
+        /////////////////////////////////////////////////////////////////////////////
         //hebdo mode parameters
         //hdebut hFin
+        CEpsStrTime hDebut, hFin;
+        // hFin.setMode( CEpsStrTime::HHMM );
+        uint8_t days = 0x06;
+        
+        hDebut = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STARTTIME ),\
+            CEpsStrTime::HHMM );
+        if (hDebut.isValid) hDebut.computeNextTime( days );
     } else if ( mode ==  CLONE_MODE){
         DSPL( dPrompt + F("clone mode actions") );
         //clode mode parameters

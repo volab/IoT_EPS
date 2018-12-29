@@ -42,6 +42,7 @@ return see in the code for all informations.
 #include "SerialCommand.h"
 #include "CRtc.h"
 #include "configParam.h"
+#include "cEpsStrTime.h"
 
 extern int __heap_start, *__brkval;
 extern ConfigParam cParam; /**< @brief to display wifi mode non static member ! */
@@ -78,7 +79,10 @@ void SerialCommand::process(){
 ///////////////////////////////////////////////////////////////////////////////
 
 void SerialCommand::parse(char *com){
-		
+    /** @todo remove after debug of nextCheckedDay */
+CEpsStrTime hDebut;	
+String s;
+int h,m, deux, trois, n;	
  /** @todo instnaciate command for set Hours, minutes, seconds separatly */
  /** @todo perhaps instanciate other commands to check hardware */
  /** @todo add commands to change and/or display config.json keys */
@@ -110,6 +114,20 @@ void SerialCommand::parse(char *com){
 		case 'w':
 			cParam.displayWifiMode();
 			break;
+            /** @todo remove after debug of computeNextTime */
+        case 'D':
+        case 'd':
+            // INTERFACE.println( "Before scaning : " +String(com+1) );
+            n = sscanf( com+1,"%d:%d %d", &h, &m, &deux);
+            if ( n == 3){  
+                hDebut = CEpsStrTime( String(h)+":"+String(m), CEpsStrTime::HHMM );
+                // INTERFACE.println( " h debut is "+ hDebut.isValid?"valid":"not valid" );
+                if (hDebut.isValid) hDebut.computeNextTime( deux );
+            }
+            // INTERFACE.println( "after scan : " + String(n) );
+            
+            break;
+        
  
 /***** PRINT CARRIAGE RETURN IN SERIAL MONITOR WINDOW  ****/       
 		case ' ':     // < >                
@@ -128,6 +146,8 @@ void SerialCommand::displayCommandsList(){
 	list += F("<S JJ/MM/AAAA HH:MM:SS> returns code <O>\n");
 	list += F("<J> or <j> for display config.json\n");
 	list += F("<W> or <w> display WIFI mode\n");
+    /** @todo remove after debug of nextCheckedDay */
+    list += F("<D HH:MM days>\n");
 	INTERFACE.print( list );
 }
 

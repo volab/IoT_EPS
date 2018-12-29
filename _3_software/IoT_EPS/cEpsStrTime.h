@@ -33,7 +33,7 @@ public:
 
     CEpsStrTime(){};
     CEpsStrTime( String val );
-	CEpsStrTime( String val, Mode_t mode );
+    CEpsStrTime( String val, Mode_t mode );
     bool isValid = false;
     void setValue( String val );
     void setMode( Mode_t mode ){ _mode = mode; }
@@ -42,11 +42,14 @@ public:
     String getStringVal(){ return _sValue; }/**< @brief to get the String format of the time
     value for json write purposes*/
     
-    uint32_t computeNextTime();
+    uint32_t computeNextTime( uint8_t daysOfWeek = 0 );
     
     static void displayUnixTime( uint32_t time2Display ); /**< @brief for debug purpose*/
     static String unixTime2String( uint32_t time2Display );
-
+    
+/** @todo uncomment after debug */   
+//private:   
+    uint8_t nextCheckedDay( uint8_t days, uint8_t day );
 private:
 	
     Mode_t _mode = MMMSS ; 
@@ -54,7 +57,8 @@ private:
     long _seconds;
     long _maxDuration = TIME_MAX_DURATION ; /**< @brief why ? Why to use a class member and not
     juste MACRO def ? */
-    bool checkValidity();
+    bool checkValidity( );
+    
     
 };
 

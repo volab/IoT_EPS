@@ -94,7 +94,7 @@ class CPowerPlug : public Cmcp {
         void updateOutputs( bool writeToJsonCount = true );
         uint32_t _nextTimeToSwitch;        
         
-        uint8_t daysOnWeek; //not sure if very usefull 28/12/2018
+        uint8_t daysOnWeek; 
         /**
         * @var DateTime _startDate
         @brief date to turn on for Hebdo and Cycle mode

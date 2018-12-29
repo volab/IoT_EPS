@@ -28,6 +28,7 @@ CEpsStrTime::CEpsStrTime( String val, Mode_t mode ){
 	_mode = mode; 
     setValue( val );
 }
+
 /** 
 @fn void CEpsStrTime::setValue( String val )
 @brief Set the string time value, check validity and convert to seconds
@@ -90,9 +91,12 @@ bool CEpsStrTime::checkValidity(){
 	} else if ( _mode == HHMM ){ //HH:MM mode
 		DSPL( dPrompt +"HH:MM mode check");
 		if ( pos == -1 )return isValid; //check presence of :
+        // DSPL( dPrompt + F("after pos check") );
 		if ( _sValue.length() > 5 ) return isValid; // max 5 digits
+        // DSPL( dPrompt + F("after length") );
 		int h, m;
 		if (sscanf( _sValue.c_str(), "%d:%d", &h,  &m) !=2 ) return isValid;
+        // DSPL( dPrompt + F("after scan check") );
 		if (h > 23 && m > 59)return isValid;
 		isValid = true;
 		DSPL( dPrompt + h + " hours and " + m + " minutes.");
@@ -100,11 +104,11 @@ bool CEpsStrTime::checkValidity(){
 	} else { //MMM only mode
         DSPL( dPrompt +"MMM mode check");
         if ( pos != -1 ) return isValid; // no ':' allowed
-        DSPL(dPrompt + F("After pos check") );
+        // DSPL(dPrompt + F("After pos check") );
         if ( _sValue.length() > 3 ) return isValid; // max 3 digits
-        DSPL(dPrompt + F("After length check") );
+        // DSPL(dPrompt + F("After length check") );
         for (char c : _sValue) if( !isdigit(c) ) return isValid;
-        DSPL(dPrompt + F("After digit check") );
+        // DSPL(dPrompt + F("After digit check") );
         if ( _sValue.toInt() > _maxDuration ) return isValid;
         DSPL(dPrompt + F("After duraction check") );
         _seconds = _sValue.toInt() * 60;
@@ -124,21 +128,39 @@ bool CEpsStrTime::checkValidity(){
 In this first implementation for manual mode it takes no input param ,
 but in future, it should take into account others mode
 */
-uint32_t  CEpsStrTime::computeNextTime(){
+uint32_t  CEpsStrTime::computeNextTime( uint8_t CheckedDays ){
+    String s_daysOfTheWeek[7] = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
     DEFDPROMPT( "CEpsStrTime::computeNextTime" );
 	uint32_t future = CRtc::now().unixtime();
     String page = "";
     displayUnixTime( future );
 	if ( _mode == MMMSS || _mode == MMM){
 		future += _seconds;		
-	} else { //HH:MM mode
+	} else if ( !CheckedDays ) { //HH:MM mode
 		int h, m;
 		DateTime now = CRtc::now();
 		sscanf( _sValue.c_str(), "%d:%d", &h,  &m);
 		DateTime futurDT = DateTime( now.year(), now.month(), now.day(), h, m);
-		if ( futurDT.unixtime() < future ) futurDT = futurDT + TimeSpan( 1, 0, 0, 0);
+        // heure calculée est antérieur. Exemple il est 16:00 et on veut arrêter à 06:00
+		if ( futurDT.unixtime() < now.unixtime() ) futurDT = futurDT + TimeSpan( 1, 0, 0, 0);
 		future = futurDT.unixtime();
-	}
+	} else {/* //HH:MM with day of week */
+    // <d 18:00 63>
+/** @todo take inot account when start hour is higher than end hour */
+        DateTime now = CRtc::now();
+        uint8_t nextDay = nextCheckedDay( CheckedDays, now.dayOfTheWeek() );
+        int h, m;
+        sscanf( _sValue.c_str(), "%d:%d", &h,  &m);
+        DateTime futurDT = DateTime( now.year(), now.month(), now.day(), h, m);
+        futurDT = futurDT + TimeSpan( nextDay, 0, 0, 0);
+        // computed date is before current (in other words computed is in the past).
+        //Example it is 16:00 and we want to stop at 06:00
+		if ( futurDT.unixtime() < now.unixtime() ) futurDT = futurDT + TimeSpan( 1, 0, 0, 0);
+        future = futurDT.unixtime();
+        DSPL( dPrompt + F("HH:MM mode with day of week") );
+        DSPL( dPrompt + F("To day is ") + (String)now.dayOfTheWeek() +\
+            F(" in other words : ") + s_daysOfTheWeek[ now.dayOfTheWeek() ] );
+    }
 	page = "future = ";
 	page += unixTime2String( future );
 	DSPL( dPrompt + page );  
@@ -172,3 +194,34 @@ String CEpsStrTime::unixTime2String( uint32_t time2Display ){
     sDate += (String)now.second();
     return sDate;    
 } 
+
+/** 
+ @fn uint8_t nextCheckedDay( uint8_t days, uint8_t day )
+ @brief a private methode to find the first next checked day...
+ @param days a byte that's represente checked day (one bit/day start @bit0 for sunday)
+ @param day The number of the current day (Sunday = 0)
+ @return number of days between current day and the next checked day in the week.
+ 0 meens that is the same day
+
+This method is write for hebdo mode to find in number of days between current day and the next
+checked day.
+
+Checked days are coded on a byte with bit 0 reprensent sunday and bit 6 the saturday. Of course
+1 in the bit meens that the corresponding day is checked.
+*/
+// test paterns
+// <d 18:15 6 2>
+uint8_t CEpsStrTime::nextCheckedDay( uint8_t days, uint8_t day ){
+    uint8_t returnVal;
+    DEFDPROMPT( "nextCheckDay");
+    DSPL( dPrompt + F("inputs : ") + String(days, BIN) + F(" days and day : ") + day );
+    int i;
+    for ( i = day; i <= 6 ; i++) if ( bitRead(days, i) ) break;
+    if ( i == 7 ) for ( i = 0; i < day; i++ ) if ( bitRead(days, i) ) break;
+    // DSPL( dPrompt + F("i = ") + String(i) );
+    returnVal = (i<day) ? (7-day+i) : (i-day);
+    DSPL(dPrompt + F("return value : ")+ String(returnVal) );
+    return  returnVal;
+}
+    
+    
