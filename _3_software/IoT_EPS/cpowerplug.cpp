@@ -310,6 +310,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
 
     prevMode = readFromJson( param ); //why ? For bp acquit
     writeToJson( param, mode );
+    /** @todo review time to write in json : only after validity check of parameters but...*/
     if ( mode == MANUAL_MODE){
 		/////////////////////////////////////////////////////////////////////////////
 		//    Compute MANUAL MODE                                                  //
@@ -399,7 +400,9 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 }
             }             
         } else { //onDuration not valid
-            writeToJson( JSON_PARAMNAME_ONDURATION, "" ); 
+            DSPL( dPrompt + "TIMER mode : an invalid parameter was entered");
+            writeToJson( JSON_PARAMNAME_ONDURATION, "" );
+            //risk : corrupted parameters for prev mode
             // writeToJson( JSON_PARAMNAME_MODE, prevMode );
             writeToJson( JSON_PARAMNAME_MODE, MANUAL_MODE );
             writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
@@ -407,9 +410,49 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         }        
            
     } else if ( mode == CYCLIC_MODE ){
+		/////////////////////////////////////////////////////////////////////////////
+		//    Compute CYCLIC MODE                                                  //
+		/////////////////////////////////////////////////////////////////////////////
         DSPL( dPrompt + F("Cyclic mode actions") ); 
+        if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
+        CEpsStrTime dureeOn;
+        dureeOn = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_ONDURATION ), \
+            CEpsStrTime::MMM );
+        DSPL(dPrompt + "extracted duree on : " + dureeOn.getStringVal() );
+        CEpsStrTime dureeOff;
+        dureeOff = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_OFFDURATION ), \
+            CEpsStrTime::MMM ); 
+        DSPL(dPrompt + "extracted duree off : " + dureeOff.getStringVal() );
         //cyclic mode parameters
-        //dureeOn//dureeOff//hDebut
+        //dureeOn//dureeOff//[hDebut]
+        CEpsStrTime hDebut;
+        hDebut = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STARTTIME ), \
+            CEpsStrTime::HHMM );
+        if ( dureeOn.isValid && dureeOff.isValid ){
+            if ( hDebut.isValid ){
+                off();
+                writeToJson( JSON_PARAMNAME_STARTTIME, hDebut.getStringVal() );
+                _nextTimeToSwitch = hDebut.computeNextTime();
+            } else {
+                on();
+                writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+                _nextTimeToSwitch = dureeOn.computeNextTime();
+            }
+            
+            writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+            writeToJson( JSON_PARAMNAME_ONDURATION, dureeOn.getStringVal() );
+            writeToJson( JSON_PARAMNAME_OFFDURATION, dureeOff.getStringVal() ); 
+        } else { //onDuration and/or offDuration not valid
+            DSPL( dPrompt + "CYCLIC mode : an invalid parameter was entered");
+            writeToJson( JSON_PARAMNAME_ONDURATION, "" ); 
+            writeToJson( JSON_PARAMNAME_OFFDURATION, "" ); 
+            writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+            //risk : corrupted parameters for prev mode
+            // writeToJson( JSON_PARAMNAME_MODE, prevMode ); 
+            writeToJson( JSON_PARAMNAME_MODE, MANUAL_MODE );
+            writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
+            off();
+        } 
     } else if ( HEBDO_MODE ){
         DSPL( dPrompt + F("Hebdo mode actions") );
         //hebdo mode parameters
@@ -501,6 +544,17 @@ void CPowerPlug::switchAtTime(){
         off();
         _nextTimeToSwitch = 0;
         writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );      
+    } else if ( sMode == CYCLIC_MODE ){
+        CEpsStrTime duree;
+        if (_state){
+            off();
+            duree = (CEpsStrTime)readFromJson( JSON_PARAMNAME_OFFDURATION ); 
+        } else {
+            on();
+            duree = (CEpsStrTime)readFromJson( JSON_PARAMNAME_ONDURATION );
+        }
+        _nextTimeToSwitch = duree.computeNextTime();
+        writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
     }
 }
 

@@ -61,14 +61,14 @@ class CPowerPlug : public Cmcp {
         void setMode( int mode ){ _mode = mode; }
         int getMode(){ return _mode; }
         
-        void setOnOffTime( unsigned long onDelay, unsigned long offDelay ){
-            _onDelay = onDelay; 
-            _offDelay = offDelay;
-        }
-        void setOnOffTime( unsigned long onDelay, unsigned long offDelay, DateTime startDate ){
-            _startDate = startDate;
-            setOnOffTime( onDelay, offDelay );          
-        }
+        // void setOnOffTime( unsigned long onDelay, unsigned long offDelay ){
+            // _onDelay = onDelay; 
+            // _offDelay = offDelay;
+        // }
+        // void setOnOffTime( unsigned long onDelay, unsigned long offDelay, DateTime startDate ){
+            // _startDate = startDate;
+            // setOnOffTime( onDelay, offDelay );          
+        // }
         
         bool readFromJson();
         String readFromJson( String param );
@@ -91,9 +91,10 @@ class CPowerPlug : public Cmcp {
         // plugColor_t _couleur = ROUGE;
         plugColor_t _couleur = CRGB::Red;
         String extractParamFromHtmlReq( String allRecParam, String Param );
+        void updateOutputs( bool writeToJsonCount = true );
+        uint32_t _nextTimeToSwitch;        
         
-        
-
+        uint8_t daysOnWeek; //not sure if very usefull 28/12/2018
         /**
         * @var DateTime _startDate
         @brief date to turn on for Hebdo and Cycle mode
@@ -108,15 +109,14 @@ class CPowerPlug : public Cmcp {
         * @var uint8_t daysOnWeek;
         @brief For HebdoMode each bit represent one day. bit0 represente Monday        
         */
-        uint8_t daysOnWeek;        
-        DateTime _startDate;
-        DateTime _endDate;
+        
+        // DateTime _startDate;
+        // DateTime _endDate;
         //DateTime _nextTimeToSwitch; //for reflexion
-        unsigned int _onDelay;
-        unsigned int _offDelay;
+        // unsigned int _onDelay;
+        // unsigned int _offDelay;
 
-        void updateOutputs( bool writeToJsonCount = true );
-        uint32_t _nextTimeToSwitch;
+
 
         
 };

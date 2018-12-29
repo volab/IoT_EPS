@@ -29,7 +29,7 @@ Minutes files in MMM is limited to 300
 class CEpsStrTime //: public String
 {
 public:
-    enum Mode_t { MMMSS = 1, HHMM };
+    enum Mode_t { MMMSS = 1, HHMM, MMM };
 
     CEpsStrTime(){};
     CEpsStrTime( String val );
@@ -52,7 +52,8 @@ private:
     Mode_t _mode = MMMSS ; 
     String _sValue;
     long _seconds;
-    long _maxDuration = TIME_MAX_DURATION ;
+    long _maxDuration = TIME_MAX_DURATION ; /**< @brief why ? Why to use a class member and not
+    juste MACRO def ? */
     bool checkValidity();
     
 };

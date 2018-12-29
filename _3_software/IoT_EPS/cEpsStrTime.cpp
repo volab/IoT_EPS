@@ -80,13 +80,14 @@ bool CEpsStrTime::checkValidity(){
 			_seconds = 60 * _sValue.toInt();
 		}
 		DSPL( dPrompt + F("Secondes converties : ") + _seconds );
-		if (_seconds > (_maxDuration*60) && _mode == MMMSS){
+		// if (_seconds > (_maxDuration*60) && _mode == MMMSS){
+		if (_seconds > (_maxDuration*60) ){
 			_seconds = -1;
 			return isValid;
 		}
 		isValid = true;
 		return isValid;		
-	} else { //HH:MM mode
+	} else if ( _mode == HHMM ){ //HH:MM mode
 		DSPL( dPrompt +"HH:MM mode check");
 		if ( pos == -1 )return isValid; //check presence of :
 		if ( _sValue.length() > 5 ) return isValid; // max 5 digits
@@ -96,7 +97,21 @@ bool CEpsStrTime::checkValidity(){
 		isValid = true;
 		DSPL( dPrompt + h + " hours and " + m + " minutes.");
 		return isValid;
-	}
+	} else { //MMM only mode
+        DSPL( dPrompt +"MMM mode check");
+        if ( pos != -1 ) return isValid; // no ':' allowed
+        DSPL(dPrompt + F("After pos check") );
+        if ( _sValue.length() > 3 ) return isValid; // max 3 digits
+        DSPL(dPrompt + F("After length check") );
+        for (char c : _sValue) if( !isdigit(c) ) return isValid;
+        DSPL(dPrompt + F("After digit check") );
+        if ( _sValue.toInt() > _maxDuration ) return isValid;
+        DSPL(dPrompt + F("After duraction check") );
+        _seconds = _sValue.toInt() * 60;
+        /** @todo it should be possible to combine these lines */
+		isValid = true;
+		return isValid;        
+    }
 
 }
 
@@ -114,9 +129,9 @@ uint32_t  CEpsStrTime::computeNextTime(){
 	uint32_t future = CRtc::now().unixtime();
     String page = "";
     displayUnixTime( future );
-	if ( _mode == MMMSS ){
+	if ( _mode == MMMSS || _mode == MMM){
 		future += _seconds;		
-	} else {
+	} else { //HH:MM mode
 		int h, m;
 		DateTime now = CRtc::now();
 		sscanf( _sValue.c_str(), "%d:%d", &h,  &m);
