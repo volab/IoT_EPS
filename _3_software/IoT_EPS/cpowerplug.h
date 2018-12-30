@@ -96,26 +96,7 @@ class CPowerPlug : public Cmcp {
         uint32_t _nextTimeToSwitch;        
         
         uint8_t _daysOnWeek; 
-        /**
-        * @var DateTime _startDate
-        @brief date to turn on for Hebdo and Cycle mode
-        * @var DateTime _endDate;
-        @brief date to turn off for Manual and Hebdo mode
-        
-        See softDef.rst for detail
-        * @var unsigned int _onDelay
-        @brief For cyclic mode. Max value 300mn possibly not used
-         * @var unsigned int _offDelay;
-        @brief For cyclic and manual mode. Max value 300mn 
-        * @var uint8_t daysOnWeek;
-        @brief For HebdoMode each bit represent one day. bit0 represente Monday        
-        */
-        
-        // DateTime _startDate;
-        // DateTime _endDate;
-        //DateTime _nextTimeToSwitch; //for reflexion
-        // unsigned int _onDelay;
-        // unsigned int _offDelay;
+
 
 
 

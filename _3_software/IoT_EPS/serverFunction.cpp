@@ -193,7 +193,7 @@ void handlePlugOnOff(){
     DSPL( dPrompt + " nbr de parametres : "+(String)server.args() );
     String allArgs = F(" Received args : ") ;
     for ( int i = 0; i < server.args() ; i++ ){
-        allArgs += server.argName( i ) + "=" + server.arg( i ) + "/ ";
+        allArgs += server.argName( i ) + "=" + server.arg( i ) + "/";
     }
     DSPL( dPrompt + allArgs);
     /////////////////////////////////////////////////////////////////////////////

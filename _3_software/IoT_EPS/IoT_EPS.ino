@@ -18,6 +18,7 @@
 - Utilisation de la bibliothèque ESP8266mDNS
 - Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3
 - Utilisation de la bibliothèque FastLED version 3.2.1
+- Utilisation de la bibliothèque NTPClient version 3.1.0
 
 @section wifi WIFIs connexions
 

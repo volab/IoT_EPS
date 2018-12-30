@@ -47,7 +47,7 @@ return see in the code for all informations.
 //for ntp
 #include <NTPClient.h>
 #include <WiFiUdp.h> 
-#include <TimeLib.h>
+// #include <TimeLib.h>
 #define SECPERHOURS (int)3600
 
 extern int __heap_start, *__brkval;

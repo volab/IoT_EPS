@@ -219,9 +219,9 @@ String CEpsStrTime::unixTime2String( uint32_t time2Display ){
 }
 
 /** 
- @fn uint8_t nextCheckedDay( uint8_t days, uint8_t day )
+ @fn uint8_t CEpsStrTime::nextCheckedDay( uint8_t days, uint8_t day )
  @brief a private methode to find the first next checked day...
- @param days a byte that's represente checked day (one bit/day start @bit0 for sunday)
+ @param days a byte that's represente checked day (one bit/day start at bit0 for sunday)
  @param day The number of the current day (Sunday = 0)
  @return number of days between current day and the next checked day in the week.
  0 meens that is the same day

@@ -18,7 +18,7 @@
 
 /**
 * @class CEpsStrTime cEpsStrTime.h
-* @brief a class to hold and manipulate our different time values in String format
+* @brief a class to hold and manipulate our different time values in String format...
 
 Our time values are hDebut, hFin, dureeOn, dureeOff...
 
