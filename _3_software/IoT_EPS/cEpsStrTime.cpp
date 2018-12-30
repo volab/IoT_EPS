@@ -99,6 +99,7 @@ bool CEpsStrTime::checkValidity(){
         // DSPL( dPrompt + F("after scan check") );
 		if (h > 23 && m > 59)return isValid;
 		isValid = true;
+        _seconds = h * 3600 + m * 60;
 		DSPL( dPrompt + h + " hours and " + m + " minutes.");
 		return isValid;
 	} else { //MMM only mode
@@ -155,7 +156,10 @@ uint32_t  CEpsStrTime::computeNextTime( uint8_t CheckedDays ){
         futurDT = futurDT + TimeSpan( nextDay, 0, 0, 0);
         // computed date is before current (in other words computed is in the past).
         //Example it is 16:00 and we want to stop at 06:00
-		if ( futurDT.unixtime() < now.unixtime() ) futurDT = futurDT + TimeSpan( 1, 0, 0, 0);
+		if ( futurDT.unixtime() < now.unixtime() ) {
+            nextDay = nextCheckedDay( CheckedDays, now.dayOfTheWeek()+1 );
+            futurDT = futurDT + TimeSpan( nextDay+1, 0, 0, 0);
+        }
         future = futurDT.unixtime();
         DSPL( dPrompt + F("HH:MM mode with day of week") );
         DSPL( dPrompt + F("To day is ") + (String)now.dayOfTheWeek() +\
@@ -189,11 +193,30 @@ void CEpsStrTime::displayUnixTime( uint32_t time2Display ){
 String CEpsStrTime::unixTime2String( uint32_t time2Display ){
     DateTime now = DateTime( time2Display );
     String sDate = "";
+    // uint8_t day = now.dayOfTheWeek();
+// switch ( day ){
+	// case 0: sDate = HTMLREQ_SUNDAY;	break;
+	// case 1: sDate = HTMLREQ_MONDAY  break;
+	// case 2: sDate = HTMLREQ_TUESDAY  break;
+	// case 3: sDate = HTMLREQ_WEDNESTDAY  break;
+	// case 4: sDate = HTMLREQ_THURSDAY  break;
+	// case 5: sDate = HTMLREQ_FRIDAY  break;
+	// case 6: sDate = HTMLREQ_SATURDAY  break;
+// }
+    String daysParam[7];
+    daysParam[0] = HTMLREQ_SUNDAY;
+    daysParam[1] = HTMLREQ_MONDAY;
+    daysParam[2] = HTMLREQ_TUESDAY;
+    daysParam[3] = HTMLREQ_WEDNESTDAY;
+    daysParam[4] = HTMLREQ_THURSDAY;
+    daysParam[5] = HTMLREQ_FRIDAY;
+    daysParam[6] = HTMLREQ_SATURDAY;
+    sDate = daysParam[ now.dayOfTheWeek() ] + " ";
     sDate += (String)now.day() +"/"+(String)now.month()+"/"+(String)now.year()+" ";
     sDate += (String)now.hour()+":"+(String)now.minute()+":";
     sDate += (String)now.second();
     return sDate;    
-} 
+}
 
 /** 
  @fn uint8_t nextCheckedDay( uint8_t days, uint8_t day )

@@ -50,9 +50,8 @@ Credential wifiCred;
 
 CRtc rtc;
 
+/** @todo get IP and server port from config3.json*/
 ESP8266WebServer server ( 80 );
-
-/** @todo put softAP IP add and server port in config.json*/
 IPAddress apIP(192, 168, 95, 42);
 
 
@@ -271,6 +270,7 @@ void setup(){
 		server.on("/help", HTTP_GET, [](){
 			if(!handleFileRead("/help.htm")) server.send(404, "text/plain", "FileNotFound");
 		});
+        /** @todo test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
 		server.on("/edit", HTTP_PUT, handleFileCreate);
 		server.on("/edit", HTTP_DELETE, handleFileDelete);
 		//first callback is called after the request has ended with all parsed arguments

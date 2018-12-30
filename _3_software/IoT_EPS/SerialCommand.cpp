@@ -44,6 +44,12 @@ return see in the code for all informations.
 #include "configParam.h"
 #include "cEpsStrTime.h"
 
+//for ntp
+#include <NTPClient.h>
+#include <WiFiUdp.h> 
+#include <TimeLib.h>
+#define SECPERHOURS (int)3600
+
 extern int __heap_start, *__brkval;
 extern ConfigParam cParam; /**< @brief to display wifi mode non static member ! */
 
@@ -82,7 +88,18 @@ void SerialCommand::parse(char *com){
     /** @todo remove after debug of nextCheckedDay */
 CEpsStrTime hDebut;	
 String s;
-int h,m, deux, trois, n;	
+int h,m, deux, trois, n;
+DateTime now;
+String date;
+
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, "fr.pool.ntp.org");
+RTC_DS3231 rtc;
+DateTime NTPTime;
+bool errNTPinit = true;
+//int timeZone = 2; // Paris heure d'été
+int timeZone = 1; // Paris heure d'hiver
+	
  /** @todo instnaciate command for set Hours, minutes, seconds separatly */
  /** @todo perhaps instanciate other commands to check hardware */
  /** @todo add commands to change and/or display config.json keys */
@@ -90,6 +107,18 @@ int h,m, deux, trois, n;
 		case 'S':
 			CRtc::adjust( com+1 );
 			break;
+        case 's':
+        timeClient.begin();
+        errNTPinit = !timeClient.forceUpdate();
+        timeClient.setTimeOffset( timeZone * SECPERHOURS );
+        // setTime(  timeClient.getEpochTime() );
+        NTPTime = DateTime( timeClient.getEpochTime() );
+        if (!errNTPinit) {
+            RTC_DS3231::adjust( NTPTime );
+            INTERFACE.println( "Time set :");
+            CRtc::displayTime();
+        }
+            break;
 		case 'C':   
 			CRtc::displayTime();
 			break;
@@ -97,7 +126,7 @@ int h,m, deux, trois, n;
 		case 'j':
 			ConfigParam::displayJson();
 			break;
-		case 's':      // <s>
+		case 'E':      // <s>
 			INTERFACE.print("<iElectrical Power Strip ");
 			// INTERFACE.print(ARDUINO_TYPE);
 			INTERFACE.print(": BUILD ");
@@ -117,6 +146,7 @@ int h,m, deux, trois, n;
             /** @todo remove after debug of computeNextTime */
         case 'D':
         case 'd':
+        /** @todo remove after debug of the hebdo mode */
             // INTERFACE.println( "Before scaning : " +String(com+1) );
             n = sscanf( com+1,"%d:%d %d", &h, &m, &deux);
             if ( n == 3){  
@@ -125,7 +155,11 @@ int h,m, deux, trois, n;
                 if (hDebut.isValid) hDebut.computeNextTime( deux );
             }
             // INTERFACE.println( "after scan : " + String(n) );
-            
+        case 't':
+        case 'T':
+            now = CRtc::now();
+            date = (String)now.day() + "/" + (String)now.month() + "/" + (String)now.year();
+            INTERFACE.println( date );
             break;
         
  
@@ -141,13 +175,15 @@ int h,m, deux, trois, n;
 void SerialCommand::displayCommandsList(){
 	String list = "Serial Command list :\n";
 	list += F("<h> ou <H> display this list\n");
-	list += F("<s> display status\n");
+	list += F("<E> display status\n");
 	list += F("<C> Check DS3231 date\n");
 	list += F("<S JJ/MM/AAAA HH:MM:SS> returns code <O>\n");
+    list += F("<s> set DS3231 by NTP server\n");
 	list += F("<J> or <j> for display config.json\n");
 	list += F("<W> or <w> display WIFI mode\n");
     /** @todo remove after debug of nextCheckedDay */
-    list += F("<D HH:MM days>\n");
+    list += F("<D or d HH:MM days>\n");
+    list += F("<T or t various_param> for code test\n");
 	INTERFACE.print( list );
 }
 

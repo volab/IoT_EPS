@@ -73,6 +73,7 @@ class CPowerPlug : public Cmcp {
         bool readFromJson();
         String readFromJson( String param );
         void writeToJson( String param, String val );
+        void writeDaysToJson();
         void handleHtmlReq( String allRecParam );
         
         static int modeId( String mode );
@@ -94,7 +95,7 @@ class CPowerPlug : public Cmcp {
         void updateOutputs( bool writeToJsonCount = true );
         uint32_t _nextTimeToSwitch;        
         
-        uint8_t daysOnWeek; 
+        uint8_t _daysOnWeek; 
         /**
         * @var DateTime _startDate
         @brief date to turn on for Hebdo and Cycle mode

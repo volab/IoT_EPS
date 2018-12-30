@@ -175,6 +175,12 @@ This function is activated when a request is received from the client's browser.
 It creats a concatened String of all parameters.
 
 This the allArgs local var that is passed to CPowerPlug::extractParamFromHtmlReq.
+
+Example:
+
+Received args : COLOR=redPlug/ State=OFF/ Mode=Hebdomadaire/ dureeOn=210/ dureeOff=en minutes/ 
+hDebut=17:10/ hFin=HH:MM/ clonedPlug=greenPlug/ 
+OK
 */
 extern CPowerPlug plugs[4];
 void handlePlugOnOff(){
@@ -210,10 +216,7 @@ void handlePlugOnOff(){
     if (i == 4){
         returnVal = " couleur invalide";
         DSPL( dPrompt + returnVal);
-        // server.send(200, "text/plain", "Couleur invalide");
-        // return;
     } else {
-        //if ( plugVal == "ON") plugs[i].on(); else plugs[i].off();
         plugs[i].handleHtmlReq( allArgs ); 
         returnVal = "OK";
     }

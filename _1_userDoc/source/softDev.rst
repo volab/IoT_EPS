@@ -71,6 +71,7 @@ Périodique/cyclique
 - avec reprise de On après off indéfiniment jusqu'au repassage en commande manuelle.
 - avec champ heure de début (et 'Entrez une heure de début (facultatif)' par défaut)
 - un appui court sur BP met à OFF mais reste en mode cyclique pour le cycle suivant
+
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Hebdomadaire
@@ -79,11 +80,14 @@ Hebdomadaire
 - heure de mise off
 - choix des jours de la semaine
 - un appui court sur BP met à OFF mais reste en mode Hebdomadaire pour le cycle suivant
+- un deuxième appui court reprend le cycle (attention ne met pas forcément à ON)
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Clone
 ========
-Clone le fonctionnement d'une des 3 autres prises.
+Clone le fonctionnement d'une des 3 autres prises. Il s'agit d'une copie des paramètres.
+Ce n'est pas un clone dynamique. Ce qui signifie que l'information de la prise source et de
+son état au moment du clonage ne sont pas historisés.
 
 Evolutions possibles
 =====================
@@ -197,9 +201,20 @@ Possible requests:
 ====================
 Serveur html ESP8266
 ====================
-Repris de l'exemple fourni avec l'IDE ARDUINO : FSBrowser
+Repris de l'exemple fourni avec l'IDE ARDUINO : ESP8266WebServer/FSBrowser
 
 Cette exemple apporte un lot de fonction qui gérent l'envoie de fichier css, jpg et autres...
+
+edit page
+==============
+Comportement etrange de l'extnsion html
+
+Le bouton parcourir tronc en htm et le visualisateur ne montre que les fichier htm
+
+Edit.htm source code ? not provided in the .ino file
+
+One possible source (but not really the same) :
+https://github.com/gmag11/FSBrowser/blob/master/data/edit.html
 
 ==============
 IOExpander
@@ -326,8 +341,16 @@ Prise en main de la librairie JSON
 Nécessite un investissement personnel important.
 
 
+===========================
+Vocabulary
+===========================
+
+Un réseau de diffusion de contenu (RDC) ou en anglais content `delivery network (CDN)`_
+
+.. _`delivery network (CDN)` : https://en.wikipedia.org/wiki/Content_delivery_network
+
 =============
-Webographie
+Webography
 =============
 
 .. target-notes::

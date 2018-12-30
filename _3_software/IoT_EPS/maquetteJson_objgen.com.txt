@@ -3,8 +3,11 @@ general
   hostName = PowerStrip01
   numberOfPlugs = 4
   rtcValidity = true
+  IP = 192.168.95.42
+  Port = 80
 redPlug
   State = ON
+  Pause = OFF
   Mode = Manuel
   hDebut =
   hFin = 
@@ -16,6 +19,7 @@ redPlug
   nextTimeToSwitch = 0
 greenPlug
   State = OFF
+  Pause = OFF
   Mode = Cyclique
   hDebut = 14:35
   hFin = 
@@ -27,6 +31,7 @@ greenPlug
   nextTimeToSwitch = 0
 bluePlug
   State = ON
+  Pause = OFF
   Mode = Hebdomadaire
   hDebut = 08:30
   hFin = 18:30
@@ -38,6 +43,7 @@ bluePlug
   nextTimeToSwitch = 0
 yellowPlug
   State = ON
+  Pause = OFF
   Mode = Minuterie
   hDebut =
   hFin = 

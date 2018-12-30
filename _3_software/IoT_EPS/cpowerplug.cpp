@@ -224,6 +224,7 @@ bool CPowerPlug::readFromJson(){
                         // DSPL( dPrompt + "jours " + (String)i + " = " + sJours[i] );
                         if (sJours[i] == "ON"){
                             DSP( "Jours " + (String)i + " est ON. " );
+                            bitSet( _daysOnWeek, i);
                         }   
                     }
                     DSPL("");
@@ -306,11 +307,13 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     param = JSON_PARAMNAME_MODE;
     mode = extractParamFromHtmlReq( allRecParam, param );
     DSPL( dPrompt + "Mode = " + mode );
-    _mode = modeId( mode );
+    
 
     prevMode = readFromJson( param ); //why ? For bp acquit
-    writeToJson( param, mode );
-    /** @todo review time to write in json : only after validity check of parameters but...*/
+    // do not change if all is not valid
+    // _mode = modeId( mode );
+    // writeToJson( param, mode );
+    /** @todo test all case invalid parameter entered */
     if ( mode == MANUAL_MODE){
         /////////////////////////////////////////////////////////////////////////////
         //    Compute MANUAL MODE                                                  //
@@ -367,8 +370,12 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
                 writeToJson( JSON_PARAMNAME_ONDURATION, "" );
                 writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+                _daysOnWeek = 0;
+                writeDaysToJson();
                 off();
             }
+            _mode = modeId( mode );
+            writeToJson( JSON_PARAMNAME_MODE, mode );
         }
     } else if ( mode == TIMER_MODE ){
         /////////////////////////////////////////////////////////////////////////////
@@ -398,15 +405,17 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                     off();
                     writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
                 }
-            }             
+            }
+            _mode = modeId( mode );
+            writeToJson( JSON_PARAMNAME_MODE, mode );            
         } else { //onDuration not valid
-            DSPL( dPrompt + "TIMER mode : an invalid parameter was entered");
-            writeToJson( JSON_PARAMNAME_ONDURATION, "" );
+            DSPL( dPrompt + "TIMER mode : an invalid parameter was entered, no change made");
+            // writeToJson( JSON_PARAMNAME_ONDURATION, "" );
             //risk : corrupted parameters for prev mode
             // writeToJson( JSON_PARAMNAME_MODE, prevMode );
-            writeToJson( JSON_PARAMNAME_MODE, MANUAL_MODE );
-            writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
-            off();
+            // writeToJson( JSON_PARAMNAME_MODE, MANUAL_MODE );
+            // writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
+            // off();
         }        
            
     } else if ( mode == CYCLIC_MODE ){
@@ -440,17 +449,19 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
             }
             writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
             writeToJson( JSON_PARAMNAME_ONDURATION, dureeOn.getStringVal() );
-            writeToJson( JSON_PARAMNAME_OFFDURATION, dureeOff.getStringVal() ); 
+            writeToJson( JSON_PARAMNAME_OFFDURATION, dureeOff.getStringVal() );
+            _mode = modeId( mode );
+            writeToJson( JSON_PARAMNAME_MODE, mode );            
         } else { //onDuration and/or offDuration not valid
-            DSPL( dPrompt + "CYCLIC mode : an invalid parameter was entered");
-            writeToJson( JSON_PARAMNAME_ONDURATION, "" ); 
-            writeToJson( JSON_PARAMNAME_OFFDURATION, "" ); 
-            writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+            DSPL( dPrompt + "CYCLIC mode : an invalid parameter was found, no change made");
+            // writeToJson( JSON_PARAMNAME_ONDURATION, "" ); 
+            // writeToJson( JSON_PARAMNAME_OFFDURATION, "" ); 
+            // writeToJson( JSON_PARAMNAME_STARTTIME, "" );
             //risk : corrupted parameters for prev mode
             // writeToJson( JSON_PARAMNAME_MODE, prevMode ); 
-            writeToJson( JSON_PARAMNAME_MODE, MANUAL_MODE );
-            writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
-            off();
+            // writeToJson( JSON_PARAMNAME_MODE, MANUAL_MODE );
+            // writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
+            // off();
         } 
     } else if ( HEBDO_MODE ){
         DSPL( dPrompt + F("Hebdo mode actions") );
@@ -460,12 +471,59 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         //hebdo mode parameters
         //hdebut hFin
         CEpsStrTime hDebut, hFin;
-        // hFin.setMode( CEpsStrTime::HHMM );
-        uint8_t days = 0x06;
-        
         hDebut = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STARTTIME ),\
             CEpsStrTime::HHMM );
-        if (hDebut.isValid) hDebut.computeNextTime( days );
+         hFin = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_ENDTIME ),\
+            CEpsStrTime::HHMM );   
+        if (hDebut.isValid && hFin.isValid ){
+            String daysParam[7];
+            daysParam[0] = HTMLREQ_SUNDAY;
+            daysParam[1] = HTMLREQ_MONDAY;
+            daysParam[2] = HTMLREQ_TUESDAY;
+            daysParam[3] = HTMLREQ_WEDNESTDAY;
+            daysParam[4] = HTMLREQ_THURSDAY;
+            daysParam[5] = HTMLREQ_FRIDAY;
+            daysParam[6] = HTMLREQ_SATURDAY;
+            uint8_t newDayOfWeek = 0;
+            for ( int i = 0; i < 7 ; i++ ){
+                if ( extractParamFromHtmlReq( allRecParam, daysParam[i] ) != NOT_FOUND )
+                    bitSet ( newDayOfWeek, i );
+            }
+            //if all is valid
+            writeToJson( JSON_PARAMNAME_STARTTIME, hDebut.getStringVal() );
+            writeToJson( JSON_PARAMNAME_ENDTIME, hFin.getStringVal() );
+            _daysOnWeek = newDayOfWeek;
+            writeDaysToJson();
+            // prepare data for in or out of bounds test
+            DateTime now = CRtc::now();
+            int h, m;
+            DateTime toDay_hDebut_DT, toDay_hFin_DT;
+            sscanf( hDebut.getStringVal().c_str(),"%d:%d", &h, &m);
+            toDay_hDebut_DT = DateTime( now.year(), now.month(), now.day(),h,m,0);
+            sscanf( hFin.getStringVal().c_str(),"%d:%d", &h, &m);
+            toDay_hFin_DT = DateTime( now.year(), now.month(), now.day(),h,m,0);
+            DSPL( dPrompt + F("To day H debut : ") + \
+                CEpsStrTime::unixTime2String( toDay_hDebut_DT.unixtime() ) ); 
+            DSPL( dPrompt + F("To day H fin : ") + \
+                CEpsStrTime::unixTime2String( toDay_hFin_DT.unixtime() ) );
+            // test if now is in bounds or out of bounds    
+            if ( now.unixtime() < toDay_hFin_DT.unixtime() && \
+                now.unixtime() > toDay_hDebut_DT.unixtime() ){
+                 on();
+                _nextTimeToSwitch = hFin.computeNextTime();
+                DSPL( dPrompt + F("In bounds, possible next time : ") + \
+                    CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
+            } //current date/time (now) is out of the limits 
+            else {
+                _nextTimeToSwitch = hDebut.computeNextTime( _daysOnWeek );
+                DSPL( dPrompt + F("Out of bounds, possible next time : ") + \
+                    CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
+            }
+            writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+        } //not all valid
+        else {
+            DSPL( dPrompt + "HEBDO mode : an invalid parameter was found, no change made");
+        }
     } else if ( mode ==  CLONE_MODE){
         DSPL( dPrompt + F("clone mode actions") );
         //clode mode parameters
@@ -532,6 +590,50 @@ void CPowerPlug::writeToJson( String param, String value ){
 }
 
 /** 
+ @fn void CPowerPlug::writeDaysToJson()
+ @brief Method to write checked day of hebdo mode on json config file
+ @return no return value and no parameter
+
+It works on _dayOfWeek member
+*/
+void CPowerPlug::writeDaysToJson(){
+    DEFDPROMPT( "write days to jSon");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    // DSPL( dPrompt);
+    if (configFile) {
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+        //read the file
+        configFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+            JsonObject& plug = json[_plugName]; 
+            // DSPL( dPrompt + _plugName + " : " + param + " = " + value);
+            // plug[param] = value; 
+            JsonArray& plugJours = plug["Jours"];
+        //set values
+            for (int i = 0; i<7; i++){
+                if ( bitRead( _daysOnWeek, i ) ) plugJours[ i ]="ON";
+                else plugJours[ i ] = "OFF";
+            }
+        //and rewrite to the file
+            configFile.seek(0, SeekSet);
+            json.prettyPrintTo(configFile);
+            // plug.prettyPrintTo(Serial);
+            // DSPL();
+        } else {
+            DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+            // return false;
+        }
+        configFile.close();
+        // return true;  
+/** @todo perhaps add error handling as in readFromJson()*/        
+    }    
+}
+
+/** 
  @fn void CPowerPlug::switchAtTime()
  @brief after call isItTimeToSwitch, this fucntion switch the plug as needed and...
  @return no return value and no parameter
@@ -564,6 +666,11 @@ void CPowerPlug::switchAtTime(){
         }
         _nextTimeToSwitch = duree.computeNextTime();
         writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+    }else if ( sMode == HEBDO_MODE ){
+        /** @todo complee this ! */
+        _nextTimeToSwitch = 0;
+        
+        
     }
 }
 
@@ -586,6 +693,8 @@ void CPowerPlug::handleBpClic(){
         _nextTimeToSwitch = dureeOn.computeNextTime();
         writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
         on();
+    /** @todo take into account bp action in cyclic mode */
+    /** @todo take into account bp action in hebdo mode */
     }
     bp.acquit();    
 }

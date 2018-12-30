@@ -37,7 +37,8 @@ public:
     bool isValid = false;
     void setValue( String val );
     void setMode( Mode_t mode ){ _mode = mode; }
-    long getSeconds(){ return _seconds; }
+    long getSeconds(){ return _seconds; } /**< @brief return time in seconds but warning
+        it is not the full date in Unix form.*/
     void setMaxDuration( long val ){ _maxDuration = val; } 
     String getStringVal(){ return _sValue; }/**< @brief to get the String format of the time
     value for json write purposes*/
@@ -46,12 +47,11 @@ public:
     
     static void displayUnixTime( uint32_t time2Display ); /**< @brief for debug purpose*/
     static String unixTime2String( uint32_t time2Display );
-    
-/** @todo uncomment after debug */   
-//private:   
+ 
+private:   
     uint8_t nextCheckedDay( uint8_t days, uint8_t day );
+
 private:
-	
     Mode_t _mode = MMMSS ; 
     String _sValue;
     long _seconds;

@@ -62,6 +62,15 @@
 #define JSON_PARAMNAME_ENDTIME "hFin"
 #define JSON_PARAMNAME_ONOFCOUNT "onOffCount"
 #define JSON_PARAMNAME_NEXTSWITCH "nextTimeToSwitch"
+#define HTMLREQ_SUNDAY "Dimanche" //it is allthough the value in html request
+#define HTMLREQ_MONDAY "Lundi"
+#define HTMLREQ_TUESDAY "Mardi"
+#define HTMLREQ_WEDNESTDAY "Mercredi"
+#define HTMLREQ_THURSDAY "Jeudi"
+#define HTMLREQ_FRIDAY "Vendredi"
+#define HTMLREQ_SATURDAY "Samedi"
+
+
 
 #define TIME_STRING_SEPARATOR ":"
 
