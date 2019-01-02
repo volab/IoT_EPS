@@ -1,51 +1,59 @@
-html{
-    height: 100%;
-}
-
 body{
-    background-color: #aeb6bf;
-    }
+    font-family: 'Times New Roman', Times, serif !important;
+}
 
 nav{
-    max-height: 30px;
-    list-style-type: none;
-    text-align: center;
-    margin: 0;
-    padding: 0;
+    line-height: 0rem;
 }
-
-footer{
-      position: absolute;
-      bottom: 0;
-      }
-
-header, nav, footer{padding: 0 1%;}
-
-nav li{
-        display: inline-block;
-}
-
-.header_logo{
-    width: 100%;
-    height: auto;
-    vertical-align: middle;
-    }
-
-.header_h1{
-    vertical-align: middle;
-    text-align:   center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 3em;
-    }
 
 fieldset{
     box-shadow: 6px 6px 0;
     border: 2px ridge black;
     border-radius:0 10px 0 10px;
-    }
+    padding: 0.75rem;
+}
 
+label{
+    /* color: black; */
+    color: inherit;
+}
+
+.bg-gris{
+    background-color: #aeb6bf;
+}
+
+.bg-lynch{
+    background-color: #95a5a6;
+}
+
+.bg-hoki{
+    background-color: #67809f;
+}
+
+.nav-link {
+    display: block;
+    padding: 1.5rem 1.5rem;
+}
+
+.redPlug fieldset{
+    color: #b11721 !important;
+}
+
+.greenPlug fieldset{
+    color: #30880c !important;
+}
+
+.bluePlug fieldset{
+    color: #0b40a9 !important;
+}
+
+.yellowPlug fieldset{
+    color: #e4ff02 !important; 
+}
+
+/* .colorRed{
+    color: #b11721;
+} */
 
 .modeSelector{
     color: black;
@@ -61,73 +69,6 @@ fieldset{
     padding: 0;
 }
 
-.labelDaySelector{
-    margin: 0 1% 0 1%;
-}
-
-.colorRed{
-    color:red;
-}
-
-.redPlug,.greenPlug,.bluePlug,.yellowPlug{
-    margin: 0 2% 0 2%;
-    }
-  
-/* RED */
-.redPlug{
-}
-
 .submitReset{
     text-align: center;
 }
-
-.redPlug fieldset{
-    color: #b11721;
-}
-
-/* GREEN */
-.greenPlug{
-}
-
-.greenPlug fieldset{
-    color: #30880c;
-}
-
-/* Blue */
-.bluePlug{
-}
-
-.bluePlug fieldset{
-    color: #0b40a9;
-}
-
-    /* Yellow */
-.yellowPlug{
-}
-
-.yellowPlug fieldset{
-    color: #e4ff02;
-}
-
-@media only screen and (max-width: 414px) {
-  .header_h1 {
-    font-size: 2.3rem;
-    margin: 0;
-  }
-}
-
-@media only screen and (max-width: 375px) {
-  .header_h1 {
-    font-size: 2.2rem;
-    margin: 0;
-  }
-}
-
-
-@media only screen and (max-width: 360px) {
-  .header_h1 {
-    font-size: 2.1rem;
-    margin: 0;
-  }
-}
-

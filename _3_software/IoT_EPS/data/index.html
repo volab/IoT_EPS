@@ -1,50 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-    <!-- Entête de la page -->
-        <meta charset="UTF-8" />
-        
-        <!--Import css-->
-        <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
-        
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!--Let browser know website is optimized for mobile-->
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <!-- Import CSS -->
+        <link type="text/css" rel="stylesheet" href="css/bootstrap.css" media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
+        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
+        
+        <link rel="stylesheet" type="text/css" href="css/style_bootstrap.css" />
+        <!-- <link rel="stylesheet" type="text/css" href="css/style.css" /> -->
+
+        <!-- Responcive -->
 
         <link rel="icon" href="volab.ico" />
-
         <title id="autoTitle">Accueil IoT_EPS</title>
     </head>
-    
-    <body>
-        <header> <!-- Logo + Titre de la page -->
+
+    <body class="bg-gris">
+        
+        <!-- Navbar -->
+
+        <div class="container-fluid mb-4 align-items-center">
             <div class="row">
-                <div class="col s3">
-                    <img class="header_logo" src="img/logo_alpha.png" alt="logo IoT_EPS">
-                </div>
-                <div class="col s9">
-                    <h1 class="header_h1" id="autoH1">Accueil IoT_EPS</h1>
+                <nav class="navbar p-2 fixed-top bg-hoki">
+                    <!-- Plug Selector -->
+                    <div class="col-md-6">
+                        <ul class="nav nav-tabs justify-content-start" role="tablist">
+                            <li class="nav-item m-2 bg-danger"><a class="nav-link" href="#redPlug" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true" >Prise Rouge</a></li>
+                            <li class="nav-item m-2 bg-success"><a class="nav-link" href="#greenPlug">Prise Verte</a></li>
+                            <li class="nav-item m-2 bg-primary"><a class="nav-link" href="#bluePlug">Prise Bleu</a></li>
+                            <li class="nav-item m-2 bg-warning"><a class="nav-link" href="#yellowPlug">Prise Jaune</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- menu liens externe -->
+                    <div class="col-md-6">
+                        <ul class="nav justify-content-end">
+                            <li class="nav-item m-2"><a href="help.html">Page principale</a></li>
+                            <li class="nav-item m-2"><a href="help.html">Help</a></li>
+                            <li class="nav-item m-2"><a href=#!>Time</a></li>
+                            <li class="nav-item m-2"><a href=#!>Configuration générale</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+         <!-- header -->
+         <br>
+        <header class="jimbotron">
+            <div class="container-fluid my-4 d-none d-lg-block">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <img class="header_logo img-fluid" src="img/logo_alpha.png" alt="logo IoT_EPS">
+                    </div>
+                    <div class="col-md-7 ml-auto">
+                        <h1 class="header_h1 display-1" id="autoH1">Accueil IoT_EPS</h1>
+                    </div>
                 </div>
             </div>
-            
         </header>
 
-        <nav> <!-- bare de menu horizontale -->
-            <ul>
-                <li><a href="help.html">Help</a></li>
-                <li><a href=#!>Time</a></li>
-                <li><a href=#!>Configuration générale</a></li>
-            </ul>
-        </nav>
-
-        <main> <!-- corp de la page -->
+        <!-- Main -->
+        <main>
             <!-- redPlug -->
-            <div class="redPlug">
-                <fieldset id="fs_red">
-                    <legend><h2>Prise Rouge</h2></legend>
+            <section class="container-fluid redPlug">
+                <fieldset class="redPlug" id="redPlug">
+                    <legend px-2><h2>Prise Rouge</h2></legend>
                     <div class="row">
-                        <div class="col s2">
+                        <div class="col-md-2">
                             <!-- radio Selection des Modes-->
                             <div class="redPlug modeSelector">
                                 <p>Séléction du Mode :</p>
@@ -103,7 +129,7 @@
                             </div>
                         </div>
                         <!-- summary -->
-                        <div class="col s10">
+                        <div class="col-md-10">
                             <div class="Summary">
 
                                 <!-- Red Manuel -->
@@ -118,7 +144,7 @@
                                         <input type="hidden" name="Mode" value="Manuel">
                                         <div class="row">
                                             <!-- Colone 1 -->
-                                            <div class="redPlug Manuel on_off col s4">
+                                            <div class="redPlug Manuel on_off col-md-4">
                                                 <p>Marche arrêt immediat :</p>
                                                 <ul>
                                                     <li>
@@ -145,7 +171,7 @@
 
                                             <!-- Red div_DiffSelector (arrêt différer) -->
                                             <!-- Colone 2 -->
-                                            <div class="redPlug Manuel div_diffTypeSelector col s4">
+                                            <div class="redPlug Manuel div_diffTypeSelector col-md-4">
                                                 <p>Sélécion du Mode d'arrêt différer : </p>
                                                 <ul>    
                                                     <li>
@@ -173,7 +199,7 @@
 
                                             <!-- Red Manuel hFin -->
                                             <!-- Colone 3 (1/2)-->
-                                            <div class="redPlug Manuel div_hFin col s3">
+                                            <div class="redPlug Manuel div_hFin col-md-4">
                                                 <label>
                                                     <span>Arréter la prise à ... </br>(Heure d'arrêt -- hh:mm):</span>
                                                     <input 
@@ -186,7 +212,7 @@
 
                                             <!-- Red Manuel dureeOff -->
                                             <!-- Colone 3 (2/2) -->
-                                            <div class="redPlug Manuel div_dureeOff col s3">
+                                            <div class="redPlug Manuel div_dureeOff col-md-4">
                                                 <label>
                                                     <span>Arréter la prise dans ... </br>(Durée en minute, 300 minutes Max):</span>
                                                     <input 
@@ -217,7 +243,7 @@
                                         <input type="hidden" name="COLOR" value="redPlug">
                                         <input type="hidden" name="Mode" value="Minuterie">
                                         <div class="row">
-                                            <div class="redPlug Minuterie col s4">
+                                            <div class="redPlug Minuterie col-md-4">
                                                 <label>
                                                     <span> Réglage de la minuterie (Durée en minute, 300 minutes Max -- mmm:ss ou mmm):</br></span>
                                                     <input 
@@ -250,7 +276,7 @@
                                         <input type="hidden" name="Mode" value="Cyclique">
                                         <p>Réglage de la période de fonctionnement et de repos (en minute):</p>
                                         <div class="row">
-                                            <div class="redPlug Cyclique div_dureeOn col s3" >
+                                            <div class="redPlug Cyclique div_dureeOn col-md-4" >
                                                 <label>
                                                     <span>Durée ON</br>(Durée en minute, 300 minutes Max) :</br></label>
                                                     <input 
@@ -261,7 +287,7 @@
                                                         required>
                                                 </label>
                                             </div>
-                                            <div class="redPlug Cyclique div_dureeOff col s3" >
+                                            <div class="redPlug Cyclique div_dureeOff col-md-4" >
                                                 <label>
                                                     <span>Durée OFF</br>(Durée en minute, 300 minutes Max) :</br></span>
                                                     <input 
@@ -272,7 +298,7 @@
                                                         required>
                                                 </label>
                                             </div>
-                                            <div class="redPlug Cyclique div_hDebut col s3">
+                                            <div class="redPlug Cyclique div_hDebut col-md-4">
                                                 <label>
                                                     <span>Heure de début</br>(facultatif)</br></span>
                                                     <input 
@@ -284,7 +310,7 @@
                                             </div>
                                         </div>
                                         <div class="redPlug Cyclique submitReset row">
-                                            <div class="switch col s3">
+                                            <div class="switch col-md-4">
                                                 <p>Arrêt provisoir</p>
                                                 <label>
                                                     Off
@@ -297,7 +323,7 @@
                                                     On
                                                 </label>
                                             </div>
-                                            <div class="col s3">
+                                            <div class="col-md-4">
                                                 <br/> 
                                                 <input 
                                                     type="submit" 
@@ -322,7 +348,7 @@
                                         <!-- Day selector -->
                                         <p>Selection des jours d'activité :</p></br>
                                         <div class="row">
-                                            <div class="redPlug col s12">
+                                            <div class="redPlug col-md-12">
                                                 <label class="labelDaySelector">
                                                     <input 
                                                         type="checkbox" 
@@ -334,7 +360,7 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="redPlug Hebdomadaire weekDay col s12">
+                                            <div class="redPlug Hebdomadaire weekDay col-md-12">
                                                 <label class="labelDaySelector">
                                                     <input 
                                                         type="checkbox" 
@@ -396,7 +422,7 @@
 
                                         <!-- Hour Selector -->
                                         <div class="row">
-                                            <div class="redPlug Hebdomadaire col s5">
+                                            <div class="redPlug Hebdomadaire col-md-6">
                                                 <label>
                                                     <span>Heure de début : (hh:mm)</br></span>
                                                     <input 
@@ -406,7 +432,7 @@
                                                         class="redPlug Hebdomadaire hDebut patern_heure"/>
                                                 </label>
                                             </div>
-                                            <div class="redPlug Hebdomadaire col s5">
+                                            <div class="redPlug Hebdomadaire col-md-6">
                                                 <label>
                                                     <span>Heure de fin : (hh:mm)</br></span>
                                                     <input 
@@ -418,7 +444,7 @@
                                             </div>
                                         </div>
                                         <div class="redPlug Hebdomadaire submitReset row">
-                                            <div class="switch col s3">
+                                            <div class="switch col-md-4">
                                                 <p>Arrêt provisoir</p>
                                                 <label>
                                                     Off
@@ -431,7 +457,7 @@
                                                     On
                                                 </label>
                                             </div>
-                                            <div class="col s3">
+                                            <div class="col-md-4">
                                                 <br/> 
                                                 <input 
                                                     type="submit" 
@@ -455,15 +481,16 @@
                                         <input type="hidden" name="Mode" value="Clone">
                                         <div class="row">
                                             <p>Sélctionner la prise à dupliquer :</p>
-                                            <div class="redPlug input-field col s12 m4">
+                                            <div class="redPlug input-field col-md-3">
+                                                <br>
                                                 <select 
                                                     name="Clone"
-                                                    class="redPlug Clone plugSelector">
+                                                    class="redPlug Clone plugSelector form-control">
                                                         <option value="" disabled selected>...</option>
-                                                        <option value="redPlug">Prise Rouge</option>
-                                                        <option value="greenPlug">Prise Verte</option>
-                                                        <option value="bluePlug">Prise Bleue</option>
-                                                        <option value="yellowPlug">Prise Jaune</option>
+                                                        <option class="text-danger" value="redPlug">Prise Rouge</option>
+                                                        <option class="text-success" value="greenPlug">Prise Verte</option>
+                                                        <option class="text-primary" value="bluePlug">Prise Bleue</option>
+                                                        <option class="text-warning" value="yellowPlug">Prise Jaune</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -479,39 +506,33 @@
                         </div>
                     </div>
                 </fieldset>
-            </div>
+            </section>
+            <hr>
 
             <!-- greenPlug -->
-            <div class="greenPlug">
-                <fieldset id="fs_green">
-                    <legend><h2>Prise Verte</h2></legend>
+            <section class="container-fluid greenPlug">
+                <fieldset class="greenPlug" id="greenPlug">
+                    <legend px-2><h2>Prise Verte</h2></legend>
                 </fieldset>
-            </div>
-
-            <!-- bluePlug -->
-           <div class="bluePlug">
-                <fieldset id="fs_blue">
-                    <legend><h2>Prise Bleu</h2></legend>
-                </fieldset>
-            </div>
-
-           <!-- yellowPlug --> 
-           <div class="yellowPlug">
-                <fieldset id="fs_yellow">
-                    <legend><h2>Prise Jaune</h2></legend>
-                </fieldset>
-            </div>
+            </section>
         </main>
 
-        <!--
-        <footer>
-            <p>Powered by VoLab</p>
-        </footer>
-        -->
+        <!-- Footer -->
+        <footer class="container">
 
-        <!--JavaScript at end of body for optimized loading-->
+        </footer>
+
+        <!-- script -->
+        <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
+        <script type="text/javascript" src="js/popper.js"></script>
+        <script type="text/javascript" src="js/bootstrap.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
-        <!--<script type="text/javascript" src="js/IoT_EPS.js"></script>-->
-        <script type="text/javascript" src="js/IoT_EPS2.js"></script>
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script> -->
+
+        <script type="text/javascript" src="js/IoT_EPS2_bootstrap.js"></script>
     </body>
 </html>
