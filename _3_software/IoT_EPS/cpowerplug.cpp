@@ -513,8 +513,9 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 CEpsStrTime::unixTime2String( toDay_hFin_DT.unixtime() ) );
             // test if now is in bounds or out of bounds    
             if ( now.unixtime() < toDay_hFin_DT.unixtime() && \
-                now.unixtime() > toDay_hDebut_DT.unixtime() ){
-                 on();
+                now.unixtime() > toDay_hDebut_DT.unixtime() && \
+                bitRead( _daysOnWeek, now.dayOfTheWeek() ) ){
+                on();
                 _nextTimeToSwitch = hFin.computeNextTime();
                 DSPL( dPrompt + F("In bounds, possible next time : ") + \
                     CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
@@ -523,6 +524,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 _nextTimeToSwitch = hDebut.computeNextTime( _daysOnWeek );
                 DSPL( dPrompt + F("Out of bounds, possible next time : ") + \
                     CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
+                if ( _state) off(); // confirme off 
             }
             writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
             _mode = modeId( mode );

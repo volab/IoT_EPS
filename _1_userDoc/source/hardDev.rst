@@ -31,6 +31,8 @@ Avancement
 #. add wifi led : ok
 #. add LDR
 #. add I2C nano expander with analog inputs
+#. packaging study
+#. integartion
 
 
 ####

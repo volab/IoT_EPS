@@ -20,12 +20,15 @@ Avancement
 #. lecture du fichier de configuration : ok
 #. intégration MCP23017 : ok
 #. lecture du fichier de configuration config3.json : 70%
-#. gestion bouton poussoir mécanique : 80%
-#. Ecriture fichier json : 60%
-#. Traitement de la requete html avec analyze, exécution et écriture json: 20%
+#. gestion bouton poussoir mécanique : 80% (appui long + appui court en cours de cycle)
+#. Ecriture fichier json : 90%
+#. Traitement de la requete html avec analyze, exécution et écriture json: ok
 #. Réflèchir à la gestion des erreurs
 #. manage wif led : ok
-#. interate nano expander with analog inputs : 0%
+#. integrate nano expander with analog inputs : 0%
+#. exhaustive test of hebdo mode : 20%
+
+Don't forget the todo list of the doxygen documentation
 
 
 ====================================
