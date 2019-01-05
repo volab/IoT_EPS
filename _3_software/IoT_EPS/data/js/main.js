@@ -1,3 +1,4 @@
+const log = new C_MyLog();
 const regEx = new C_RexExPatern();
 const red = new C_Plug("redPlug");
 
@@ -25,6 +26,7 @@ red.manuelOFF.addEventListener(
         red.f_displayTypeSelector("none"); 
         red.f_displayDiv_dureeOff("none");
         red.f_displayDiv_hFin("none");
+        red.manuelSubmit.disabled = false;
     },
     false);    
 
@@ -33,7 +35,6 @@ red.manuelDiffAt.addEventListener(
     function(){
         red.f_displayDiv_hFin("block");
         red.f_displayDiv_dureeOff("none");
-        red.manuelDiffIn.checked = false;
     },
     false);    
 
@@ -42,7 +43,6 @@ red.manuelDiffAt.addEventListener(
     function(){
         red.f_displayDiv_hFin("none");
         red.f_displayDiv_dureeOff("block");
-        red.manuelDiffAt.checked = false;
     },
     false);
 
@@ -57,3 +57,12 @@ red.manuel_dureeOff.addEventListener(
     function(event){
         regEx.f_callbackRegEx(event)},
         false);
+
+red.manuelForm.addEventListener(
+    "submit",
+    function(event){
+        log.f_formLog( red.f_getQueryTarget(event));
+        red.manuelForm.submit();
+        red.manuelForm.reset();
+    },
+    false);

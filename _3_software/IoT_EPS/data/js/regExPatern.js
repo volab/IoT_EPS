@@ -65,13 +65,16 @@ class C_RexExPatern{
             v_regEx = this.v_regExDuree;
         }
         
-        //let v_regEx  = /^([0-2]{0,1}\d{1}:[0-5]{1}\d{1})$/;
-        if (v_regEx.test(v_target.value)){
-        v_target.style.border="2px solid green";
-        v_submit.disabled = false;
+        if (!v_target.value){
+            v_submit.disabled = false;
         } else {
-        v_target.style.border="2px solid red";
-        v_submit.disabled = true;
+            if (v_regEx.test(v_target.value)){
+                v_target.style.border="2px solid green";
+                v_submit.disabled = false;
+            } else {
+                v_target.style.border="2px solid red";
+                v_submit.disabled = true;
+            }
         }
     }    
 }

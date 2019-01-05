@@ -1,6 +1,6 @@
 class C_Plug{
     constructor(v_colorPlug){
-        this.v_colorPlug        = v_colorPlug;
+        this.v_colorPlug                = v_colorPlug;
 
         /* définition des radio 'modeSelector' */
         this.modeManuel                 = null;
@@ -188,6 +188,15 @@ class C_Plug{
         this.cloneSubmit = document.querySelector("."+ +".Clone.submitReset");
     }
 
+    f_getQueryTarget(event){
+        let v_targetClassList = (event.target.classList);
+        let v_tmp = "";
+        for (let i=0; i<v_targetClassList.length; i++){
+            v_tmp += "." + v_targetClassList[i];
+            }
+            return document.querySelector(v_tmp);
+    }
+
     f_displayNoneAll(){
         /* Permet de masquer tous les DIV à l'intérieur des FILDSET */
         //mode Manuel
@@ -212,7 +221,7 @@ class C_Plug{
          * Les valeur attendue sont: "none" ou "block"
          */
 
-        if ((v_displayStatus === "block")||(v_displayStatus === "none")){         
+        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
             this.f_displayNoneAll();
             this.manuelDiv.style.display=v_displayStatus;
         }
@@ -222,7 +231,7 @@ class C_Plug{
         /* permet d'fficher ou de masquer le DIV DiffTypeSelector
          * Les valeur attendue sont: "none" ou "block"
          */
-        if ((v_displayStatus === "block")||(v_displayStatus === "none")){         
+        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
             this.manuelDivDiffTypeSelector.style.display = v_displayStatus;
         }
     }
@@ -231,7 +240,11 @@ class C_Plug{
         /* permet d'fficher ou de masquer le DIV dureeOff
          * Les valeur attendue sont: "none" ou "block"
          */
-        if ((v_displayStatus === "block")||(v_displayStatus === "none")){         
+        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
+            if (v_displayStatus === "none"){
+                this.manuel_dureeOff.value = "";
+                this.manuelDiffIn.checked = false;
+            }
             this.manuelDiv_dureeOff.style.display = v_displayStatus;
         }
     }
@@ -240,9 +253,17 @@ class C_Plug{
         /* permet d'fficher ou de masquer le DIV f_displayDiv_hFin
          * Les valeur attendue sont: "none" ou "block"
          */
-        if ((v_displayStatus === "block")||(v_displayStatus === "none")){         
+        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
+            if (v_displayStatus === "none"){
+                this.manuel_hFin.value = "";
+                this.manuelDiffAt.checked = false;
+            }
             this.manuelDiv_hFin.style.display = v_displayStatus;
         }
+    }
+
+    f_formSubmit(){
+
     }
 
 }

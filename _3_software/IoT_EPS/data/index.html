@@ -138,7 +138,7 @@
                                     <form 
                                         class="redPlug Manuel formRequest"
                                         method="post"
-                                        action="/plugonoff">
+                                        action="/">
                                         
                                         <input type="hidden" name="COLOR" value="redPlug">
                                         <input type="hidden" name="Mode" value="Manuel">
@@ -205,7 +205,7 @@
                                                     <input 
                                                         type="text" 
                                                         name="hFin" 
-                                                        value="hh:mm"
+                                                        placeholder="hh:mm"
                                                         class="redPlug Manuel hFin patern_heure">
                                                 </label>
                                             </div>
@@ -218,11 +218,12 @@
                                                     <input 
                                                         type="text" 
                                                         name="dureeOff" 
-                                                        value="mmm" 
+                                                        placeholder="mmm"
                                                         class="redPlug Manuel dureeOff patern_dureeNoSec"> 
                                                 </label>
                                             </div>
                                         </div>
+                                        <!-- Red Manuel Submit -->
                                         <div class="submitReset">
                                             <input 
                                                 type="submit"
@@ -522,13 +523,14 @@
 
         </footer>
 
-        <!-- script -->
+        <!-- script Framwork -->
         <script type="text/javascript" src="js/jquery-3.3.1.js"></script>
         <script type="text/javascript" src="js/popper.js"></script>
         <script type="text/javascript" src="js/bootstrap.js"></script>
         <script type="text/javascript" src="js/materialize.js"></script>
 
-        <!-- <script type="text/javascript" src="js/IoT_EPS2.js"></script> -->
+        <!-- script interne -->
+        <script type="text/javascript" src="js/myLog.js"></script>
         <script type="text/javascript" src="js/regExPatern.js"></script>
         <script type="text/javascript" src="js/plug.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
