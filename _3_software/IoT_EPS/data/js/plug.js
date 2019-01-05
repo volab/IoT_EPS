@@ -33,7 +33,7 @@ class C_Plug{
         /* Mode Minuterie */
             //Time Selector
         this.minuterieDiv               = null;
-        this.minuterieDureeOn           = null;
+        this.minuterie_dureeOn           = null;
             //Submit
         this.minuterieForm              = null;
         this.minuterieSubmit            = null;
@@ -136,7 +136,7 @@ class C_Plug{
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
         
         this.minuterieDiv = document.querySelector("." + v_colorPlug +  ".Minuterie.div_subSummary");
-        this.minuterieDureeOn = document.querySelector("." + v_colorPlug +  ".Minuterie.dureeOn");
+        this.minuterie_dureeOn = document.querySelector("." + v_colorPlug +  ".Minuterie.dureeOn");
         this.minuterieForm = document.querySelector("." + v_colorPlug +  ".Minuterie.formRequest");
         this.minuterieSubmit = document.querySelector("." + v_colorPlug +  ".Minuterie.submit");
     }
@@ -262,8 +262,14 @@ class C_Plug{
         }
     }
 
-    f_formSubmit(){
+    f_displayMinuterieDiv(v_displayStatus){
+        /* permet d'afficher ou de masquer le DIV Minuterie 
+         * Les valeur attendue sont: "none" ou "block"
+         */
 
+        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
+            this.f_displayNoneAll();
+            this.minuterieDiv.style.display=v_displayStatus;
+        }
     }
-
 }

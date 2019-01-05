@@ -18,6 +18,10 @@ label{
     color: inherit;
 }
 
+input::placeholder{
+    color: blue;
+}
+
 .bg-gris{
     background-color: #aeb6bf;
 }

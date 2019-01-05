@@ -66,3 +66,29 @@ red.manuelForm.addEventListener(
         red.manuelForm.reset();
     },
     false);
+
+
+/*
+ * Events Minuterie
+ */
+red.modeMinuterie.addEventListener(
+    "click", 
+    function(){
+        red.f_displayMinuterieDiv("block");
+    },
+    false);
+
+red.minuterie_dureeOn.addEventListener(
+    "input",
+    function(event){
+        regEx.f_callbackRegEx(event)},
+        false);
+
+red.minuterieForm.addEventListener(
+    "submit",
+    function(event){
+        log.f_formLog( red.f_getQueryTarget(event));
+        red.minuterieForm.submit();
+        red.minuterieForm.reset();
+    },
+    false);
