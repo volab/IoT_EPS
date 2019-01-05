@@ -1,0 +1,248 @@
+class C_Plug{
+    constructor(v_colorPlug){
+        this.v_colorPlug        = v_colorPlug;
+
+        /* définition des radio 'modeSelector' */
+        this.modeManuel                 = null;
+        this.modeMinuterie              = null;
+        this.modeCyclique               = null;
+        this.modeHedbomadaire           = null;
+        this.modeClone                  = null;
+
+        /* Mode Manuel */
+            //DIV
+        this.manuelDiv                  = null;
+            //sub div colone 1
+        this.manuelDiv_on_off           = null;
+        this.manuelON                   = null;
+        this.manuelOFF                  = null;
+            //sub div colone 2
+        this.manuelDivDiffTypeSelector  = null;
+        this.manuelDiffAt               = null;
+        this.manuelDiffIn               = null;
+            //sub div colone 3 (1/2)
+        this.manuelDiv_hFin             = null;
+        this.manuel_hFin                = null;
+            //sub div colone 3 (2/2)
+        this.manuelDiv_dureeOff         = null;
+        this.manuel_dureeOff            = null;
+            //submit
+        this.manuelForm                 = null;
+        this.manuelSubmit               = null;
+
+        /* Mode Minuterie */
+            //Time Selector
+        this.minuterieDiv               = null;
+        this.minuterieDureeOn           = null;
+            //Submit
+        this.minuterieForm              = null;
+        this.minuterieSubmit            = null;
+
+        /* Mode Cyclique */
+            //DIV
+        this.cycliqueDiv                = null;
+            //Time Selector
+        this.cycliqueDureeOn            = null;
+        this.cycliqueDureeOff           = null;
+            //Submit
+        this.cycliqueForm               = null;
+        this.cycliquePause              = null;
+        this.cycliqueSubmit             = null;
+
+        /* Mode Hebdomadaire */
+        this.hebdomadaireDiv            = null;
+            //QuerySelectorAll (Liste d'objet)
+        this.hebdomadaireQueryAll       = null;
+            //weekday
+        this.hebdmadaireAllDays         = null;
+        this.hebdomadaireLundi          = null;
+        this.hebdomadaireMardi          = null;
+        this.hebdomadaireMercredi       = null;
+        this.hebdomadaireJeudi          = null;
+        this.hebdomadaireVendredi       = null;
+        this.hebdomadaireSamedi         = null;
+        this.hebdomadaireDimanche       = null;
+            //Time selector
+        this.hebdomadaire_hDebut        = null;
+        this.hebdomadaire_hFin          = null;
+            //Submit
+        this.hebdomadaireForm           = null;
+        this.hebdomadairePause          = null;
+        this.hebdmadaireSubmit          = null;
+
+        /* Mode Clone */
+            //DIV
+        this.cloneDiv                   = null;
+            //Selector
+        this.cloneSelector              = null;
+            //Submit
+        this.cloneForm                  = null;      
+        this.cloneSubmit                = null;
+
+        //Init
+        this.f_plugInit()
+
+    }
+
+    f_plugInit(v_colorPlug){
+        /* Initialisation des différents éléments */
+        this.f_setQueryModeSelector(v_colorPlug);
+        this.f_setQueryManuel(v_colorPlug);
+        this.f_setQueryMinuterie(v_colorPlug);
+        this.f_setQueryCyclique(v_colorPlug);
+        this.f_setQueryHebdomadaire(v_colorPlug);
+        this.f_setQueryClone(v_colorPlug);
+
+        this.f_displayNoneAll();
+    }
+
+    f_setQueryModeSelector(v_colorPlug){
+        /* Permet d'initialiser les QuerySelector des boutons radio pour le 'modeSelector */
+        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+
+        this.modeManuel = document.querySelector("." + v_colorPlug + ".modeSelector.Manuel");
+        this.modeMinuterie = document.querySelector("." + v_colorPlug + ".modeSelector.Minuterie");
+        this.modeCyclique = document.querySelector("." + v_colorPlug + ".modeSelector.Cyclique");
+        this.modeHedbomadaire = document.querySelector("." + v_colorPlug + ".modeSelector.Hebdomadaire");
+        this.modeClone = document.querySelector("." + v_colorPlug + ".modeSelector.Clone");
+    }
+
+    f_setQueryManuel(v_colorPlug){
+        /* Permet d'initialiser les QerySelector pour le mode Manuel */
+        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+
+        this.manuelDiv = document.querySelector("." + v_colorPlug + ".Manuel.div_subSummary");
+            //sub div colone 1
+        this.manuelDiv_on_off  = document.querySelector("." + v_colorPlug + ".Manuel .on_off" );
+        this.manuelON  = document.querySelector("." + v_colorPlug + ".Manuel.ON" );
+        this.manuelOFF  = document.querySelector("." + v_colorPlug + ".Manuel.OFF" );
+            //sub div colone 2
+        this.manuelDivDiffTypeSelector  = document.querySelector("." + v_colorPlug + ".Manuel.div_diffTypeSelector" );
+        this.manuelDiffAt  = document.querySelector("." + v_colorPlug + ".Manuel.diffAt" );
+        this.manuelDiffIn  = document.querySelector("." + v_colorPlug + ".Manuel.diffIn" );
+            //sub div colone 3 (1/2)
+        this.manuelDiv_hFin  = document.querySelector("." + v_colorPlug + ".Manuel.div_hFin" );
+        this.manuel_hFin  = document.querySelector("." + v_colorPlug + ".Manuel.hFin" );
+            //sub div colone 3 (2/2)
+        this.manuelDiv_dureeOff  = document.querySelector("." + v_colorPlug + ".Manuel.div_dureeOff" );
+        this.manuel_dureeOff  = document.querySelector("." + v_colorPlug + ".Manuel.dureeOff" );
+        //Submit
+        this.manuelForm = document.querySelector("." + v_colorPlug + ".Manuel.formRequest");
+        this.manuelSubmit = document.querySelector("." + v_colorPlug + ".Manuel.submit" );
+    }
+
+    f_setQueryMinuterie(v_colorPlug){
+        /* Permet d'initialiser les QerySelector pour le mode Minuterie */
+        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+        
+        this.minuterieDiv = document.querySelector("." + v_colorPlug +  ".Minuterie.div_subSummary");
+        this.minuterieDureeOn = document.querySelector("." + v_colorPlug +  ".Minuterie.dureeOn");
+        this.minuterieForm = document.querySelector("." + v_colorPlug +  ".Minuterie.formRequest");
+        this.minuterieSubmit = document.querySelector("." + v_colorPlug +  ".Minuterie.submit");
+    }
+
+    f_setQueryCyclique(v_colorPlug){
+        /* Permet d'intialiser les QuerySelector pour le mode Cyclique */
+        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+
+        this.cycliqueDiv = document.querySelector("."+ v_colorPlug +".Cyclique.div_subSummary");
+        this.cycliqueDureeOn = document.querySelector("."+ v_colorPlug +".Cyclique.dureeOn");
+        this.cycliqueDureeOff = document.querySelector("."+ v_colorPlug +".Cyclique.dureeOff");
+        this.cycliquehDebut = document.querySelector("."+ v_colorPlug +".Cyclique.hDebut");
+        this.cycliqueForm = document.querySelector("."+ v_colorPlug +".Cyclique.formRequest");
+        this.cycliquePause = document.querySelector("."+ v_colorPlug +".Cyclique.pause");
+        this.cycliqueSubmit = document.querySelector("."+ v_colorPlug +".Cyclique.submit");
+    }
+    f_setQueryHebdomadaire(v_colorPlug){
+        /* Permet d'intialiser les QuerySelector pour le mode Hebdomadaire */
+        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+            //DIV
+        this.hebdomadaireDiv = document.querySelector("."+ v_colorPlug +".Hebdomadaire.div_subSummary");
+            //QuerySelectorAll (liste d'objet)
+        this.hebdomadaireQueryAll = document.querySelectorAll("."+ +".Hebdomadaire.daySelector")
+            //WeekDay
+        this.hebdmadaireAllDays = document.querySelector("."+ v_colorPlug +".Hebdomadaire.AllDays");
+        this.hebdomadaireLundi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Lundi");
+        this.hebdomadaireMardi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Mardi");
+        this.hebdomadaireMercredi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Mercredi");
+        this.hebdomadaireJeudi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Jeudi");
+        this.hebdomadaireVendredi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Vendredi");
+        this.hebdomadaireSamedi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Samedi");
+        this.hebdomadaireDimanche = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Dimanche");
+            //Time Selector
+        this.hebdomadaire_hDebut = document.querySelector("."+ v_colorPlug +".Hebdomadaire.hDebut");
+        this.hebdomadaire_hFin = document.querySelector("."+ v_colorPlug +".Hebdomadaire.hFin");
+            //submit
+        this.hebdomadaireForm = document.querySelector("."+ v_colorPlug +".Hebdomadaire.formRequest");
+        this.hebdomadairePause = document.querySelector("."+ v_colorPlug +".Hebdomadaire.pause");
+        this.hebdomadaireSubmit = document.querySelector("."+ v_colorPlug +".Hebdomadaire.submit");
+    }
+
+    f_setQueryClone(v_colorPlug){
+        /* Permet d'initialiser les QuerySelector pour le mode Clone */
+        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+
+        this.cloneDiv = document.querySelector("."+ v_colorPlug +".Clone.div_subSummary");
+        this.cloneSelector = document.querySelector("."+ v_colorPlug +".Clone.plugSelector");
+        this.hebdomadairePause = document.querySelector("."+ v_colorPlug +".Hebdomadaire.pause");
+        this.cloneSubmit = document.querySelector("."+ +".Clone.submitReset");
+    }
+
+    f_displayNoneAll(){
+        /* Permet de masquer tous les DIV à l'intérieur des FILDSET */
+        //mode Manuel
+        this.manuelDiv.style.display="none";
+        this.manuelDivDiffTypeSelector.style.display="none";
+        this.manuelDiv_hFin.style.display="none";
+        this.manuelDiv_dureeOff.style.display="none";
+        this.manuelDiffAt.checked = false;
+        this.manuelDiffIn.checked = false;
+        //masquage des DIV Minuterie
+        this.minuterieDiv.style.display="none";
+        //masquage des DIV Cyclique
+        this.cycliqueDiv.style.display="none";
+        //masquage des DIV Hebdomadaire
+        this.hebdomadaireDiv.style.display="none";
+        //masquage des DIV Clone
+        this.cloneDiv.style.display="none";
+    }
+
+    f_displayManuelDiv(v_displayStatus){
+        /* permet d'afficher ou de masquer le DIV Manuel 
+         * Les valeur attendue sont: "none" ou "block"
+         */
+
+        if ((v_displayStatus === "block")||(v_displayStatus === "none")){         
+            this.f_displayNoneAll();
+            this.manuelDiv.style.display=v_displayStatus;
+        }
+    }
+
+    f_displayTypeSelector(v_displayStatus){
+        /* permet d'fficher ou de masquer le DIV DiffTypeSelector
+         * Les valeur attendue sont: "none" ou "block"
+         */
+        if ((v_displayStatus === "block")||(v_displayStatus === "none")){         
+            this.manuelDivDiffTypeSelector.style.display = v_displayStatus;
+        }
+    }
+
+    f_displayDiv_dureeOff(v_displayStatus){
+        /* permet d'fficher ou de masquer le DIV dureeOff
+         * Les valeur attendue sont: "none" ou "block"
+         */
+        if ((v_displayStatus === "block")||(v_displayStatus === "none")){         
+            this.manuelDiv_dureeOff.style.display = v_displayStatus;
+        }
+    }
+
+    f_displayDiv_hFin(v_displayStatus){
+        /* permet d'fficher ou de masquer le DIV f_displayDiv_hFin
+         * Les valeur attendue sont: "none" ou "block"
+         */
+        if ((v_displayStatus === "block")||(v_displayStatus === "none")){         
+            this.manuelDiv_hFin.style.display = v_displayStatus;
+        }
+    }
+
+}

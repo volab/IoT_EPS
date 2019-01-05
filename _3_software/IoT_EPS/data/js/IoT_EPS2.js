@@ -1,256 +1,287 @@
-class Plug{
-    constructor(v_colorPlug){
-        this.v_colorPlug        = v_colorPlug;
+// class Plug{
+//     constructor(v_colorPlug){
+//         this.v_colorPlug        = v_colorPlug;
 
-        /* définition des radio 'modeSelector' */
-        this.modeManuel                 = null;
-        this.modeMinuterie              = null;
-        this.modeCyclique               = null;
-        this.modeHedbomadaire           = null;
-        this.modeClone                  = null;
+//         /* définition des radio 'modeSelector' */
+//         this.modeManuel                 = null;
+//         this.modeMinuterie              = null;
+//         this.modeCyclique               = null;
+//         this.modeHedbomadaire           = null;
+//         this.modeClone                  = null;
 
-        /* Mode Manuel */
-            //DIV
-        this.manuelDiv                  = null;
-            //sub div colone 1
-        this.manuelDiv_on_off           = null;
-        this.manuelON                   = null;
-        this.manuelOFF                  = null;
-            //sub div colone 2
-        this.manuelDivDiffTypeSelector  = null;
-        this.manuelDiffAt               = null;
-        this.manuelDiffIn               = null;
-            //sub div colone 3 (1/2)
-        this.manuelDiv_hFin             = null;
-        this.manuel_hFin                = null;
-            //sub div colone 3 (2/2)
-        this.manuelDiv_dureeOff         = null;
-        this.manuel_dureeOff            = null;
-            //submit
-        this.manuelForm                 = null;
-        this.manuelSubmit               = null;
+//         /* Mode Manuel */
+//             //DIV
+//         this.manuelDiv                  = null;
+//             //sub div colone 1
+//         this.manuelDiv_on_off           = null;
+//         this.manuelON                   = null;
+//         this.manuelOFF                  = null;
+//             //sub div colone 2
+//         this.manuelDivDiffTypeSelector  = null;
+//         this.manuelDiffAt               = null;
+//         this.manuelDiffIn               = null;
+//             //sub div colone 3 (1/2)
+//         this.manuelDiv_hFin             = null;
+//         this.manuel_hFin                = null;
+//             //sub div colone 3 (2/2)
+//         this.manuelDiv_dureeOff         = null;
+//         this.manuel_dureeOff            = null;
+//             //submit
+//         this.manuelForm                 = null;
+//         this.manuelSubmit               = null;
 
-        /* Mode Minuterie */
-            //Time Selector
-        this.minuterieDiv               = null;
-        this.minuterieDureeOn           = null;
-            //Submit
-        this.minuterieForm              = null;
-        this.minuterieSubmit            = null;
+//         /* Mode Minuterie */
+//             //Time Selector
+//         this.minuterieDiv               = null;
+//         this.minuterieDureeOn           = null;
+//             //Submit
+//         this.minuterieForm              = null;
+//         this.minuterieSubmit            = null;
 
-        /* Mode Cyclique */
-            //DIV
-        this.cycliqueDiv                = null;
-            //Time Selector
-        this.cycliqueDureeOn            = null;
-        this.cycliqueDureeOff           = null;
-            //Submit
-        this.cycliqueForm               = null;
-        this.cycliquePause              = null;
-        this.cycliqueSubmit             = null;
+//         /* Mode Cyclique */
+//             //DIV
+//         this.cycliqueDiv                = null;
+//             //Time Selector
+//         this.cycliqueDureeOn            = null;
+//         this.cycliqueDureeOff           = null;
+//             //Submit
+//         this.cycliqueForm               = null;
+//         this.cycliquePause              = null;
+//         this.cycliqueSubmit             = null;
 
-        /* Mode Hebdomadaire */
-        this.hebdomadaireDiv            = null;
-            //QuerySelectorAll (Liste d'objet)
-        this.hebdomadaireQueryAll       = null;
-            //weekday
-        this.hebdmadaireAllDays         = null;
-        this.hebdomadaireLundi          = null;
-        this.hebdomadaireMardi          = null;
-        this.hebdomadaireMercredi       = null;
-        this.hebdomadaireJeudi          = null;
-        this.hebdomadaireVendredi       = null;
-        this.hebdomadaireSamedi         = null;
-        this.hebdomadaireDimanche       = null;
-            //Time selector
-        this.hebdomadaire_hDebut        = null;
-        this.hebdomadaire_hFin          = null;
-            //Submit
-        this.hebdomadaireForm           = null;
-        this.hebdomadairePause          = null;
-        this.hebdmadaireSubmit          = null;
+//         /* Mode Hebdomadaire */
+//         this.hebdomadaireDiv            = null;
+//             //QuerySelectorAll (Liste d'objet)
+//         this.hebdomadaireQueryAll       = null;
+//             //weekday
+//         this.hebdmadaireAllDays         = null;
+//         this.hebdomadaireLundi          = null;
+//         this.hebdomadaireMardi          = null;
+//         this.hebdomadaireMercredi       = null;
+//         this.hebdomadaireJeudi          = null;
+//         this.hebdomadaireVendredi       = null;
+//         this.hebdomadaireSamedi         = null;
+//         this.hebdomadaireDimanche       = null;
+//             //Time selector
+//         this.hebdomadaire_hDebut        = null;
+//         this.hebdomadaire_hFin          = null;
+//             //Submit
+//         this.hebdomadaireForm           = null;
+//         this.hebdomadairePause          = null;
+//         this.hebdmadaireSubmit          = null;
 
-        /* Mode Clone */
-            //DIV
-        this.cloneDiv                   = null;
-            //Selector
-        this.cloneSelector              = null;
-            //Submit
-        this.cloneForm                  = null;      
-        this.cloneSubmit                = null;
+//         /* Mode Clone */
+//             //DIV
+//         this.cloneDiv                   = null;
+//             //Selector
+//         this.cloneSelector              = null;
+//             //Submit
+//         this.cloneForm                  = null;      
+//         this.cloneSubmit                = null;
 
-        // regEx
-        this.v_regExDuree       = /^(300|[0-2]{0,1}\d{1,2}|300:00|[0-2]{0,1}\d{0,2}:[0-5]\d{1})$/;
-            // /!\Attention/!\:
-            //      - les minutes sont comprises entre 0 et 300
-            //      - les secondes sont comprises entre 0 et 59
-            //          --> si les minutes sont égales à 300, les secondes doivent être égale à 0
-        this.v_regExDureeNoSec  = /^(300|[0-2]{0,1}\d{1,2})$/;
-            // /!\Attention/!\ 
-            // Le format de durée pour le mode Manuel et pour le mode Cyclique est sur 3 digit, pas de secondes
-            //      - les minutes sont comprises entre 0 et 300
+//         // regEx
+//         this.v_regExDuree       = /^(300|[0-2]{0,1}\d{1,2}|300:00|[0-2]{0,1}\d{0,2}:[0-5]\d{1})$/;
+//             // /!\Attention/!\:
+//             //      - les minutes sont comprises entre 0 et 300
+//             //      - les secondes sont comprises entre 0 et 59
+//             //          --> si les minutes sont égales à 300, les secondes doivent être égale à 0
+//         this.v_regExDureeNoSec  = /^(300|[0-2]{0,1}\d{1,2})$/;
+//             // /!\Attention/!\ 
+//             // Le format de durée pour le mode Manuel et pour le mode Cyclique est sur 3 digit, pas de secondes
+//             //      - les minutes sont comprises entre 0 et 300
 
-        this.v_regExHeure       = /^([0-2]{0,1}\d{1}:[0-5]\d{1})$/;
-            // /!\Attention/!\:
-            //      - Les heures sont comprises entre 0 et 23
-            //      - Les minutes sont comprises entre 0 et 59
+//         this.v_regExHeure       = /^([0-2]{0,1}\d{1}:[0-5]\d{1})$/;
+//             // /!\Attention/!\:
+//             //      - Les heures sont comprises entre 0 et 23
+//             //      - Les minutes sont comprises entre 0 et 59
 
-        this.f_plugInit()
+//         this.f_plugInit()
 
-    }
+//     }
 
-    f_plugInit(v_colorPlug){
-        /* Initialisation des différents éléments */
-        this.f_setQueryModeSelector(v_colorPlug);
-        this.f_setQueryManuel(v_colorPlug);
-        this.f_setQueryMinuterie(v_colorPlug);
-        this.f_setQueryCyclique(v_colorPlug);
-        this.f_setQueryHebdomadaire(v_colorPlug);
-        this.f_setQueryClone(v_colorPlug);
+//     f_plugInit(v_colorPlug){
+//         /* Initialisation des différents éléments */
+//         this.f_setQueryModeSelector(v_colorPlug);
+//         this.f_setQueryManuel(v_colorPlug);
+//         this.f_setQueryMinuterie(v_colorPlug);
+//         this.f_setQueryCyclique(v_colorPlug);
+//         this.f_setQueryHebdomadaire(v_colorPlug);
+//         this.f_setQueryClone(v_colorPlug);
 
-        this.f_displayNoneAll();
-    }
+//         this.f_displayNoneAll();
+//     }
 
-    f_setQueryModeSelector(v_colorPlug){
-        /* Permet d'initialiser les QuerySelector des boutons radio pour le 'modeSelector */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+//     f_setQueryModeSelector(v_colorPlug){
+//         /* Permet d'initialiser les QuerySelector des boutons radio pour le 'modeSelector */
+//         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
-        this.modeManuel = document.querySelector("." + v_colorPlug + ".modeSelector.Manuel");
-        this.modeMinuterie = document.querySelector("." + v_colorPlug + ".modeSelector.Minuterie");
-        this.modeCyclique = document.querySelector("." + v_colorPlug + ".modeSelector.Cyclique");
-        this.modeHedbomadaire = document.querySelector("." + v_colorPlug + ".modeSelector.Hebdomadaire");
-        this.modeClone = document.querySelector("." + v_colorPlug + ".modeSelector.Clone");
-    }
+//         this.modeManuel = document.querySelector("." + v_colorPlug + ".modeSelector.Manuel");
+//         this.modeMinuterie = document.querySelector("." + v_colorPlug + ".modeSelector.Minuterie");
+//         this.modeCyclique = document.querySelector("." + v_colorPlug + ".modeSelector.Cyclique");
+//         this.modeHedbomadaire = document.querySelector("." + v_colorPlug + ".modeSelector.Hebdomadaire");
+//         this.modeClone = document.querySelector("." + v_colorPlug + ".modeSelector.Clone");
+//     }
 
-    f_setQueryManuel(v_colorPlug){
-        /* Permet d'initialiser les QerySelector pour le mode Manuel */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+//     f_setQueryManuel(v_colorPlug){
+//         /* Permet d'initialiser les QerySelector pour le mode Manuel */
+//         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
-        this.manuelDiv = document.querySelector("." + v_colorPlug + ".Manuel.div_subSummary");
-            //sub div colone 1
-        this.manuelDiv_on_off  = document.querySelector("." + v_colorPlug + ".Manuel .on_off" );
-        this.manuelON  = document.querySelector("." + v_colorPlug + ".Manuel.ON" );
-        this.manuelOFF  = document.querySelector("." + v_colorPlug + ".Manuel.OFF" );
-            //sub div colone 2
-        this.manuelDivDiffTypeSelector  = document.querySelector("." + v_colorPlug + ".Manuel.div_diffTypeSelector" );
-        this.manuelDiffAt  = document.querySelector("." + v_colorPlug + ".Manuel.diffAt" );
-        this.manuelDiffIn  = document.querySelector("." + v_colorPlug + ".Manuel.diffIn" );
-            //sub div colone 3 (1/2)
-        this.manuelDiv_hFin  = document.querySelector("." + v_colorPlug + ".Manuel.div_hFin" );
-        this.manuel_hFin  = document.querySelector("." + v_colorPlug + ".Manuel.hFin" );
-            //sub div colone 3 (2/2)
-        this.manuelDiv_dureeOff  = document.querySelector("." + v_colorPlug + ".Manuel.div_dureeOff" );
-        this.manuel_dureeOff  = document.querySelector("." + v_colorPlug + ".Manuel.dureeOff.dureeNoSec" );
-        //Submit
-        this.manuelForm = document.querySelector("." + v_colorPlug + ".Manuel.formRequest");
-        this.manuelSubmit = document.querySelector("." + v_colorPlug + ".Manuel.submit" );
-    }
+//         this.manuelDiv = document.querySelector("." + v_colorPlug + ".Manuel.div_subSummary");
+//             //sub div colone 1
+//         this.manuelDiv_on_off  = document.querySelector("." + v_colorPlug + ".Manuel .on_off" );
+//         this.manuelON  = document.querySelector("." + v_colorPlug + ".Manuel.ON" );
+//         this.manuelOFF  = document.querySelector("." + v_colorPlug + ".Manuel.OFF" );
+//             //sub div colone 2
+//         this.manuelDivDiffTypeSelector  = document.querySelector("." + v_colorPlug + ".Manuel.div_diffTypeSelector" );
+//         this.manuelDiffAt  = document.querySelector("." + v_colorPlug + ".Manuel.diffAt" );
+//         this.manuelDiffIn  = document.querySelector("." + v_colorPlug + ".Manuel.diffIn" );
+//             //sub div colone 3 (1/2)
+//         this.manuelDiv_hFin  = document.querySelector("." + v_colorPlug + ".Manuel.div_hFin" );
+//         this.manuel_hFin  = document.querySelector("." + v_colorPlug + ".Manuel.hFin" );
+//             //sub div colone 3 (2/2)
+//         this.manuelDiv_dureeOff  = document.querySelector("." + v_colorPlug + ".Manuel.div_dureeOff" );
+//         this.manuel_dureeOff  = document.querySelector("." + v_colorPlug + ".Manuel.dureeOff.dureeNoSec" );
+//         //Submit
+//         this.manuelForm = document.querySelector("." + v_colorPlug + ".Manuel.formRequest");
+//         this.manuelSubmit = document.querySelector("." + v_colorPlug + ".Manuel.submit" );
+//     }
 
-    f_setQueryMinuterie(v_colorPlug){
-        /* Permet d'initialiser les QerySelector pour le mode Minuterie */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+//     f_setQueryMinuterie(v_colorPlug){
+//         /* Permet d'initialiser les QerySelector pour le mode Minuterie */
+//         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
         
-        this.minuterieDiv = document.querySelector("." + v_colorPlug +  ".Minuterie.div_subSummary");
-        this.minuterieDureeOn = document.querySelector("." + v_colorPlug +  ".Minuterie.dureeOn");
-        this.minuterieForm = document.querySelector("." + v_colorPlug +  ".Minuterie.formRequest");
-        this.minuterieSubmit = document.querySelector("." + v_colorPlug +  ".Minuterie.submit");
-    }
+//         this.minuterieDiv = document.querySelector("." + v_colorPlug +  ".Minuterie.div_subSummary");
+//         this.minuterieDureeOn = document.querySelector("." + v_colorPlug +  ".Minuterie.dureeOn");
+//         this.minuterieForm = document.querySelector("." + v_colorPlug +  ".Minuterie.formRequest");
+//         this.minuterieSubmit = document.querySelector("." + v_colorPlug +  ".Minuterie.submit");
+//     }
 
-    f_setQueryCyclique(v_colorPlug){
-        /* Permet d'intialiser les QuerySelector pour le mode Cyclique */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+//     f_setQueryCyclique(v_colorPlug){
+//         /* Permet d'intialiser les QuerySelector pour le mode Cyclique */
+//         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
-        this.cycliqueDiv = document.querySelector("."+ v_colorPlug +".Cyclique.div_subSummary");
-        this.cycliqueDureeOn = document.querySelector("."+ v_colorPlug +".Cyclique.dureeOn");
-        this.cycliqueDureeOff = document.querySelector("."+ v_colorPlug +".Cyclique.dureeOff");
-        this.cycliquehDebut = document.querySelector("."+ v_colorPlug +".Cyclique.hDebut");
-        this.cycliqueForm = document.querySelector("."+ v_colorPlug +".Cyclique.formRequest");
-        this.cycliquePause = document.querySelector("."+ v_colorPlug +".Cyclique.pause");
-        this.cycliqueSubmit = document.querySelector("."+ v_colorPlug +".Cyclique.submit");
-    }
-    f_setQueryHebdomadaire(v_colorPlug){
-        /* Permet d'intialiser les QuerySelector pour le mode Hebdomadaire */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
-            //DIV
-        this.hebdomadaireDiv = document.querySelector("."+ v_colorPlug +".Hebdomadaire.div_subSummary");
-            //QuerySelectorAll (liste d'objet)
-        this.hebdomadaireQueryAll = document.querySelectorAll("."+ +".Hebdomadaire.daySelector")
-            //WeekDay
-        this.hebdmadaireAllDays = document.querySelector("."+ v_colorPlug +".Hebdomadaire.AllDays");
-        this.hebdomadaireLundi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Lundi");
-        this.hebdomadaireMardi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Mardi");
-        this.hebdomadaireMercredi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Mercredi");
-        this.hebdomadaireJeudi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Jeudi");
-        this.hebdomadaireVendredi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Vendredi");
-        this.hebdomadaireSamedi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Samedi");
-        this.hebdomadaireDimanche = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Dimanche");
-            //Time Selector
-        this.hebdomadaire_hDebut = document.querySelector("."+ v_colorPlug +".Hebdomadaire.hDebut");
-        this.hebdomadaire_hFin = document.querySelector("."+ v_colorPlug +".Hebdomadaire.hFin");
-            //submit
-        this.hebdomadaireForm = document.querySelector("."+ v_colorPlug +".Hebdomadaire.formRequest");
-        this.hebdomadairePause = document.querySelector("."+ v_colorPlug +".Hebdomadaire.pause");
-        this.hebdomadaireSubmit = document.querySelector("."+ v_colorPlug +".Hebdomadaire.submit");
-    }
+//         this.cycliqueDiv = document.querySelector("."+ v_colorPlug +".Cyclique.div_subSummary");
+//         this.cycliqueDureeOn = document.querySelector("."+ v_colorPlug +".Cyclique.dureeOn");
+//         this.cycliqueDureeOff = document.querySelector("."+ v_colorPlug +".Cyclique.dureeOff");
+//         this.cycliquehDebut = document.querySelector("."+ v_colorPlug +".Cyclique.hDebut");
+//         this.cycliqueForm = document.querySelector("."+ v_colorPlug +".Cyclique.formRequest");
+//         this.cycliquePause = document.querySelector("."+ v_colorPlug +".Cyclique.pause");
+//         this.cycliqueSubmit = document.querySelector("."+ v_colorPlug +".Cyclique.submit");
+//     }
+//     f_setQueryHebdomadaire(v_colorPlug){
+//         /* Permet d'intialiser les QuerySelector pour le mode Hebdomadaire */
+//         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+//             //DIV
+//         this.hebdomadaireDiv = document.querySelector("."+ v_colorPlug +".Hebdomadaire.div_subSummary");
+//             //QuerySelectorAll (liste d'objet)
+//         this.hebdomadaireQueryAll = document.querySelectorAll("."+ +".Hebdomadaire.daySelector")
+//             //WeekDay
+//         this.hebdmadaireAllDays = document.querySelector("."+ v_colorPlug +".Hebdomadaire.AllDays");
+//         this.hebdomadaireLundi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Lundi");
+//         this.hebdomadaireMardi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Mardi");
+//         this.hebdomadaireMercredi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Mercredi");
+//         this.hebdomadaireJeudi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Jeudi");
+//         this.hebdomadaireVendredi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Vendredi");
+//         this.hebdomadaireSamedi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Samedi");
+//         this.hebdomadaireDimanche = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Dimanche");
+//             //Time Selector
+//         this.hebdomadaire_hDebut = document.querySelector("."+ v_colorPlug +".Hebdomadaire.hDebut");
+//         this.hebdomadaire_hFin = document.querySelector("."+ v_colorPlug +".Hebdomadaire.hFin");
+//             //submit
+//         this.hebdomadaireForm = document.querySelector("."+ v_colorPlug +".Hebdomadaire.formRequest");
+//         this.hebdomadairePause = document.querySelector("."+ v_colorPlug +".Hebdomadaire.pause");
+//         this.hebdomadaireSubmit = document.querySelector("."+ v_colorPlug +".Hebdomadaire.submit");
+//     }
 
-    f_setQueryClone(v_colorPlug){
-        /* Permet d'initialiser les QuerySelector pour le mode Clone */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+//     f_setQueryClone(v_colorPlug){
+//         /* Permet d'initialiser les QuerySelector pour le mode Clone */
+//         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
-        this.cloneDiv = document.querySelector("."+ v_colorPlug +".Clone.div_subSummary");
-        this.cloneSelector = document.querySelector("."+ v_colorPlug +".Clone.plugSelector");
-        this.hebdomadairePause = document.querySelector("."+ v_colorPlug +".Hebdomadaire.pause");
-        this.cloneSubmit = document.querySelector("."+ +".Clone.submitReset");
-    }
+//         this.cloneDiv = document.querySelector("."+ v_colorPlug +".Clone.div_subSummary");
+//         this.cloneSelector = document.querySelector("."+ v_colorPlug +".Clone.plugSelector");
+//         this.hebdomadairePause = document.querySelector("."+ v_colorPlug +".Hebdomadaire.pause");
+//         this.cloneSubmit = document.querySelector("."+ +".Clone.submitReset");
+//     }
 
-    f_displayNoneAll(){
-        /* Permet de masquer tous les DIV à l'intérieur des FILDSET */
-        //mode Manuel
-        this.manuelDiv.style.display="none";
-        this.manuelDivDiffTypeSelector.style.display="none";
-        this.manuelDiv_hFin.style.display="none";
-        this.manuelDiv_dureeOff.style.display="none";
-        this.manuelDiffAt.checked = false;
-        this.manuelDiffIn.checked = false;
-        //masquage des DIV Minuterie
-        this.minuterieDiv.style.display="none";
-        //masquage des DIV Cyclique
-        this.cycliqueDiv.style.display="none";
-        //masquage des DIV Hebdomadaire
-        this.hebdomadaireDiv.style.display="none";
-        //masquage des DIV Clone
-        this.cloneDiv.style.display="none";
+//     f_displayNoneAll(){
+//         /* Permet de masquer tous les DIV à l'intérieur des FILDSET */
+//         //mode Manuel
+//         this.manuelDiv.style.display="none";
+//         this.manuelDivDiffTypeSelector.style.display="none";
+//         this.manuelDiv_hFin.style.display="none";
+//         this.manuelDiv_dureeOff.style.display="none";
+//         this.manuelDiffAt.checked = false;
+//         this.manuelDiffIn.checked = false;
+//         //masquage des DIV Minuterie
+//         this.minuterieDiv.style.display="none";
+//         //masquage des DIV Cyclique
+//         this.cycliqueDiv.style.display="none";
+//         //masquage des DIV Hebdomadaire
+//         this.hebdomadaireDiv.style.display="none";
+//         //masquage des DIV Clone
+//         this.cloneDiv.style.display="none";
+//     }
 
-        console.log("displayNone");
-    }
-}
+//     f_callbackRegEx(event, v_timeTypeControl){
+//         v_timeTypeControl = v_timeTypeControl.toLowerCase();
+//         switch(v_timeTypeControl){
+//             case 'duree':
+//                 v_regEx = this.v_regExDuree;
+//                 break;
+//             case 'dureeNoSec':
+//                 v_regEx = this.v_regExDuree;
+//                 break;
+//             case 'heure':
+//                 v_regEx = this.v_regExDuree;
+//                 break;
+//         }
+
+//         // var manuelDiffAt = document.querySelector(".redPlug.Manuel.hFin");
+
+//         // function f_myCallback(event){
+//         //     let v_target = document.getElementsByClassName(event.target.classList.value);
+//         //     console.log(v_target);
+//         //     let v_regEx  = /^([0-2]{0,1}\d{1}:[0-5]{1}\d{1})$/;
+//         //     if (v_regEx.test(v_target[0].value)){
+//         //         v_target[0].style.border="2px solid green";
+//         //     } else {
+//         //         v_target[0].style.border="2px solid red";
+//         //         }
+//         //     }
+
+//         //manuelDiffAt.addEventListener("input", function(event){f_myCallback(event)}, false);
+
+
+//     }
+
+// }
 
 /* redPlug */
-const red = new Plug("redPlug");
-red.f_plugInit();
+// const red = new Plug("redPlug");
+// red.f_plugInit();
 
 //var l_plug = ["redPlug", "greenPlug", "bluePlug", "yellowPlug"];
 //var l_mode = ["Manuel", "Minuterie", "Cyclique", "Hebdomadaire", "Clone"];
 
-// moseSelector Manuel
-var modeManuel = document.querySelector(".redPlug.modeSelector.Manuel");
-var manuelDiv = document.querySelector(".redPlug.Manuel.div_subSummary");
-// Manuel on_off (1ere Colone)
-var manuelON = document.querySelector(".redPlug .Manuel .ON");
-var manuelOFF = document.querySelector(".redPlug .Manuel .OFF");
+// // moseSelector Manuel
+// var modeManuel = document.querySelector(".redPlug.modeSelector.Manuel");
+// var manuelDiv = document.querySelector(".redPlug.Manuel.div_subSummary");
+// // Manuel on_off (1ere Colone)
+// var manuelON = document.querySelector(".redPlug .Manuel .ON");
+// var manuelOFF = document.querySelector(".redPlug .Manuel .OFF");
 
-// Manuel (2eme Colone)
-var manuelDivDiffTypeSelector = document.querySelector(".redPlug .Manuel .div_diffTypeSelector" );
-var manuelDiffAt = document.querySelector(".redPlug .Manuel .diffAt" );
-var manuelDiffIn = document.querySelector(".redPlug .Manuel .diffIn" );
+// // Manuel (2eme Colone)
+// var manuelDivDiffTypeSelector = document.querySelector(".redPlug .Manuel .div_diffTypeSelector" );
+// var manuelDiffAt = document.querySelector(".redPlug .Manuel .diffAt" );
+// var manuelDiffIn = document.querySelector(".redPlug .Manuel .diffIn" );
 
 
-// Manuel (3eme Colone)
-var manuelDiv_hFin = document.querySelector(".redPlug .Manuel .div_hFin" );
-var manuelDiv_dureeOff = document.querySelector(".redPlug .Manuel .div_dureeOff" );
-// manuel Submit
-var manuelForm = document.querySelector(".redPlug.Manuel.formRequest");
-var manuelSubmit = document.querySelector(".redPlug .Manuel .submit" );
+// // Manuel (3eme Colone)
+// var manuelDiv_hFin = document.querySelector(".redPlug .Manuel .div_hFin" );
+// var manuelDiv_dureeOff = document.querySelector(".redPlug .Manuel .div_dureeOff" );
+// // manuel Submit
+// var manuelForm = document.querySelector(".redPlug.Manuel.formRequest");
+// var manuelSubmit = document.querySelector(".redPlug .Manuel .submit" );
 
 // Minuterie DIV
 var minuterieDiv = document.querySelector(".redPlug.Minuterie.div_subSummary");
@@ -265,23 +296,23 @@ var hebdomadaireDiv = document.querySelector(".redPlug.Hebdomadaire.div_subSumma
 var cloneDiv = document.querySelector(".redPlug.Clone.div_subSummary");
 
 /* Fonction de masquage de tous les éléments */
-function f_displayNoneAll(){
-    //mode Manuel
-    manuelDiv.style.display="none";
-    manuelDivDiffTypeSelector.style.display="none";
-    manuelDiv_hFin.style.display="none";
-    manuelDiv_dureeOff.style.display="none";
-    manuelDiffAt.checked = false;
-    manuelDiffIn.checked = false;
-    //masquage des DIV Minuterie
-    minuterieDiv.style.display="none";
-    //masquage des DIV Cyclique
-    cycliqueDiv.style.display="none";
-    //masquage des DIV Hebdomadaire
-    hebdomadaireDiv.style.display="none";
-    //masquage des DIV Clone
-    cloneDiv.style.display="none";
-}
+// function f_displayNoneAll(){
+//     //mode Manuel
+//     manuelDiv.style.display="none";
+//     manuelDivDiffTypeSelector.style.display="none";
+//     manuelDiv_hFin.style.display="none";
+//     manuelDiv_dureeOff.style.display="none";
+//     manuelDiffAt.checked = false;
+//     manuelDiffIn.checked = false;
+//     //masquage des DIV Minuterie
+//     minuterieDiv.style.display="none";
+//     //masquage des DIV Cyclique
+//     cycliqueDiv.style.display="none";
+//     //masquage des DIV Hebdomadaire
+//     hebdomadaireDiv.style.display="none";
+//     //masquage des DIV Clone
+//     cloneDiv.style.display="none";
+// }
 
 //f_displayNoneAll();
 
@@ -289,39 +320,39 @@ function f_displayNoneAll(){
 * Mode Manuel : onclick *
 ************************/
 //var manuelDiv = document.querySelector(".redPlug .Manuel .div_subSummary");
-modeManuel.onclick = function (){
-    f_displayNoneAll();
-    manuelDiv.style.display="block";
-    }
+// modeManuel.onclick = function (){
+//     f_displayNoneAll();
+//     manuelDiv.style.display="block";
+//     }
 
-manuelON.onclick = function(){
-    manuelDivDiffTypeSelector.style.display = "block"; 
-    console.log("marche");
-    }
+// manuelON.onclick = function(){
+//     manuelDivDiffTypeSelector.style.display = "block"; 
+//     console.log("marche");
+//     }
 
-manuelOFF.onclick = function(){
-    manuelDivDiffTypeSelector.style.display = "none";
-    manuelDiv_dureeOff.style.display = "none";
-    manuelDiv_hFin.style.display = "none";
-    console.log("Arrêt");
-    }
+// manuelOFF.onclick = function(){
+//     manuelDivDiffTypeSelector.style.display = "none";
+//     manuelDiv_dureeOff.style.display = "none";
+//     manuelDiv_hFin.style.display = "none";
+//     console.log("Arrêt");
+//     }
 
-manuelDiffAt.onclick = function(){
-    manuelDiv_hFin.style.display = "block";
-    manuelDiv_dureeOff.style.display = "none";
-    manuelDiffIn.checked = false;
-}
+// manuelDiffAt.onclick = function(){
+//     manuelDiv_hFin.style.display = "block";
+//     manuelDiv_dureeOff.style.display = "none";
+//     manuelDiffIn.checked = false;
+// }
 
-manuelDiffIn.onclick = function(){
-    manuelDiv_dureeOff.style.display = "block";
-    manuelDiv_hFin.style.display = "none";
-    manuelDiffAt.checked = false;
-}
+// manuelDiffIn.onclick = function(){
+//     manuelDiv_dureeOff.style.display = "block";
+//     manuelDiv_hFin.style.display = "none";
+//     manuelDiffAt.checked = false;
+// }
 
-manuelSubmit.onclick = function(){
-    manuelForm.submit();
-    manuelForm.reset();
-    }
+// manuelSubmit.onclick = function(){
+//     manuelForm.submit();
+//     manuelForm.reset();
+//     }
 
 /***************** 
 * Mode Minuterie *
