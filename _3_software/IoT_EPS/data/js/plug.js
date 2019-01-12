@@ -1,6 +1,18 @@
+/**
+ * Class permmetant de définir l'objet Plug (Prise)
+ * Chaque prise représente une nouvelle instance de cette class.
+ *
+ * @class C_Plug
+ * @param {string} v_colorPlug - Défini la couleur de la prise. Les paramètres attendu sont :
+ *  - redPlug
+ *  - greenPlug
+ *  - bluePlug
+ *  - YellowPlug
+ */
 class C_Plug{
     constructor(v_colorPlug){
         this.v_colorPlug                = v_colorPlug;
+        this.targetClassList            = null;
 
         /* définition des radio 'modeSelector' */
         this.modeManuel                 = null;
@@ -42,8 +54,9 @@ class C_Plug{
             //DIV
         this.cycliqueDiv                = null;
             //Time Selector
-        this.cycliqueDureeOn            = null;
-        this.cycliqueDureeOff           = null;
+        this.cyclique_dureeOn           = null;
+        this.cyclique_dureeOff          = null;
+        this.cyclique_hDebut            = null;
             //Submit
         this.cycliqueForm               = null;
         this.cycliquePause              = null;
@@ -102,7 +115,8 @@ class C_Plug{
 
         this.modeManuel = document.querySelector("." + v_colorPlug + ".modeSelector.Manuel");
         this.modeMinuterie = document.querySelector("." + v_colorPlug + ".modeSelector.Minuterie");
-        this.modeCyclique = document.querySelector("." + v_colorPlug + ".modeSelector.Cyclique");
+        // this.modeCyclique = document.querySelector("." + v_colorPlug + ".modeSelector.Cyclique");
+        this.modeCyclique = $(`.${v_colorPlug}.modeSelector.Cyclique`);
         this.modeHedbomadaire = document.querySelector("." + v_colorPlug + ".modeSelector.Hebdomadaire");
         this.modeClone = document.querySelector("." + v_colorPlug + ".modeSelector.Clone");
     }
@@ -145,13 +159,21 @@ class C_Plug{
         /* Permet d'intialiser les QuerySelector pour le mode Cyclique */
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
-        this.cycliqueDiv = document.querySelector("."+ v_colorPlug +".Cyclique.div_subSummary");
-        this.cycliqueDureeOn = document.querySelector("."+ v_colorPlug +".Cyclique.dureeOn");
-        this.cycliqueDureeOff = document.querySelector("."+ v_colorPlug +".Cyclique.dureeOff");
-        this.cycliquehDebut = document.querySelector("."+ v_colorPlug +".Cyclique.hDebut");
-        this.cycliqueForm = document.querySelector("."+ v_colorPlug +".Cyclique.formRequest");
-        this.cycliquePause = document.querySelector("."+ v_colorPlug +".Cyclique.pause");
-        this.cycliqueSubmit = document.querySelector("."+ v_colorPlug +".Cyclique.submit");
+        // this.cycliqueDiv = document.querySelector("."+ v_colorPlug +".Cyclique.div_subSummary");
+        // this.cyclique_dureeOn = document.querySelector("."+ v_colorPlug +".Cyclique.dureeOn");
+        // this.cyclique_dureeOff = document.querySelector("."+ v_colorPlug +".Cyclique.dureeOff");
+        // this.cyclique_hDebut = document.querySelector("."+ v_colorPlug +".Cyclique.hDebut");
+        // this.cycliqueForm = document.querySelector("."+ v_colorPlug +".Cyclique.formRequest");
+        // this.cycliquePause = document.querySelector("."+ v_colorPlug +".Cyclique.pause");
+        // this.cycliqueSubmit = document.querySelector("."+ v_colorPlug +".Cyclique.submit");
+        this.cycliqueDiv = $(`.${v_colorPlug}.Cyclique.div_subSummary`);
+        this.cyclique_dureeOn = $(`.${v_colorPlug}.Cyclique.dureeOn`);
+        this.cyclique_dureeOff = $(`.${v_colorPlug}.Cyclique.dureeOff`);
+        this.cyclique_hDebut = $(`.${v_colorPlug}.Cyclique.hDebut`);
+        this.cycliqueForm = $(`.${v_colorPlug}.Cyclique.formRequest`);
+        this.cycliquePause = $(`.${v_colorPlug}.Cyclique.pause`);
+        this.cycliqueSubmit = $(`.${v_colorPlug}.Cyclique.submit`);
+
     }
     f_setQueryHebdomadaire(v_colorPlug){
         /* Permet d'intialiser les QuerySelector pour le mode Hebdomadaire */
@@ -190,6 +212,7 @@ class C_Plug{
 
     f_getQueryTarget(event){
         let v_targetClassList = (event.target.classList);
+        this.targetClassList = (event.target.classList);
         let v_tmp = "";
         for (let i=0; i<v_targetClassList.length; i++){
             v_tmp += "." + v_targetClassList[i];
@@ -209,7 +232,8 @@ class C_Plug{
         //masquage des DIV Minuterie
         this.minuterieDiv.style.display="none";
         //masquage des DIV Cyclique
-        this.cycliqueDiv.style.display="none";
+        // this.cycliqueDiv.style.display="none";
+        this.cycliqueDiv.css("display", "none");
         //masquage des DIV Hebdomadaire
         this.hebdomadaireDiv.style.display="none";
         //masquage des DIV Clone
@@ -271,5 +295,33 @@ class C_Plug{
             this.f_displayNoneAll();
             this.minuterieDiv.style.display=v_displayStatus;
         }
+    }
+
+
+    f_displayCycliqueDiv(v_displayStatus){
+        /* permet d'afficher ou de masquer le DIV Minuterie 
+         * Les valeur attendue sont: "none" ou "block"
+         */
+
+        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
+            this.f_displayNoneAll();
+            this.cycliqueDiv.css("display", v_displayStatus);
+        }
+    }
+    
+    f_cycliquePause(){
+        console.log("ici");
+        if (this.cycliquePause.checked){
+            this.cyclique_dureeOn.disabled = true;
+            this.cyclique_dureeOff.disabled = true;
+            this.cyclique_hDebut.disabled = true;
+            console.log("Pause");
+            this.cycliqueForm.submit()
+          } else {
+            this.cyclique_dureeOn.disabled = false;
+            this.cyclique_dureeOff.disabled = false;
+            this.cyclique_hDebut.disabled = false;
+            console.log("Travail");
+          } 
     }
 }

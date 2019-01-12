@@ -92,3 +92,56 @@ red.minuterieForm.addEventListener(
         red.minuterieForm.reset();
     },
     false);
+
+/*
+ * Events Cyclique
+ */
+red.modeCyclique.on(
+    "click", 
+    function(){
+        red.f_displayCycliqueDiv("block");
+    });
+
+red.cyclique_dureeOn.on(
+    "input",
+    function(event){
+        regEx.f_callbackRegEx(event);
+    });
+
+red.cyclique_dureeOff.on(
+    "input",
+    function(event){
+        regEx.f_callbackRegEx(event);
+    });
+        
+red.cyclique_hDebut.on(
+    "input",
+    function(event){
+        regEx.f_callbackRegEx(event);
+    });
+
+red.cycliquePause.on(
+    "click",
+    (event)=>{
+        let inputJQSelector = $("input.redPlug.Cyclique").not(".pause");
+        if (red.cycliquePause[0].checked){
+            inputJQSelector.each((i)=>{
+                inputJQSelector[i].disabled=true;
+            });
+        } else {
+            inputJQSelector.each((i)=>{
+                inputJQSelector[i].disabled=false;
+            });
+        }
+        red.cycliqueForm.submit();
+    }
+);    
+
+red.cycliqueForm.on(
+    "submit",
+    (event)=>{
+        event.preventDefault();
+        $(this).submit();
+        log.f_formLog( red.f_getQueryTarget(event));
+    }
+);

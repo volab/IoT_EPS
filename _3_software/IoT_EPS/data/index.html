@@ -228,7 +228,9 @@
                                             <input 
                                                 type="submit"
                                                 class="redPlug Manuel submit"/>
-                                            <input type="reset"/> 
+                                            <input
+                                                type="reset"
+                                                class="redPlug Manuel reset" /> 
                                         </div>
                                     </form>
                                 </div>
@@ -244,6 +246,7 @@
                                         <input type="hidden" name="COLOR" value="redPlug">
                                         <input type="hidden" name="Mode" value="Minuterie">
                                         <div class="row">
+                                            <!-- Minuterie dureeOn -->
                                             <div class="redPlug Minuterie col-md-4">
                                                 <label>
                                                     <span> Réglage de la minuterie (Durée en minute, 300 minutes Max -- mmm:ss ou mmm):</br></span>
@@ -256,11 +259,14 @@
                                                 </label>
                                             </div>
                                         </div>
+                                        <!-- Minuterie submit -->
                                         <div class="submitReset">
                                             <input 
                                                 type="submit"
                                                 class="redPlug Minuterie submit"/>
-                                            <input type="reset"/> 
+                                            <input
+                                                type="reset" 
+                                                class="redPlug Minuterie reset" /> 
                                         </div>
                                     </form>
                                 </div>
@@ -269,47 +275,52 @@
                                 <div class="redPlug Cyclique div_subSummary">
                                     <h5>Mode Cyclique</h5>
                                     <form
+                                        id="myForm"
                                         class="redPlug Cyclique formRequest"
                                         method="post"
-                                        action="/plugonoff">
+                                        action="/">
 
                                         <input type="hidden" name="COLOR" value="redPlug">
                                         <input type="hidden" name="Mode" value="Cyclique">
                                         <p>Réglage de la période de fonctionnement et de repos (en minute):</p>
                                         <div class="row">
+                                            <!-- Cyclique dureeOn, 1ere colone -->
                                             <div class="redPlug Cyclique div_dureeOn col-md-4" >
                                                 <label>
-                                                    <span>Durée ON</br>(Durée en minute, 300 minutes Max) :</br></label>
+                                                    <span>Durée ON</br>(Durée en minute, 300 minutes Max) :</br></span>
                                                     <input 
                                                         type="text"
                                                         name="dureeOn"
-                                                        value="mmm" 
+                                                        placeholder="mmm" 
                                                         class="redPlug Cyclique dureeOn patern_dureeNoSec" 
                                                         required>
                                                 </label>
                                             </div>
+                                            <!-- Cyclique dureeOff, 2ème colone -->
                                             <div class="redPlug Cyclique div_dureeOff col-md-4" >
                                                 <label>
                                                     <span>Durée OFF</br>(Durée en minute, 300 minutes Max) :</br></span>
                                                     <input 
                                                         type="text"
                                                         name="dureeOff"
-                                                        value="mmm"
+                                                        placeholder="mmm"
                                                         class="redPlug Cyclique dureeOff patern_dureeNoSec"
                                                         required>
                                                 </label>
                                             </div>
+                                            <!-- Cyclique hDebut, 3ème colone -->
                                             <div class="redPlug Cyclique div_hDebut col-md-4">
                                                 <label>
                                                     <span>Heure de début</br>(facultatif)</br></span>
                                                     <input 
                                                         type="text" 
                                                         name="hDebut" 
-                                                        value="hh:mm" 
+                                                        placeholder="hh:mm" 
                                                         class="redPlug Cyclique hDebut patern_heure">
                                             </label>
                                             </div>
                                         </div>
+                                        <!-- Cyclique submit -->
                                         <div class="redPlug Cyclique submitReset row">
                                             <div class="switch col-md-4">
                                                 <p>Arrêt provisoir</p>
@@ -329,7 +340,9 @@
                                                 <input 
                                                     type="submit" 
                                                     class="redPlug Cyclique submit"/>
-                                                <input type="reset"/> 
+                                                <input
+                                                    type="reset"
+                                                    class="redPlug Cyclique reset"/> 
                                             </div>
                                         </div>
                                     </form>
@@ -446,7 +459,7 @@
                                         </div>
                                         <div class="redPlug Hebdomadaire submitReset row">
                                             <div class="switch col-md-4">
-                                                <p>Arrêt provisoir</p>
+                                                <p>Arrêt provisoire</p>
                                                 <label>
                                                     Off
                                                     <input 
@@ -463,7 +476,9 @@
                                                 <input 
                                                     type="submit" 
                                                     class="redPlug Hebdomadaire submit"/>
-                                                <input type="reset"/> 
+                                                <input
+                                                    type="reset"
+                                                    class="redPlug Hebdomadaire reset"/> 
                                             </div>
                                         </div>
 
@@ -499,7 +514,7 @@
                                             <input
                                                 type="submit"
                                                 class="redPlug Clone submit"/>
-                                            <input type="reset"/> 
+                                            <!-- <input type="reset"/>  -->
                                         </div>
                                     </form>
                                 </div>
