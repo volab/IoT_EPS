@@ -16,9 +16,26 @@ Comportement
 Comportement par défaut
 =======================
 
+Deux type de présentation par défaut sont envisager :
+
+    * Résumer par prise
+
+    * Résumer globale
+
+Résumer par prise
+-----------------
+
 Lors de l'accès à la page, en cas de rafraichissement ou lors d'une action sur un bouton 'Envoyer',
 chaque prise présente un résumé de son état et du mode dans lequel elle est configurée. Ces
 informations sont directement lue depuis le fichiers 'config3.json'.
+
+Résumer global
+--------------
+
+Lors de l'accès à la page, en cas de rafraichissement ou lors d'une action sur un bouton 'Envoyer',
+seul un résumer global de l'état et de la configuration de chaque prise est présenté à 
+l'utilisateur. Les éléments "PRISE" seront masqués. Pour accéder à la configuration d'une prise, il 
+faut cliquer sur nom dans la barre (ou le menu) de navigation.
 
 Comportement responcive
 =======================
@@ -48,6 +65,57 @@ Sélection d'un mode
 ===================
 
 La sélection des mode se fait au niveau de chaque prise par un menu spécifique
+
+####
+
+---------------------------------------------
+Action et validation des formulaires par mode
+---------------------------------------------
+
+Mode Manuel
+===========
+
+[TODO] A renseigner [TODO]
+Mode Minuterie
+==============
+
+[TODO] A renseigner [TODO]
+
+Mode Cyclique
+=============
+
+[TODO] A renseigner [TODO]
+
+Mode Hebdomadaire
+=================
+
+    * La case à cocher "Sélectionner tous les jours" permet de sélectionner tous les jours d'un
+      seule coup. Cet élément n'est pas obligatoire.
+
+    * Les cases à cocher "jour de la semaine" servent à définir les jours sur lesquels appliquer la
+      plage de fonctionnement. Au moins un élément doit être sélectionner.
+
+    * Le champ de saisie "Heure de début" permet de définir l'heure à partir de laquelle la prise 
+      s'allume. Cet élément est obligatoire.
+
+    * Le champ de saisie "Heure de fin" permet de définir à partir de laquelle la prise s'éteint.
+      Cet élément est obligatoire.
+
+    * Le sélecteur "Arrêt provisoire" Arrête la prise mais ne change pas la configuration de la
+      prise. Lorsque cet élément est sélectionné, tous les éléments associés au mode en cours sont
+      désactiver (grisés et inactif).
+
+        - Si le sélecteur est actif, la prise est OFF
+
+        - Si le sélecteur est inactif, la prise est ON
+
+        - Si le sélecteur est actif et sans action de la part de l'utilisateur, la prise reste OFF
+          jusqu'au prochain cycle de fonctionnement.
+
+Mode Clone
+==========
+
+[TODO] A renseigner [TODO]
 
 ####
 

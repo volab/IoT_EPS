@@ -145,3 +145,51 @@ red.cycliqueForm.on(
         log.f_formLog( red.f_getQueryTarget(event));
     }
 );
+
+/* 
+ * event Hebdomadaire
+ */
+
+red.modeHedbomadaire.on(
+    "click", 
+    function(){
+        red.f_displayHebdomadaireDiv("block");
+    });
+
+red.hebdmadaireAllDays.on(
+    "click",
+    (event)=>{
+        let inputJQSelector = $("input.redPlug.daySelector").not(".AllDays");
+        if (red.hebdmadaireAllDays[0].checked){
+            inputJQSelector.each((i)=>{
+                inputJQSelector[i].checked=true;
+            });
+        }
+    }
+);
+
+// red.hebdomadairePause.on(
+//     "click",
+//     (event)=>{
+//         let inputJQSelector = $("input.redPlug.Hebdomadaire").not(".pause");
+//         if (red.hebdomadairePause[0].checked){
+//             inputJQSelector.each((i)=>{
+//                 inputJQSelector[i].disabled=true;
+//             });
+//         } else {
+//             inputJQSelector.each((i)=>{
+//                 inputJQSelector[i].disabled=false;
+//             });
+//         }
+//         red.hebdomadaireForm.submit();
+//     }
+// );    
+
+// red.hebdomadaireForm.on(
+//     "submit",
+//     (event)=>{
+//         event.preventDefault();
+//         $(this).submit();
+//         log.f_formLog( red.f_getQueryTarget(event));
+//     }
+// );

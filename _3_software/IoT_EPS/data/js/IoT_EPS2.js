@@ -358,46 +358,46 @@ var cloneDiv = document.querySelector(".redPlug.Clone.div_subSummary");
 * Mode Minuterie *
 *****************/
 //var v_redMinuterie = document.getElementById("rMinuterie");
-var v_redMinuterie = document.querySelector(".redPlug .modeSelector .Minuterie");
+// var v_redMinuterie = document.querySelector(".redPlug .modeSelector .Minuterie");
 
-v_redMinuterie.onclick = function(){
-    f_displayNoneAll();
-    document.querySelector(".redPlug .Minuterie .submit").disabled = true;
-    document.getElementsByClassName("redPlug Minuterie div_subSummary ")[0].style.display="block";
-}
+// v_redMinuterie.onclick = function(){
+//     f_displayNoneAll();
+//     document.querySelector(".redPlug .Minuterie .submit").disabled = true;
+//     document.getElementsByClassName("redPlug Minuterie div_subSummary ")[0].style.display="block";
+// }
 
-// Code de validation du format pour les durées (pour le mode Minuterie)
-var v_regExDuree = /^(300|[0-2]{0,1}\d{1,2}|300:00|[0-2]{0,1}\d{0,2}:[0-5]\d{1})$/;
-    // /!\Attention/!\:
-    //      - les minutes sont comprises entre 0 et 300
-    //      - les secondes sont comprises entre 0 et 59
-    //          --> si les minutes sont égales à 300, les secondes doivent être égale à 0
+// // Code de validation du format pour les durées (pour le mode Minuterie)
+// var v_regExDuree = /^(300|[0-2]{0,1}\d{1,2}|300:00|[0-2]{0,1}\d{0,2}:[0-5]\d{1})$/;
+//     // /!\Attention/!\:
+//     //      - les minutes sont comprises entre 0 et 300
+//     //      - les secondes sont comprises entre 0 et 59
+//     //          --> si les minutes sont égales à 300, les secondes doivent être égale à 0
 
-var v_duree = document.querySelector(".redPlug .Minuterie .dureeOn"); 
-    // attention il sagit d'un Objet, pas d'un tableau.
-    // On ne peut donc pas faire de "foreach" dessus, mais seulement un "for"
+// var v_duree = document.querySelector(".redPlug .Minuterie .dureeOn"); 
+//     // attention il sagit d'un Objet, pas d'un tableau.
+//     // On ne peut donc pas faire de "foreach" dessus, mais seulement un "for"
 
-v_duree.addEventListener("input", function(event){
-    if (v_regExDuree.test(v_duree.value)){
-        v_duree.style.border="2px solid green";
-        document.querySelector(".redPlug .Minuterie .submit").disabled = false;
-    } else {
-        v_duree.style.border="2px solid red";
-        document.querySelector(".redPlug .Minuterie .submit").disabled = true;
-            }
-}, false);
+// v_duree.addEventListener("input", function(event){
+//     if (v_regExDuree.test(v_duree.value)){
+//         v_duree.style.border="2px solid green";
+//         document.querySelector(".redPlug .Minuterie .submit").disabled = false;
+//     } else {
+//         v_duree.style.border="2px solid red";
+//         document.querySelector(".redPlug .Minuterie .submit").disabled = true;
+//             }
+// }, false);
 
 
 /****************
 * Mode Cyclique *
 ****************/
 //var v_redCyclique = document.getElementById("rCyclique");
-var v_redCyclique = document.querySelector(".redPlug .modeSelector .Cyclique");
+// var v_redCyclique = document.querySelector(".redPlug .modeSelector .Cyclique");
 
-v_redCyclique.onclick = function(){
-    f_displayNoneAll();
-    document.getElementsByClassName("redPlug div_subSummary Cyclique")[0].style.display="block";
-}
+// v_redCyclique.onclick = function(){
+//     f_displayNoneAll();
+//     document.getElementsByClassName("redPlug div_subSummary Cyclique")[0].style.display="block";
+// }
 
 
 /********************
