@@ -68,6 +68,7 @@ class C_Plug{
         this.hebdomadaireQueryAll       = null;
             //weekday
         this.hebdmadaireAllDays         = null;
+        this.hebdomadaireWeekDay        = null;
         this.hebdomadaireLundi          = null;
         this.hebdomadaireMardi          = null;
         this.hebdomadaireMercredi       = null;
@@ -116,7 +117,6 @@ class C_Plug{
         this.modeManuel = document.querySelector("." + v_colorPlug + ".modeSelector.Manuel");
         this.modeMinuterie = document.querySelector("." + v_colorPlug + ".modeSelector.Minuterie");
         this.modeCyclique = $(`.${v_colorPlug}.modeSelector.Cyclique`);
-        // this.modeHedbomadaire = document.querySelector("." + v_colorPlug + ".modeSelector.Hebdomadaire");
         this.modeHedbomadaire = $(`.${v_colorPlug}.modeSelector.Hebdomadaire`);
         this.modeClone = document.querySelector("." + v_colorPlug + ".modeSelector.Clone");
     }
@@ -172,40 +172,24 @@ class C_Plug{
         /* Permet d'intialiser les QuerySelector pour le mode Hebdomadaire */
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
             //DIV
-        // this.hebdomadaireDiv = document.querySelector("."+ v_colorPlug +".Hebdomadaire.div_subSummary");
         this.hebdomadaireDiv = $(`.${v_colorPlug}.Hebdomadaire.div_subSummary`);
             //QuerySelectorAll (liste d'objet)
-        // this.hebdomadaireQueryAll = document.querySelectorAll("."+v_colorPlug +".Hebdomadaire.daySelector")
         this.hebdomadaireQueryAll = $(`.${v_colorPlug}.Hebdomadaire.daySelector`);
             //WeekDay
-        // this.hebdmadaireAllDays = document.querySelector("."+ v_colorPlug +".Hebdomadaire.AllDays");
-        // this.hebdomadaireLundi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Lundi");
-        // this.hebdomadaireMardi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Mardi");
-        // this.hebdomadaireMercredi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Mercredi");
-        // this.hebdomadaireJeudi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Jeudi");
-        // this.hebdomadaireVendredi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Vendredi");
-        // this.hebdomadaireSamedi = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Samedi");
-        // this.hebdomadaireDimanche = document.querySelector("."+ v_colorPlug +".Hebdomadaire.Dimanche");
-
-        this.hebdmadaireAllDays = $(`.${v_colorPlug}.Hebdomadaire.AllDays`);
-        this.hebdomadaireLundi = $(`.${v_colorPlug}.Hebdomadaire.Lundi`);
-        this.hebdomadaireMardi = $(`.${v_colorPlug}.Hebdomadaire.Mardi`);
-        this.hebdomadaireMercredi = $(`.${v_colorPlug}.Hebdomadaire.Mercredi`);
-        this.hebdomadaireJeudi = $(`.${v_colorPlug}.Hebdomadaire.Jeudi`);
-        this.hebdomadaireVendredi = $(`.${v_colorPlug}.Hebdomadaire.Vendredi`);
-        this.hebdomadaireSamedi = $(`.${v_colorPlug}.Hebdomadaire.Samedi`);
-        this.hebdomadaireDimanche = $(`.${v_colorPlug}.Hebdomadaire.Dimanche`);
+        this.hebdmadaireAllDays     = $(`.${v_colorPlug}.Hebdomadaire.AllDays`);
+        this.hebdomadaireWeekDay    = $(`input:checkbox.${v_colorPlug}.Hebdomadaire.daySelector`).not(".AllDays");
+        this.hebdomadaireLundi      = $(`.${v_colorPlug}.Hebdomadaire.Lundi`);
+        this.hebdomadaireMardi      = $(`.${v_colorPlug}.Hebdomadaire.Mardi`);
+        this.hebdomadaireMercredi   = $(`.${v_colorPlug}.Hebdomadaire.Mercredi`);
+        this.hebdomadaireJeudi      = $(`.${v_colorPlug}.Hebdomadaire.Jeudi`);
+        this.hebdomadaireVendredi   = $(`.${v_colorPlug}.Hebdomadaire.Vendredi`);
+        this.hebdomadaireSamedi     = $(`.${v_colorPlug}.Hebdomadaire.Samedi`);
+        this.hebdomadaireDimanche   = $(`.${v_colorPlug}.Hebdomadaire.Dimanche`);
             //Time Selector
-        // this.hebdomadaire_hDebut = document.querySelector("."+ v_colorPlug +".Hebdomadaire.hDebut");
-        // this.hebdomadaire_hFin = document.querySelector("."+ v_colorPlug +".Hebdomadaire.hFin");
         this.hebdomadaire_hDebut = $(`.${v_colorPlug}.Hebdomadaire.hDebut`);
         this.hebdomadaire_hFin = $(`.${v_colorPlug}.Hebdomadaire.hFin`);
             //submit
-        // this.hebdomadaireForm = document.querySelector("."+ v_colorPlug +".Hebdomadaire.formRequest");
-        // this.hebdomadairePause = document.querySelector("."+ v_colorPlug +".Hebdomadaire.pause");
-        // this.hebdomadaireSubmit = document.querySelector("."+ v_colorPlug +".Hebdomadaire.submit");
         this.hebdomadaireForm = $(`.${v_colorPlug}.Hebdomadaire.formRequest`);
-        // this.hebdomadairePause = $(`.${v_colorPlug}.Hebdomadaire.pause`);
         this.hebdomadairePause = $(".redPlug.Hebdomadaire.pause");
         this.hebdomadaireSubmit = $(`.${v_colorPlug}.Hebdomadaire.submit`);
     }
@@ -242,10 +226,8 @@ class C_Plug{
         //masquage des DIV Minuterie
         this.minuterieDiv.style.display="none";
         //masquage des DIV Cyclique
-        // this.cycliqueDiv.style.display="none";
         this.cycliqueDiv.css("display", "none");
         //masquage des DIV Hebdomadaire
-        // this.hebdomadaireDiv.style.display="none";
         this.hebdomadaireDiv.css("display", "none");
         //masquage des DIV Clone
         this.cloneDiv.style.display="none";

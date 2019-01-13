@@ -96,35 +96,35 @@ red.minuterieForm.addEventListener(
 /*
  * Events Cyclique
  */
-red.modeCyclique.on(
+$(red.modeCyclique).on(
     "click", 
     function(){
         red.f_displayCycliqueDiv("block");
     });
 
-red.cyclique_dureeOn.on(
+$(red.cyclique_dureeOn).on(
     "input",
     function(event){
         regEx.f_callbackRegEx(event);
     });
 
-red.cyclique_dureeOff.on(
+$(red.cyclique_dureeOff).on(
     "input",
     function(event){
         regEx.f_callbackRegEx(event);
     });
         
-red.cyclique_hDebut.on(
+$(red.cyclique_hDebut).on(
     "input",
     function(event){
         regEx.f_callbackRegEx(event);
     });
 
-red.cycliquePause.on(
+$(red.cycliquePause).on(
     "click",
     (event)=>{
         let inputJQSelector = $("input.redPlug.Cyclique").not(".pause");
-        if (red.cycliquePause[0].checked){
+        if ($(red.cycliquePause).is(":checked")){
             inputJQSelector.each((i)=>{
                 inputJQSelector[i].disabled=true;
             });
@@ -137,7 +137,7 @@ red.cycliquePause.on(
     }
 );    
 
-red.cycliqueForm.on(
+$(red.cycliqueForm).on(
     "submit",
     (event)=>{
         event.preventDefault();
@@ -150,17 +150,17 @@ red.cycliqueForm.on(
  * event Hebdomadaire
  */
 
-red.modeHedbomadaire.on(
+$(red.modeHedbomadaire).on(
     "click", 
     function(){
         red.f_displayHebdomadaireDiv("block");
     });
 
-red.hebdmadaireAllDays.on(
+$(red.hebdmadaireAllDays).on(
     "click",
     (event)=>{
         let inputJQSelector = $("input.redPlug.daySelector").not(".AllDays");
-        if (red.hebdmadaireAllDays[0].checked){
+        if ($(red.hebdmadaireAllDays).is(":checked")){
             inputJQSelector.each((i)=>{
                 inputJQSelector[i].checked=true;
             });
@@ -168,28 +168,48 @@ red.hebdmadaireAllDays.on(
     }
 );
 
-// red.hebdomadairePause.on(
-//     "click",
-//     (event)=>{
-//         let inputJQSelector = $("input.redPlug.Hebdomadaire").not(".pause");
-//         if (red.hebdomadairePause[0].checked){
-//             inputJQSelector.each((i)=>{
-//                 inputJQSelector[i].disabled=true;
-//             });
-//         } else {
-//             inputJQSelector.each((i)=>{
-//                 inputJQSelector[i].disabled=false;
-//             });
-//         }
-//         red.hebdomadaireForm.submit();
-//     }
-// );    
+$(red.hebdomadaireWeekDay).on(
+    "click",
+    (event)=>{
+        if ($(red.hebdomadaireWeekDay).is(":checked")){
+            red.hebdmadaireAllDays[0].checked=false;
+        }
+});
 
-// red.hebdomadaireForm.on(
-//     "submit",
-//     (event)=>{
-//         event.preventDefault();
-//         $(this).submit();
-//         log.f_formLog( red.f_getQueryTarget(event));
-//     }
-// );
+$(red.hebdomadaire_hDebut).on(
+    "input",
+    function(event){
+        regEx.f_callbackRegEx(event);
+    });
+
+$(red.hebdomadaire_hFin).on(
+    "input",
+    function(event){
+        regEx.f_callbackRegEx(event);
+    });
+
+$(red.hebdomadairePause).on(
+    "click",
+    (event)=>{
+        let inputJQSelector = $("input.redPlug.Hebdomadaire").not(".pause");
+        if ($(red.hebdomadairePause).is(":checked")){
+            inputJQSelector.each((i)=>{
+                inputJQSelector[i].disabled=true;
+            });
+        } else {
+            inputJQSelector.each((i)=>{
+                inputJQSelector[i].disabled=false;
+            });
+        }
+        red.hebdomadaireForm.submit();
+    }
+);    
+
+$(red.hebdomadaireForm).on(
+    "submit",
+    (event)=>{
+        event.preventDefault();
+        $(this).submit();
+        log.f_formLog( red.f_getQueryTarget(event));
+    }
+);
