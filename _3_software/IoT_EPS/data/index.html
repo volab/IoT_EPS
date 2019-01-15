@@ -457,6 +457,7 @@
                                                 </label>
                                             </div>
                                         </div>
+                                        <!-- Submit / Reset -->
                                         <div class="redPlug Hebdomadaire submitReset row">
                                             <div class="switch col-md-4">
                                                 <p>Arrêt provisoire</p>
@@ -491,7 +492,7 @@
                                     <form
                                         class="redPlug Clone formRequest"
                                         method="post"
-                                        action="/plugonoff">
+                                        action="/">
 
                                         <input type="hidden" name="COLOR" value="redPlug">
                                         <input type="hidden" name="Mode" value="Clone">
@@ -501,20 +502,31 @@
                                                 <br>
                                                 <select 
                                                     name="Clone"
-                                                    class="redPlug Clone plugSelector form-control">
+                                                    class="redPlug Clone plugSelector custom-select">
                                                         <option value="" disabled selected>...</option>
-                                                        <option class="text-danger" value="redPlug">Prise Rouge</option>
-                                                        <option class="text-success" value="greenPlug">Prise Verte</option>
-                                                        <option class="text-primary" value="bluePlug">Prise Bleue</option>
-                                                        <option class="text-warning" value="yellowPlug">Prise Jaune</option>
+                                                        <option class="text-danger" value="redPlug">
+                                                            Prise Rouge
+                                                        </option>
+                                                        <option class="text-success" value="greenPlug">
+                                                            Prise Verte
+                                                        </option>
+                                                        <option class="text-primary" value="bluePlug">
+                                                            Prise Bleue
+                                                        </option>
+                                                        <option class="text-warning" value="yellowPlug">
+                                                            Prise Jaune
+                                                        </option>
                                                 </select>
                                             </div>
                                         </div>
+                                        <!-- Submit / Reset -->
                                         <div class="redPlug Clone submitReset">
                                             <input
                                                 type="submit"
                                                 class="redPlug Clone submit"/>
-                                            <!-- <input type="reset"/>  -->
+                                            <input
+                                                type="reset"
+                                                class="redPlug Hebdomadaire reset"/> 
                                         </div>
                                     </form>
                                 </div>

@@ -118,7 +118,8 @@ class C_Plug{
         this.modeMinuterie = document.querySelector("." + v_colorPlug + ".modeSelector.Minuterie");
         this.modeCyclique = $(`.${v_colorPlug}.modeSelector.Cyclique`);
         this.modeHedbomadaire = $(`.${v_colorPlug}.modeSelector.Hebdomadaire`);
-        this.modeClone = document.querySelector("." + v_colorPlug + ".modeSelector.Clone");
+        // this.modeClone = document.querySelector("." + v_colorPlug + ".modeSelector.Clone");
+        this.modeClone = $(`.${v_colorPlug}.modeSelector.Clone`);
     }
 
     f_setQueryManuel(v_colorPlug){
@@ -186,22 +187,26 @@ class C_Plug{
         this.hebdomadaireSamedi     = $(`.${v_colorPlug}.Hebdomadaire.Samedi`);
         this.hebdomadaireDimanche   = $(`.${v_colorPlug}.Hebdomadaire.Dimanche`);
             //Time Selector
-        this.hebdomadaire_hDebut = $(`.${v_colorPlug}.Hebdomadaire.hDebut`);
-        this.hebdomadaire_hFin = $(`.${v_colorPlug}.Hebdomadaire.hFin`);
+        this.hebdomadaire_hDebut    = $(`.${v_colorPlug}.Hebdomadaire.hDebut`);
+        this.hebdomadaire_hFin      = $(`.${v_colorPlug}.Hebdomadaire.hFin`);
             //submit
-        this.hebdomadaireForm = $(`.${v_colorPlug}.Hebdomadaire.formRequest`);
-        this.hebdomadairePause = $(".redPlug.Hebdomadaire.pause");
-        this.hebdomadaireSubmit = $(`.${v_colorPlug}.Hebdomadaire.submit`);
+        this.hebdomadaireForm       = $(`.${v_colorPlug}.Hebdomadaire.formRequest`);
+        this.hebdomadairePause      = $(`.${v_colorPlug}.Hebdomadaire.pause`);
+        this.hebdomadaireSubmit     = $(`.${v_colorPlug}.Hebdomadaire.submit`);
     }
 
     f_setQueryClone(v_colorPlug){
         /* Permet d'initialiser les QuerySelector pour le mode Clone */
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
-        this.cloneDiv = document.querySelector("."+ v_colorPlug +".Clone.div_subSummary");
-        this.cloneSelector = document.querySelector("."+ v_colorPlug +".Clone.plugSelector");
-        this.hebdomadairePause = document.querySelector("."+ v_colorPlug +".Hebdomadaire.pause");
-        this.cloneSubmit = document.querySelector("."+ +".Clone.submitReset");
+        // this.cloneDiv = document.querySelector("."+ v_colorPlug +".Clone.div_subSummary");
+        // this.cloneSelector = document.querySelector("."+ v_colorPlug +".Clone.plugSelector");
+        // this.hebdomadairePause = document.querySelector("."+ v_colorPlug +".Hebdomadaire.pause");
+        // this.cloneSubmit = document.querySelector("."+ +".Clone.submitReset");
+        this.cloneDiv               = $(`.${v_colorPlug}.Clone.div_subSummary`);
+        this.cloneSelector          = $(`.${v_colorPlug}.Clone.plugSelector`);
+        this.cloneForm              = $(`.${v_colorPlug}.Clone.formRequest`);
+        this.cloneSubmit            = $(`.${v_colorPlug}.Clone.submitReset`);
     }
 
     f_getQueryTarget(event){
@@ -230,7 +235,7 @@ class C_Plug{
         //masquage des DIV Hebdomadaire
         this.hebdomadaireDiv.css("display", "none");
         //masquage des DIV Clone
-        this.cloneDiv.style.display="none";
+        this.cloneDiv.css("display", "none");
     }
 
     f_displayManuelDiv(v_displayStatus){
@@ -310,6 +315,17 @@ class C_Plug{
         if ((v_displayStatus === "block")||(v_displayStatus === "none")){
             this.f_displayNoneAll();
             this.hebdomadaireDiv.css("display", v_displayStatus);
+        }
+    }
+
+    f_displayCloneDiv(v_displayStatus){
+        /* permet d'afficher ou de masquer le DIV Hebdomadaire 
+         * Les valeur attendue sont: "none" ou "block"
+         */
+
+        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
+            this.f_displayNoneAll();
+            this.cloneDiv.css("display", v_displayStatus);
         }
     }
 }

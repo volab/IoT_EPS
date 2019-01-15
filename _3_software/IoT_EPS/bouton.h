@@ -48,6 +48,7 @@ class bouton{
         bool doubleClic();
         bool longClic();
         void acquit(); //remet les état à zéro (clique et double clique)
+		bool directRead();
 
     private:
         int _boutonPin; //numéro de Pin pour le bouton

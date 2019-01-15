@@ -102,4 +102,6 @@ void bouton::update(){
 
 }
     
-  
+bool bouton::directRead(){
+	return !digitalRead( _boutonPin ); // ! cause input PULLUP
+}  

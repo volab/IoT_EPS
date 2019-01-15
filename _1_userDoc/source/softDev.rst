@@ -20,12 +20,15 @@ Avancement
 #. lecture du fichier de configuration : ok
 #. intégration MCP23017 : ok
 #. lecture du fichier de configuration config3.json : 70%
-#. gestion bouton poussoir mécanique : 80%
-#. Ecriture fichier json : 60%
-#. Traitement de la requete html avec analyze, exécution et écriture json: 20%
+#. gestion bouton poussoir mécanique : 80% (appui long + appui court en cours de cycle)
+#. Ecriture fichier json : 90%
+#. Traitement de la requete html avec analyze, exécution et écriture json: ok
 #. Réflèchir à la gestion des erreurs
 #. manage wif led : ok
-#. interate nano expander with analog inputs : 0%
+#. integrate nano expander with analog inputs : 0%
+#. exhaustive test of hebdo mode : 20%
+
+Don't forget the todo list of the doxygen documentation
 
 
 ====================================
@@ -61,6 +64,9 @@ Timer / minuteur / mode cuit oeuf
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 - la minuterie peut être avec des secondes exmple 2mn30s (2:30 dans la requête)
 
+La minuterie est-elle uniquement lancée par BP ? Sinon comment on fait la diff
+If state == On immediat start 
+
 Périodique/cyclique
 =====================
 - duré on
@@ -68,6 +74,7 @@ Périodique/cyclique
 - avec reprise de On après off indéfiniment jusqu'au repassage en commande manuelle.
 - avec champ heure de début (et 'Entrez une heure de début (facultatif)' par défaut)
 - un appui court sur BP met à OFF mais reste en mode cyclique pour le cycle suivant
+
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Hebdomadaire
@@ -76,11 +83,14 @@ Hebdomadaire
 - heure de mise off
 - choix des jours de la semaine
 - un appui court sur BP met à OFF mais reste en mode Hebdomadaire pour le cycle suivant
+- un deuxième appui court reprend le cycle (attention ne met pas forcément à ON)
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Clone
 ========
-Clone le fonctionnement d'une des 3 autres prises.
+Clone le fonctionnement d'une des 3 autres prises. Il s'agit d'une copie des paramètres.
+Ce n'est pas un clone dynamique. Ce qui signifie que l'information de la prise source et de
+son état au moment du clonage ne sont pas historisés.
 
 Evolutions possibles
 =====================
@@ -88,8 +98,7 @@ Evolutions possibles
   période de la journée.
 - Sur le mode hebdo, prévoir la possibilité d'avoir plusieurs plage de fonctionnement par jours
   et différentes chaque jour
-- Mode compte à rebour : le système est en mode manuel ON et on souhait qu'il s'éteigne
-  tout seul dans 2 heures
+
 
 Factorisation des varibales de mode
 =========================================
@@ -132,6 +141,12 @@ wifi access point
 
 Les pages html sont dans le file système SPIFFS
 
+Pourquoi ne pas utiliser wifi manager ?
+=========================================
+
+
+
+
 WEMOS D1 MIN ARDUINO configurattion:
 
 .. image:: ./image/wemosD1Mini_configArduino.jpg
@@ -139,10 +154,29 @@ WEMOS D1 MIN ARDUINO configurattion:
 ==================
 WIFI LED
 ==================
-In Station mode, fast flashing and after slow flashing while waiting for connection.
+In Station mode, fast flashing (20 times) and after slow flashing while waiting for connection (500ms with a 20 times time out - new in 24/12/2018).
 
-In Access Point Slow flashing and led of while waiting for connection. Cause WiFi.softAPConfig
-function is a blocking function.
+In Access Point LED FLash quickly (20 times) and led flash slowly while waiting for connection.
+
+Cause WiFi.softAPConfig function is a blocking function. This is wrong : test on 24/12/2018 softAP is non blocking !
+
+So if power led is on and WIFI Led flash WIFI wait for connection in AP mode. 
+
+It rises a new problem : in this state it is not possible to use plugs even in simple  manual mode with push button. 
+
+Possible solution : check push button at startup if a particular combination is pressed, plugs do not try to connect to wifi and mork in simple manual mode. In Dec 2018, push button added on plug 0 while strating cause no WIFI mode (color LED FLASH in RED to confirm)
+
+====================================
+Displaying plugs mode only with LED
+====================================
+
+Problem : how to displays functionnal mode of a plug without the web interface
+
+Problem2 : is it really necessary ?
+
+Solution1: Use de little plug red LED. When OFF flash 1 shortly one time for mode 1 manual to five time for mode Clone. When ON invert ton and toff of the flasher
+
+Solution2: use color LED with flash capability one time for mode manual to 5 times to mode Clone with a long periode between group of flash 3 seconds for example.
 
 ===========================
 Développement des page Web
@@ -157,14 +191,33 @@ ipaddr/config?plug=redPlug
 /PlugConfig?plug=red&mode=manuel
 /modeManuel?plug=redPlug
 
-Utilisation de formulaire
+Utilisation de formulaires
+
+Possible requests:
+
+- Mode=Manuel&State=ON&dureeOff=299 : dureeOff on minutes only
+- Mode=Manuel&State=ON&dureeOff=299:59 : dureeOff on minutes and seconds
+- Mode=Manuel&State=ON&hFin=23:59 : hFin only one format HH:MM
+- Mode=Manuel&State=OFF
+- Mode=Manuel&State=ON
 
 ====================
 Serveur html ESP8266
 ====================
-Repris de l'exemple fourni avec l'IDE ARDUINO : FSBrowser
+Repris de l'exemple fourni avec l'IDE ARDUINO : ESP8266WebServer/FSBrowser
 
 Cette exemple apporte un lot de fonction qui gérent l'envoie de fichier css, jpg et autres...
+
+edit page
+==============
+Comportement etrange de l'extnsion html
+
+Le bouton parcourir tronc en htm et le visualisateur ne montre que les fichier htm
+
+Edit.htm source code ? not provided in the .ino file
+
+One possible source (but not really the same) :
+https://github.com/gmag11/FSBrowser/blob/master/data/edit.html
 
 ==============
 IOExpander
@@ -291,8 +344,16 @@ Prise en main de la librairie JSON
 Nécessite un investissement personnel important.
 
 
+===========================
+Vocabulary
+===========================
+
+Un réseau de diffusion de contenu (RDC) ou en anglais content `delivery network (CDN)`_
+
+.. _`delivery network (CDN)` : https://en.wikipedia.org/wiki/Content_delivery_network
+
 =============
-Webographie
+Webography
 =============
 
 .. target-notes::

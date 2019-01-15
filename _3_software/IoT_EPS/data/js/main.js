@@ -213,3 +213,40 @@ $(red.hebdomadaireForm).on(
         log.f_formLog( red.f_getQueryTarget(event));
     }
 );
+
+/* 
+ * event Clone
+ */
+
+$(red.modeClone).on(
+    "click", 
+    function(){
+        red.f_displayCloneDiv("block");
+    });
+
+$(red.cloneSelector).on(
+    "change",
+    (event)=>{
+        console.log( $(red.cloneSelector).val() );
+    }
+)    
+
+$(red.cloneSubmit).on(
+    "click",
+    (event)=>{
+        console.log("envoyer");
+        console.log( $(red.cloneSelector).val() );
+        console.log( red.CloneForm );
+        $(red.cloneForm).submit();
+    }
+);
+
+$(red.cloneForm).on(
+    "submit",
+    (event)=>{
+        event.preventDefault();
+        console.log("form Submit");
+        $(this).submit();
+        log.f_formLog( red.f_getQueryTarget(event));
+    }
+);

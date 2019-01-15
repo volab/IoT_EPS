@@ -24,12 +24,15 @@
 #include <FastLED.h>
 // #include <Array.h>
 
+#include "SerialCommand.h"
 #include "debugSerialPort.h"
 #include "credential.h"
 #include "configParam.h"
 #include "serverFunction.h"
 #include "bouton.h"
 #include "cEpsStrTime.h"
+#include "Flasher.h"
+#include "CRtc.h"
 
 #define NBRPLUGS 4
 #define NUM_LEDS NBRPLUGS /**< for fastLED class */
@@ -59,10 +62,20 @@
 #define JSON_PARAMNAME_ENDTIME "hFin"
 #define JSON_PARAMNAME_ONOFCOUNT "onOffCount"
 #define JSON_PARAMNAME_NEXTSWITCH "nextTimeToSwitch"
+#define HTMLREQ_SUNDAY "Dimanche" //it is allthough the value in html request
+#define HTMLREQ_MONDAY "Lundi"
+#define HTMLREQ_TUESDAY "Mardi"
+#define HTMLREQ_WEDNESTDAY "Mercredi"
+#define HTMLREQ_THURSDAY "Jeudi"
+#define HTMLREQ_FRIDAY "Vendredi"
+#define HTMLREQ_SATURDAY "Samedi"
+
+
 
 #define TIME_STRING_SEPARATOR ":"
 
 #define HTML_OFFDURATION_DEFAULT_VALUE "en minutes"
+#define HTML_ENDTIME_DEFAULT_VALUE "HH:MM"
 
 
 #define MANUEL_MODE_MAXOFFDURATION 300 //mn
@@ -70,6 +83,7 @@
 
 
 #define FLASHERTIME 500 //ms
+
 
 #define PLUG0PIN 0 // MPC23017 numbering pin21 PORTA.0
 #define PLUG1PIN 1
@@ -90,6 +104,9 @@
 #define WIFILED_FLASH_FAST 100
 #define WIFILED_FLASH_SLOW 500
 #define WIFILED_FLASH_COUNT 20
+#define WIFILED_SOFTAP_FLASH 50
+#define WIFILED_SOFTAP_PERIOD 2000
+#define MAX_WIFI_CONNECT_RETRY 30 /**< @brief In Station mode number of try before to switch to access point connection*/
 
 
 #endif

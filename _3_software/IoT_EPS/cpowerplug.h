@@ -25,7 +25,7 @@ When a function need to return or test a not found value
         // ROUGE, VERTE, BLEUE, JAUNE
 // };
 
-typedef CRGB::HTMLColorCode plugColor_t;
+typedef CRGB::HTMLColorCode plugColor_t; /**< @brief see FastLed lib pixelstype.h for colors*/
 
 
 // static inline String stringFromColor(plugColor_t c){
@@ -47,7 +47,7 @@ class CPowerPlug : public Cmcp {
         void begin( int pin , int onOffLedPin, int bpPin, int mode = 0 );
 /** @todo rewrite a new begin methode to add plugName and _color*/
         void setColor( plugColor_t color ){ _couleur = color; }
-        bool getstate(){ return _state; }
+        bool getState(){ return _state; }
         plugColor_t getColor(){ return _couleur; }
         String getPlugName(){return _plugName ; }
         void setPlugName( String name ){ _plugName = name ; }
@@ -56,27 +56,31 @@ class CPowerPlug : public Cmcp {
         void off();
         void toggle();
         bool isItTimeToSwitch(); /**< For the loop of ARDUINO check millis()*/
+        void switchAtTime();
         
         void setMode( int mode ){ _mode = mode; }
         int getMode(){ return _mode; }
-        /** @todo check if _mode is always usefull and if it is allways updated !*/
         
-        void setOnOffTime( unsigned long onDelay, unsigned long offDelay ){
-            _onDelay = onDelay; 
-            _offDelay = offDelay;
-        }
-        void setOnOffTime( unsigned long onDelay, unsigned long offDelay, DateTime startDate ){
-            _startDate = startDate;
-            setOnOffTime( onDelay, offDelay );          
-        }
+        // void setOnOffTime( unsigned long onDelay, unsigned long offDelay ){
+            // _onDelay = onDelay; 
+            // _offDelay = offDelay;
+        // }
+        // void setOnOffTime( unsigned long onDelay, unsigned long offDelay, DateTime startDate ){
+            // _startDate = startDate;
+            // setOnOffTime( onDelay, offDelay );          
+        // }
         
         bool readFromJson();
         String readFromJson( String param );
         void writeToJson( String param, String val );
+        void writeDaysToJson();
         void handleHtmlReq( String allRecParam );
         
         static int modeId( String mode );
         bouton bp;
+        uint32_t getNextT2Switch(){ return _nextTimeToSwitch; }
+        String getStringMode(){ return modes[ _mode ]; }
+        void handleBpClic();
         
     private:
         static const String modes[5];
@@ -88,32 +92,13 @@ class CPowerPlug : public Cmcp {
         // plugColor_t _couleur = ROUGE;
         plugColor_t _couleur = CRGB::Red;
         String extractParamFromHtmlReq( String allRecParam, String Param );
-        
-        
-
-        /**
-        * @var DateTime _startDate
-        @brief date to turn on for Hebdo and Cycle mode
-        * @var DateTime _endDate;
-        @brief date to turn off for Manual and Hebdo mode
-        
-        See softDef.rst for detail
-        * @var unsigned int _onDelay
-        @brief For cyclic mode. Max value 300mn
-         * @var unsigned int _offDelay;
-        @brief For cyclic and manual mode. Max value 300mn 
-        * @var uint8_t daysOnWeek;
-        @brief For HebdoMode each bit represent one day. bit0 represente Monday        
-        */
-        uint8_t daysOnWeek;        
-        DateTime _startDate;
-        DateTime _endDate;
-        //DateTime _nextTimeToSwitch; //for reflexion
-        unsigned int _onDelay;
-        unsigned int _offDelay;
-
         void updateOutputs( bool writeToJsonCount = true );
+        uint32_t _nextTimeToSwitch;        
         
+        uint8_t _daysOnWeek; 
+
+
+
 
         
 };

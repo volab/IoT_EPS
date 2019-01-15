@@ -30,15 +30,15 @@ bool ConfigParam::readFromJson(){
 
     DSPL( dPrompt +F("Mounting FS..."));
     if (SPIFFS.begin()) {
-        DEBUGPORT.println(dPrompt + F("File system mounted "));
+        DSPL(dPrompt + F("File system mounted "));
         // if (SPIFFS.exists("/config.json")) {
         if (SPIFFS.exists( CONFIGFILENAME)) {
             //file exists, reading and loading
-            DEBUGPORT.println(dPrompt + F("reading config file"));
+            DSPL(dPrompt + F("reading config file"));
             File configFile = SPIFFS.open( CONFIGFILENAME, "r");
             
             if (configFile) {
-                DEBUGPORT.println( F("\tconfig file opened ") );
+                DSPL( F("\tconfig file opened ") );
                 size_t size = configFile.size();
                 DSPL( dPrompt + "Config file size : " + (String)size ) ;
                 // Allocate a buffer to store contents of the file.
@@ -51,10 +51,6 @@ bool ConfigParam::readFromJson(){
                 if (json.success()) {
                     
                     _wifimode = json["general"]["wifimode"].as<String>();
-                    // _yellowPlugState = json["yellowPlugState"].as<String>();
-                    // _redPlugState = json["redPlugState"].as<String>();
-                    // _greenPlugState = json["greenPlugState"].as<String>();
-                    // _bluePlugState = json["bluePlugState"].as<String>();
                     _host = json["general"]["hostName"].as<String>();
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
@@ -69,11 +65,61 @@ bool ConfigParam::readFromJson(){
             DEBUGPORT.println(dPrompt);
             return false;
         }
-
     } else {
         DEBUGPORT.println( dPrompt + F("Failed to mount FS"));
         return false;
-    }
- 
-    
+    }  
+}
+
+/** 
+ @fn void ConfigParam::displayJson()
+ @brief A function to display config json file
+ @return no return value and no parameter
+
+This function is call by SerialCommand. It works with debugSerialPort
+*/
+void ConfigParam::displayJson(){
+	DEFDPROMPT("Display json")
+    if (SPIFFS.begin()) {
+        if (SPIFFS.exists( CONFIGFILENAME)) {
+            //file exists, reading and loading
+            // DSPL(dPrompt + F("reading config file"));
+            File configFile = SPIFFS.open( CONFIGFILENAME, "r");
+            
+            if (configFile) {
+                // DSPL( F("\tconfig file opened ") );
+                size_t size = configFile.size();
+                DSPL( dPrompt + "Config file size : " + (String)size ) ;
+                // Allocate a buffer to store contents of the file.
+                std::unique_ptr<char[]> buf(new char[size]);
+
+                configFile.readBytes(buf.get(), size);
+                DynamicJsonBuffer jsonBuffer;
+                JsonObject& json = jsonBuffer.parseObject(buf.get());
+                json.prettyPrintTo(DEBUGPORT);
+				DSPL( );
+            }
+        } else {
+            dPrompt += F("Failed to open ");
+            dPrompt += CONFIGFILENAME;
+            DSPL(dPrompt);
+        }
+    } else {
+        DSPL( dPrompt + F("Failed to mount FS"));
+    }  	
+}
+
+/** 
+ @fn void ConfigParam::displayWifiMode()
+ @brief A function to display cactual wifi mode
+ @return no return value and no parameter
+
+This function is call by SerialCommand. It works with debugSerialPort
+*/
+void ConfigParam::displayWifiMode(){
+	DEFDPROMPT("WIFI DATA")
+	DSPL( dPrompt + F("Mode = ") + _wifimode );
+	Credential wifiCred;
+	wifiCred.begin();
+	DSPL( dPrompt + F("SSDID = ") + (String)wifiCred.getSsid() );
 }

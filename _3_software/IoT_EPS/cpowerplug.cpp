@@ -14,10 +14,28 @@ extern RTC_DS3231 rtc;
 
 const String CPowerPlug::modes[5] = { MANUAL_MODE, TIMER_MODE, CYCLIC_MODE, HEBDO_MODE, CLONE_MODE };
 
+/** 
+@fn int CPowerPlug::modeId( String mode )
+@brief A method to convert String mode into its id...
+@param mode the mode in String format
+@return the equivalent id
 
+The purpose of this is to replace an enum caus here we have the need to gat both the text form
+for all json and html and the its id in numericla form for other functionnality like for loop.
+
+A possible workaround will be:
+
+@code {.cpp}
+	for ( String s : CPowerPlug::modes){
+		if (sMode == s);//do the job
+	}
+
+@endcode
+*/
 int CPowerPlug::modeId( String mode ){
     int i;
     for ( i = 0; i <  5 ; i++ ){
+	//for ( i : modes ){
         if ( mode == modes[i] ) break;
     }
     return i;
@@ -37,10 +55,12 @@ void CPowerPlug::begin( int pin , int onOffLedPin, int bpPin, int mode ){
 
 /** 
 @fn void CPowerPlug::on()
-@brief méthode qui met le plug sur ON mais n'effectue pas la sortie physique
-@return pas de paramètre ni de valeur de retour. Travail sur les membres de la classe
+@brief  method that change state of the plug but not only...
+@return nothig and no input paramter
 
-Cette méthode lit et écrit directment dans le fichier json pour l'état du plug
+This methods doesn't change physical output but call updateOutputs.
+
+It also update json file
 */
 void CPowerPlug::on(){
     DEFDPROMPT( "CPOwerPlug")
@@ -55,21 +75,36 @@ void CPowerPlug::on(){
 
 }
 
+
+/** 
+@fn void CPowerPlug::off()
+@brief method that change state of the plug but not only...
+@return nothig and no input paramter
+
+This methods doesn't change physical output but call updateOutputs.
+
+It also update json file
+*/
 void CPowerPlug::off(){
     DEFDPROMPT( "CPOwerPlug")
     if (!_initDone){
         DSPL( dPrompt + F(" plug not started, call .begin().") );
     }
-    _state = OFF ;
     bool prevState = _state;
+    _state = OFF ;
     updateOutputs( prevState != _state ); //to count only real plug switch
     writeToJson( JSON_PARAMNAME_STATE, "OFF" );
 }
 
+/** 
+@fn void CPowerPlug::toggle()
+@brief toggle stat...
+
+see on() and off() methode
+*/
 void CPowerPlug::toggle(){
     DEFDPROMPT( "CPOwerPlug")
     if (!_initDone){
-        /** @todo  check _initDone fonctionality */
         DSPL( dPrompt + F(" plug not started, call .begin().") );
     }
     _state = !_state ;
@@ -79,17 +114,21 @@ void CPowerPlug::toggle(){
 
 /** 
 @fn bool CPowerPlug::isItTimeToSwitch()
-@brief when completed, this function check if it is time to switch the plug
-@return no return value and no parameter
+@brief this function check if it is time to switch the plug...
+@return return true if it is time to switch the plug
+
+Do not compute new time to switch
 */
 bool CPowerPlug::isItTimeToSwitch(){
-    /** @todo complete isItTimeToSwitch */
-    return (true); //to do change this one ;-)
+    if ( _nextTimeToSwitch == 0 ) return false;
+    // RTC_DS3231 rtc;
+    if ( CRtc::now().unixtime() > _nextTimeToSwitch ) return true;
+    return false;
 }
 
 /** 
 @fn void CPowerPlug::updateOutputs()
-@brief update the state of the physical outputs
+@brief update the state of the physical outputs...
 @param writeToJsonCount a booleen to enable onOff counter to be inc in json (for begin purpose)
 @return no return value 
 
@@ -120,7 +159,7 @@ Search are made in the file on the name of the plug as redPlug for exemple
 */
 bool CPowerPlug::readFromJson(){
     String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
-    String sClonedPlug, sOnOffCount;
+    String sClonedPlug, sOnOffCount, sNextTime2switch;
     String sJours[7];
     DEFDPROMPT("reading config values for " + getPlugName())
     // DSPL( dPrompt +F("Mounting FS..."));
@@ -140,6 +179,9 @@ bool CPowerPlug::readFromJson(){
                 JsonObject& json = jsonBuffer.parseObject(buf.get());
                 // json.printTo(DEBUGPORT);
                 if (json.success()) {
+/////////////////////////////////////////////////////////////////////////////
+//    Reading from file                                                    //
+/////////////////////////////////////////////////////////////////////////////
                     JsonObject& plug = json[getPlugName()];
                     sState = plug["State"].as<String>();
                     sMode = plug["Mode"].as<String>();
@@ -147,16 +189,37 @@ bool CPowerPlug::readFromJson(){
                     sHFin = plug["hFin"].as<String>();
                     sDureeOn = plug["dureeOn"].as<String>();
                     sDureeOff = plug["dureeOff"].as<String>();
+/** @todo to be removed and from json too see softDev.rst, clode mode is just un copy of source paramters */
                     sClonedPlug = plug["clonedPlug"].as<String>();
                     sOnOffCount = plug["onOffCount"].as<String>();
+                    sNextTime2switch = plug[JSON_PARAMNAME_NEXTSWITCH].as<String>();
+/////////////////////////////////////////////////////////////////////////////
+//    member updates                                                       //
+/////////////////////////////////////////////////////////////////////////////
+                    _mode = modeId( sMode );
+                    _state = (sState == "ON");                    
+                    _nextTimeToSwitch = sNextTime2switch.toInt();
+/** @todo continue to converts and store the string parameters
+ in the members of the class
+*/
+/////////////////////////////////////////////////////////////////////////////
+//    debug displays                                                       //
+/////////////////////////////////////////////////////////////////////////////
                     DSPL( dPrompt + "Mode = " + sMode );
                     DSPL( dPrompt + "Etat = " + sState );
-                    DSPL( dPrompt + "Start time = " + sHDebut );
-                    DSPL( dPrompt + "End time = " + sHFin );
-                    DSPL( dPrompt + "on duration = " + sDureeOn );
-                    DSPL( dPrompt + "off duration = " + sDureeOff );
-                    DSPL( dPrompt + "Cloned plug = " + sClonedPlug );
-                    DSPL( dPrompt + "Relay on off count = " + sOnOffCount );
+                    DSPL( dPrompt + F("Start time = ") + sHDebut );
+                    DSPL( dPrompt + F("End time = ") + sHFin );
+                    DSPL( dPrompt + F("on duration = ") + sDureeOn );
+                    DSPL( dPrompt + F("off duration = ") + sDureeOff );
+                    DSPL( dPrompt + F("Cloned plug = ") + sClonedPlug );
+                    DSPL( dPrompt + F("Relay on off count = ") + sOnOffCount );
+                    if ( _nextTimeToSwitch ){
+                        DSPL( dPrompt + F("Next time to switch : ") + \
+                        CEpsStrTime::unixTime2String( _nextTimeToSwitch ));
+                    }
+/////////////////////////////////////////////////////////////////////////////
+//    special for days of Hebdo mode                                       //
+/////////////////////////////////////////////////////////////////////////////
                     DSP( dPrompt + "Jours : ");
                     JsonArray& plugJours = plug["Jours"];
                     for ( int i = 0; i < 7 ; i++ ){
@@ -164,10 +227,11 @@ bool CPowerPlug::readFromJson(){
                         // DSPL( dPrompt + "jours " + (String)i + " = " + sJours[i] );
                         if (sJours[i] == "ON"){
                             DSP( "Jours " + (String)i + " est ON. " );
+                            bitSet( _daysOnWeek, i);
                         }   
                     }
                     DSPL("");
-/** @todo converts and store the string parameter in the members of the class*/
+/////////////////////////////////////////////////////////////////////////////
 /** @todo update output regarless of mode and the state of main power switch*/
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
@@ -233,73 +297,244 @@ String CPowerPlug::readFromJson( String param ){
 
 /** 
 @fn void CPowerPlug::handleHtmlReq()
-@brief treat all html received parameter and write in json config file
-@param allRecParam Received parameters as a String
+@brief treat all html received parameter and write in json config file...
+@param allRecParam Received parameters as a String.  
 @return nothing
+
+allRecParam is created by handlePlugOnOff in serverFunction.cpp
 */
 void CPowerPlug::handleHtmlReq( String allRecParam ){
     String param, mode, state;
     String prevMode;
     DEFDPROMPT( "CPlug handle html param");
     DSPL( dPrompt + allRecParam);
-    DSPL( dPrompt + "Traitements pour : " + _plugName );
+    DSPL( dPrompt + F("Traitements pour : ") + _plugName );
     param = JSON_PARAMNAME_MODE;
     mode = extractParamFromHtmlReq( allRecParam, param );
     DSPL( dPrompt + "Mode = " + mode );
+    
+
+    prevMode = readFromJson( param ); //why ? For bp acquit
+    // do not change if all is not valid
     // _mode = modeId( mode );
-    // DSPL( dPrompt + "_mode =" + (String)_mode);
-    prevMode = readFromJson( param ); //why ? for bp acquit
-    writeToJson( param, mode );
+    // writeToJson( param, mode );
+    /** @todo test all case invalid parameter entered */
     if ( mode == MANUAL_MODE){
-        DSPL( dPrompt + "Manual mode actions ");
+        /////////////////////////////////////////////////////////////////////////////
+        //    Compute MANUAL MODE                                                  //
+        /////////////////////////////////////////////////////////////////////////////
+        DSPL( dPrompt + F("Manual mode actions ") );
         //manual mode parameters :
         //State
         if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
         param = JSON_PARAMNAME_STATE;
         state = extractParamFromHtmlReq( allRecParam, param );
-        DSPL( dPrompt + _plugName + " : extracted state = " + state);
+        DSPL( dPrompt + _plugName + F(" : extracted state = ") + state);
         if (state != NOT_FOUND ){
-            if (state == "ON") on(); else off();
-            /** @todo review this statement it should not be so easy it should take into account time and perhaps previous state*/
-            //writeToJson( param, state ); //done in on off methods
+            if (state == "ON") {
+                on(); 
+                /////////////////////////////////////////////////////////////////////////////
+                //    Compute MANUAL MODE  : dureeOff                                      //
+                /////////////////////////////////////////////////////////////////////////////
+                param = JSON_PARAMNAME_OFFDURATION;
+                CEpsStrTime dureeOff;
+                dureeOff.setMode( CEpsStrTime::MMMSS );
+                dureeOff = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
+                _nextTimeToSwitch = 0;
+                DSPL( dPrompt + "dureeOff validity : " + \
+                    (dureeOff.isValid?"valid":"invalid") );
+                if (dureeOff.isValid){
+                    DSPL( dPrompt + _plugName + " : extracted dureeoff en secondes = " + \
+                        (String)dureeOff.getSeconds() );
+                    writeToJson( param, dureeOff.getStringVal() );
+                    _nextTimeToSwitch = dureeOff.computeNextTime();
+                } else writeToJson( param, "" );
+                /////////////////////////////////////////////////////////////////////////////
+                //    Compute MANUAL MODE  : hFin                                          //
+                /////////////////////////////////////////////////////////////////////////////
+                param = JSON_PARAMNAME_ENDTIME;
+                // String hFin = extractParamFromHtmlReq( allRecParam, param );    
+                CEpsStrTime hFin;
+                // hFin.setMode( CEpsStrTime::HHMM );
+                hFin = CEpsStrTime(extractParamFromHtmlReq( allRecParam, param ),\
+                    CEpsStrTime::HHMM );
+                DSPL( dPrompt + "hFin validity : " + (hFin.isValid?"valid":"invalid") );
+                if ( hFin.isValid && !dureeOff.isValid ){
+                    _nextTimeToSwitch = hFin.computeNextTime();
+                    writeToJson( param, hFin.getStringVal() );
+                    DSPL( dPrompt + _plugName + F(" : extracted hFin as String = ") + \
+                        (String)hFin.getStringVal() ); 
+                }
+                DSPL( dPrompt + "nt2s : " + CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
+                writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+                
+            }else { //state == "OFF"
+                _nextTimeToSwitch = 0;
+                writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+                writeToJson( JSON_PARAMNAME_ENDTIME, "" );
+                writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
+                writeToJson( JSON_PARAMNAME_ONDURATION, "" );
+                writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+                _daysOnWeek = 0;
+                writeDaysToJson();
+                off();
+            }
+            _mode = modeId( mode );
+            writeToJson( JSON_PARAMNAME_MODE, mode );
         }
-        
-        param = JSON_PARAMNAME_OFFDURATION;
-        CEpsStrTime dureeOff;
-        dureeOff.setMode( CEpsStrTime::MMMSS );
-        dureeOff = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
-        DSPL( dPrompt + _plugName + " : extracted dureeoff en secondes = " + (String)dureeOff.getSeconds() );
-        if (dureeOff.isValid){
-            //write to json
-            writeToJson( param, dureeOff.getStringVal() );
-            //Calculate nextTimeToSwith and write to json
-            DSPL( dPrompt + "nt2s (in unix time) = " + (String)dureeOff.computeNextTime() );
-            writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)dureeOff.computeNextTime() );
-            /** @todo activate write to json next time to switch*/
-        }
-        //duree avant arret dureeOff if dureeOff then calculate hFin and work only with hFin
-        //ou
-        //heure arret : hFin
-        // ou rien
-        param = JSON_PARAMNAME_ENDTIME;
-        String hFin = extractParamFromHtmlReq( allRecParam, param );        
-        DSPL( dPrompt + _plugName + " : extracted hFin as int = " + hFin.toInt() );
-        //valid hFin or dureeOff
-        //write to json and clean other data
     } else if ( mode == TIMER_MODE ){
-        DSPL( dPrompt + "Timer mode actiuons" );
-        //Timer mode parameters
-        //dureeOn
+        /////////////////////////////////////////////////////////////////////////////
+        //    Compute TIMER MODE                                                  //
+        /////////////////////////////////////////////////////////////////////////////
+        DSPL( dPrompt + F("Timer mode actions") );
+        if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
+        param = JSON_PARAMNAME_ONDURATION;
+        CEpsStrTime dureeOn;
+        dureeOn = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
+        _nextTimeToSwitch = 0; 
+        DSPL( dPrompt + "dureeOn validity : " + \
+            (dureeOn.isValid?"valid":"invalid") );     
+        if (dureeOn.isValid){
+            DSPL( dPrompt + _plugName + " : extracted dureeOn en secondes = " + \
+                (String)dureeOn.getSeconds() );
+            writeToJson( param, dureeOn.getStringVal() );
+            _nextTimeToSwitch = dureeOn.computeNextTime();
+            // param = JSON_PARAMNAME_STATE;
+            state = extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STATE );
+            DSPL( dPrompt + _plugName + F(" : extracted state = ") + state);
+            if (state != NOT_FOUND ){
+                if (state == "ON") {
+                    on();
+                    writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch ); 
+                } else {
+                    off();
+                    writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
+                }
+            }
+            _mode = modeId( mode );
+            writeToJson( JSON_PARAMNAME_MODE, mode );            
+        } else { //onDuration not valid
+            DSPL( dPrompt + "TIMER mode : an invalid parameter was entered, no change made");
+            // writeToJson( JSON_PARAMNAME_ONDURATION, "" );
+            //risk : corrupted parameters for prev mode
+            // writeToJson( JSON_PARAMNAME_MODE, prevMode );
+            // writeToJson( JSON_PARAMNAME_MODE, MANUAL_MODE );
+            // writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
+            // off();
+        }        
+           
     } else if ( mode == CYCLIC_MODE ){
-        DSPL( dPrompt + "Cyclic mode actions" ); 
+        /////////////////////////////////////////////////////////////////////////////
+        //    Compute CYCLIC MODE                                                  //
+        /////////////////////////////////////////////////////////////////////////////
+        DSPL( dPrompt + F("Cyclic mode actions") ); 
+        if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
+        CEpsStrTime dureeOn;
+        dureeOn = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_ONDURATION ), \
+            CEpsStrTime::MMM );
+        DSPL(dPrompt + "extracted duree on : " + dureeOn.getStringVal() );
+        CEpsStrTime dureeOff;
+        dureeOff = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_OFFDURATION ), \
+            CEpsStrTime::MMM ); 
+        DSPL(dPrompt + "extracted duree off : " + dureeOff.getStringVal() );
         //cyclic mode parameters
-        //dureeOn//dureeOff//hDebut
+        //dureeOn//dureeOff//[hDebut]
+        CEpsStrTime hDebut;
+        hDebut = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STARTTIME ), \
+            CEpsStrTime::HHMM );
+        if ( dureeOn.isValid && dureeOff.isValid ){
+            if ( hDebut.isValid ){
+                off();
+                writeToJson( JSON_PARAMNAME_STARTTIME, hDebut.getStringVal() );
+                _nextTimeToSwitch = hDebut.computeNextTime();
+            } else {
+                on();
+                writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+                _nextTimeToSwitch = dureeOn.computeNextTime();
+            }
+            writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+            writeToJson( JSON_PARAMNAME_ONDURATION, dureeOn.getStringVal() );
+            writeToJson( JSON_PARAMNAME_OFFDURATION, dureeOff.getStringVal() );
+            _mode = modeId( mode );
+            writeToJson( JSON_PARAMNAME_MODE, mode );            
+        } else { //onDuration and/or offDuration not valid
+            DSPL( dPrompt + "CYCLIC mode : an invalid parameter was found, no change made");
+            // writeToJson( JSON_PARAMNAME_ONDURATION, "" ); 
+            // writeToJson( JSON_PARAMNAME_OFFDURATION, "" ); 
+            // writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+            //risk : corrupted parameters for prev mode
+            // writeToJson( JSON_PARAMNAME_MODE, prevMode ); 
+            // writeToJson( JSON_PARAMNAME_MODE, MANUAL_MODE );
+            // writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
+            // off();
+        } 
     } else if ( HEBDO_MODE ){
-        DSPL( dPrompt + "Hebdo mode actions" );
+        DSPL( dPrompt + F("Hebdo mode actions") );
+        /////////////////////////////////////////////////////////////////////////////
+        //    Compute HEBDO MODE                                                  //
+        /////////////////////////////////////////////////////////////////////////////
         //hebdo mode parameters
         //hdebut hFin
+        CEpsStrTime hDebut, hFin;
+        hDebut = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STARTTIME ),\
+            CEpsStrTime::HHMM );
+         hFin = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_ENDTIME ),\
+            CEpsStrTime::HHMM );   
+        if (hDebut.isValid && hFin.isValid ){
+            String daysParam[7];
+            daysParam[0] = HTMLREQ_SUNDAY;
+            daysParam[1] = HTMLREQ_MONDAY;
+            daysParam[2] = HTMLREQ_TUESDAY;
+            daysParam[3] = HTMLREQ_WEDNESTDAY;
+            daysParam[4] = HTMLREQ_THURSDAY;
+            daysParam[5] = HTMLREQ_FRIDAY;
+            daysParam[6] = HTMLREQ_SATURDAY;
+            uint8_t newDayOfWeek = 0;
+            for ( int i = 0; i < 7 ; i++ ){
+                if ( extractParamFromHtmlReq( allRecParam, daysParam[i] ) != NOT_FOUND )
+                    bitSet ( newDayOfWeek, i );
+            }
+            //if all is valid
+            writeToJson( JSON_PARAMNAME_STARTTIME, hDebut.getStringVal() );
+            writeToJson( JSON_PARAMNAME_ENDTIME, hFin.getStringVal() );
+            _daysOnWeek = newDayOfWeek;
+            writeDaysToJson();
+            // prepare data for in or out of bounds test
+            DateTime now = CRtc::now();
+            int h, m;
+            DateTime toDay_hDebut_DT, toDay_hFin_DT;
+            sscanf( hDebut.getStringVal().c_str(),"%d:%d", &h, &m);
+            toDay_hDebut_DT = DateTime( now.year(), now.month(), now.day(),h,m,0);
+            sscanf( hFin.getStringVal().c_str(),"%d:%d", &h, &m);
+            toDay_hFin_DT = DateTime( now.year(), now.month(), now.day(),h,m,0);
+            DSPL( dPrompt + F("To day H debut : ") + \
+                CEpsStrTime::unixTime2String( toDay_hDebut_DT.unixtime() ) ); 
+            DSPL( dPrompt + F("To day H fin : ") + \
+                CEpsStrTime::unixTime2String( toDay_hFin_DT.unixtime() ) );
+            // test if now is in bounds or out of bounds    
+            if ( now.unixtime() < toDay_hFin_DT.unixtime() && \
+                now.unixtime() > toDay_hDebut_DT.unixtime() && \
+                bitRead( _daysOnWeek, now.dayOfTheWeek() ) ){
+                on();
+                _nextTimeToSwitch = hFin.computeNextTime();
+                DSPL( dPrompt + F("In bounds, possible next time : ") + \
+                    CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
+            } //current date/time (now) is out of the limits 
+            else {
+                _nextTimeToSwitch = hDebut.computeNextTime( _daysOnWeek );
+                DSPL( dPrompt + F("Out of bounds, possible next time : ") + \
+                    CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
+                if ( _state) off(); // confirme off 
+            }
+            writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+            _mode = modeId( mode );
+            writeToJson( JSON_PARAMNAME_MODE, mode );             
+        } //not all valid
+        else {
+            DSPL( dPrompt + "HEBDO mode : an invalid parameter was found, no change made");
+        }
     } else if ( mode ==  CLONE_MODE){
-        DSPL( dPrompt + "clone mode actions" );
+        DSPL( dPrompt + F("clone mode actions") );
         //clode mode parameters
     }
 /** @todo complete this function !*/ 
@@ -313,7 +548,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
 */
 String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
     DEFDPROMPT("extract param");
-    DSPL( dPrompt + "Search for : " + param);
+    DSPL( dPrompt + F("Search for : ") + param);
     param +="=";
     int pos = allRecParam.indexOf( param );
     //DSPL( dPrompt + "Pos brut = " + (String)pos);
@@ -361,4 +596,125 @@ void CPowerPlug::writeToJson( String param, String value ){
         // return true;  
 /** @todo perhaps add error handling as in readFromJson()*/        
     }    
+}
+
+/** 
+ @fn void CPowerPlug::writeDaysToJson()
+ @brief Method to write checked day of hebdo mode on json config file
+ @return no return value and no parameter
+
+It works on _dayOfWeek member
+*/
+void CPowerPlug::writeDaysToJson(){
+    DEFDPROMPT( "write days to jSon");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    // DSPL( dPrompt);
+    if (configFile) {
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+        //read the file
+        configFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+            JsonObject& plug = json[_plugName]; 
+            // DSPL( dPrompt + _plugName + " : " + param + " = " + value);
+            // plug[param] = value; 
+            JsonArray& plugJours = plug["Jours"];
+        //set values
+            for (int i = 0; i<7; i++){
+                if ( bitRead( _daysOnWeek, i ) ) plugJours[ i ]="ON";
+                else plugJours[ i ] = "OFF";
+            }
+        //and rewrite to the file
+            configFile.seek(0, SeekSet);
+            json.prettyPrintTo(configFile);
+            // plug.prettyPrintTo(Serial);
+            // DSPL();
+        } else {
+            DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+            // return false;
+        }
+        configFile.close();
+        // return true;  
+/** @todo perhaps add error handling as in readFromJson()*/        
+    }    
+}
+
+/** 
+ @fn void CPowerPlug::switchAtTime()
+ @brief after call isItTimeToSwitch, this fucntion switch the plug as needed and...
+ @return no return value and no parameter
+
+Compute next time to switch if necessary regardless of _mode
+*/
+void CPowerPlug::switchAtTime(){
+    DEFDPROMPT( "switch at Time");
+    String sMode = modes[ _mode ];
+    if ( sMode == MANUAL_MODE ){
+        off();
+        _nextTimeToSwitch = 0;
+        // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+        writeToJson( JSON_PARAMNAME_ENDTIME, "" );
+        writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
+        writeToJson( JSON_PARAMNAME_ONDURATION, "" );
+        writeToJson( JSON_PARAMNAME_STARTTIME, "" );   
+    } else if ( sMode == TIMER_MODE ){
+        off();
+        _nextTimeToSwitch = 0;
+        // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );      
+    } else if ( sMode == CYCLIC_MODE ){
+        CEpsStrTime duree;
+        if (_state){
+            off();
+            duree = (CEpsStrTime)readFromJson( JSON_PARAMNAME_OFFDURATION ); 
+        } else {
+            on();
+            duree = (CEpsStrTime)readFromJson( JSON_PARAMNAME_ONDURATION );
+        }
+        _nextTimeToSwitch = duree.computeNextTime();
+        // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+    }else if ( sMode == HEBDO_MODE ){
+        DSP( dPrompt + F("Hebdo mise") );
+        CEpsStrTime nextHour;
+        if (_state){
+            off();
+            DSPL( F("OFF") );
+            nextHour = CEpsStrTime(readFromJson( JSON_PARAMNAME_STARTTIME ),\
+                CEpsStrTime::HHMM ); 
+        } else {
+            on();
+            DSPL( F("ON") );
+            nextHour = CEpsStrTime(readFromJson( JSON_PARAMNAME_ENDTIME ),\
+                CEpsStrTime::HHMM ); 
+        };
+        _nextTimeToSwitch =  nextHour.computeNextTime( _daysOnWeek ); 
+    }
+    writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );    
+}
+
+
+void CPowerPlug::handleBpClic(){
+    String sMode = getStringMode();
+    if ( sMode == MANUAL_MODE ){
+        if ( _state ) {
+            if ( _nextTimeToSwitch )
+                switchAtTime(); //force off and reset nt2s
+            else off();
+        } else on();   
+    } else if ( sMode == TIMER_MODE ){
+        //restart timer
+        //if on jsut restart timer
+        //if off put on and restart timer
+        //restart timer is compute new nextTimeToSwitch
+        CEpsStrTime dureeOn;
+        dureeOn = (CEpsStrTime)readFromJson( JSON_PARAMNAME_ONDURATION );
+        _nextTimeToSwitch = dureeOn.computeNextTime();
+        writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+        on();
+    /** @todo take into account bp action in cyclic mode */
+    /** @todo take into account bp action in hebdo mode */
+    }
+    bp.acquit();    
 }
