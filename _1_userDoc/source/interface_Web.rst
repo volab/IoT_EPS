@@ -29,6 +29,8 @@ Lors de l'accès à la page, en cas de rafraichissement ou lors d'une action sur
 chaque prise présente un résumé de son état et du mode dans lequel elle est configurée. Ces
 informations sont directement lue depuis le fichiers 'config3.json'.
 
+    **N.B: Ce mode ne sera pas retenu**
+
 Résumer global
 --------------
 
@@ -36,6 +38,8 @@ Lors de l'accès à la page, en cas de rafraichissement ou lors d'une action sur
 seul un résumer global de l'état et de la configuration de chaque prise est présenté à 
 l'utilisateur. Les éléments "PRISE" seront masqués. Pour accéder à la configuration d'une prise, il 
 faut cliquer sur nom dans la barre (ou le menu) de navigation.
+
+    **N.B: Ce mode sera utilisé**
 
 Comportement responcive
 =======================
@@ -100,6 +104,8 @@ Mode Hebdomadaire
 
     * Le champ de saisie "Heure de fin" permet de définir à partir de laquelle la prise s'éteint.
       Cet élément est obligatoire.
+
+    **N.B:** Les champs "Heure de début" et "Heure de fin" ne peuvent pas avoir la même valeur.
 
     * Le sélecteur "Arrêt provisoire" Arrête la prise mais ne change pas la configuration de la
       prise. Lorsque cet élément est sélectionné, tous les éléments associés au mode en cours sont

@@ -114,99 +114,94 @@ class C_Plug{
         /* Permet d'initialiser les QuerySelector des boutons radio pour le 'modeSelector */
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
-        this.modeManuel = document.querySelector("." + v_colorPlug + ".modeSelector.Manuel");
-        this.modeMinuterie = document.querySelector("." + v_colorPlug + ".modeSelector.Minuterie");
-        this.modeCyclique = $(`.${v_colorPlug}.modeSelector.Cyclique`);
-        this.modeHedbomadaire = $(`.${v_colorPlug}.modeSelector.Hebdomadaire`);
-        // this.modeClone = document.querySelector("." + v_colorPlug + ".modeSelector.Clone");
-        this.modeClone = $(`.${v_colorPlug}.modeSelector.Clone`);
+        this.modeManuel = $(`.modeSelector.Manuel`);
+        this.modeMinuterie = $(`.modeSelector.Minuterie`);
+        this.modeCyclique = $(`.modeSelector.Cyclique`);
+        this.modeHedbomadaire = $(`.modeSelector.Hebdomadaire`);
+        this.modeClone = $(`.modeSelector.Clone`);
     }
 
     f_setQueryManuel(v_colorPlug){
         /* Permet d'initialiser les QerySelector pour le mode Manuel */
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
-        this.manuelDiv = document.querySelector("." + v_colorPlug + ".Manuel.div_subSummary");
+        this.manuelDiv = $(`.Manuel.div_subSummary`);
             //sub div colone 1
-        this.manuelDiv_on_off  = document.querySelector("." + v_colorPlug + ".Manuel .on_off" );
-        this.manuelON  = document.querySelector("." + v_colorPlug + ".Manuel.ON" );
-        this.manuelOFF  = document.querySelector("." + v_colorPlug + ".Manuel.OFF" );
+        this.manuelDiv_on_off  = $(`.Manuel .on_off`);
+        this.manuelON  = $(`.Manuel.ON`);
+        this.manuelOFF  = $(`.Manuel.OFF`);
             //sub div colone 2
-        this.manuelDivDiffTypeSelector  = document.querySelector("." + v_colorPlug + ".Manuel.div_diffTypeSelector" );
-        this.manuelDiffAt  = document.querySelector("." + v_colorPlug + ".Manuel.diffAt" );
-        this.manuelDiffIn  = document.querySelector("." + v_colorPlug + ".Manuel.diffIn" );
+        this.manuelDivDiffTypeSelector  = $(`.Manuel.div_diffTypeSelector`);
+        this.manuelDiffAt  = $(`.Manuel.diffAt`);
+        this.manuelDiffIn  = $(`.Manuel.diffIn`);
             //sub div colone 3 (1/2)
-        this.manuelDiv_hFin  = document.querySelector("." + v_colorPlug + ".Manuel.div_hFin" );
-        this.manuel_hFin  = document.querySelector("." + v_colorPlug + ".Manuel.hFin" );
+        this.manuelDiv_hFin  = $(`.Manuel.div_hFin`);
+        this.manuel_hFin  = $(`.Manuel.hFin`);
             //sub div colone 3 (2/2)
-        this.manuelDiv_dureeOff  = document.querySelector("." + v_colorPlug + ".Manuel.div_dureeOff" );
-        this.manuel_dureeOff  = document.querySelector("." + v_colorPlug + ".Manuel.dureeOff" );
+        this.manuelDiv_dureeOff  = $(`.Manuel.div_dureeOff`);
+        this.manuel_dureeOff  = $(`.Manuel.dureeOff`);
         //Submit
-        this.manuelForm = document.querySelector("." + v_colorPlug + ".Manuel.formRequest");
-        this.manuelSubmit = document.querySelector("." + v_colorPlug + ".Manuel.submit" );
+        this.manuelForm = $(`.Manuel.formRequest`);
+        this.manuelSubmit = $(`.Manuel.submit`);
     }
 
     f_setQueryMinuterie(v_colorPlug){
         /* Permet d'initialiser les QerySelector pour le mode Minuterie */
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
         
-        this.minuterieDiv = document.querySelector("." + v_colorPlug +  ".Minuterie.div_subSummary");
-        this.minuterie_dureeOn = document.querySelector("." + v_colorPlug +  ".Minuterie.dureeOn");
-        this.minuterieForm = document.querySelector("." + v_colorPlug +  ".Minuterie.formRequest");
-        this.minuterieSubmit = document.querySelector("." + v_colorPlug +  ".Minuterie.submit");
+        this.minuterieDiv = $(`.Minuterie.div_subSummary`);
+        this.minuterie_dureeOn = $(`.Minuterie.dureeOn`);
+        this.minuterieForm = $(`.Minuterie.formRequest`);
+        this.minuterieSubmit = $(`.Minuterie.submit`);
     }
 
     f_setQueryCyclique(v_colorPlug){
         /* Permet d'intialiser les QuerySelector pour le mode Cyclique */
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
-        this.cycliqueDiv = $(`.${v_colorPlug}.Cyclique.div_subSummary`);
-        this.cyclique_dureeOn = $(`.${v_colorPlug}.Cyclique.dureeOn`);
-        this.cyclique_dureeOff = $(`.${v_colorPlug}.Cyclique.dureeOff`);
-        this.cyclique_hDebut = $(`.${v_colorPlug}.Cyclique.hDebut`);
-        this.cycliqueForm = $(`.${v_colorPlug}.Cyclique.formRequest`);
-        this.cycliquePause = $(`.${v_colorPlug}.Cyclique.pause`);
-        this.cycliqueSubmit = $(`.${v_colorPlug}.Cyclique.submit`);
+        this.cycliqueDiv = $(`.Cyclique.div_subSummary`);
+        this.cyclique_dureeOn = $(`.Cyclique.dureeOn`);
+        this.cyclique_dureeOff = $(`.Cyclique.dureeOff`);
+        this.cyclique_hDebut = $(`.Cyclique.hDebut`);
+        this.cycliqueForm = $(`.Cyclique.formRequest`);
+        this.cycliquePause = $(`.Cyclique.pause`);
+        this.cycliqueSubmit = $(`.Cyclique.submit`);
 
     }
     f_setQueryHebdomadaire(v_colorPlug){
         /* Permet d'intialiser les QuerySelector pour le mode Hebdomadaire */
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
             //DIV
-        this.hebdomadaireDiv = $(`.${v_colorPlug}.Hebdomadaire.div_subSummary`);
+        this.hebdomadaireDiv = $(`.Hebdomadaire.div_subSummary`);
             //QuerySelectorAll (liste d'objet)
-        this.hebdomadaireQueryAll = $(`.${v_colorPlug}.Hebdomadaire.daySelector`);
+        this.hebdomadaireQueryAll = $(`.Hebdomadaire.daySelector`);
             //WeekDay
-        this.hebdmadaireAllDays     = $(`.${v_colorPlug}.Hebdomadaire.AllDays`);
-        this.hebdomadaireWeekDay    = $(`input:checkbox.${v_colorPlug}.Hebdomadaire.daySelector`).not(".AllDays");
-        this.hebdomadaireLundi      = $(`.${v_colorPlug}.Hebdomadaire.Lundi`);
-        this.hebdomadaireMardi      = $(`.${v_colorPlug}.Hebdomadaire.Mardi`);
-        this.hebdomadaireMercredi   = $(`.${v_colorPlug}.Hebdomadaire.Mercredi`);
-        this.hebdomadaireJeudi      = $(`.${v_colorPlug}.Hebdomadaire.Jeudi`);
-        this.hebdomadaireVendredi   = $(`.${v_colorPlug}.Hebdomadaire.Vendredi`);
-        this.hebdomadaireSamedi     = $(`.${v_colorPlug}.Hebdomadaire.Samedi`);
-        this.hebdomadaireDimanche   = $(`.${v_colorPlug}.Hebdomadaire.Dimanche`);
+        this.hebdmadaireAllDays     = $(`.Hebdomadaire.AllDays`);
+        this.hebdomadaireWeekDay    = $(`input:checkbox.Hebdomadaire.daySelector`).not(".AllDays");
+        this.hebdomadaireLundi      = $(`.Hebdomadaire.Lundi`);
+        this.hebdomadaireMardi      = $(`.Hebdomadaire.Mardi`);
+        this.hebdomadaireMercredi   = $(`.Hebdomadaire.Mercredi`);
+        this.hebdomadaireJeudi      = $(`.Hebdomadaire.Jeudi`);
+        this.hebdomadaireVendredi   = $(`.Hebdomadaire.Vendredi`);
+        this.hebdomadaireSamedi     = $(`.Hebdomadaire.Samedi`);
+        this.hebdomadaireDimanche   = $(`.Hebdomadaire.Dimanche`);
             //Time Selector
-        this.hebdomadaire_hDebut    = $(`.${v_colorPlug}.Hebdomadaire.hDebut`);
-        this.hebdomadaire_hFin      = $(`.${v_colorPlug}.Hebdomadaire.hFin`);
+        this.hebdomadaire_hDebut    = $(`.Hebdomadaire.hDebut`);
+        this.hebdomadaire_hFin      = $(`.Hebdomadaire.hFin`);
             //submit
-        this.hebdomadaireForm       = $(`.${v_colorPlug}.Hebdomadaire.formRequest`);
-        this.hebdomadairePause      = $(`.${v_colorPlug}.Hebdomadaire.pause`);
-        this.hebdomadaireSubmit     = $(`.${v_colorPlug}.Hebdomadaire.submit`);
+        this.hebdomadaireForm       = $(`.Hebdomadaire.formRequest`);
+        this.hebdomadairePause      = $(`.Hebdomadaire.pause`);
+        this.hebdomadaireSubmit     = $(`.Hebdomadaire.submit`);
     }
 
     f_setQueryClone(v_colorPlug){
         /* Permet d'initialiser les QuerySelector pour le mode Clone */
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
-        // this.cloneDiv = document.querySelector("."+ v_colorPlug +".Clone.div_subSummary");
-        // this.cloneSelector = document.querySelector("."+ v_colorPlug +".Clone.plugSelector");
-        // this.hebdomadairePause = document.querySelector("."+ v_colorPlug +".Hebdomadaire.pause");
-        // this.cloneSubmit = document.querySelector("."+ +".Clone.submitReset");
-        this.cloneDiv               = $(`.${v_colorPlug}.Clone.div_subSummary`);
-        this.cloneSelector          = $(`.${v_colorPlug}.Clone.plugSelector`);
-        this.cloneForm              = $(`.${v_colorPlug}.Clone.formRequest`);
-        this.cloneSubmit            = $(`.${v_colorPlug}.Clone.submitReset`);
+        this.cloneDiv               = $(`.Clone.div_subSummary`);
+        this.cloneSelector          = $(`.Clone.plugSelector`);
+        this.cloneForm              = $(`.Clone.formRequest`);
+        this.cloneSubmit            = $(`.Clone.submit`);
     }
 
     f_getQueryTarget(event){

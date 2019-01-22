@@ -1,3 +1,6 @@
+$(document).ready(()=>{
+// start .ready()
+
 const log = new C_MyLog();
 const regEx = new C_RexExPatern();
 const red = new C_Plug("redPlug");
@@ -143,6 +146,7 @@ $(red.cycliqueForm).on(
         event.preventDefault();
         $(this).submit();
         log.f_formLog( red.f_getQueryTarget(event));
+        $(red.cycliqueForm)[0].reset();
     }
 );
 
@@ -211,6 +215,7 @@ $(red.hebdomadaireForm).on(
         event.preventDefault();
         $(this).submit();
         log.f_formLog( red.f_getQueryTarget(event));
+        $(red.hebdomadaireForm)[0].reset();
     }
 );
 
@@ -248,5 +253,9 @@ $(red.cloneForm).on(
         console.log("form Submit");
         $(this).submit();
         log.f_formLog( red.f_getQueryTarget(event));
+        $(red.cloneForm)[0].reset();
     }
 );
+
+// .ready() end
+});
