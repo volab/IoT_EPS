@@ -23,6 +23,7 @@
 #include <Adafruit_MCP23017.h>
 #include <FastLED.h>
 // #include <Array.h>
+#include <nanoI2CIOExpLib.h>
 
 #include "SerialCommand.h"
 #include "debugSerialPort.h"

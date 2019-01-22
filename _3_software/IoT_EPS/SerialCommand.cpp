@@ -43,6 +43,8 @@ return see in the code for all informations.
 #include "CRtc.h"
 #include "configParam.h"
 #include "cEpsStrTime.h"
+// #include <Array.h>
+#include <nanoI2CIOExpLib.h>
 
 //for ntp
 #include <NTPClient.h>
@@ -52,6 +54,7 @@ return see in the code for all informations.
 
 extern int __heap_start, *__brkval;
 extern ConfigParam cParam; /**< @brief to display wifi mode non static member ! */
+extern CNanoI2CIOExpander ioexp;
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -161,6 +164,9 @@ int timeZone = 1; // Paris heure d'hiver
             date = (String)now.day() + "/" + (String)now.month() + "/" + (String)now.year();
             INTERFACE.println( date );
             break;
+        case 'N':
+            ioexp.test();
+            break;
         
  
 /***** PRINT CARRIAGE RETURN IN SERIAL MONITOR WINDOW  ****/       
@@ -184,6 +190,7 @@ void SerialCommand::displayCommandsList(){
     /** @todo remove after debug of nextCheckedDay */
     list += F("<D or d HH:MM days>\n");
     list += F("<T or t various_param> for code test\n");
+    list += F("<N> nano test\n");
 	INTERFACE.print( list );
 }
 
