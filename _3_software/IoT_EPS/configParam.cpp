@@ -14,7 +14,7 @@
 
 /**
 @fn bool ConfigParam::readFromJson()
-@brief the methode to read the file config parameters
+@brief the methode to read the file config parameters...
 @return a booleen true on success 
 
 This code is greatly inspired from ARDUINO/ESP core "configFile" exemple
@@ -73,7 +73,7 @@ bool ConfigParam::readFromJson(){
 
 /** 
  @fn void ConfigParam::displayJson()
- @brief A function to display config json file
+ @brief A function to display config json file...
  @return no return value and no parameter
 
 This function is call by SerialCommand. It works with debugSerialPort
@@ -111,7 +111,7 @@ void ConfigParam::displayJson(){
 
 /** 
  @fn void ConfigParam::displayWifiMode()
- @brief A function to display cactual wifi mode
+ @brief A function to display cactual wifi mode...
  @return no return value and no parameter
 
 This function is call by SerialCommand. It works with debugSerialPort

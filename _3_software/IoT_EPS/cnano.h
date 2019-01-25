@@ -14,7 +14,7 @@
 /**
 * @class CNano CNano.h
 * @brief The purpose of this class is to replace Cmcp class in the project...
- @detail We decide to replace MCP23017 digitalioexpander by nanoI2CIOExpander to provide access to 8 digitals I/O and 
+ @details We decide to replace MCP23017 digitalioexpander by nanoI2CIOExpander to provide access to 8 digitals I/O and 
  more important 6 analog inputs
  This class will be used by CPowerPlug as base class
 */
