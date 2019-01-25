@@ -70,7 +70,6 @@ bool simpleManualMode = false;
 
 Flasher wifiLed;
 
-//CNanoI2CIOExpander ioexp;
 
 void setup(){
 
@@ -91,9 +90,7 @@ void setup(){
 	
     cParam.begin();
     wifiCred.begin();
-	
-	//ioexp.begin();
-    
+	   
     /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                           //
     /////////////////////////////////////////////////////////////////////////////

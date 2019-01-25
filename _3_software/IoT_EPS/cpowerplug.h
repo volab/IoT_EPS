@@ -39,7 +39,6 @@ typedef CRGB::HTMLColorCode plugColor_t; /**< @brief see FastLed lib pixelstype.
 
 Inherit of the Cmcp class that initialize mcp23711 I2C Io expander component
 */
-// class CPowerPlug : public Cmcp {
 class CPowerPlug : public CNano {
     public:
  
@@ -61,16 +60,7 @@ class CPowerPlug : public CNano {
         
         void setMode( int mode ){ _mode = mode; }
         int getMode(){ return _mode; }
-        
-        // void setOnOffTime( unsigned long onDelay, unsigned long offDelay ){
-            // _onDelay = onDelay; 
-            // _offDelay = offDelay;
-        // }
-        // void setOnOffTime( unsigned long onDelay, unsigned long offDelay, DateTime startDate ){
-            // _startDate = startDate;
-            // setOnOffTime( onDelay, offDelay );          
-        // }
-        
+              
         bool readFromJson();
         String readFromJson( String param );
         void writeToJson( String param, String val );
@@ -90,17 +80,13 @@ class CPowerPlug : public CNano {
         String _plugName ; /**< @brief redPlug, greenPlug... as it is named in the html page*/
         int _mode = 0; /**< @brief MANUAL, CYCLIC... in int form see modeId method*/
         int _onOffLedPin;/**< a pin to display plug state diff of the cmd plug pin*/
-        // plugColor_t _couleur = ROUGE;
+
         plugColor_t _couleur = CRGB::Red;
         String extractParamFromHtmlReq( String allRecParam, String Param );
         void updateOutputs( bool writeToJsonCount = true );
         uint32_t _nextTimeToSwitch;        
         
         uint8_t _daysOnWeek; 
-
-
-
-
         
 };
 
