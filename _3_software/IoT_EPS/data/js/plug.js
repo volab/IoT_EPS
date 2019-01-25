@@ -217,14 +217,14 @@ class C_Plug{
     f_displayNoneAll(){
         /* Permet de masquer tous les DIV à l'intérieur des FILDSET */
         //mode Manuel
-        this.manuelDiv.style.display="none";
-        this.manuelDivDiffTypeSelector.style.display="none";
-        this.manuelDiv_hFin.style.display="none";
-        this.manuelDiv_dureeOff.style.display="none";
-        this.manuelDiffAt.checked = false;
-        this.manuelDiffIn.checked = false;
+        this.manuelDiv.css("display", "none");
+        this.manuelDivDiffTypeSelector.css("display", "none");
+        this.manuelDiv_hFin.css("display", "none");
+        this.manuelDiv_dureeOff.css("display", "none");
+        // this.manuelDiffAt.checked = false;
+        // this.manuelDiffIn.checked = false;
         //masquage des DIV Minuterie
-        this.minuterieDiv.style.display="none";
+        this.minuterieDiv.css("display", "none");
         //masquage des DIV Cyclique
         this.cycliqueDiv.css("display", "none");
         //masquage des DIV Hebdomadaire
@@ -240,7 +240,8 @@ class C_Plug{
 
         if ((v_displayStatus === "block")||(v_displayStatus === "none")){
             this.f_displayNoneAll();
-            this.manuelDiv.style.display=v_displayStatus;
+            this.manuelDiv.css("display", v_displayStatus);
+            this.manuelForm[0].reset();
         }
     }
 
@@ -249,7 +250,7 @@ class C_Plug{
          * Les valeur attendue sont: "none" ou "block"
          */
         if ((v_displayStatus === "block")||(v_displayStatus === "none")){
-            this.manuelDivDiffTypeSelector.style.display = v_displayStatus;
+            this.manuelDivDiffTypeSelector.css("display", v_displayStatus);
         }
     }
 
@@ -262,7 +263,7 @@ class C_Plug{
                 this.manuel_dureeOff.value = "";
                 this.manuelDiffIn.checked = false;
             }
-            this.manuelDiv_dureeOff.style.display = v_displayStatus;
+            this.manuelDiv_dureeOff.css("display", v_displayStatus);
         }
     }
 
@@ -275,7 +276,7 @@ class C_Plug{
                 this.manuel_hFin.value = "";
                 this.manuelDiffAt.checked = false;
             }
-            this.manuelDiv_hFin.style.display = v_displayStatus;
+            this.manuelDiv_hFin.css("display", v_displayStatus);
         }
     }
 
@@ -286,7 +287,7 @@ class C_Plug{
 
         if ((v_displayStatus === "block")||(v_displayStatus === "none")){
             this.f_displayNoneAll();
-            this.minuterieDiv.style.display=v_displayStatus;
+            this.minuterieDiv.css("display", v_displayStatus);
         }
     }
 

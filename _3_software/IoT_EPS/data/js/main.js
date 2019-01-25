@@ -9,92 +9,97 @@ const red = new C_Plug("redPlug");
 /*
  * Events Manuel
  */
-red.modeManuel.addEventListener(
+$(red.modeManuel).on(
     "click", 
-    function(){
+    ()=>{
         red.f_displayManuelDiv("block");
-    },
-    false);
+    }
+);
 
-red.manuelON.addEventListener(
+$(red.manuelON).on(
     "click",
-    function(){
+    ()=>{
         red.f_displayTypeSelector("block"); 
-    },
-    false);
+        $(red.manuelSubmit)[0].disabled = false;
+    }
+);
 
-red.manuelOFF.addEventListener(
+$(red.manuelOFF).on(
     "click",
-    function(){
+    ()=>{
         red.f_displayTypeSelector("none"); 
         red.f_displayDiv_dureeOff("none");
         red.f_displayDiv_hFin("none");
-        red.manuelSubmit.disabled = false;
-    },
-    false);    
+        red.manuelSubmit[0].disabled = true;
+        red.manuelForm.submit();
+        red.manuelOFF[0].checked=true;
+    }
+);
 
-red.manuelDiffAt.addEventListener(
+$(red.manuelDiffAt).on(
     "click",
-    function(){
+    ()=>{
         red.f_displayDiv_hFin("block");
         red.f_displayDiv_dureeOff("none");
-    },
-    false);    
+    }
+);    
 
- red.manuelDiffIn.addEventListener(
+$(red.manuelDiffIn).on(
     "click",
-    function(){
+    ()=>{
         red.f_displayDiv_hFin("none");
         red.f_displayDiv_dureeOff("block");
-    },
-    false);
+    }
+);
 
-red.manuel_hFin.addEventListener(
+$(red.manuel_hFin).on(
     "input",
-    function(event){
-        regEx.f_callbackRegEx(event)},
-        false);
+    (event)=>{
+        regEx.f_callbackRegEx(event)
+    }
+);
 
-red.manuel_dureeOff.addEventListener(
+$(red.manuel_dureeOff).on(
     "input",
-    function(event){
-        regEx.f_callbackRegEx(event)},
-        false);
+    (event)=>{
+        regEx.f_callbackRegEx(event)
+    }
+);
 
-red.manuelForm.addEventListener(
+$(red.manuelForm).on(
     "submit",
-    function(event){
+    (event)=>{
+        event.preventDefault();
+        $(this).submit();
         log.f_formLog( red.f_getQueryTarget(event));
-        red.manuelForm.submit();
-        red.manuelForm.reset();
-    },
-    false);
-
+        $(red.manuelForm)[0].reset();
+    }
+);
 
 /*
  * Events Minuterie
  */
-red.modeMinuterie.addEventListener(
+$(red.modeMinuterie).on(
     "click", 
-    function(){
+    ()=>{
         red.f_displayMinuterieDiv("block");
-    },
-    false);
+    });
 
-red.minuterie_dureeOn.addEventListener(
+$(red.minuterie_dureeOn).on(
     "input",
-    function(event){
-        regEx.f_callbackRegEx(event)},
-        false);
+    (event)=>{
+        regEx.f_callbackRegEx(event)
+    });
 
-red.minuterieForm.addEventListener(
+$(red.minuterieForm).on(
     "submit",
-    function(event){
+    (event)=>{
+        event.preventDefault();
+        $(this).submit();
         log.f_formLog( red.f_getQueryTarget(event));
-        red.minuterieForm.submit();
-        red.minuterieForm.reset();
-    },
-    false);
+        $(red.minuterieForm)[0].reset();
+    }
+);
 
 /*
  * Events Cyclique
@@ -259,3 +264,33 @@ $(red.cloneForm).on(
 
 // .ready() end
 });
+
+/*
+ * ## TODO
+ *
+ * #. Dans le mode Hebdomadaire, faire en sorte que l'heure de fin ne puisse pas être la 
+ *    même que l'heure de début
+ * 
+ * ####
+ * 
+ * #. Mode Clone: desactiver le selecteur de la prise courante 
+ *    (ex: désactiver la prise rouge si on est ds la prise rouge).
+ * 
+ * ####
+ * 
+ * #. Chagement de class automatique
+ * 
+ * ####
+ *
+ * #. Ajouter un fieldset de résumé de l'état des prises
+ * 
+ * ####
+ *  
+ * #. Gestion de la transition entre les DIV (jqueryui .effect "drop" et "slide")
+ * 
+ * ####
+ * 
+ * #. Navigation responcive (navbar et menu selector)
+ * 
+ * ## TODO
+ */

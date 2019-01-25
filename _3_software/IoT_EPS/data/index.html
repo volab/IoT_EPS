@@ -2,17 +2,15 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <!-- Responcive -->
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
         <!-- Import CSS -->
         <link type="text/css" rel="stylesheet" href="css/bootstrap.css" media="screen,projection"/>
         <link type="text/css" rel="stylesheet" href="css/materialize.css" media="screen,projection"/>
-        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"> -->
         
-        <!-- <link rel="stylesheet" type="text/css" href="css/style_bootstrap.css" /> -->
         <link rel="stylesheet" type="text/css" href="css/style.css" />
 
-        <!-- Responcive -->
 
         <link rel="icon" href="volab.ico" />
         <title id="autoTitle">Accueil IoT_EPS</title>
@@ -143,6 +141,7 @@
                                         <input type="hidden" name="COLOR" value="redPlug">
                                         <input type="hidden" name="Mode" value="Manuel">
                                         <div class="row">
+                                            <!-- ON_OFF Selector -->
                                             <!-- Colone 1 -->
                                             <div class="redPlug Manuel on_off col-md-4">
                                                 <p>Marche arrêt immediat :</p>
@@ -178,7 +177,7 @@
                                                         <label>
                                                             <input 
                                                                 type="radio" 
-                                                                name="diffAt" 
+                                                                name="diffSelector" 
                                                                 value="diffAt"
                                                                 class="redPlug Manuel diffAt">
                                                                 <span>Heure d'arrêt</span>
@@ -189,7 +188,7 @@
                                                         <label>
                                                             <input 
                                                                 type="radio" 
-                                                                name="diffIn" 
+                                                                name="diffSelector" 
                                                                 value="diffIn"
                                                                 class="redPlug Manuel diffIn">
                                                                 <span>Durée avant arrêt</span>
@@ -538,13 +537,6 @@
                 </fieldset>
             </section>
             <hr>
-
-            <!-- greenPlug -->
-            <section class="container-fluid greenPlug">
-                <fieldset class="greenPlug" id="greenPlug">
-                    <legend px-2><h2>Prise Verte</h2></legend>
-                </fieldset>
-            </section>
         </main>
 
         <!-- Footer -->
