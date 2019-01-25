@@ -165,7 +165,7 @@ int timeZone = 1; // Paris heure d'hiver
             INTERFACE.println( date );
             break;
         case 'N':
-            ioexp.test();
+            //ioexp.test();
             break;
         
  
@@ -190,7 +190,7 @@ void SerialCommand::displayCommandsList(){
     /** @todo remove after debug of nextCheckedDay */
     list += F("<D or d HH:MM days>\n");
     list += F("<T or t various_param> for code test\n");
-    list += F("<N> nano test\n");
+    //list += F("<N> nano test\n");
 	INTERFACE.print( list );
 }
 

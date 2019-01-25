@@ -39,7 +39,8 @@ typedef CRGB::HTMLColorCode plugColor_t; /**< @brief see FastLed lib pixelstype.
 
 Inherit of the Cmcp class that initialize mcp23711 I2C Io expander component
 */
-class CPowerPlug : public Cmcp {
+// class CPowerPlug : public Cmcp {
+class CPowerPlug : public CNano {
     public:
  
         CPowerPlug(){}

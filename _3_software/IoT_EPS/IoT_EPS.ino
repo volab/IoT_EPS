@@ -70,7 +70,7 @@ bool simpleManualMode = false;
 
 Flasher wifiLed;
 
-CNanoI2CIOExpander ioexp;
+//CNanoI2CIOExpander ioexp;
 
 void setup(){
 
@@ -92,7 +92,7 @@ void setup(){
     cParam.begin();
     wifiCred.begin();
 	
-	ioexp.begin();
+	//ioexp.begin();
     
     /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                           //
@@ -129,7 +129,8 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
     
-    Cmcp::init();
+    // Cmcp::init();
+    CNano::init();
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CPowerPlug::modeId("MANUEL") );
     plugs[0].setColor( CRGB::Red );
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );

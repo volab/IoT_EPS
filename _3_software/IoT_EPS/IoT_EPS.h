@@ -42,7 +42,8 @@
 
 #define CONFIGFILENAME "/config3.json"
 
-#include "Cmcp.h"
+// #include "Cmcp.h"
+#include "cnano.h"
 #include "CPowerPlug.h"
 
 #define HTML_JSON_REDPLUGNAME "redPlug"

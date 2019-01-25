@@ -48,8 +48,10 @@ void CPowerPlug::begin( int pin , int onOffLedPin, int bpPin, int mode ){
     _mode = mode;
     _state = OFF;
     updateOutputs( false );
-    _mcp.pinMode( _pin, OUTPUT );
-    _mcp.pinMode( _onOffLedPin, OUTPUT );
+    // _mcp.pinMode( _pin, OUTPUT );
+    _nano.pinMode( _pin, OUTPUT );
+    // _mcp.pinMode( _onOffLedPin, OUTPUT );
+    _nano.pinMode( _onOffLedPin, OUTPUT );
     bp.begin( bpPin );
 }
 
@@ -136,8 +138,10 @@ This function read and write onoffcount in the json file
 */
 void CPowerPlug::updateOutputs( bool writeToJsonCount ){
     DEFDPROMPT( "updateOutputs");
-    _mcp.digitalWrite( _pin, _state );
-    _mcp.digitalWrite( _onOffLedPin, _state );
+    // _mcp.digitalWrite( _pin, _state );
+    _nano.digitalWrite( _pin, _state );
+    // _mcp.digitalWrite( _onOffLedPin, _state );
+    _nano.digitalWrite( _onOffLedPin, _state );
     if ( writeToJsonCount ){
         String strCount = readFromJson( JSON_PARAMNAME_ONOFCOUNT );
         // int iCount = strCount.toInt();
