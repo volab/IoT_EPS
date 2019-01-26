@@ -20,7 +20,6 @@ $(red.manuelON).on(
     "click",
     ()=>{
         red.f_displayTypeSelector("block"); 
-        $(red.manuelSubmit)[0].disabled = false;
     }
 );
 
@@ -30,9 +29,6 @@ $(red.manuelOFF).on(
         red.f_displayTypeSelector("none"); 
         red.f_displayDiv_dureeOff("none");
         red.f_displayDiv_hFin("none");
-        red.manuelSubmit[0].disabled = true;
-        red.manuelForm.submit();
-        red.manuelOFF[0].checked=true;
     }
 );
 
@@ -194,8 +190,9 @@ $(red.hebdomadaire_hDebut).on(
 $(red.hebdomadaire_hFin).on(
     "input",
     function(event){
+        regEx.f_compare(event, "hDebut", false);
         regEx.f_callbackRegEx(event);
-    });
+});
 
 $(red.hebdomadairePause).on(
     "click",
@@ -268,7 +265,7 @@ $(red.cloneForm).on(
 /*
  * ## TODO
  *
- * #. Dans le mode Hebdomadaire, faire en sorte que l'heure de fin ne puisse pas être la 
+ * #. Mode Hebdomadaire: faire en sorte que l'heure de fin ne puisse pas être la 
  *    même que l'heure de début
  * 
  * ####
