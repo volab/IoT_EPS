@@ -17,6 +17,7 @@ red.f_clean();
 $(red.modeManuel).on(
     "click", 
     ()=>{
+        regEx.f_clean();
         red.f_displayManuelDiv("block");
     }
 );
@@ -83,6 +84,7 @@ $(red.manuelForm).on(
 $(red.modeMinuterie).on(
     "click", 
     ()=>{
+        regEx.f_clean();
         red.f_displayMinuterieDiv("block");
     });
 
@@ -108,6 +110,7 @@ $(red.minuterieForm).on(
 $(red.modeCyclique).on(
     "click", 
     function(){
+        regEx.f_clean();
         red.f_displayCycliqueDiv("block");
     });
 
@@ -132,12 +135,14 @@ $(red.cyclique_hDebut).on(
 $(red.cycliquePause).on(
     "click",
     (event)=>{
-        let inputJQSelector = $("input.redPlug.Cyclique").not(".pause");
+        let inputJQSelector = $("input.redPlug.Cyclique").not(".pause").not($(red.modeCyclique));
         if ($(red.cycliquePause).is(":checked")){
+            red.f_toggleCycliquePauseBool();
             inputJQSelector.each((i)=>{
                 inputJQSelector[i].disabled=true;
             });
         } else {
+            red.f_toggleCycliquePauseBool();
             inputJQSelector.each((i)=>{
                 inputJQSelector[i].disabled=false;
             });
@@ -152,7 +157,9 @@ $(red.cycliqueForm).on(
         event.preventDefault();
         $(this).submit();
         log.f_formLog( red.f_getQueryTarget(event));
-        $(red.cycliqueForm)[0].reset();
+        if (!red.cycliquePauseBool){
+            $(red.cycliqueForm)[0].reset();
+        }
     }
 );
 
@@ -163,6 +170,7 @@ $(red.cycliqueForm).on(
 $(red.modeHedbomadaire).on(
     "click", 
     function(){
+        regEx.f_clean();
         red.f_displayHebdomadaireDiv("block");
     });
 
@@ -201,12 +209,14 @@ $(red.hebdomadaire_hFin).on(
 $(red.hebdomadairePause).on(
     "click",
     (event)=>{
-        let inputJQSelector = $("input.redPlug.Hebdomadaire").not(".pause");
+        let inputJQSelector = $("input.redPlug.Hebdomadaire").not(".pause").not($(red.modeHedbomadaire));
         if ($(red.hebdomadairePause).is(":checked")){
+            red.f_toggleHebdomadairePauseBool();
             inputJQSelector.each((i)=>{
                 inputJQSelector[i].disabled=true;
             });
         } else {
+            red.f_toggleHebdomadairePauseBool();
             inputJQSelector.each((i)=>{
                 inputJQSelector[i].disabled=false;
             });
@@ -221,7 +231,9 @@ $(red.hebdomadaireForm).on(
         event.preventDefault();
         $(this).submit();
         log.f_formLog( red.f_getQueryTarget(event));
-        $(red.hebdomadaireForm)[0].reset();
+        if (!red.hebdomadairePauseBool){
+            $(red.hebdomadaireForm)[0].reset();
+        }
     }
 );
 
@@ -232,6 +244,7 @@ $(red.hebdomadaireForm).on(
 $(red.modeClone).on(
     "click", 
     function(){
+        regEx.f_clean();
         red.f_displayCloneDiv("block");
     });
 

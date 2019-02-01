@@ -45,7 +45,7 @@ class C_Plug{
         /* Mode Minuterie */
             //Time Selector
         this.minuterieDiv               = null;
-        this.minuterie_dureeOn           = null;
+        this.minuterie_dureeOn          = null;
             //Submit
         this.minuterieForm              = null;
         this.minuterieSubmit            = null;
@@ -60,6 +60,7 @@ class C_Plug{
             //Submit
         this.cycliqueForm               = null;
         this.cycliquePause              = null;
+        this.cycliquePauseBool          = false;
         this.cycliqueSubmit             = null;
 
         /* Mode Hebdomadaire */
@@ -82,6 +83,7 @@ class C_Plug{
             //Submit
         this.hebdomadaireForm           = null;
         this.hebdomadairePause          = null;
+        this.hebdomadairePauseBool      = false;
         this.hebdmadaireSubmit          = null;
 
         /* Mode Clone */
@@ -172,6 +174,7 @@ class C_Plug{
         this.cycliqueSubmit = $(`.Cyclique.submit`);
 
     }
+
     f_setQueryHebdomadaire(v_colorPlug){
         /* Permet d'intialiser les QuerySelector pour le mode Hebdomadaire */
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
@@ -295,7 +298,6 @@ class C_Plug{
         }
     }
 
-
     f_displayCycliqueDiv(v_displayStatus){
         /* permet d'afficher ou de masquer le DIV Cyclique 
          * Les valeur attendue sont: "none" ou "block"
@@ -327,5 +329,13 @@ class C_Plug{
             this.f_displayNoneAll();
             this.cloneDiv.css("display", v_displayStatus);
         }
+    }
+
+    f_toggleCycliquePauseBool(){
+        this.cycliquePauseBool = !this.cycliquePauseBool;
+    }
+
+    f_toggleHebdomadairePauseBool(){
+        this.hebdomadairePauseBool = !this.hebdomadairePauseBool;
     }
 }
