@@ -36,7 +36,7 @@ class C_RexExPatern{
         for (let i=0; i<2; i++){
             v_tmp += "." + v_targetClassList[i];
         }
-        this.v_classList = v_tmp
+        this.v_classList = v_tmp;
     }
 
     f_querySelect(event, target){
@@ -73,6 +73,7 @@ class C_RexExPatern{
 
         this.f_querySelect(event, "input");
         this.f_querySelect(event, "submit");
+        this.f_compare(event, false);
         let v_target = this.queryTarget;
         let v_submit = this.querySubmit;
         
@@ -84,31 +85,45 @@ class C_RexExPatern{
         } else if (v_target.hasClass("patern_duree")){
             v_regEx = this.v_regExDuree;
         }
-        
+
         // comparaison du patern
         if (!v_target.val()){
             v_submit.disabled = false;
         } else if (!v_regEx.test(v_target.val()) || !this.v_validInput) {
             v_target.css("border", "2px solid red");
             v_submit.disabled = true;
+            this.f_errMsg(v_target, true);
+            this.v_validInput = true;
         } else if (v_regEx.test(v_target.val())){
             v_target.css("border", "2px solid green");
             v_submit.disabled = false;
             this.v_validInput = true;
+            this.f_errMsg(v_target, false);
         }
     }
 
-    f_compare(event, v_targetToCompare, v_isEqual){
+    f_compare(event, v_isEqual, v_target1="hDebut", v_target2="hFin"){
         /* Permet de comparer la valeur actuel à celle d'un autre éléments.
          * 
          * Les éléments atendu sont
          *  - event : l'événements qui a générer l'appel de la fonction
-         *  - v_targetToCompare : La cible de l'élément contenant l'élément à comparer
+         * 
+         *  - v_target1 et v_target2 : représentent la source (le champ actif dans lequel la saisie
+         *    est effectuée) et la cible (l'élément dont la valeur sera comparée à celle de la source).
+         *    * Si 'v_target1' est identifié comme source, 'v_target2' deviendra la cible.
+         *    * Si 'v_target2' est identifié comme source, 'v_target1' deviendra la cible.
+         * 
          *  - v_isEqual (Boolean): permet de définir si la valeur à comparer doit être égale ou diférente
          *      true    --> la valeur comparée doit être égale
          *      false   --> la valeur comparée doit être diférente
-         */ 
-        this.f_getClassMode(event);
+         */
+        let v_targetToCompare = null;
+        if ($(event.target).hasClass(v_target1)){
+            v_targetToCompare = v_target2;
+        } else if ($(event.target).hasClass(v_target2)){
+            v_targetToCompare = v_target1;
+        }
+
         let v_target = $(`${this.v_classList}.${v_targetToCompare}`);
 
         if (v_isEqual){
@@ -122,5 +137,63 @@ class C_RexExPatern{
                 // console.log("Identique, c'est pas bien !");
             } 
         }
+    }
+
+    f_errMsg(v_target, v_showSpan){
+        /* Affiche (ou masque) les messages d'erreur de saisie pour les champs "hDebut",
+         * "hFin", "dureeOn" et "dureeOff". 
+         *
+         * Les éléments attentdu sont :
+         *   - v_target : L'élément ciblé par event (this.querytarget)
+         *   - v_showSpan (boolean) : pour définir si la visibilité de l'élément 'span' est Vrai ou Faut
+         */ 
+
+        if (!v_target.val()){
+            // console.log(`valeur vide`);
+            return false;
+        }
+
+        // console.log(`f_errMsg:v_taget :${v_target.val()}`);
+
+         let v_inputType    = null;
+         let v_errMsg       = null;
+
+        if (v_showSpan) {
+            if ((v_target.attr("name")=="hDebut")||(v_target.attr("name")=="hFin")) {
+                v_inputType = "heure";
+            } else if (v_target.hasClass("Minuterie")) {
+                v_inputType = "Minuterie";
+            } else {
+                v_inputType = "duree";
+            }
+
+            // Définission du message d'erreur
+            if (!this.v_validInput) {
+                v_errMsg = `L'heure de fin ne peut pas être la même que l'heure de début`;
+            } else if (v_inputType == "heure") {
+                v_errMsg = `L'heure doit être indiquée sous la forme 'HH:MM'`;
+            } else if (v_inputType == "Minuterie") {
+                v_errMsg = `La durée doit être indiquée sous la forme 'MMM' ou 'MMM:SS'`;
+            } else if (v_inputType == "duree") {
+                v_errMsg = `La durée doit être indiquée sous la forme 'MMM'`;
+            }
+            $("body").append('<span class="infobulle"></span>');
+            let bulle = $(".infobulle");
+            bulle.text(v_errMsg);
+            let v_topPos = v_target.offset().top-v_target.height();
+            let v_leftPos = v_target.offset().left+v_target.width()/2-bulle.width()/2;
+            bulle.css({
+                left:v_leftPos,
+                top:v_topPos
+            });
+        } else {
+            $(".infobulle").remove();
+        }
+    }
+
+    f_clean(){
+        /* Permet de supprimer les éléments visuel ajoutés lors de la vérification des valeurs saisies */
+        $(".infobulle").remove();
+        $("input[type='text']").css("border", "none");
     }
 }

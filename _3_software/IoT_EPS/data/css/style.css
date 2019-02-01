@@ -82,3 +82,17 @@ input::placeholder{
     color: #FF4F4F;
     padding: 10px; 
 }
+
+.infobulle{
+    position: absolute;
+    background: #FF4F4F;
+    padding:3px 7px;
+    opacity: 50%;
+    -webkit-margin: border radius 3px;
+    -moz-margin: border radius 3px;
+    -ms-margin: border radius 3px;
+    -o-margin: border radius 3px;
+    margin: border radius 3px;
+    color:black;
+    text-align: center;
+}

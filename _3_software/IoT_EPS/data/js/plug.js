@@ -110,6 +110,10 @@ class C_Plug{
         this.f_displayNoneAll();
     }
 
+    f_clean(){
+        $("input[type='text']").val("");
+    }
+
     f_setQueryModeSelector(v_colorPlug){
         /* Permet d'initialiser les QuerySelector des boutons radio pour le 'modeSelector */
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;

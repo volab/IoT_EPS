@@ -5,6 +5,11 @@ const log = new C_MyLog();
 const regEx = new C_RexExPatern();
 const red = new C_Plug("redPlug");
 
+/*
+ * Nettoyage avant usage
+ */
+regEx.f_clean();
+red.f_clean();
 
 /*
  * Events Manuel
@@ -190,7 +195,6 @@ $(red.hebdomadaire_hDebut).on(
 $(red.hebdomadaire_hFin).on(
     "input",
     function(event){
-        regEx.f_compare(event, "hDebut", false);
         regEx.f_callbackRegEx(event);
 });
 
@@ -265,11 +269,6 @@ $(red.cloneForm).on(
 /*
  * ## TODO
  *
- * #. Mode Hebdomadaire: faire en sorte que l'heure de fin ne puisse pas être la 
- *    même que l'heure de début
- * 
- * ####
- * 
  * #. Mode Clone: desactiver le selecteur de la prise courante 
  *    (ex: désactiver la prise rouge si on est ds la prise rouge).
  * 
