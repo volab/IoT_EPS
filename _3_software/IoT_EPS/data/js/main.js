@@ -243,17 +243,18 @@ $(red.hebdomadaireForm).on(
 
 $(red.modeClone).on(
     "click", 
-    function(){
+    (event)=>{
         regEx.f_clean();
+        red.f_cloneHideCurrentPlug(event);
         red.f_displayCloneDiv("block");
     });
 
-$(red.cloneSelector).on(
-    "change",
-    (event)=>{
-        console.log( $(red.cloneSelector).val() );
-    }
-)    
+// $(red.cloneSelector).on(
+//     "change",
+//     (event)=>{
+//         console.log( $(red.cloneSelector).val() );
+//     }
+// )    
 
 $(red.cloneSubmit).on(
     "click",
@@ -282,11 +283,6 @@ $(red.cloneForm).on(
 /*
  * ## TODO
  *
- * #. Mode Clone: desactiver le selecteur de la prise courante 
- *    (ex: désactiver la prise rouge si on est ds la prise rouge).
- * 
- * ####
- * 
  * #. Chagement de class automatique
  * 
  * ####

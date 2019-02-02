@@ -77,22 +77,31 @@ input::placeholder{
     text-align: center;
 }
 
-.form_error { 
+/* .form_error { 
     display: inline-block; 
     color: #FF4F4F;
     padding: 10px; 
-}
+} */
 
 .infobulle{
     position: absolute;
     background: #FF4F4F;
     padding:3px 7px;
     opacity: 50%;
-    -webkit-margin: border radius 3px;
-    -moz-margin: border radius 3px;
-    -ms-margin: border radius 3px;
-    -o-margin: border radius 3px;
-    margin: border radius 3px;
+    /* margin: border radius 3px; */
+    border-radius:0 10px 0 10px;
     color:black;
+    text-align: center;
+}
+
+.plugSelector{
+    /* background: #ecf0f1; */
+}
+
+.Red, .Green, .Blue, .Yellow {
+    max-width: 150px;
+}
+
+.div_cloneRed, .div_cloneGreen, .div_cloneBlue, .div_cloneYellow {
     text-align: center;
 }

@@ -338,4 +338,18 @@ class C_Plug{
     f_toggleHebdomadairePauseBool(){
         this.hebdomadairePauseBool = !this.hebdomadairePauseBool;
     }
+
+    f_cloneHideCurrentPlug(event){
+        /* Permet de masquer la prise en court d'utilisation de la liste des prises à cloner */
+        let v_target = $(event.target);
+        if (v_target.hasClass("redPlug")){
+            $(".div_cloneRed").hide();
+        } else if (v_target.hasClass("greenPlug")){
+            $(".div_cloneGreen").hide();
+        } else if (v_target.hasClass("bluePlug")) {
+            $(".div_cloneBlue").hide();
+        } else if (v_target.hasClass("yellowPlug")) {
+            $(".div_cloneYellow").hide();
+        }
+    }
 }

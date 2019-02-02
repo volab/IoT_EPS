@@ -456,8 +456,6 @@
                                                         class="redPlug Hebdomadaire hFin patern_heure"
                                                         required/>
                                                 </label>
-                                                <!-- <br/> -->
-                                                <!-- <span class="redPlug Hebdomadaire span_hFin form_error"></span><br/> -->
                                             </div>
                                         </div>
                                         <!-- Submit / Reset -->
@@ -492,6 +490,7 @@
                                 <!-- red Clone -->
                                 <div class="redPlug Clone div_subSummary">
                                     <h5>Mode Clone</h5>
+                                    <p>Sélctionner la prise à dupliquer :</p>
                                     <form
                                         class="redPlug Clone formRequest"
                                         method="post"
@@ -500,36 +499,39 @@
                                         <input type="hidden" name="COLOR" value="redPlug">
                                         <input type="hidden" name="Mode" value="Clone">
                                         <div class="row">
-                                            <p>Sélctionner la prise à dupliquer :</p>
-                                            <div class="redPlug input-field col-md-3">
+                                            <br>
+                                            <div class="div_cloneRed col-md-3">
+                                                <input class="redPlug Clone Red" type="image" src="img/red.png">
                                                 <br>
-                                                <select 
-                                                    name="Clone"
-                                                    class="redPlug Clone plugSelector custom-select">
-                                                        <option value="" disabled selected>...</option>
-                                                        <option class="text-danger" value="redPlug">
-                                                            Prise Rouge
-                                                        </option>
-                                                        <option class="text-success" value="greenPlug">
-                                                            Prise Verte
-                                                        </option>
-                                                        <option class="text-primary" value="bluePlug">
-                                                            Prise Bleue
-                                                        </option>
-                                                        <option class="text-warning" value="yellowPlug">
-                                                            Prise Jaune
-                                                        </option>
-                                                </select>
+                                                <span>Prise Rouge</span>
+                                            </div>
+                                            <div class="div_cloneGreen col-md-3">
+                                                <input class="redPlug Clone Green" type="image" src="img/green.png">
+                                                <br>
+                                                <span>Prise verte</span>
+                                            </div>
+                                            <div class="div_cloneBlue col-md-3">
+                                                <input class="redPlug Clone Blue" type="image" src="img/blue.png">
+                                                <br>
+                                                <span>Prise bleue</span>
+                                            </div>
+                                            <div class="div_cloneYellow col-md-3">
+                                                <input class="redPlug Clone Yellow" type="image" src="img/yellow.png">
+                                                <br>
+                                                <span>Prise jaune</span>
                                             </div>
                                         </div>
                                         <!-- Submit / Reset -->
-                                        <div class="redPlug Clone submitReset">
-                                            <input
-                                                type="submit"
-                                                class="redPlug Clone submit"/>
-                                            <input
-                                                type="reset"
-                                                class="redPlug Clone reset"/> 
+                                        <div class="redPlug Clone submitReset row">
+                                            <div class="col-md-12">
+                                                <br>
+                                                <input
+                                                    type="submit"
+                                                    class="redPlug Clone submit"/>
+                                                <input
+                                                    type="reset"
+                                                    class="redPlug Clone reset"/> 
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
