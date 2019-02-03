@@ -249,22 +249,51 @@ $(red.modeClone).on(
         red.f_displayCloneDiv("block");
     });
 
-// $(red.cloneSelector).on(
-//     "change",
-//     (event)=>{
-//         console.log( $(red.cloneSelector).val() );
-//     }
-// )    
-
-$(red.cloneSubmit).on(
+$(red.cloneToRed).on(
     "click",
     (event)=>{
-        console.log("envoyer");
-        console.log( $(red.cloneSelector).val() );
-        console.log( red.CloneForm );
-        $(red.cloneForm).submit();
+    event.preventDefault();
+    $(red.cloneInputHide).val("redPlug");
+    $(red.cloneForm).submit();
     }
-);
+)
+
+$(red.cloneToGreen).on(
+    "click",
+    (event)=>{
+    event.preventDefault();
+    $(red.cloneInputHide).val("greenPlug");
+    $(red.cloneForm).submit();
+    }
+)
+
+$(red.cloneToBlue).on(
+    "click",
+    (event)=>{
+    event.preventDefault();
+    $(red.cloneInputHide).val("bluePlug");
+    $(red.cloneForm).submit();
+    }
+)
+
+$(red.cloneToYellow).on(
+    "click",
+    (event)=>{
+    event.preventDefault();
+    $(red.cloneInputHide).val("yellowPlug");
+    $(red.cloneForm).submit();
+    }
+)
+
+// $(red.cloneSubmit).on(
+//     "click",
+//     (event)=>{
+//         console.log("envoyer");
+//         console.log( $(red.cloneSelector).val() );
+//         console.log( red.CloneForm );
+//         $(red.cloneForm).submit();
+//     }
+// );
 
 $(red.cloneForm).on(
     "submit",
@@ -288,6 +317,8 @@ $(red.cloneForm).on(
  * ####
  *
  * #. Ajouter un fieldset de résumé de l'état des prises
+ *    /!\ tenir compte de l'état du boutons pause dans le JSON lors du chargement
+ *        des modes Cyclique et Hebdomadoare
  * 
  * ####
  *  

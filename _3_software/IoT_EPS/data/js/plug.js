@@ -89,8 +89,13 @@ class C_Plug{
         /* Mode Clone */
             //DIV
         this.cloneDiv                   = null;
+            //FormHide
+        this.cloneInputHide             = null;
             //Selector
-        this.cloneSelector              = null;
+        this.cloneToRed                 = null;
+        this.cloneToGreen               = null;
+        this.cloneToBlue                = null;
+        this.cloneToYellow              = null;
             //Submit
         this.cloneForm                  = null;      
         this.cloneSubmit                = null;
@@ -206,7 +211,11 @@ class C_Plug{
         v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
         this.cloneDiv               = $(`.Clone.div_subSummary`);
-        this.cloneSelector          = $(`.Clone.plugSelector`);
+        this.cloneInputHide         = $(`input[name="clonedPlug"]`)
+        this.cloneToRed             = $(`.Clone.Red`);
+        this.cloneToGreen           = $(`.Clone.Green`);
+        this.cloneToBlue             = $(`.Clone.Blue`);
+        this.cloneToYellow          = $(`.Clone.Yellow`);
         this.cloneForm              = $(`.Clone.formRequest`);
         this.cloneSubmit            = $(`.Clone.submit`);
     }
@@ -324,7 +333,6 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV Hebdomadaire 
          * Les valeur attendue sont: "none" ou "block"
          */
-
         if ((v_displayStatus === "block")||(v_displayStatus === "none")){
             this.f_displayNoneAll();
             this.cloneDiv.css("display", v_displayStatus);
