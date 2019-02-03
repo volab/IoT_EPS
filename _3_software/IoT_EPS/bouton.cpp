@@ -15,6 +15,7 @@ void bouton::begin( int boutonPin ){
     _longClicked=false;
     _lastUpdate = millis();
     _updateSpeed = BUTONSPEED ; // see in config.h    
+    //_simpleClicCount = 0;
 }
     
 bool bouton::longClic(){ return _longClicked;  }
@@ -80,6 +81,7 @@ void bouton::update(){
                     && millis()>_finDernierAppui+200){
                 _etat=0;
                 _clicked=true;
+                //_simpleClicCount++;
             }
             if (digitalRead(_boutonPin)==LOW && millis()<_finDernierAppui+200){
             // A tester mais si le bouton est vu low a cet instant c'est forcement

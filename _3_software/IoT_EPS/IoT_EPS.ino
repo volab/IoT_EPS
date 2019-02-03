@@ -10,15 +10,15 @@
 @tableofcontents
 
 @section dependencies Lib dependencies
-- Utilisation de la bibliothèque ESP8266WiFi version 1.0
-- Utilisation de la bibliothèque ESP8266WebServer version 1.0 
-- Utilisation de la bibliothèque ArduinoJson version 5.13.2 
+- Utilisation de la bibliothèque ESP8266WebServer version 1.0
+- Utilisation de la bibliothèque ArduinoJson version 5.13.2
 - Utilisation de la bibliothèque Wire version 1.0
 - Utilisation de la bibliothèque RTClib version 1.2.0
 - Utilisation de la bibliothèque ESP8266mDNS
 - Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3
 - Utilisation de la bibliothèque FastLED version 3.2.1
-- Utilisation de la bibliothèque NTPClient version 3.1.0
+- Utilisation de la bibliothèque nanoI2CIOExpLib version 1.0
+- Utilisation de la bibliothèque NTPClient version 3.1.0 
 
 @section wifi WIFIs connexions
 
@@ -29,6 +29,22 @@ If it can't reach WIFI network it switch to acces point mode.
 In Access point mode default add is 192.168.95.42. Ssid and pass are those store in the SPIFFS credential.json
 
 In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI LED fash shortly in 2s period.
+
+*/
+
+/**
+ @page pageTodo Macro roadmap
+ @tableofcontents
+  doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
+  Here I want to trace major features implementations.
+ @li after restart, restore all
+ @li clone mode
+ @li error handling
+ @li take inot account when start hour is higher than end hour 
+ @li pause mode in html request
+ @li double clic display mode action
+ @li long clic
+ 
 */
 
 
@@ -317,13 +333,11 @@ void loop(){
     FastLED.show();
     for ( int i = 0; i < NBRPLUGS ; i++ ) plugs[i].bp.update();
     for ( int i = 0; i < NBRPLUGS ; i++ ){
-
-        /** @todo replace usage of reading in json by _mode member of pplug class*/
         if ( plugs[i].bp.clic() ){
             plugs[i].handleBpClic();
-        }
-        // else if plugs[i].bp.longClic(){ plugs[i].return2ManuelMode() }
-        /** @todo developp return2ManuelMode of the  CPowerPlug class*/
+        } // else if plugs[i].bp.longClic(){ plugs[i].return2ManuelMode() }
+        /** @todo developp return2ManuelMode as the long clic command for all mode
+        of the  CPowerPlug class*/
         if ( plugs[i].isItTimeToSwitch() ){
             DSPL( dPrompt + "It is time for : " + plugs[i].getPlugName() );
             plugs[i].switchAtTime();

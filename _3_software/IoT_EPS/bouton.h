@@ -49,6 +49,8 @@ class bouton{
         bool longClic();
         void acquit(); //remet les état à zéro (clique et double clique)
 		bool directRead();
+        // int getSimpleClicCount(){ return _simpleClicCount; }
+        // void clearSimpleClicCount(){ _simpleClicCount=0; }
 
     private:
         int _boutonPin; //numéro de Pin pour le bouton
@@ -60,6 +62,7 @@ class bouton{
         bool _longClicked; //si subit clique long ( 800ms en dur dans le code)
         unsigned long _lastUpdate; 
         unsigned long _updateSpeed; // vitesse de rafraichissement en mode loop
+        // int _simpleClicCount;
 
 };
 

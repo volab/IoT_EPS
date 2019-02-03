@@ -25,8 +25,9 @@ Avancement
 #. Traitement de la requete html avec analyze, exécution et écriture json: ok
 #. Réflèchir à la gestion des erreurs
 #. manage wif led : ok
-#. integrate nano expander with analog inputs : 0%
+#. integrate nano expander with analog inputs : ok
 #. exhaustive test of hebdo mode : 20%
+#. preparer un infographie résumant fonctionnalité et besoin : 
 
 Don't forget the todo list of the doxygen documentation
 
@@ -74,6 +75,8 @@ Périodique/cyclique
 - avec reprise de On après off indéfiniment jusqu'au repassage en commande manuelle.
 - avec champ heure de début (et 'Entrez une heure de début (facultatif)' par défaut)
 - un appui court sur BP met à OFF mais reste en mode cyclique pour le cycle suivant
+- un deuxième appui court reprend le cycle (attention ne met pas forcément à ON)
+- le mode pause de l'interface web effectue les mêmes actions que ci-dessus
 
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
@@ -84,6 +87,7 @@ Hebdomadaire
 - choix des jours de la semaine
 - un appui court sur BP met à OFF mais reste en mode Hebdomadaire pour le cycle suivant
 - un deuxième appui court reprend le cycle (attention ne met pas forcément à ON)
+- le mode pause de l'interface web effectue les mêmes actions que ci-dessus
 - 1 appui sur BP (long) met OFF et repasse en manuelle
 
 Clone

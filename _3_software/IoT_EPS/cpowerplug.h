@@ -87,7 +87,7 @@ class CPowerPlug : public CNano {
         uint32_t _nextTimeToSwitch;        
         
         uint8_t _daysOnWeek; 
-        
+        bool _pause = false;
 };
 
 /*

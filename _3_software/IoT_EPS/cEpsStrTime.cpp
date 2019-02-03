@@ -64,7 +64,7 @@ bool CEpsStrTime::checkValidity(){
 			String sTmp = _sValue.substring( 0, pos );
 			sTmp.trim();
 			if (sTmp.length() > 3) return isValid; //max 3 digits
-			/** @todo Warning if Minutes max value becomes > 999*/
+			/** @warning Warning if Minutes max value becomes > 999*/
 			minutes = sTmp.toInt();
 			DSPL( dPrompt + F("minutes : ") + sTmp );
 			sTmp = _sValue.substring( pos +1 );
@@ -113,7 +113,6 @@ bool CEpsStrTime::checkValidity(){
         if ( _sValue.toInt() > _maxDuration ) return isValid;
         DSPL(dPrompt + F("After duraction check") );
         _seconds = _sValue.toInt() * 60;
-        /** @todo it should be possible to combine these lines */
 		isValid = true;
 		return isValid;        
     }
@@ -126,8 +125,6 @@ bool CEpsStrTime::checkValidity(){
 
 @return unix time form
 
-In this first implementation for manual mode it takes no input param ,
-but in future, it should take into account others mode
 */
 uint32_t  CEpsStrTime::computeNextTime( uint8_t CheckedDays ){
     String s_daysOfTheWeek[7] = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};

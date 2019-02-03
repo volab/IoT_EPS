@@ -64,6 +64,9 @@
 #define JSON_PARAMNAME_ENDTIME "hFin"
 #define JSON_PARAMNAME_ONOFCOUNT "onOffCount"
 #define JSON_PARAMNAME_NEXTSWITCH "nextTimeToSwitch"
+#define JSON_PARAMNAME_PAUSE "Pause"
+#define JSON_PARAMNAME_CLONEDPLUG "clonedPlug"
+
 #define HTMLREQ_SUNDAY "Dimanche" //it is allthough the value in html request
 #define HTMLREQ_MONDAY "Lundi"
 #define HTMLREQ_TUESDAY "Mardi"

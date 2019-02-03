@@ -51,6 +51,7 @@ void CPowerPlug::begin( int pin , int onOffLedPin, int bpPin, int mode ){
     _nano.pinMode( _pin, OUTPUT );
     _nano.pinMode( _onOffLedPin, OUTPUT );
     bp.begin( bpPin );
+    _pause = false;
 }
 
 /** 
@@ -667,9 +668,16 @@ void CPowerPlug::switchAtTime(){
         if (_state){
             off();
             duree = (CEpsStrTime)readFromJson( JSON_PARAMNAME_OFFDURATION ); 
-        } else {
-            on();
-            duree = (CEpsStrTime)readFromJson( JSON_PARAMNAME_ONDURATION );
+        } else { //off state
+            if (!_pause){
+                on();
+                duree = (CEpsStrTime)readFromJson( JSON_PARAMNAME_ONDURATION );   
+            } else { //in pause
+                duree = (CEpsStrTime)readFromJson( JSON_PARAMNAME_OFFDURATION );
+                _pause = false;
+                writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+                DSPL( dPrompt + F("sortie de pause sur mise off") );
+            }
         }
         _nextTimeToSwitch = duree.computeNextTime();
         // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
@@ -694,6 +702,7 @@ void CPowerPlug::switchAtTime(){
 
 
 void CPowerPlug::handleBpClic(){
+    DEFDPROMPT("handleClic")
     String sMode = getStringMode();
     if ( sMode == MANUAL_MODE ){
         if ( _state ) {
@@ -703,7 +712,7 @@ void CPowerPlug::handleBpClic(){
         } else on();   
     } else if ( sMode == TIMER_MODE ){
         //restart timer
-        //if on jsut restart timer
+        //if on just restart timer
         //if off put on and restart timer
         //restart timer is compute new nextTimeToSwitch
         CEpsStrTime dureeOn;
@@ -713,6 +722,25 @@ void CPowerPlug::handleBpClic(){
         on();
     /** @todo take into account bp action in cyclic mode */
     /** @todo take into account bp action in hebdo mode */
+    } else if ( sMode == CYCLIC_MODE ){
+        //when on, a short bp action put plug to off but stay in mode for next time to switch
+        //a second action on push button 
+        if (_state) {
+            off();
+            writeToJson( JSON_PARAMNAME_PAUSE, "ON" );
+            _pause = true;
+            DSPL( dPrompt + F("mise en pause BP")  );
+        } else if (_pause){
+            on();
+            writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+            _pause = false;
+            DSPL( dPrompt + F("sortie de pause par BP") );
+        }
+            
+        
+        
+    } else if (sMode == HEBDO_MODE){
+        
     }
     bp.acquit();    
 }
