@@ -690,10 +690,17 @@ void CPowerPlug::switchAtTime(){
             nextHour = CEpsStrTime(readFromJson( JSON_PARAMNAME_STARTTIME ),\
                 CEpsStrTime::HHMM ); 
         } else {
-            on();
-            DSPL( F("ON") );
-            nextHour = CEpsStrTime(readFromJson( JSON_PARAMNAME_ENDTIME ),\
-                CEpsStrTime::HHMM ); 
+            if (!_pause){            
+                on();
+                nextHour = CEpsStrTime(readFromJson( JSON_PARAMNAME_ENDTIME ),\
+                    CEpsStrTime::HHMM ); 
+            } else {
+                nextHour = CEpsStrTime(readFromJson( JSON_PARAMNAME_STARTTIME ),\
+                    CEpsStrTime::HHMM ); 
+                _pause = false;
+                writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+                DSPL( dPrompt + F("sortie de pause sur mise off") );                    
+            }
         };
         _nextTimeToSwitch =  nextHour.computeNextTime( _daysOnWeek ); 
     }
@@ -720,9 +727,9 @@ void CPowerPlug::handleBpClic(){
         _nextTimeToSwitch = dureeOn.computeNextTime();
         writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
         on();
-    /** @todo take into account bp action in cyclic mode */
+    
     /** @todo take into account bp action in hebdo mode */
-    } else if ( sMode == CYCLIC_MODE ){
+    } else if ( sMode == CYCLIC_MODE || sMode == HEBDO_MODE){
         //when on, a short bp action put plug to off but stay in mode for next time to switch
         //a second action on push button 
         if (_state) {
@@ -736,10 +743,7 @@ void CPowerPlug::handleBpClic(){
             _pause = false;
             DSPL( dPrompt + F("sortie de pause par BP") );
         }
-            
-        
-        
-    } else if (sMode == HEBDO_MODE){
+    //} else if (sMode == HEBDO_MODE){
         
     }
     bp.acquit();    
