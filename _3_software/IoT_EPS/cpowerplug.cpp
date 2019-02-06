@@ -707,7 +707,11 @@ void CPowerPlug::switchAtTime(){
     writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );    
 }
 
-
+/** 
+ @fn void CPowerPlug::handleBpClic()
+ @brief A function that handle action of the push button simple clic
+ @return no return value and no parameter
+*/
 void CPowerPlug::handleBpClic(){
     DEFDPROMPT("handleClic")
     String sMode = getStringMode();
@@ -721,14 +725,12 @@ void CPowerPlug::handleBpClic(){
         //restart timer
         //if on just restart timer
         //if off put on and restart timer
-        //restart timer is compute new nextTimeToSwitch
+        //restart timer is computed with new nextTimeToSwitch
         CEpsStrTime dureeOn;
         dureeOn = (CEpsStrTime)readFromJson( JSON_PARAMNAME_ONDURATION );
         _nextTimeToSwitch = dureeOn.computeNextTime();
         writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
         on();
-    
-    /** @todo take into account bp action in hebdo mode */
     } else if ( sMode == CYCLIC_MODE || sMode == HEBDO_MODE){
         //when on, a short bp action put plug to off but stay in mode for next time to switch
         //a second action on push button 
@@ -746,5 +748,32 @@ void CPowerPlug::handleBpClic(){
     //} else if (sMode == HEBDO_MODE){
         
     }
+    bp.acquit();    
+}
+/** 
+ @fn void CPowerPlug::handleBpClic()
+ @brief A function that handle action of the push button long clic...
+ @return no return value and no parameter
+ 
+ All modes return to Manuel mode, plugs is switch to off.
+*/
+void CPowerPlug::handleBpLongClic(){
+    String mode;
+    DEFDPROMPT("handleLongClic");
+    DSPL( dPrompt );
+    off();
+    _nextTimeToSwitch = 0;
+    writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+    writeToJson( JSON_PARAMNAME_ENDTIME, "" );
+    writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
+    writeToJson( JSON_PARAMNAME_ONDURATION, "" );
+    writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+    _pause = false;
+    writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+    _daysOnWeek = 0;
+    writeDaysToJson(); 
+    mode = MANUAL_MODE; 
+    _mode = modeId( mode );
+    writeToJson( JSON_PARAMNAME_MODE, mode );
     bp.acquit();    
 }

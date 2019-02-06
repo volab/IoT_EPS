@@ -37,14 +37,12 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  @tableofcontents
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
- @li bp simple clic hebdo mode
  @li clone mode
  @li after restart, restore all
  @li pause mode in html request
  @li error handling
  @li take inot account when start hour is higher than end hour 
  @li double clic display mode action
- @li long clic
  @li DS3231 power bat ! Yes it is harware but...
  
 */
@@ -343,6 +341,9 @@ void loop(){
         if ( plugs[i].isItTimeToSwitch() ){
             DSPL( dPrompt + "It is time for : " + plugs[i].getPlugName() );
             plugs[i].switchAtTime();
+        }
+        if ( plugs[i].bp.longClic() ){
+            plugs[i].handleBpLongClic();
         }
     }
     yield();

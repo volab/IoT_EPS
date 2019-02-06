@@ -72,6 +72,7 @@ class CPowerPlug : public CNano {
         uint32_t getNextT2Switch(){ return _nextTimeToSwitch; }
         String getStringMode(){ return modes[ _mode ]; }
         void handleBpClic();
+        void handleBpLongClic();
         
     private:
         static const String modes[5];
