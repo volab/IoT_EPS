@@ -328,5 +328,15 @@ $(red.cloneForm).on(
  * 
  * #. Navigation responcive (navbar et menu selector)
  * 
+ * ####
+ * 
+ * #. Ajouter un fieldset ou un div pour l'aide
+ *    ==> ne plus utiliser la page "help.html"
+ * 
+ *  ####
+ * 
+ * #. Ajouter un fieldset ou un div pour la personnalisation
+ *    (toujours sur la même page)
+ * 
  * ## TODO
  */

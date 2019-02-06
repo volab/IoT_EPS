@@ -105,3 +105,22 @@ input::placeholder{
 .div_cloneRed, .div_cloneGreen, .div_cloneBlue, .div_cloneYellow {
     text-align: center;
 }
+
+.toCloneBTN{
+    cursor: pointer;
+    outline: none;
+    color: #fff;
+    background-color: #DCC6E0;
+    /* border: 1px ridge black; */
+    padding: 5px 5px;
+    border-radius: 15px;
+    box-shadow: 9px 9px #999;
+}
+
+.toCloneBTN:hover {background-color: #ab69c6}
+
+.toCloneBTN:active {
+    background-color: #3e005d;
+    box-shadow: 5px 5px #666;
+    transform: translateY(4px);
+  }
