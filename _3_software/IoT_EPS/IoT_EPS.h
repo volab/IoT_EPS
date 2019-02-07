@@ -67,6 +67,8 @@
 #define JSON_PARAMNAME_PAUSE "Pause"
 #define JSON_PARAMNAME_CLONEDPLUG "clonedPlug"
 
+#define CLONEDPARAMNUMBER 8
+
 #define HTMLREQ_SUNDAY "Dimanche" //it is allthough the value in html request
 #define HTMLREQ_MONDAY "Lundi"
 #define HTMLREQ_TUESDAY "Mardi"

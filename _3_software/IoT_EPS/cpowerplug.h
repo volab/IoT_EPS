@@ -73,6 +73,8 @@ class CPowerPlug : public CNano {
         String getStringMode(){ return modes[ _mode ]; }
         void handleBpClic();
         void handleBpLongClic();
+        uint8_t getDays(){ return _daysOnWeek; }
+        bool getPause(){ return _pause; }
         
     private:
         static const String modes[5];

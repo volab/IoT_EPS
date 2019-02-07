@@ -158,7 +158,7 @@ Search are made in the file on the name of the plug as redPlug for exemple
 */
 bool CPowerPlug::readFromJson(){
     String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
-    String sClonedPlug, sOnOffCount, sNextTime2switch;
+    String sClonedPlug, sOnOffCount, sNextTime2switch, sPause;
     String sJours[7];
     DEFDPROMPT("reading config values for " + getPlugName())
     // DSPL( dPrompt +F("Mounting FS..."));
@@ -188,16 +188,17 @@ bool CPowerPlug::readFromJson(){
                     sHFin = plug["hFin"].as<String>();
                     sDureeOn = plug["dureeOn"].as<String>();
                     sDureeOff = plug["dureeOff"].as<String>();
-/** @todo to be removed and from json too see softDev.rst, clode mode is just un copy of source paramters */
                     sClonedPlug = plug["clonedPlug"].as<String>();
                     sOnOffCount = plug["onOffCount"].as<String>();
                     sNextTime2switch = plug[JSON_PARAMNAME_NEXTSWITCH].as<String>();
+                    sPause = plug[JSON_PARAMNAME_PAUSE].as<String>();
 /////////////////////////////////////////////////////////////////////////////
 //    member updates                                                       //
 /////////////////////////////////////////////////////////////////////////////
                     _mode = modeId( sMode );
                     _state = (sState == "ON");                    
                     _nextTimeToSwitch = sNextTime2switch.toInt();
+                    _pause = ( sPause == "ON" );
 /** @todo continue to converts and store the string parameters
  in the members of the class
 */
@@ -532,9 +533,38 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         else {
             DSPL( dPrompt + "HEBDO mode : an invalid parameter was found, no change made");
         }
-    } else if ( mode ==  CLONE_MODE){
+    } else if ( mode ==  CLONE_MODE){//clode mode parameters
         DSPL( dPrompt + F("clone mode actions") );
-        //clode mode parameters
+        CPowerPlug clonedPlug;
+        String clonedPlugName = extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_CLONEDPLUG );
+        clonedPlug.setPlugName( clonedPlugName );
+        // parameters to be cloned : state, pause, mode, hdeb, hfin, don, doff
+        // , days and nextTimeToSwitch
+        clonedPlug.readFromJson(); //to populate clonedPlugName members _mode, _state...
+        String clonedParamsNames[CLONEDPARAMNUMBER] = { JSON_PARAMNAME_STARTTIME
+                                                       , JSON_PARAMNAME_ENDTIME
+                                                       , JSON_PARAMNAME_ONDURATION
+                                                       , JSON_PARAMNAME_OFFDURATION
+                                                       , JSON_PARAMNAME_STATE
+                                                       , JSON_PARAMNAME_PAUSE
+                                                       , JSON_PARAMNAME_MODE
+                                                       , JSON_PARAMNAME_NEXTSWITCH
+                                                       };
+        String clonedParamsVal[CLONEDPARAMNUMBER];
+        for (int i = 0; i < CLONEDPARAMNUMBER; i++){
+            clonedParamsVal[i] = clonedPlug.readFromJson( clonedParamsNames[i] );
+        }
+        _mode = clonedPlug.getMode();;
+        _state = clonedPlug.getState();
+        if ( _state ) on(); else off();
+        _nextTimeToSwitch = clonedPlug.getNextT2Switch();
+        _daysOnWeek = clonedPlug.getDays();
+        _pause = clonedPlug.getPause();
+        for (int i = 0; i < CLONEDPARAMNUMBER; i++){
+            writeToJson(  clonedParamsNames[i], clonedParamsVal[i] );
+        }        
+        writeDaysToJson();
+        writeToJson(  JSON_PARAMNAME_CLONEDPLUG, clonedPlugName );
     }
 /** @todo complete this function !*/ 
 }
@@ -768,6 +798,7 @@ void CPowerPlug::handleBpLongClic(){
     writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
     writeToJson( JSON_PARAMNAME_ONDURATION, "" );
     writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+    writeToJson( JSON_PARAMNAME_CLONEDPLUG, "" );
     _pause = false;
     writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
     _daysOnWeek = 0;
