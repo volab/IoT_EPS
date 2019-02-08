@@ -312,6 +312,11 @@ $(red.cloneForm).on(
 /*
  * ## TODO
  *
+ * #. Finir les fonction "clear". Les appliquer sur chaque chagement de mode, changement de prise
+ *    et entre chaque action du mode manuel
+ *
+ * ####
+ *
  * #. Chagement de class automatique
  * 
  * ####

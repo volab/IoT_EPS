@@ -22,8 +22,14 @@ input::placeholder{
     color: blue;
 }
 
+[type="checkbox"] + span:not(.lever){
+    padding-left: 20px !important;
+    margin-left: 10px !important;
+}
+
 .bg-gris{
-    background-color: #aeb6bf;
+    /* background-color: #aeb6bf; */
+    background-color: #d6eaf8;
 }
 
 .bg-lynch{
@@ -32,6 +38,10 @@ input::placeholder{
 
 .bg-hoki{
     background-color: #67809f;
+}
+
+.bg-warning{
+    background-color: #fffc47 !important;
 }
 
 .nav-link {
@@ -52,7 +62,8 @@ input::placeholder{
 }
 
 .yellowPlug fieldset{
-    color: #e4ff02 !important; 
+    /* color: #e4ff02 !important;  */
+    color: #fffc47 !important; 
 }
 
 /* .colorRed{
@@ -77,12 +88,6 @@ input::placeholder{
     text-align: center;
 }
 
-/* .form_error { 
-    display: inline-block; 
-    color: #FF4F4F;
-    padding: 10px; 
-} */
-
 .infobulle{
     position: absolute;
     background: #FF4F4F;
@@ -94,27 +99,32 @@ input::placeholder{
     text-align: center;
 }
 
-.plugSelector{
-    /* background: #ecf0f1; */
-}
+/* .plugSelector{
+    background: #ecf0f1;
+} */
 
-.Red, .Green, .Blue, .Yellow {
+/* .Red, .Green, .Blue, .Yellow {
     max-width: 150px;
-}
+    max-width: 25%;
+    max-height: auto;
+} */
 
 .div_cloneRed, .div_cloneGreen, .div_cloneBlue, .div_cloneYellow {
     text-align: center;
+
 }
 
 .toCloneBTN{
+    max-width: 25%;
+    max-height: auto;
     cursor: pointer;
-    outline: none;
+    /* outline: none; */
     color: #fff;
-    background-color: #DCC6E0;
-    /* border: 1px ridge black; */
+    /* background-color: #c7d0d4; */
+    /* background-color: #d7dbdd; */
     padding: 5px 5px;
-    border-radius: 15px;
-    box-shadow: 9px 9px #999;
+    border-radius: 50%;
+    /* box-shadow: 9px 9px #999; */
 }
 
 .toCloneBTN:hover {background-color: #ab69c6}
