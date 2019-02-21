@@ -19,7 +19,6 @@ Avancement
 #. alimentation ESP/Wemos en 5V ? : ok
 #. choix curent sensor: 75%
 #. horloge temps réelle : ok
-#. LED
 #. bouton poussoirs : ok
 #. Affectation des io : 90%
 #. module relais : ok
@@ -28,9 +27,10 @@ Avancement
 #. add  WS2801 LED
 #. Alimentation du module relais en 5V (choix du conver.) : 60%
 #. add power led
+#. add power button : 
 #. add wifi led : ok
 #. add LDR
-#. add I2C nano expander with analog inputs
+#. add I2C nano expander with analog inputs ok
 #. packaging study
 #. integartion
 
@@ -199,7 +199,7 @@ On va pas aller loin avec ça !
 
 Nécessite l'utilisation d'un IO expander
 
-MCP23017 I2C 16 bits IO expander
+MCP23017 I2C 16 bits IO expander obsolete in feb 2019 see nanI2CIOexpander
 
 .. figure:: image/mpc2307_pinout.jpg
     :width: 400 px
@@ -207,7 +207,7 @@ MCP23017 I2C 16 bits IO expander
     
     MPC23017 pinout
 
-.. table:: Affectation des broches sur le MCP23017
+.. table:: Affectation des broches sur le MCP23017 obsolete
     :align: center
     
     ===== =============
@@ -230,6 +230,45 @@ MCP23017 I2C 16 bits IO expander
 Pour la mesure de courant ce serait bien de disposer de 4 entrée analogiques
 
 L'ESP n'en possède qu'une !
+
+===========================
+nanoI2CIOExpander
+===========================
+To solve digital I/O and analog I decide to use a ARDUINO nano as I2C slave. I belived that someone
+like ADAFRUIT or SPARFUN has build a lib to use an ARDUINO Nano as `I2C I/O expander`_.
+
+That's my great surprise, nobody does it ! So I wrote it and I provide it on HACKSTER IO
+
+
+
+.. _`I2C I/O expander` : https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc
+
+Nano pining :
+
+.. table:: Affectation des broches sur le MCP23017 obsolete
+    :align: center
+    
+    ===== =============,    pins  affectation
+    ===== =============
+    D2    PLUG0-ROUGE
+    D3    PLUG1-VERT
+    D4    PLUG2-BLEUE
+    D5    PLUG3-JAUNE
+    D6    LED0
+    D7    LED1
+    D8    LED2
+    D9    LED3
+    D10   MAIN POWER SWITCH STATE
+    D11   DS3231 power
+    D12  
+    A0    PLUG0 Current
+    A1    PLUG1 Current
+    A2    PLUG2 Current
+    A3    PLUG3 Current
+    A6    LDR
+    A7
+    ===== =============
+
     
 ####
 

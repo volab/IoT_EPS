@@ -22,6 +22,8 @@ class ConfigParam{
         String getHostName(){ return _host; }
 		static void displayJson();
 		void displayWifiMode();
+        static void write2Json( String param, String value );
+        static void chgSSID( String value );
     
     private:
         String _wifimode = "softAP" ; //default value

@@ -37,11 +37,11 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  @tableofcontents
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
- @li clone mode
  @li after restart, restore all
+ @li add power button
  @li pause mode in html request
  @li error handling
- @li take inot account when start hour is higher than end hour 
+ @li take into account when start hour is higher than end hour 
  @li double clic display mode action
  @li DS3231 power bat ! Yes it is harware but...
  
@@ -85,6 +85,8 @@ CpowerPlug class*/
 bool simpleManualMode = false;
 
 Flasher wifiLed;
+
+
 
 
 void setup(){
@@ -144,10 +146,17 @@ void setup(){
     
     // Cmcp::init();
     CNano::init();
+    int mainPowerSiwthState;
+    CNanoI2CIOExpander nano;
+    nano.pinMode( MAINSWITCHPIN, INPUT_PULLUP );
+    mainPowerSiwthState = !nano.digitalRead( MAINSWITCHPIN );
+    
+    DSPL( dPrompt + "Main power state : " +  ( mainPowerSiwthState?"ON":"OFF") );
+    /** @todo test if CNano::initOk = true - if not don't start anything*/
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CPowerPlug::modeId("MANUEL") );
     plugs[0].setColor( CRGB::Red );
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
-    plugs[0].readFromJson();
+    plugs[0].readFromJson( mainPowerSiwthState );
     /** @todo improve error check from CPowerPlug::readFromJson*/
     /** @todo add pin, pinLed and color to json file*/
     /** @todo + le nombre de plug pour rendre cette séquense dynamic*/
@@ -155,16 +164,16 @@ void setup(){
     plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, BP1, CPowerPlug::modeId("MANUEL") );
     plugs[1].setColor( CRGB::Green );
     plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
-    plugs[1].readFromJson();
+    plugs[1].readFromJson(  mainPowerSiwthState );
     plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, BP2, CPowerPlug::modeId("MANUEL") );
     plugs[2].setColor( CRGB::Blue );
     plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
-    plugs[2].readFromJson();
+    plugs[2].readFromJson( mainPowerSiwthState );
     // plugs[2].setColor( CRGB::Purple );
     plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, BP3, CPowerPlug::modeId("MANUEL") );
     plugs[3].setColor( CRGB::Yellow );
     plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
-    plugs[3].readFromJson();
+    plugs[3].readFromJson( mainPowerSiwthState );
     for ( int i = 0; i < NBRPLUGS ; i++ ){
         colorLeds[i] = plugs[i].getColor();
         /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/
@@ -173,6 +182,7 @@ void setup(){
     /** @todo Read the general brightness of color LED in JSON config file*/
     FastLED.show();
 	
+    /** @todo document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //

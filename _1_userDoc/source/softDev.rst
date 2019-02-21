@@ -19,9 +19,9 @@ Avancement
 #. reception d'une action via un bouton :  
 #. lecture du fichier de configuration : ok
 #. intégration MCP23017 : ok
-#. lecture du fichier de configuration config3.json : 70%
-#. gestion bouton poussoir mécanique : 80% (appui long + appui court en cours de cycle)
-#. Ecriture fichier json : 90%
+#. lecture du fichier de configuration config3.json : 90%
+#. gestion bouton poussoir mécanique : ok
+#. Ecriture fichier json : ok
 #. Traitement de la requete html avec analyze, exécution et écriture json: ok
 #. Réflèchir à la gestion des erreurs
 #. manage wif led : ok

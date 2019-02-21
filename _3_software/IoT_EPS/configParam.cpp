@@ -123,3 +123,60 @@ void ConfigParam::displayWifiMode(){
 	wifiCred.begin();
 	DSPL( dPrompt + F("SSDID = ") + (String)wifiCred.getSsid() );
 }
+
+void ConfigParam::write2Json( String param, String value ){
+    DEFDPROMPT( "write config param to jSon");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    //DSPL( dPrompt);
+    if (configFile) {
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+        configFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+            JsonObject& plug = json["general"]; 
+            DSPL( dPrompt + " general : " + param + " = " + value);
+            plug[param] = value; 
+            configFile.seek(0, SeekSet);
+            json.prettyPrintTo(configFile);
+            // plug.prettyPrintTo(Serial);
+            // DSPL();
+        } else {
+            DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+            // return false;
+        }
+        configFile.close();
+        // return true;  
+/** @todo perhaps add error handling as in readFromJson()*/        
+    }     
+}
+
+void ConfigParam::chgSSID( String value ){
+    DEFDPROMPT( "write credentials SSID");
+    File configFile = SPIFFS.open( "/credentials.json" , "r+");
+    //DSPL( dPrompt);
+    if (configFile) {
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+        configFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+            DSPL( dPrompt + " written SSID = " + value);
+            json["ssid"] = value; 
+            configFile.seek(0, SeekSet);
+            json.prettyPrintTo(configFile);
+            // plug.prettyPrintTo(Serial);
+            // DSPL();
+        } else {
+            DEBUGPORT.println(dPrompt + F("Failed to load json credentials"));
+            // return false;
+        }
+        configFile.close();
+        // return true;  
+/** @todo perhaps add error handling as in readFromJson()*/        
+    }     
+}

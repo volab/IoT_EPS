@@ -43,6 +43,7 @@ return see in the code for all informations.
 #include "CRtc.h"
 #include "configParam.h"
 #include "cEpsStrTime.h"
+#include <nanoI2CIOExpLib.h>
 // #include <Array.h>
 // #include <nanoI2CIOExpLib.h>
 
@@ -91,9 +92,15 @@ void SerialCommand::parse(char *com){
     /** @todo remove after debug of nextCheckedDay */
 CEpsStrTime hDebut;	
 String s;
+String key,value;
+char k[40];
+char v[40];
 int h,m, deux, trois, n;
 DateTime now;
 String date;
+
+CNanoI2CIOExpander nanoI2C;
+bool nineState;
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "fr.pool.ntp.org");
@@ -102,6 +109,10 @@ DateTime NTPTime;
 bool errNTPinit = true;
 //int timeZone = 2; // Paris heure d'été
 int timeZone = 1; // Paris heure d'hiver
+
+nanoI2C.pinMode( 9, OUTPUT );
+//nanoI2C.pinMode( 8, INPUT_PULLUP );
+int eightState;
 	
  /** @todo instnaciate command for set Hours, minutes, seconds separatly */
  /** @todo perhaps instanciate other commands to check hardware */
@@ -129,6 +140,27 @@ int timeZone = 1; // Paris heure d'hiver
 		case 'j':
 			ConfigParam::displayJson();
 			break;
+        case 'P': //P for parameter
+            n = sscanf( com+1,"%s %s", k, v );
+            if ( n == 2){
+                key = String(k);
+                value = String(v);
+                INTERFACE.println("Parametres : " + key + " value : " + value);
+                ConfigParam::write2Json( key, value );
+            } else {
+                INTERFACE.println("Warning this command riquires 2 parameters !");
+            }
+            break;
+         case 'I': //I for wifi Id
+            n = sscanf( com+1,"%s", v );
+            if ( n == 1){
+                value = String(v);
+                INTERFACE.println("new SSID : " + value);
+                ConfigParam::chgSSID( value );
+            } else {
+                INTERFACE.println("Warning this command riquires only ONE parameter !");
+            }
+            break;           
 		case 'E':      // <s>
 			INTERFACE.print("<iElectrical Power Strip ");
 			// INTERFACE.print(ARDUINO_TYPE);
@@ -164,11 +196,21 @@ int timeZone = 1; // Paris heure d'hiver
             date = (String)now.day() + "/" + (String)now.month() + "/" + (String)now.year();
             INTERFACE.println( date );
             break;
-        case 'N':
-            //available for next use
+        case 'N': //nano I2C IO expander test
+            nanoI2C.test();
             break;
-        
- 
+        case 'O': //nano I2C IO expander test
+            INTERFACE.println("D11 out test HIGH");           
+            nanoI2C.digitalWrite( 9, HIGH );
+            break;       
+        case 'o': //nano I2C IO expander test
+            INTERFACE.println("D11 out test low");           
+            nanoI2C.digitalWrite( 9, LOW );
+            break; 
+        // case 'R': //nano I2C IO expander test           
+            // eightState = nanoI2C.digitalRead( 8 );
+            // INTERFACE.println("D10 main poower state is " + String( eightState ) );
+            // break;             
 /***** PRINT CARRIAGE RETURN IN SERIAL MONITOR WINDOW  ****/       
 		case ' ':     // < >                
 			INTERFACE.println("");
@@ -187,10 +229,15 @@ void SerialCommand::displayCommandsList(){
     list += F("<s> set DS3231 by NTP server\n");
 	list += F("<J> or <j> for display config.json\n");
 	list += F("<W> or <w> display WIFI mode\n");
+    list += F("<P key value> write config parameter in json WARNING\n");
+    list += F("<I _newSSID> write SSID in credentials WARNING\n");
     /** @todo remove after debug of nextCheckedDay */
     list += F("<D or d HH:MM days>\n");
     list += F("<T or t various_param> for code test\n");
-    //list += F("<N> \n");
+    list += F("<N> nano IO expander test\n");
+    list += F("<O> nano out test HIGH\n");
+    list += F("<o> nano out test low\n");
+    // list += F("<R> read main power state\n");
 	INTERFACE.print( list );
 }
 

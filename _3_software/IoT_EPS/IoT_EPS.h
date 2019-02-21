@@ -101,6 +101,7 @@
 #define PLUG2_ONOFFLEDPIN 6
 #define PLUG3_ONOFFLEDPIN 7
 
+#define MAINSWITCHPIN 8 //nanoI2CIOExpander pin D10
 
 #define BP0 D6 
 #define BP1 D5

@@ -20,8 +20,8 @@ const String CPowerPlug::modes[5] = { MANUAL_MODE, TIMER_MODE, CYCLIC_MODE, HEBD
 @param mode the mode in String format
 @return the equivalent id
 
-The purpose of this is to replace an enum caus here we have the need to gat both the text form
-for all json and html and the its id in numericla form for other functionnality like for loop.
+The purpose of this is to replace an enum caus here we have the need to get both the text form
+for all json and html and its id in numerical form for other functionnalities like for loop.
 
 A possible workaround will be:
 
@@ -35,7 +35,7 @@ A possible workaround will be:
 int CPowerPlug::modeId( String mode ){
     int i;
     for ( i = 0; i <  5 ; i++ ){
-	//for ( i : modes ){
+	//for ( i : modes ){ //possible syntax
         if ( mode == modes[i] ) break;
     }
     return i;
@@ -140,7 +140,7 @@ void CPowerPlug::updateOutputs( bool writeToJsonCount ){
     _nano.digitalWrite( _pin, _state );
     _nano.digitalWrite( _onOffLedPin, _state );
     if ( writeToJsonCount ){
-        String strCount = readFromJson( JSON_PARAMNAME_ONOFCOUNT );
+        String strCount = readFromJson( (String)JSON_PARAMNAME_ONOFCOUNT );
         strCount = String( strCount.toInt() + 1 );
         DSPL(dPrompt + "nouvelle valeur du compteur : " + strCount);
         writeToJson( JSON_PARAMNAME_ONOFCOUNT, strCount );        
@@ -154,9 +154,12 @@ void CPowerPlug::updateOutputs( bool writeToJsonCount ){
 @brief read from json  configuration file the parameters for the instancied plug
 
 Search are made in the file on the name of the plug as redPlug for exemple
-@return a booleen true if all is ok
+ @param restaurePhyState to restaure plug relay output state if needed
+
+ @return a booleen true if all is ok
 */
-bool CPowerPlug::readFromJson(){
+// bool CPowerPlug::readFromJson(){
+bool CPowerPlug::readFromJson( bool restaurePhyState ){
     String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
     String sClonedPlug, sOnOffCount, sNextTime2switch, sPause;
     String sJours[7];
@@ -202,6 +205,11 @@ bool CPowerPlug::readFromJson(){
 /** @todo continue to converts and store the string parameters
  in the members of the class
 */
+/////////////////////////////////////////////////////////////////////////////
+//    Restaure physical state                                                       //
+/////////////////////////////////////////////////////////////////////////////
+                    if ( restaurePhyState )
+                        if ( _state && !_pause ) on(); else off();
 /////////////////////////////////////////////////////////////////////////////
 //    debug displays                                                       //
 /////////////////////////////////////////////////////////////////////////////
@@ -468,7 +476,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
             // writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
             // off();
         } 
-    } else if ( HEBDO_MODE ){
+    } else if ( mode == HEBDO_MODE ){
         DSPL( dPrompt + F("Hebdo mode actions") );
         /////////////////////////////////////////////////////////////////////////////
         //    Compute HEBDO MODE                                                  //
@@ -533,14 +541,14 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         else {
             DSPL( dPrompt + "HEBDO mode : an invalid parameter was found, no change made");
         }
-    } else if ( mode ==  CLONE_MODE){//clode mode parameters
+    } else if ( mode == CLONE_MODE){//clode mode parameters
         DSPL( dPrompt + F("clone mode actions") );
         CPowerPlug clonedPlug;
         String clonedPlugName = extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_CLONEDPLUG );
         clonedPlug.setPlugName( clonedPlugName );
         // parameters to be cloned : state, pause, mode, hdeb, hfin, don, doff
         // , days and nextTimeToSwitch
-        clonedPlug.readFromJson(); //to populate clonedPlugName members _mode, _state...
+        clonedPlug.readFromJson( false ); //to populate clonedPlugName members _mode, _state...
         String clonedParamsNames[CLONEDPARAMNUMBER] = { JSON_PARAMNAME_STARTTIME
                                                        , JSON_PARAMNAME_ENDTIME
                                                        , JSON_PARAMNAME_ONDURATION
@@ -697,13 +705,13 @@ void CPowerPlug::switchAtTime(){
         CEpsStrTime duree;
         if (_state){
             off();
-            duree = (CEpsStrTime)readFromJson( JSON_PARAMNAME_OFFDURATION ); 
+            duree = (CEpsStrTime)readFromJson( (String)JSON_PARAMNAME_OFFDURATION ); 
         } else { //off state
             if (!_pause){
                 on();
-                duree = (CEpsStrTime)readFromJson( JSON_PARAMNAME_ONDURATION );   
+                duree = (CEpsStrTime)readFromJson( (String)JSON_PARAMNAME_ONDURATION );   
             } else { //in pause
-                duree = (CEpsStrTime)readFromJson( JSON_PARAMNAME_OFFDURATION );
+                duree = (CEpsStrTime)readFromJson( (String)JSON_PARAMNAME_OFFDURATION );
                 _pause = false;
                 writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
                 DSPL( dPrompt + F("sortie de pause sur mise off") );
@@ -717,15 +725,15 @@ void CPowerPlug::switchAtTime(){
         if (_state){
             off();
             DSPL( F("OFF") );
-            nextHour = CEpsStrTime(readFromJson( JSON_PARAMNAME_STARTTIME ),\
+            nextHour = CEpsStrTime(readFromJson( (String)JSON_PARAMNAME_STARTTIME ),\
                 CEpsStrTime::HHMM ); 
         } else {
             if (!_pause){            
                 on();
-                nextHour = CEpsStrTime(readFromJson( JSON_PARAMNAME_ENDTIME ),\
+                nextHour = CEpsStrTime(readFromJson( (String)JSON_PARAMNAME_ENDTIME ),\
                     CEpsStrTime::HHMM ); 
             } else {
-                nextHour = CEpsStrTime(readFromJson( JSON_PARAMNAME_STARTTIME ),\
+                nextHour = CEpsStrTime(readFromJson( (String)JSON_PARAMNAME_STARTTIME ),\
                     CEpsStrTime::HHMM ); 
                 _pause = false;
                 writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
@@ -757,7 +765,7 @@ void CPowerPlug::handleBpClic(){
         //if off put on and restart timer
         //restart timer is computed with new nextTimeToSwitch
         CEpsStrTime dureeOn;
-        dureeOn = (CEpsStrTime)readFromJson( JSON_PARAMNAME_ONDURATION );
+        dureeOn = (CEpsStrTime)readFromJson( (String)JSON_PARAMNAME_ONDURATION );
         _nextTimeToSwitch = dureeOn.computeNextTime();
         writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
         on();

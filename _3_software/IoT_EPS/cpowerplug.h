@@ -61,7 +61,8 @@ class CPowerPlug : public CNano {
         void setMode( int mode ){ _mode = mode; }
         int getMode(){ return _mode; }
               
-        bool readFromJson();
+        // bool readFromJson();
+        bool readFromJson( bool restaurePhyState );
         String readFromJson( String param );
         void writeToJson( String param, String val );
         void writeDaysToJson();
