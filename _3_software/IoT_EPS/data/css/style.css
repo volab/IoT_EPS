@@ -13,8 +13,11 @@ fieldset{
     padding: 0.75rem;
 }
 
-label{
-    /* color: black; */
+li{
+    list-style: none;
+}
+
+label, p{
     color: inherit;
 }
 
@@ -22,13 +25,25 @@ input::placeholder{
     color: blue;
 }
 
-[type="checkbox"] + span:not(.lever){
-    padding-left: 20px !important;
-    margin-left: 10px !important;
+input[type="text"]{
+    border-radius: 25rem;
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+    }
+
+input[type="checkbox"] + span{
+    cursor: pointer;
+    padding-right: 50px;
+}
+
 }
 
 .bg-gris{
-    /* background-color: #aeb6bf; */
+    background-color: #aeb6bf;
+}
+
+.bg-lightBlue{
     background-color: #d6eaf8;
 }
 
@@ -41,7 +56,7 @@ input::placeholder{
 }
 
 .bg-warning{
-    background-color: #fffc47 !important;
+    background-color: #fcfcf3 !important;
 }
 
 .nav-link {
@@ -62,13 +77,8 @@ input::placeholder{
 }
 
 .yellowPlug fieldset{
-    /* color: #e4ff02 !important;  */
     color: #fffc47 !important; 
 }
-
-/* .colorRed{
-    color: #b11721;
-} */
 
 .modeSelector{
     color: black;
@@ -90,18 +100,15 @@ input::placeholder{
 
 .infobulle{
     position: absolute;
-    background: #FF4F4F;
+    /* background: #FF4F4F; */
+    background: #ff3300;
     padding:3px 7px;
     opacity: 50%;
-    /* margin: border radius 3px; */
     border-radius:0 10px 0 10px;
     color:black;
     text-align: center;
+    margin: -13px;
 }
-
-/* .plugSelector{
-    background: #ecf0f1;
-} */
 
 /* .Red, .Green, .Blue, .Yellow {
     max-width: 150px;
@@ -118,19 +125,37 @@ input::placeholder{
     max-width: 25%;
     max-height: auto;
     cursor: pointer;
-    /* outline: none; */
     color: #fff;
-    /* background-color: #c7d0d4; */
-    /* background-color: #d7dbdd; */
     padding: 5px 5px;
     border-radius: 50%;
-    /* box-shadow: 9px 9px #999; */
 }
 
-.toCloneBTN:hover {background-color: #ab69c6}
+.toCloneBTN:hover {background-color: #ab69c6;}
 
 .toCloneBTN:active {
     background-color: #3e005d;
     box-shadow: 5px 5px #666;
     transform: translateY(4px);
   }
+
+.hamberger{
+    max-width: 5%;
+    max-height: auto;
+    cursor: pointer;
+    color: #fff;
+    padding: 5px 5px;
+}  
+
+.hamberger:hover {background-color: #ab69c6;}
+
+.hamberger:active {
+    background-color: #3e005d;
+  }
+
+
+/* Sucharge cmposant Bootstrap */
+.custom-control-input:checked ~ .custom-control-label::before {
+    color: #fff;
+    border-color: #33cc33;
+    background-color: #33cc33;
+}

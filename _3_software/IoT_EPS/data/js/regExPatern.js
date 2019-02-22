@@ -90,12 +90,19 @@ class C_RexExPatern{
         if (!v_target.val()){
             v_submit.disabled = false;
         } else if (!v_regEx.test(v_target.val()) || !this.v_validInput) {
-            v_target.css("border", "2px solid red");
+            v_target.css({
+                "border": "4px solid #ff3300",
+                "box-shadow": "0 0 10px 5px #ff3300"
+                });
             v_submit.disabled = true;
             this.f_errMsg(v_target, true);
             this.v_validInput = true;
         } else if (v_regEx.test(v_target.val())){
-            v_target.css("border", "2px solid green");
+            // v_target.css("border", "2px solid green");
+            v_target.css({
+                "border": "4px solid #33cc33",
+                "box-shadow": "0 0 10px 5px #33cc33"
+            });
             v_submit.disabled = false;
             this.v_validInput = true;
             this.f_errMsg(v_target, false);
