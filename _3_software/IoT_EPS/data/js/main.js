@@ -12,6 +12,14 @@ regEx.f_clean();
 red.f_clean();
 
 /*
+ * Menu (Hamberger + Sidebar)
+ */
+
+$('#sidebarCollapse').on('click', () => {
+    $('#sidebar').toggleClass('active');
+});
+
+/*
  * Events Manuel
  */
 $(red.modeManuel).on(

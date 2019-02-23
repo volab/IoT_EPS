@@ -54,7 +54,7 @@
             <!-- Page Content -->
             <div id="content">
                 <!-- We'll fill this with dummy content -->
-                <div class="container-fluid mb-4 align-items-center">
+                <!-- <div class="container-fluid mb-4 align-items-center">
                     <div class="row">
                         <nav class="navbar p-2 fixed-top bg-hoki"> 
                             <div class="col-md-6">
@@ -66,577 +66,587 @@
                             </div>
                         </nav>
                     </div>
-                </div>
-            </div>
-    
-        </div> 
+                </div> -->
+                <nav class="navbar p-2 navbar-expand-lg navbar-dark">
+                    <div class="container-fluid mb-4 align-items-center">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="button" id="sidebarCollapse" class="btn btn-info">
+                                    <i class="fas fa-align-justify"></i>
+                                    <!-- <span>Menu</span> -->
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- header -->
+                <br>
+                <header class="jimbotron">
+                    <div class="container-fluid my-4 d-none d-lg-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <img class="header_logo img-fluid" src="img/logo_alpha.png" alt="logo IoT_EPS">
+                            </div>
+                            <div class="col-md-7 ml-auto">
+                                <h1 class="header_h1 display-1" id="autoH1">IoT_EPS</h1>
+                                <h4>Electrical Power Strip</h4>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Main -->
+                <main>
+                    <!-- redPlug -->
+                    <section class="container-fluid redPlug">
+                        <fieldset class="redPlug" id="redPlug">
+                            <legend px-2><h2>Prise Rouge</h2></legend>
+                            <div class="row"> <!-- ROW -->
+                                <div class="col-md-2"> <!-- Div Left -->
+                                    <div class="redPlug modeSelector"> <!-- radio Selection des Modes-->
+                                        <p id="pSelector">Séléction du Mode :</p>
+                                        <ul>
+                                            <li> <!-- Selector Manuel -->
+                                                <div class="custom-control custom-radio">
+                                                    <label>
+                                                        <input 
+                                                            type="radio" 
+                                                            name="rMode" 
+                                                            value="Manuel"
+                                                            id="rManuel"
+                                                            class="redPlug modeSelector Manuel custom-control-input">
+                                                        <span class="custom-control-label">Manuel</span>
+                                                    </label>
+                                                </div></br>
+                                            </li> <!-- End Selector Manuel -->
+
+                                            <li> <!-- Selector Minuterie -->
+                                                <div class="custom-control custom-radio">
+                                                    <label>
+                                                        <input 
+                                                            type="radio" 
+                                                            name="rMode" 
+                                                            value="Minuterie"
+                                                            id="rMinuterie"
+                                                            class="redPlug modeSelector Minuterie custom-control-input">
+                                                        <span class="custom-control-label">Minuterie</span>
+                                                    </label>
+                                                </div><br>
+                                            </li> <!-- End Selector Minuterie -->
+
+                                            <li> <!-- Selector Cyclique -->
+                                                <div class="custom-control custom-radio">
+                                                    <label>
+                                                        <input 
+                                                            type="radio" 
+                                                            name="rMode" 
+                                                            value="Cyclique"
+                                                            id="rCyclique"
+                                                            class="redPlug modeSelector Cyclique custom-control-input">
+                                                        <span class="custom-control-label">Cyclique</span>
+                                                    </label>
+                                                </div><br>
+                                            </li> <!-- End Selector Cyclique -->
+
+                                            <li> <!-- Selector Hebdomadaire -->
+                                                <div class="custom-control custom-radio">
+                                                    <label>
+                                                        <input 
+                                                            type="radio" 
+                                                            name="rMode"
+                                                            value="Hebdomadaire"
+                                                            class="redPlug modeSelector Hebdomadaire custom-control-input">
+                                                        <span class="custom-control-label">Hedbomadaire</span>
+                                                    </label>
+                                                </div></br>
+                                            </li> <!-- End Selector Hebdomadaire -->
+
+                                            <li> <!-- Selector Clone -->
+                                                <div class="custom-control custom-radio">
+                                                    <label>
+                                                        <input 
+                                                            type="radio" 
+                                                            name="rMode"
+                                                            value="Clone"
+                                                            id="rClone"
+                                                            class="redPlug modeSelector Clone custom-control-input">
+                                                        <span class="custom-control-label">Clone</span>
+                                                    </label>
+                                                </div></br>
+                                            </li> <!-- End Selector Clone -->
+                                        </ul>
+                                    </div> <!-- END radio Selection des Modes-->
+                                </div> <!-- End Div Left -->
+                                
+                                <div class="col-md-10"> <!-- Div Right -->
+                                    <div class="Summary"> <!-- summary -->
+
+                                        <!-- Red Manuel -->
+                                        <div class="redPlug Manuel div_subSummary">
+                                            <h5>Mode Manuel</h5>
+                                            <form 
+                                                class="redPlug Manuel formRequest"
+                                                method="post"
+                                                action="/">
+                                                
+                                                <input type="hidden" name="COLOR" value="redPlug">
+                                                <input type="hidden" name="Mode" value="Manuel">
+                                                <div class="row">
+                                                    <!-- ON_OFF Selector -->
+                                                    <!-- Colone 1 -->
+                                                    <div class="redPlug Manuel on_off col-md-4">
+                                                        <p>Marche arrêt immediat :</p>
+                                                        <ul>
+                                                            <li>
+                                                                <div class="custom-control custom-radio">
+                                                                    <label>
+                                                                        <input 
+                                                                            type="radio"
+                                                                            name="State"
+                                                                            value="ON"
+                                                                            class="redPlug Manuel ON custom-control-input">
+                                                                        <span class="custom-control-label">Marche</span>
+                                                                    </label>
+                                                                </div></br>
+                                                            </li>
+
+                                                            <li>
+                                                                <div class="custom-control custom-radio">
+                                                                    <label>
+                                                                        <input 
+                                                                            type="radio" 
+                                                                            name="State"
+                                                                            value="OFF"
+                                                                            class="redPlug Manuel OFF custom-control-input">
+                                                                        <span class="custom-control-label">Arrêt</span>
+                                                                    </label>
+                                                                </div></br>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <!-- Red div_DiffSelector (arrêt différer) -->
+                                                    <!-- Colone 2 -->
+                                                    <div class="redPlug Manuel div_diffTypeSelector col-md-4">
+                                                        <p>Sélécion du Mode d'arrêt différer : </p>
+                                                        <ul>    
+                                                            <li>
+                                                                <div class="custom-control custom-radio">
+                                                                    <label>
+                                                                        <input 
+                                                                            type="radio" 
+                                                                            name="diffSelector" 
+                                                                            value="diffAt"
+                                                                            class="redPlug Manuel diffAt custom-control-input">
+                                                                            <span class="custom-control-label">Heure d'arrêt</span>
+                                                                    </label>
+                                                                </div></br>
+                                                            </li>
+
+                                                            <li>
+                                                                <div class="custom-control custom-radio">
+                                                                    <label>
+                                                                        <input 
+                                                                            type="radio" 
+                                                                            name="diffSelector" 
+                                                                            value="diffIn"
+                                                                            class="redPlug Manuel diffIn custom-control-input">
+                                                                            <span class="custom-control-label">Durée avant arrêt</span>
+                                                                    </label>
+                                                                </div></br>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+
+                                                    <!-- Red Manuel hFin -->
+                                                    <!-- Colone 3 (1/2)-->
+                                                    <div class="redPlug Manuel div_hFin col-md-4">
+                                                        <label>
+                                                            <span>Arréter la prise à ... </br>(Heure d'arrêt -- hh:mm):</span>
+                                                            <input 
+                                                                type="text" 
+                                                                name="hFin" 
+                                                                placeholder="hh:mm"
+                                                                class="redPlug Manuel hFin patern_heure">
+                                                        </label>
+                                                    </div>
+
+                                                    <!-- Red Manuel dureeOff -->
+                                                    <!-- Colone 3 (2/2) -->
+                                                    <div class="redPlug Manuel div_dureeOff col-md-4">
+                                                        <label>
+                                                            <span>Arréter la prise dans ... </br>(Durée en minute, 300 minutes Max):</span>
+                                                            <input 
+                                                                type="text" 
+                                                                name="dureeOff" 
+                                                                placeholder="mmm"
+                                                                class="redPlug Manuel dureeOff patern_dureeNoSec"> 
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <!-- Red Manuel Submit -->
+                                                <div class="submitReset">
+                                                    <input 
+                                                        type="submit"
+                                                        class="redPlug Manuel submit"/>
+                                                    <input
+                                                        type="reset"
+                                                        class="redPlug Manuel reset" /> 
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <!-- Red Minuterie -->
+                                        <div class="redPlug Minuterie div_subSummary">
+                                            <h5>Mode Minuterie</h5>
+                                            <form
+                                                class="redPlug Minuterie formRequest"
+                                                method="post"
+                                                action="/plugonoff">
+
+                                                <input type="hidden" name="COLOR" value="redPlug">
+                                                <input type="hidden" name="Mode" value="Minuterie">
+                                                <div class="row">
+                                                    <!-- Minuterie dureeOn -->
+                                                    <div class="redPlug Minuterie col-md-4">
+                                                        <label>
+                                                            <span> Réglage de la minuterie (Durée en minute, 300 minutes Max -- mmm:ss ou mmm):</br></span>
+                                                            <input 
+                                                                type="text"
+                                                                name="dureeOn" 
+                                                                placeholder="mmm:ss ou mmm" 
+                                                                class="redPlug Minuterie dureeOn patern_duree" 
+                                                                required> 
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <!-- Minuterie submit -->
+                                                <div class="submitReset">
+                                                    <input 
+                                                        type="submit"
+                                                        class="redPlug Minuterie submit"/>
+                                                    <input
+                                                        type="reset" 
+                                                        class="redPlug Minuterie reset" /> 
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <!-- Red Cylclique -->
+                                        <div class="redPlug Cyclique div_subSummary">
+                                            <h5>Mode Cyclique</h5>
+                                            <form
+                                                id="myForm"
+                                                class="redPlug Cyclique formRequest"
+                                                method="post"
+                                                action="/">
+
+                                                <input type="hidden" name="COLOR" value="redPlug">
+                                                <input type="hidden" name="Mode" value="Cyclique">
+                                                <p>Réglage de la période de fonctionnement et de repos (en minute):</p>
+                                                <div class="row">
+                                                    <!-- Cyclique dureeOn, 1ere colone -->
+                                                    <div class="redPlug Cyclique div_dureeOn col-md-4" >
+                                                        <label>
+                                                            <span>Durée ON</br>(Durée en minute, 300 minutes Max) :</br></span>
+                                                            <input 
+                                                                type="text"
+                                                                name="dureeOn"
+                                                                placeholder="mmm" 
+                                                                class="redPlug Cyclique dureeOn patern_dureeNoSec" 
+                                                                required>
+                                                        </label>
+                                                    </div>
+                                                    <!-- Cyclique dureeOff, 2ème colone -->
+                                                    <div class="redPlug Cyclique div_dureeOff col-md-4" >
+                                                        <label>
+                                                            <span>Durée OFF</br>(Durée en minute, 300 minutes Max) :</br></span>
+                                                            <input 
+                                                                type="text"
+                                                                name="dureeOff"
+                                                                placeholder="mmm"
+                                                                class="redPlug Cyclique dureeOff patern_dureeNoSec"
+                                                                required>
+                                                        </label>
+                                                    </div>
+                                                    <!-- Cyclique hDebut, 3ème colone -->
+                                                    <div class="redPlug Cyclique div_hDebut col-md-4">
+                                                        <label>
+                                                            <span>Heure de début</br>(facultatif)</br></span>
+                                                            <input 
+                                                                type="text" 
+                                                                name="hDebut" 
+                                                                placeholder="hh:mm" 
+                                                                class="redPlug Cyclique hDebut patern_heure">
+                                                    </label>
+                                                    </div>
+                                                </div>
+                                                <!-- Cyclique submit -->
+                                                <div class="redPlug Cyclique submitReset row">
+                                                    <!-- switch Pause -->
+                                                    <div class="col-md-4">
+                                                        <div class="custom-control custom-switch">
+                                                            <br>
+                                                            <input 
+                                                                type="checkbox" 
+                                                                name="Pause"
+                                                                value="ON"
+                                                                class="redPlug Cyclique pause custom-control-input"
+                                                                id="customSwitch1">
+                                                            <label 
+                                                                class="custom-control-label" 
+                                                                for="customSwitch1">
+                                                                Arrêt provisoire
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <br/> 
+                                                        <input 
+                                                            type="submit" 
+                                                            class="redPlug Cyclique submit"/>
+                                                        <input
+                                                            type="reset"
+                                                            class="redPlug Cyclique reset"/> 
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+
+                                        <!-- Red Hebdo -->
+                                        <div class="redPlug Hebdomadaire div_subSummary">
+                                            <h5>Mode Hebdomadaire</h5>
+                                            <form
+                                                class="redPlug Hebdomadaire formRequest"
+                                                method="post"
+                                                action="/plugonoff">
+
+                                                <input type="hidden" name="COLOR" value="redPlug">
+                                                <input type="hidden" name="Mode" value="Hebdomadaire">
+
+                                                <!-- Day selector -->
+                                                <p>Selection des jours d'activité :</p></br>
+                                                <div class="row">
+                                                    <div class="redPlug col-md-12 custom-control custom-checkbox">
+                                                        <label class="labelDaySelector">
+                                                            <input 
+                                                                type="checkbox" 
+                                                                name="AllDays" 
+                                                                value="AllDays"
+                                                                class="redPlug Hebdomadaire AllDays daySelector custom-control-input">
+                                                            <span class="custom-control-label">Sélectionner tous les jours</span>
+                                                        </label>
+                                                        <!-- <input 
+                                                            type="checkbox"
+                                                            name="AllDays"
+                                                            value="AllDays"
+                                                            id="AllDays"
+                                                            class="redPlug Hebdomadaire AllDays daySelector custom-control-input">
+                                                        <label for="AllDays" class="custom-control-label">
+                                                            Sélectionner tous les jours 
+                                                        </label> -->
+
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="redPlug Hebdomadaire weekDay col-md-12 custom-control custom-checkbox">
+                                                        <label class="labelDaySelector">
+                                                            <input 
+                                                                type="checkbox" 
+                                                                name="Lundi" 
+                                                                value="Lundi"
+                                                                class="redPlug Hebdomadaire Lundi daySelector custom-control-input">
+                                                            <span class="custom-control-label">Lundi</span>
+                                                        </label>
+                                                        <label class="labelDaySelector">
+                                                            <input 
+                                                                type="checkbox" 
+                                                                name="Mardi" 
+                                                                value="Mardi" 
+                                                                class="redPlug Hebdomadaire Mardi daySelector custom-control-input">
+                                                            <span class="custom-control-label">Mardi</span>
+                                                        </label>    
+                                                        <label class="labelDaySelector">
+                                                            <input 
+                                                                type="checkbox" 
+                                                                name="Mercredi" 
+                                                                value="Mercredi" 
+                                                                class="redPlug Hebdomadaire Mercredi daySelector custom-control-input">
+                                                            <span class="custom-control-label">Mercredi</span>
+                                                        </label>    
+                                                        <label class="labelDaySelector">
+                                                            <input 
+                                                                type="checkbox" 
+                                                                name="Jeudi" 
+                                                                value="Jeudi"
+                                                                class="redPlug Hebdomadaire Jeudi daySelector custom-control-input">
+                                                            <span class="custom-control-label">Jeudi</span>
+                                                        </label>    
+                                                        <label class="labelDaySelector">
+                                                            <input 
+                                                                type="checkbox" 
+                                                                name="Vendredi" 
+                                                                value="Vendredi" 
+                                                                class="redPlug  Hebdomadaire Vendredi daySelector custom-control-input">
+                                                            <span class="custom-control-label">Vendredi</span>
+                                                        </label>    
+                                                        <label class="labelDaySelector">
+                                                            <input 
+                                                                type="checkbox" 
+                                                                name="Samedi" 
+                                                                value="Samedi" 
+                                                                class="redPlug Hebdomadaire Samedi daySelector custom-control-input">
+                                                            <span class="custom-control-label">Samedi</span>
+                                                        </label>    
+                                                        <label class="labelDaySelector">
+                                                            <input 
+                                                                type="checkbox" 
+                                                                name="Dimanche" 
+                                                                value="Dimanche" 
+                                                                class="redPlug Hebdomadaire Dimanche daySelector custom-control-input">
+                                                            <span class="custom-control-label">Dimanche</span>
+                                                        </label>    
+                                                </div>
+                                                </div>
+
+                                                <!-- Hour Selector -->
+                                                <div class="row">
+                                                    <div class="redPlug Hebdomadaire col-md-6">
+                                                        <label>
+                                                            <span>Heure de début : (hh:mm)</br></span>
+                                                            <input 
+                                                                type="text" 
+                                                                name="hDebut" 
+                                                                placeholder="hh:mm"
+                                                                class="redPlug Hebdomadaire hDebut patern_heure"
+                                                                required/>
+                                                        </label>
+                                                    </div>
+                                                    <div class="redPlug Hebdomadaire col-md-6">
+                                                        <label>
+                                                            <span>Heure de fin : (hh:mm)</br></span>
+                                                            <input 
+                                                                type="text" 
+                                                                name="hFin" 
+                                                                placeholder="hh:mm"
+                                                                class="redPlug Hebdomadaire hFin patern_heure"
+                                                                required/>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <!-- Submit / Reset -->
+                                                <div class="redPlug Hebdomadaire submitReset row">
+                                                    <!-- switch Pause -->
+                                                    <div class="col-md-4">
+                                                        <div class="custom-control custom-switch">
+                                                            <br>
+                                                            <input 
+                                                                type="checkbox" 
+                                                                name="Pause"
+                                                                value="ON"
+                                                                class="redPlug Hebdomadaire pause custom-control-input"
+                                                                id="customSwitch2">
+                                                            <label 
+                                                                class="custom-control-label" 
+                                                                for="customSwitch2">
+                                                                Arrêt provisoire
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <br/> 
+                                                        <input 
+                                                            type="submit" 
+                                                            class="redPlug Hebdomadaire submit"/>
+                                                        <input
+                                                            type="reset"
+                                                            class="redPlug Hebdomadaire reset"/> 
+                                                    </div>
+                                                </div>
+
+                                            </form>
+                                        </div>
+
+                                        <!-- red Clone -->
+                                        <div class="redPlug Clone div_subSummary">
+                                            <h5>Mode Clone</h5>
+                                            <p>Sélctionner la prise à dupliquer :</p>
+                                            <form
+                                                class="redPlug Clone formRequest"
+                                                method="post"
+                                                action="/">
+
+                                                <input type="hidden" name="COLOR" value="redPlug">
+                                                <input type="hidden" name="Mode" value="Clone">
+                                                <input type="hidden" name="clonedPlug" value="null">
+                                                <div class="row">
+                                                    <br>
+                                                    <div class="div_cloneRed col-md-4">
+                                                        <input
+                                                            type="image"
+                                                            src="img/red.png"
+                                                            class="redPlug Clone Red toCloneBTN">
+                                                        <!-- <br>
+                                                        <span>Prise Rouge</span> -->
+                                                    </div>
+                                                    <div class="div_cloneGreen col-md-4">
+                                                        <input 
+                                                            type="image"
+                                                            name="clonedPlug"
+                                                            value="greenPlug"
+                                                            src="img/green.png"
+                                                            class="redPlug Clone Green toCloneBTN">
+                                                        <!-- <br>
+                                                        <span>Prise verte</span> -->
+                                                    </div>
+                                                    <div class="div_cloneBlue col-md-4">
+                                                        <input 
+                                                            type="image"
+                                                            src="img/blue.png"
+                                                            class="redPlug Clone Blue toCloneBTN">
+                                                        <!-- <br>
+                                                        <span>Prise bleue</span> -->
+                                                    </div>
+                                                    <div class="div_cloneYellow col-md-4">
+                                                        <input 
+                                                            type="image"
+                                                            src="img/yellow.png"
+                                                            class="redPlug Clone Yellow toCloneBTN">
+                                                        <!-- <br>
+                                                        <span>Prise jaune</span> -->
+                                                    </div>
+                                                </div>
+                                                <!-- Submit / Reset -->
+                                                <!-- <div class="redPlug Clone submitReset row">
+                                                    <div class="col-md-12">
+                                                        <br>
+                                                        <input
+                                                            type="submit"
+                                                            class="redPlug Clone submit"/>
+                                                        <input
+                                                            type="reset"
+                                                            class="redPlug Clone reset"/> 
+                                                    </div>
+                                                </div> -->
+                                            </form>
+                                        </div>
+                                    </div> <!-- End summary -->
+                                </div> <!-- End Div Right -->
+                            </div> <!-- End ROW -->
+                        </fieldset>
+                    </section>
+                    <hr>
+                </main>
+
+                <!-- Footer -->
+                <footer class="container">
+
+                </footer>
+            </div> <!-- End Content -->
+        </div> <!-- End Warper -->
         
-         <!-- header -->
-         <br>
-        <header class="jimbotron">
-            <div class="container-fluid my-4 d-none d-lg-block">
-                <div class="row align-items-center">
-                    <div class="col-md-4">
-                        <img class="header_logo img-fluid" src="img/logo_alpha.png" alt="logo IoT_EPS">
-                    </div>
-                    <div class="col-md-7 ml-auto">
-                        <h1 class="header_h1 display-1" id="autoH1">IoT_EPS</h1>
-                        <h4>Electrical Power Strip</h4>
-                    </div>
-                </div>
-            </div>
-        </header>
 
-        <!-- Main -->
-        <main>
-            <!-- redPlug -->
-            <section class="container-fluid redPlug">
-                <fieldset class="redPlug" id="redPlug">
-                    <legend px-2><h2>Prise Rouge</h2></legend>
-                    <div class="row">
-                        <div class="col-md-2">
-                            <!-- radio Selection des Modes-->
-                            <div class="redPlug modeSelector">
-                                <p id="pSelector">Séléction du Mode :</p>
-                                <ul>
-                                    <li>
-                                        <div class="custom-control custom-radio">
-                                        <label>
-                                            <input 
-                                                type="radio" 
-                                                name="rMode" 
-                                                value="Manuel"
-                                                id="rManuel"
-                                                class="redPlug modeSelector Manuel custom-control-input">
-                                            <span class="custom-control-label">Manuel</span>
-                                        </label>
-                                        </div>
-                                        </br>
-                                    </li>
-
-                                    <li>
-                                        <div class="custom-control custom-radio">
-                                            <label>
-                                                <input 
-                                                    type="radio" 
-                                                    name="rMode" 
-                                                    value="Minuterie"
-                                                    id="rMinuterie"
-                                                    class="redPlug modeSelector Minuterie custom-control-input">
-                                                <span class="custom-control-label">Minuterie</span>
-                                            </label>
-                                        </div><br>
-                                    </li>
-
-                                    <li>
-                                        <div class="custom-control custom-radio">
-                                            <label>
-                                                <input 
-                                                    type="radio" 
-                                                    name="rMode" 
-                                                    value="Cyclique"
-                                                    id="rCyclique"
-                                                    class="redPlug modeSelector Cyclique custom-control-input">
-                                                <span class="custom-control-label">Cyclique</span>
-                                            </label>
-                                        </div><br>
-                                    </li>
-
-                                    <li>
-                                        <div class="custom-control custom-radio">
-                                            <label>
-                                                <input 
-                                                    type="radio" 
-                                                    name="rMode"
-                                                    value="Hebdomadaire"
-                                                    id="rHebdomadaire"
-                                                    class="redPlug modeSelector Hebdomadaire custom-control-input">
-                                                <span class="custom-control-label">Hedbomadaire</span>
-                                            </label>
-                                        </div></br>
-                                    </li>
-
-                                    <li>
-                                        <div class="custom-control custom-radio">
-                                            <label>
-                                                <input 
-                                                    type="radio" 
-                                                    name="rMode"
-                                                    value="Clone"
-                                                    id="rClone"
-                                                    class="redPlug modeSelector Clone custom-control-input">
-                                                <span class="custom-control-label">Clone</span>
-                                            </label>
-                                        </div></br>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <!-- summary -->
-                        <div class="col-md-10">
-                            <div class="Summary">
-
-                                <!-- Red Manuel -->
-                                <div class="redPlug Manuel div_subSummary">
-                                    <h5>Mode Manuel</h5>
-                                    <form 
-                                        class="redPlug Manuel formRequest"
-                                        method="post"
-                                        action="/">
-                                        
-                                        <input type="hidden" name="COLOR" value="redPlug">
-                                        <input type="hidden" name="Mode" value="Manuel">
-                                        <div class="row">
-                                            <!-- ON_OFF Selector -->
-                                            <!-- Colone 1 -->
-                                            <div class="redPlug Manuel on_off col-md-4">
-                                                <p>Marche arrêt immediat :</p>
-                                                <ul>
-                                                    <li>
-                                                        <div class="custom-control custom-radio">
-                                                            <label>
-                                                                <input 
-                                                                    type="radio"
-                                                                    name="State"
-                                                                    value="ON"
-                                                                    class="redPlug Manuel ON custom-control-input">
-                                                                <span class="custom-control-label">Marche</span>
-                                                            </label>
-                                                        </div></br>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="custom-control custom-radio">
-                                                            <label>
-                                                                <input 
-                                                                    type="radio" 
-                                                                    name="State"
-                                                                    value="OFF"
-                                                                    class="redPlug Manuel OFF custom-control-input">
-                                                                <span class="custom-control-label">Arrêt</span>
-                                                            </label>
-                                                        </div></br>
-                                                    </li>
-                                                </ul>
-                                            </div>
-
-                                            <!-- Red div_DiffSelector (arrêt différer) -->
-                                            <!-- Colone 2 -->
-                                            <div class="redPlug Manuel div_diffTypeSelector col-md-4">
-                                                <p>Sélécion du Mode d'arrêt différer : </p>
-                                                <ul>    
-                                                    <li>
-                                                        <div class="custom-control custom-radio">
-                                                            <label>
-                                                                <input 
-                                                                    type="radio" 
-                                                                    name="diffSelector" 
-                                                                    value="diffAt"
-                                                                    class="redPlug Manuel diffAt custom-control-input">
-                                                                    <span class="custom-control-label">Heure d'arrêt</span>
-                                                            </label>
-                                                        </div></br>
-                                                    </li>
-
-                                                    <li>
-                                                        <div class="custom-control custom-radio">
-                                                            <label>
-                                                                <input 
-                                                                    type="radio" 
-                                                                    name="diffSelector" 
-                                                                    value="diffIn"
-                                                                    class="redPlug Manuel diffIn custom-control-input">
-                                                                    <span class="custom-control-label">Durée avant arrêt</span>
-                                                            </label>
-                                                        </div></br>
-                                                    </li>
-                                                </ul>
-                                            </div>
-
-                                            <!-- Red Manuel hFin -->
-                                            <!-- Colone 3 (1/2)-->
-                                            <div class="redPlug Manuel div_hFin col-md-4">
-                                                <label>
-                                                    <span>Arréter la prise à ... </br>(Heure d'arrêt -- hh:mm):</span>
-                                                    <input 
-                                                        type="text" 
-                                                        name="hFin" 
-                                                        placeholder="hh:mm"
-                                                        class="redPlug Manuel hFin patern_heure">
-                                                </label>
-                                            </div>
-
-                                            <!-- Red Manuel dureeOff -->
-                                            <!-- Colone 3 (2/2) -->
-                                            <div class="redPlug Manuel div_dureeOff col-md-4">
-                                                <label>
-                                                    <span>Arréter la prise dans ... </br>(Durée en minute, 300 minutes Max):</span>
-                                                    <input 
-                                                        type="text" 
-                                                        name="dureeOff" 
-                                                        placeholder="mmm"
-                                                        class="redPlug Manuel dureeOff patern_dureeNoSec"> 
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <!-- Red Manuel Submit -->
-                                        <div class="submitReset">
-                                            <input 
-                                                type="submit"
-                                                class="redPlug Manuel submit"/>
-                                            <input
-                                                type="reset"
-                                                class="redPlug Manuel reset" /> 
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <!-- Red Minuterie -->
-                                <div class="redPlug Minuterie div_subSummary">
-                                    <h5>Mode Minuterie</h5>
-                                    <form
-                                        class="redPlug Minuterie formRequest"
-                                        method="post"
-                                        action="/plugonoff">
-
-                                        <input type="hidden" name="COLOR" value="redPlug">
-                                        <input type="hidden" name="Mode" value="Minuterie">
-                                        <div class="row">
-                                            <!-- Minuterie dureeOn -->
-                                            <div class="redPlug Minuterie col-md-4">
-                                                <label>
-                                                    <span> Réglage de la minuterie (Durée en minute, 300 minutes Max -- mmm:ss ou mmm):</br></span>
-                                                    <input 
-                                                        type="text"
-                                                        name="dureeOn" 
-                                                        placeholder="mmm:ss ou mmm" 
-                                                        class="redPlug Minuterie dureeOn patern_duree" 
-                                                        required> 
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <!-- Minuterie submit -->
-                                        <div class="submitReset">
-                                            <input 
-                                                type="submit"
-                                                class="redPlug Minuterie submit"/>
-                                            <input
-                                                type="reset" 
-                                                class="redPlug Minuterie reset" /> 
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <!-- Red Cylclique -->
-                                <div class="redPlug Cyclique div_subSummary">
-                                    <h5>Mode Cyclique</h5>
-                                    <form
-                                        id="myForm"
-                                        class="redPlug Cyclique formRequest"
-                                        method="post"
-                                        action="/">
-
-                                        <input type="hidden" name="COLOR" value="redPlug">
-                                        <input type="hidden" name="Mode" value="Cyclique">
-                                        <p>Réglage de la période de fonctionnement et de repos (en minute):</p>
-                                        <div class="row">
-                                            <!-- Cyclique dureeOn, 1ere colone -->
-                                            <div class="redPlug Cyclique div_dureeOn col-md-4" >
-                                                <label>
-                                                    <span>Durée ON</br>(Durée en minute, 300 minutes Max) :</br></span>
-                                                    <input 
-                                                        type="text"
-                                                        name="dureeOn"
-                                                        placeholder="mmm" 
-                                                        class="redPlug Cyclique dureeOn patern_dureeNoSec" 
-                                                        required>
-                                                </label>
-                                            </div>
-                                            <!-- Cyclique dureeOff, 2ème colone -->
-                                            <div class="redPlug Cyclique div_dureeOff col-md-4" >
-                                                <label>
-                                                    <span>Durée OFF</br>(Durée en minute, 300 minutes Max) :</br></span>
-                                                    <input 
-                                                        type="text"
-                                                        name="dureeOff"
-                                                        placeholder="mmm"
-                                                        class="redPlug Cyclique dureeOff patern_dureeNoSec"
-                                                        required>
-                                                </label>
-                                            </div>
-                                            <!-- Cyclique hDebut, 3ème colone -->
-                                            <div class="redPlug Cyclique div_hDebut col-md-4">
-                                                <label>
-                                                    <span>Heure de début</br>(facultatif)</br></span>
-                                                    <input 
-                                                        type="text" 
-                                                        name="hDebut" 
-                                                        placeholder="hh:mm" 
-                                                        class="redPlug Cyclique hDebut patern_heure">
-                                            </label>
-                                            </div>
-                                        </div>
-                                        <!-- Cyclique submit -->
-                                        <div class="redPlug Cyclique submitReset row">
-                                            <!-- switch Pause -->
-                                            <div class="col-md-4">
-                                                <div class="custom-control custom-switch">
-                                                    <br>
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="Pause"
-                                                        value="ON"
-                                                        class="redPlug Cyclique pause custom-control-input"
-                                                        id="customSwitch1">
-                                                    <label 
-                                                        class="custom-control-label" 
-                                                        for="customSwitch1">
-                                                        Arrêt provisoire
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <br/> 
-                                                <input 
-                                                    type="submit" 
-                                                    class="redPlug Cyclique submit"/>
-                                                <input
-                                                    type="reset"
-                                                    class="redPlug Cyclique reset"/> 
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <!-- Red Hebdo -->
-                                <div class="redPlug Hebdomadaire div_subSummary">
-                                    <h5>Mode Hebdomadaire</h5>
-                                    <form
-                                        class="redPlug Hebdomadaire formRequest"
-                                        method="post"
-                                        action="/plugonoff">
-
-                                        <input type="hidden" name="COLOR" value="redPlug">
-                                        <input type="hidden" name="Mode" value="Hebdomadaire">
-
-                                        <!-- Day selector -->
-                                        <p>Selection des jours d'activité :</p></br>
-                                        <div class="row">
-                                            <div class="redPlug col-md-12 custom-control custom-checkbox">
-                                                <label class="labelDaySelector">
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="AllDays" 
-                                                        value="AllDays"
-                                                        class="redPlug Hebdomadaire AllDays daySelector custom-control-input">
-                                                    <span class="custom-control-label">Sélectionner tous les jours</span>
-                                                </label>
-                                                <!-- <input 
-                                                    type="checkbox"
-                                                    name="AllDays"
-                                                    value="AllDays"
-                                                    id="AllDays"
-                                                    class="redPlug Hebdomadaire AllDays daySelector custom-control-input">
-                                                <label for="AllDays" class="custom-control-label">
-                                                    Sélectionner tous les jours 
-                                                </label> -->
-
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="redPlug Hebdomadaire weekDay col-md-12 custom-control custom-checkbox">
-                                                <label class="labelDaySelector">
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="Lundi" 
-                                                        value="Lundi"
-                                                        class="redPlug Hebdomadaire Lundi daySelector custom-control-input">
-                                                    <span class="custom-control-label">Lundi</span>
-                                                </label>
-                                                <label class="labelDaySelector">
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="Mardi" 
-                                                        value="Mardi" 
-                                                        class="redPlug Hebdomadaire Mardi daySelector custom-control-input">
-                                                    <span class="custom-control-label">Mardi</span>
-                                                </label>    
-                                                <label class="labelDaySelector">
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="Mercredi" 
-                                                        value="Mercredi" 
-                                                        class="redPlug Hebdomadaire Mercredi daySelector custom-control-input">
-                                                    <span class="custom-control-label">Mercredi</span>
-                                                </label>    
-                                                <label class="labelDaySelector">
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="Jeudi" 
-                                                        value="Jeudi"
-                                                        class="redPlug Hebdomadaire Jeudi daySelector custom-control-input">
-                                                    <span class="custom-control-label">Jeudi</span>
-                                                </label>    
-                                                <label class="labelDaySelector">
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="Vendredi" 
-                                                        value="Vendredi" 
-                                                        class="redPlug  Hebdomadaire Vendredi daySelector custom-control-input">
-                                                    <span class="custom-control-label">Vendredi</span>
-                                                </label>    
-                                                <label class="labelDaySelector">
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="Samedi" 
-                                                        value="Samedi" 
-                                                        class="redPlug Hebdomadaire Samedi daySelector custom-control-input">
-                                                    <span class="custom-control-label">Samedi</span>
-                                                </label>    
-                                                <label class="labelDaySelector">
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="Dimanche" 
-                                                        value="Dimanche" 
-                                                        class="redPlug Hebdomadaire Dimanche daySelector custom-control-input">
-                                                    <span class="custom-control-label">Dimanche</span>
-                                                </label>    
-                                           </div>
-                                        </div>
-
-                                        <!-- Hour Selector -->
-                                        <div class="row">
-                                            <div class="redPlug Hebdomadaire col-md-6">
-                                                <label>
-                                                    <span>Heure de début : (hh:mm)</br></span>
-                                                    <input 
-                                                        type="text" 
-                                                        name="hDebut" 
-                                                        placeholder="hh:mm"
-                                                        class="redPlug Hebdomadaire hDebut patern_heure"
-                                                        required/>
-                                                </label>
-                                            </div>
-                                            <div class="redPlug Hebdomadaire col-md-6">
-                                                <label>
-                                                    <span>Heure de fin : (hh:mm)</br></span>
-                                                    <input 
-                                                        type="text" 
-                                                        name="hFin" 
-                                                        placeholder="hh:mm"
-                                                        class="redPlug Hebdomadaire hFin patern_heure"
-                                                        required/>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <!-- Submit / Reset -->
-                                        <div class="redPlug Hebdomadaire submitReset row">
-                                            <!-- switch Pause -->
-                                            <div class="col-md-4">
-                                                <div class="custom-control custom-switch">
-                                                    <br>
-                                                    <input 
-                                                        type="checkbox" 
-                                                        name="Pause"
-                                                        value="ON"
-                                                        class="redPlug Hebdomadaire pause custom-control-input"
-                                                        id="customSwitch2">
-                                                    <label 
-                                                        class="custom-control-label" 
-                                                        for="customSwitch2">
-                                                        Arrêt provisoire
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <br/> 
-                                                <input 
-                                                    type="submit" 
-                                                    class="redPlug Hebdomadaire submit"/>
-                                                <input
-                                                    type="reset"
-                                                    class="redPlug Hebdomadaire reset"/> 
-                                            </div>
-                                        </div>
-
-                                    </form>
-                                </div>
-
-                                <!-- red Clone -->
-                                <div class="redPlug Clone div_subSummary">
-                                    <h5>Mode Clone</h5>
-                                    <p>Sélctionner la prise à dupliquer :</p>
-                                    <form
-                                        class="redPlug Clone formRequest"
-                                        method="post"
-                                        action="/">
-
-                                        <input type="hidden" name="COLOR" value="redPlug">
-                                        <input type="hidden" name="Mode" value="Clone">
-                                        <input type="hidden" name="clonedPlug" value="null">
-                                        <div class="row">
-                                            <br>
-                                            <div class="div_cloneRed col-md-4">
-                                                <input
-                                                    type="image"
-                                                    src="img/red.png"
-                                                    class="redPlug Clone Red toCloneBTN">
-                                                <!-- <br>
-                                                <span>Prise Rouge</span> -->
-                                            </div>
-                                            <div class="div_cloneGreen col-md-4">
-                                                <input 
-                                                    type="image"
-                                                    name="clonedPlug"
-                                                    value="greenPlug"
-                                                    src="img/green.png"
-                                                    class="redPlug Clone Green toCloneBTN">
-                                                <!-- <br>
-                                                <span>Prise verte</span> -->
-                                            </div>
-                                            <div class="div_cloneBlue col-md-4">
-                                                <input 
-                                                    type="image"
-                                                    src="img/blue.png"
-                                                    class="redPlug Clone Blue toCloneBTN">
-                                                <!-- <br>
-                                                <span>Prise bleue</span> -->
-                                            </div>
-                                            <div class="div_cloneYellow col-md-4">
-                                                <input 
-                                                    type="image"
-                                                    src="img/yellow.png"
-                                                    class="redPlug Clone Yellow toCloneBTN">
-                                                <!-- <br>
-                                                <span>Prise jaune</span> -->
-                                            </div>
-                                        </div>
-                                        <!-- Submit / Reset -->
-                                        <!-- <div class="redPlug Clone submitReset row">
-                                            <div class="col-md-12">
-                                                <br>
-                                                <input
-                                                    type="submit"
-                                                    class="redPlug Clone submit"/>
-                                                <input
-                                                    type="reset"
-                                                    class="redPlug Clone reset"/> 
-                                            </div>
-                                        </div> -->
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-            </section>
-            <hr>
-        </main>
-
-        <!-- Footer -->
-        <footer class="container">
-
-        </footer>
 
         <!-- script Framwork local -->
         <!-- <script type="text/javascript" src="js/jquery-3.3.1.js"></script> -->
@@ -646,9 +656,15 @@
         <!-- Script framwork CDN -->
             <!-- jQuery first, then Popper.js, then Bootstrap JS -->
         <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+        <!-- Font Awesome JS -->
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
         
+        <!-- popper -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 
+        <!-- Bootstrap -->
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
 
