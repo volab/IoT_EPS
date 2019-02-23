@@ -152,6 +152,21 @@ input[type="checkbox"] + span{
     background-color: #3e005d;
   }
 
+.justify{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Manuel .div_dureeOff {
+    display: flex;
+    align-items: center;
+}
+
+.Manuel .div_hFin {
+    display: flex;
+    align-items: center;
+}
 
 /* Sucharge cmposant Bootstrap */
 .custom-control-input:checked ~ .custom-control-label::before {
@@ -159,3 +174,18 @@ input[type="checkbox"] + span{
     border-color: #33cc33;
     background-color: #33cc33;
 }
+
+.text-warning{
+    color: #fffc47 !important;
+}
+
+.dropdown-menu.show{
+    margin-left: 50%;
+}
+
+.row{margin-top: 15px;}
+
+.redPlug .dropdown-menu.show{background: #ffb3b3;}
+.greenPlug .dropdown-menu.show{background: #b3ffb3;}
+.bluePlug .dropdown-menu.show{background: #b3ccff;}
+.yellowPlug .dropdown-menu.show{background: #ffffb3;}

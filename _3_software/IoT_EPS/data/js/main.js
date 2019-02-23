@@ -15,8 +15,12 @@ red.f_clean();
  * Menu (Hamberger + Sidebar)
  */
 
+var toggleSidebar = ()=>{ $('#sidebar').toggleClass('active')};
+
+toggleSidebar()
+
 $('#sidebarCollapse').on('click', () => {
-    $('#sidebar').toggleClass('active');
+    toggleSidebar();
 });
 
 /*
@@ -27,6 +31,7 @@ $(red.modeManuel).on(
     ()=>{
         regEx.f_clean();
         red.f_displayManuelDiv("block");
+        toggleSidebar();
     }
 );
 
@@ -49,7 +54,7 @@ $(red.manuelOFF).on(
 $(red.manuelDiffAt).on(
     "click",
     ()=>{
-        red.f_displayDiv_hFin("block");
+        red.f_displayDiv_hFin("flex")
         red.f_displayDiv_dureeOff("none");
     }
 );    
@@ -58,7 +63,7 @@ $(red.manuelDiffIn).on(
     "click",
     ()=>{
         red.f_displayDiv_hFin("none");
-        red.f_displayDiv_dureeOff("block");
+        red.f_displayDiv_dureeOff("flex");
     }
 );
 
@@ -94,6 +99,7 @@ $(red.modeMinuterie).on(
     ()=>{
         regEx.f_clean();
         red.f_displayMinuterieDiv("block");
+        toggleSidebar();
     });
 
 $(red.minuterie_dureeOn).on(
@@ -120,6 +126,7 @@ $(red.modeCyclique).on(
     function(){
         regEx.f_clean();
         red.f_displayCycliqueDiv("block");
+        toggleSidebar();
     });
 
 $(red.cyclique_dureeOn).on(
@@ -180,6 +187,7 @@ $(red.modeHedbomadaire).on(
     function(){
         regEx.f_clean();
         red.f_displayHebdomadaireDiv("block");
+        toggleSidebar();
     });
 
 $(red.hebdmadaireAllDays).on(
@@ -255,6 +263,7 @@ $(red.modeClone).on(
         regEx.f_clean();
         red.f_cloneHideCurrentPlug(event);
         red.f_displayCloneDiv("block");
+        toggleSidebar();
     });
 
 $(red.cloneToRed).on(
@@ -292,16 +301,6 @@ $(red.cloneToYellow).on(
     $(red.cloneForm).submit();
     }
 )
-
-// $(red.cloneSubmit).on(
-//     "click",
-//     (event)=>{
-//         console.log("envoyer");
-//         console.log( $(red.cloneSelector).val() );
-//         console.log( red.CloneForm );
-//         $(red.cloneForm).submit();
-//     }
-// );
 
 $(red.cloneForm).on(
     "submit",
