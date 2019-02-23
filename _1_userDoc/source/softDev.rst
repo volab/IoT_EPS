@@ -124,16 +124,24 @@ Factorisation des varibales de mode
 Comportement à la mise sous tension
 =====================================
 
-Soit l'interrupteur général est actif et on reprend où on en était sauf
-(le mode manuel "étendu" durée off ou heure de coupure pas dans le json).
+Soit l'interrupteur général est actif (cas de la coupure EDF) et on reprend où on en était.
 
 Soit l'interrupteur général est  inactif et on reprend en mode manuel.
 
 L'interrupteur général coupe le 220V des prise mais pas de l'ESP8266.
 
-Bien expliquer les 2 mode de fonctionnement dans l'interface WEB et donner le choix à l'utilisateur.
+Bien expliquer les 2 modes de fonctionnement dans l'interface WEB et donner le choix à l'utilisateur.
 
 Expliquer le coup de la coupure de courant.
+
+Evol : après coupure EDF : donner le choix à l'utilisateur de configurer le comportement de
+chaque prise.
+
+Comportement possibles:
+#. on repart d'où on en était (avec éventuellement alerte instantanée à l'utilisateur)
+#. on met tout la prise à OFF en manuel(avec éventuellement alerte instantanée à l'utilisateur)
+#. on informe l'utilisateur (canal à définir, MQTT ou autre...) qui décide mais on met en
+pause en attendant
 
 
 

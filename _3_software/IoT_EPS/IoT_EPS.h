@@ -34,6 +34,7 @@
 #include "cEpsStrTime.h"
 #include "Flasher.h"
 #include "CRtc.h"
+#include "cswitchnano.h"
 
 #define NBRPLUGS 4
 #define NUM_LEDS NBRPLUGS /**< for fastLED class */
@@ -115,6 +116,7 @@
 #define WIFILED_SOFTAP_FLASH 50
 #define WIFILED_SOFTAP_PERIOD 2000
 #define MAX_WIFI_CONNECT_RETRY 30 /**< @brief In Station mode number of try before to switch to access point connection*/
+
 
 
 #endif

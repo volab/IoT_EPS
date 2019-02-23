@@ -86,7 +86,7 @@ bool simpleManualMode = false;
 
 Flasher wifiLed;
 
-
+CSwitchNano mainPowerSiwth;
 
 
 void setup(){
@@ -127,7 +127,7 @@ void setup(){
         /** @todo Stop EPS and warn with colors and others LED ,
         cause without right time EPS dosen't work. No manual mode shall work */
     } else {
-        // errRTCinit = false;
+        // errRTCinit = false;0
         /** @todo check time validity */
         now = rtc.now();
         String message = dPrompt + F("DS3231 Start date : ");
@@ -146,10 +146,8 @@ void setup(){
     
     // Cmcp::init();
     CNano::init();
-    int mainPowerSiwthState;
-    CNanoI2CIOExpander nano;
-    nano.pinMode( MAINSWITCHPIN, INPUT_PULLUP );
-    mainPowerSiwthState = !nano.digitalRead( MAINSWITCHPIN );
+    mainPowerSiwth.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
+    int mainPowerSiwthState = !mainPowerSiwth.digitalRead(); //open circuit = plug OFF
     
     DSPL( dPrompt + "Main power state : " +  ( mainPowerSiwthState?"ON":"OFF") );
     /** @todo test if CNano::initOk = true - if not don't start anything*/
@@ -346,8 +344,6 @@ void loop(){
         if ( plugs[i].bp.clic() ){
             plugs[i].handleBpClic();
         } // else if plugs[i].bp.longClic(){ plugs[i].return2ManuelMode() }
-        /** @todo developp return2ManuelMode as the long clic command for all mode
-        of the  CPowerPlug class*/
         if ( plugs[i].isItTimeToSwitch() ){
             DSPL( dPrompt + "It is time for : " + plugs[i].getPlugName() );
             plugs[i].switchAtTime();
@@ -356,6 +352,11 @@ void loop(){
             plugs[i].handleBpLongClic();
         }
     }
+    mainPowerSiwth.update();
+    if ( !mainPowerSiwth.getState() ){ 
+        DSPL( dPrompt + F("main power switched OFF and all plugs are in manual state.") );
+    }
+    /** @todo add main power switch actions */
     yield();
 }
 
