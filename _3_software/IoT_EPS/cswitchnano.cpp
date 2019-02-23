@@ -25,9 +25,9 @@ void CSwitchNano::begin( int pin, unsigned long samplePeriod, int mode ){
     pinMode( pin, _mode );
     _samplePeriod = samplePeriod;
     _prevMillis = millis();
-    _state = false;
-    _prevState = false;
     if (!initOk) CNanoI2CIOExpander::begin();
+    _state = digitalRead();
+    _prevState = _state;
 }
 
 /** 

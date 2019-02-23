@@ -24,15 +24,16 @@ Avancement
 #. module relais : ok
 #. définition des modes de fonctionnement : ok
 #. récup paramètre via form submit html : ok
-#. add  WS2801 LED
+#. add  WS2801 LED : ok
 #. Alimentation du module relais en 5V (choix du conver.) : 60%
 #. add power led
-#. add power button : 
+#. add power button : 80% 
 #. add wifi led : ok
 #. add LDR
 #. add I2C nano expander with analog inputs ok
 #. packaging study
 #. integartion
+#. add a MOSFET on general power relay to switch them all in one time on power off
 
 
 ####

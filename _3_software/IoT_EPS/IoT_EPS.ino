@@ -86,8 +86,8 @@ bool simpleManualMode = false;
 
 Flasher wifiLed;
 
-CSwitchNano mainPowerSiwth;
-
+CSwitchNano mainPowerSiwtch;
+int mainPowerPrevState = 0;
 
 void setup(){
 
@@ -146,15 +146,15 @@ void setup(){
     
     // Cmcp::init();
     CNano::init();
-    mainPowerSiwth.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
-    int mainPowerSiwthState = !mainPowerSiwth.digitalRead(); //open circuit = plug OFF
-    
-    DSPL( dPrompt + "Main power state : " +  ( mainPowerSiwthState?"ON":"OFF") );
+    mainPowerSiwtch.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
+    int mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
+    mainPowerPrevState = mainPowerSwitchState; // for the loop
+    DSPL( dPrompt + "Main power state : " +  ( mainPowerSwitchState?"ON":"OFF") );
     /** @todo test if CNano::initOk = true - if not don't start anything*/
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CPowerPlug::modeId("MANUEL") );
     plugs[0].setColor( CRGB::Red );
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
-    plugs[0].readFromJson( mainPowerSiwthState );
+    plugs[0].readFromJson( mainPowerSwitchState );
     /** @todo improve error check from CPowerPlug::readFromJson*/
     /** @todo add pin, pinLed and color to json file*/
     /** @todo + le nombre de plug pour rendre cette séquense dynamic*/
@@ -162,16 +162,16 @@ void setup(){
     plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, BP1, CPowerPlug::modeId("MANUEL") );
     plugs[1].setColor( CRGB::Green );
     plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
-    plugs[1].readFromJson(  mainPowerSiwthState );
+    plugs[1].readFromJson(  mainPowerSwitchState );
     plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, BP2, CPowerPlug::modeId("MANUEL") );
     plugs[2].setColor( CRGB::Blue );
     plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
-    plugs[2].readFromJson( mainPowerSiwthState );
+    plugs[2].readFromJson( mainPowerSwitchState );
     // plugs[2].setColor( CRGB::Purple );
     plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, BP3, CPowerPlug::modeId("MANUEL") );
     plugs[3].setColor( CRGB::Yellow );
     plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
-    plugs[3].readFromJson( mainPowerSiwthState );
+    plugs[3].readFromJson( mainPowerSwitchState );
     for ( int i = 0; i < NBRPLUGS ; i++ ){
         colorLeds[i] = plugs[i].getColor();
         /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/
@@ -321,6 +321,7 @@ void setup(){
 	}
 	
 	SerialCommand::displayCommandsList();
+
     
 
 }
@@ -330,31 +331,47 @@ void setup(){
 /////////////////////////////////////////////////////////////////////////////
 unsigned long prevMillis = millis();
 void loop(){
-
+    
     DEFDPROMPT("in the loop")
     if ( !simpleManualMode ) server.handleClient();
-
+    mainPowerSiwtch.update();
     SerialCommand::process();
-	
+	int mainPowerSate = !mainPowerSiwtch.getState();
+    
+    
 	if ( cParam.getWifiMode() == "softAP" ) wifiLed.update();
 
     FastLED.show();
-    for ( int i = 0; i < NBRPLUGS ; i++ ) plugs[i].bp.update();
-    for ( int i = 0; i < NBRPLUGS ; i++ ){
-        if ( plugs[i].bp.clic() ){
-            plugs[i].handleBpClic();
-        } // else if plugs[i].bp.longClic(){ plugs[i].return2ManuelMode() }
-        if ( plugs[i].isItTimeToSwitch() ){
-            DSPL( dPrompt + "It is time for : " + plugs[i].getPlugName() );
-            plugs[i].switchAtTime();
+    if ( mainPowerPrevState == HIGH ){
+        for ( int i = 0; i < NBRPLUGS ; i++ ) plugs[i].bp.update();
+        for ( int i = 0; i < NBRPLUGS ; i++ ){
+            if ( plugs[i].bp.clic() ){
+                plugs[i].handleBpClic();
+            } // else if plugs[i].bp.longClic(){ plugs[i].return2ManuelMode() }
+            if ( plugs[i].isItTimeToSwitch() ){
+                DSPL( dPrompt + "It is time for : " + plugs[i].getPlugName() );
+                plugs[i].switchAtTime();
+            }
+            if ( plugs[i].bp.longClic() ){
+                plugs[i].handleBpLongClic();
+            }
+        }  
+    }        
+ 
+    
+    if ( mainPowerSate != mainPowerPrevState){
+        mainPowerPrevState = mainPowerSate;
+        if (mainPowerSate == HIGH ){ 
+            DSPL( dPrompt + F("main power switched ON."));
+        } else {
+            DSPL( dPrompt + F("main power switched OFF and all plugs are in manual state.") );
+            for ( int i = 0; i < NBRPLUGS ; i++ ){
+                plugs[i].off();
+            }            
+            for ( int i = 0; i < NBRPLUGS ; i++ ){                
+                plugs[i].handleBpLongClic();
+            }
         }
-        if ( plugs[i].bp.longClic() ){
-            plugs[i].handleBpLongClic();
-        }
-    }
-    mainPowerSiwth.update();
-    if ( !mainPowerSiwth.getState() ){ 
-        DSPL( dPrompt + F("main power switched OFF and all plugs are in manual state.") );
     }
     /** @todo add main power switch actions */
     yield();
@@ -375,6 +392,7 @@ void wifiLedFlash( int speed, int count ){
 
 //second implementation with Flasher
 void wifiLedFlash( Flasher led, int count ){
+    
 	while ( led.getChangeStateCpt() < count ){
 		led.update();
 		yield();

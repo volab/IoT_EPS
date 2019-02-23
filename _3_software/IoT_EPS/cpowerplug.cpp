@@ -65,7 +65,6 @@ It also update json file
 */
 void CPowerPlug::on(){
     DEFDPROMPT( "CPOwerPlug")
-    // if ( _pin == 0){
     if ( !_initDone){
         DSPL( dPrompt + F(" plug not started, call .begin().") );
     }
@@ -163,6 +162,10 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
     String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
     String sClonedPlug, sOnOffCount, sNextTime2switch, sPause;
     String sJours[7];
+    if (!restaurePhyState){ //manuel mode and off
+        handleBpLongClic();
+        return true;
+    }
     DEFDPROMPT("reading config values for " + getPlugName())
     // DSPL( dPrompt +F("Mounting FS..."));
     if (SPIFFS.begin()) {
@@ -753,6 +756,7 @@ void CPowerPlug::switchAtTime(){
 void CPowerPlug::handleBpClic(){
     DEFDPROMPT("handleClic")
     String sMode = getStringMode();
+    //DSPL( dPrompt);
     if ( sMode == MANUAL_MODE ){
         if ( _state ) {
             if ( _nextTimeToSwitch )
@@ -783,8 +787,8 @@ void CPowerPlug::handleBpClic(){
             _pause = false;
             DSPL( dPrompt + F("sortie de pause par BP") );
         }
-    //} else if (sMode == HEBDO_MODE){
-        
+    } else {
+        DSPL( dPrompt + F("WARNING aucun mode valid !") );
     }
     bp.acquit();    
 }
@@ -799,20 +803,67 @@ void CPowerPlug::handleBpLongClic(){
     String mode;
     DEFDPROMPT("handleLongClic");
     DSPL( dPrompt );
-    off();
+    // off();
+    bool prevState = _state;
+    _state = OFF ;
+    updateOutputs( prevState != _state ); //to count only real plug switch
+// writeToJson( JSON_PARAMNAME_STATE, "OFF" );    
     _nextTimeToSwitch = 0;
-    writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
-    writeToJson( JSON_PARAMNAME_ENDTIME, "" );
-    writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
-    writeToJson( JSON_PARAMNAME_ONDURATION, "" );
-    writeToJson( JSON_PARAMNAME_STARTTIME, "" );
-    writeToJson( JSON_PARAMNAME_CLONEDPLUG, "" );
     _pause = false;
-    writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
-    _daysOnWeek = 0;
-    writeDaysToJson(); 
-    mode = MANUAL_MODE; 
+    mode = MANUAL_MODE;
     _mode = modeId( mode );
-    writeToJson( JSON_PARAMNAME_MODE, mode );
+    _daysOnWeek = 0;    
+    /** @todo write a special method to change all aprameter in the json file in one operation
+writeToJson open the file, read the entire file, change one parm, rewrite the file and close it !*/
+
+    // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+    // writeToJson( JSON_PARAMNAME_ENDTIME, "" );
+    // writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
+    // writeToJson( JSON_PARAMNAME_ONDURATION, "" );
+    // writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+    // writeToJson( JSON_PARAMNAME_CLONEDPLUG, "" );
+    // writeToJson( JSON_PARAMNAME_MODE, mode );
+    // writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+    
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    if (configFile) {
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+        configFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+            JsonObject& plug = json[_plugName]; 
+            JsonArray& plugJours = plug["Jours"];
+            plug[JSON_PARAMNAME_NEXTSWITCH] = (String)_nextTimeToSwitch;
+            plug[JSON_PARAMNAME_ENDTIME] = "";
+            plug[JSON_PARAMNAME_OFFDURATION] = "";
+            plug[JSON_PARAMNAME_ONDURATION] = "";
+            plug[JSON_PARAMNAME_STARTTIME] = "";
+            plug[JSON_PARAMNAME_CLONEDPLUG] = "";
+            plug[JSON_PARAMNAME_MODE] = mode;
+            plug[JSON_PARAMNAME_PAUSE] = "OFF";            
+            for (int i = 0; i<7; i++){
+                plugJours[ i ] = "OFF";
+            }
+            configFile.seek(0, SeekSet);
+            json.prettyPrintTo(configFile);
+            // plug.prettyPrintTo(Serial);
+            // DSPL();
+        } else {
+            DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+            // return false;
+        }
+        configFile.close();
+        // return true;  
+/** @todo perhaps add error handling as in readFromJson()*/        
+    }    
+    
+
+    // writeDaysToJson(); 
+
+
+    
     bp.acquit();    
 }
