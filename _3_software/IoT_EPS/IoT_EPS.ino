@@ -77,6 +77,7 @@ CPowerPlug *plugs;
 bool errFS = true;
 
 /** @todo see for add colorLEd array in the class CPowerPlug as a static member*/
+/** @todo convert colorLeds array in dynamic version as for plugs array */
 CRGB colorLeds[NUM_LEDS]; /**< @brief  not very satisfy for this globale ! It should be in the 
 CpowerPlug class*/
 

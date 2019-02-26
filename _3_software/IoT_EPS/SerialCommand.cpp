@@ -116,7 +116,6 @@ int eightState;
 	
  /** @todo instnaciate command for set Hours, minutes, seconds separatly */
  /** @todo perhaps instanciate other commands to check hardware */
- /** @todo add commands to change and/or display config.json keys */
     switch(com[0]){
 		case 'S':
 			CRtc::adjust( com+1 );
@@ -133,6 +132,9 @@ int eightState;
             CRtc::displayTime();
         }
             break;
+		case 'T':
+			CRtc::adjustH( com+1 );
+			break;        
 		case 'C':   
 			CRtc::displayTime();
 			break;
@@ -161,7 +163,7 @@ int eightState;
                 INTERFACE.println("Warning this command riquires only ONE parameter !");
             }
             break;           
-		case 'E':      // <s>
+		case 'E':      // 
 			INTERFACE.print("<iElectrical Power Strip ");
 			// INTERFACE.print(ARDUINO_TYPE);
 			INTERFACE.print(": BUILD ");
@@ -191,7 +193,6 @@ int eightState;
             }
             // INTERFACE.println( "after scan : " + String(n) );
         case 't':
-        case 'T':
             now = CRtc::now();
             date = (String)now.day() + "/" + (String)now.month() + "/" + (String)now.year();
             INTERFACE.println( date );
@@ -226,6 +227,7 @@ void SerialCommand::displayCommandsList(){
 	list += F("<E> display status\n");
 	list += F("<C> Check DS3231 date\n");
 	list += F("<S JJ/MM/AAAA HH:MM:SS> returns code <O>\n");
+    list += F("<T HH:MM:SS> returns code <O>\n");
     list += F("<s> set DS3231 by NTP server\n");
 	list += F("<J> or <j> for display config.json\n");
 	list += F("<W> or <w> display WIFI mode\n");
@@ -233,7 +235,7 @@ void SerialCommand::displayCommandsList(){
     list += F("<I _newSSID> write SSID in credentials WARNING\n");
     /** @todo remove after debug of nextCheckedDay */
     list += F("<D or d HH:MM days>\n");
-    list += F("<T or t various_param> for code test\n");
+    list += F("<t various_param> for code test\n");
     list += F("<N> nano IO expander test\n");
     list += F("<O> nano out test HIGH\n");
     list += F("<o> nano out test low\n");

@@ -56,7 +56,7 @@ void CRtc::displayTime(){
 It converts the input c string into de DateTime class and call DS3231::adjust
 */
 void CRtc::adjust( char *c ){
-	int a;
+    int a;
 	int j, m, hh, mm, ss;
 	// DEFDPROMPT( "CRtc::adjsut");
 	// DSP( dPrompt );
@@ -64,6 +64,31 @@ void CRtc::adjust( char *c ){
 	switch (sscanf( c, "%d/%d/%d %d:%d:%d", &j,&m,&a,&hh,&mm,&ss) ){
 		case 6:
 			RTC_DS3231::adjust( DateTime( a, m, j, hh, mm, ss) );
+			DSPL("<O>");
+			displayTime();
+			break;
+		default :
+			DSPL( "<X>");
+	}
+}
+
+/** 
+ @fn void CRtc::adjustH( char *c )
+ @brief a function to manualy adjust DS3231 only HH:MM:SS when there is no WIFI at all
+ @param c a c_string that containtHH:MM:SS
+ @return no return value
+
+It converts the input c string into de DateTime class and call DS3231::adjust
+*/
+void CRtc::adjustH( char *c ){
+    DateTime now = RTC_DS3231::now();
+	int hh, mm, ss;
+	// DEFDPROMPT( "CRtc::adjsut");
+	// DSP( dPrompt );
+	// DSPL( c );
+	switch (sscanf( c, "%d:%d:%d", &hh,&mm,&ss) ){
+		case 3:
+			RTC_DS3231::adjust( DateTime( now.year(), now.month(), now.day(), hh, mm, ss) );
 			DSPL("<O>");
 			displayTime();
 			break;
