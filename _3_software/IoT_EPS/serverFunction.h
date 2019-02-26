@@ -12,7 +12,7 @@
 #include "IoT_EPS.h"
 // #include <Arduino.h>
 
-extern ESP8266WebServer server;
+extern ESP8266WebServer *server;
 
 // void handleRoot();
 void handleNotFound(); /**< @brief to handle page not found in SPIFFS and with other functions*/

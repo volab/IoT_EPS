@@ -37,12 +37,11 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  @tableofcontents
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
- @li after restart, restore all
- @li add power button
+
  @li pause mode in html request
+ @li double clic display mode action
  @li error handling
  @li take into account when start hour is higher than end hour 
- @li double clic display mode action
  @li DS3231 power bat ! Yes it is harware but...
  
 */
@@ -67,9 +66,8 @@ Credential wifiCred;
 
 CRtc rtc;
 
-/** @todo get IP and server port from config3.json*/
-ESP8266WebServer server ( 80 );
-IPAddress apIP(192, 168, 95, 42);
+ESP8266WebServer *server;
+// IPAddress apIP(192, 168, 95, 42);
 
 
 CPowerPlug plugs[NBRPLUGS];
@@ -101,13 +99,14 @@ void setup(){
     errFS = !SPIFFS.begin(); // to check if it's possible to begin twice the SPIFFS
     //next time is in cParam.begin
     // The response was already in the code : about line
-    if (errFS) DSPL( dPrompt + F("error in Oping Fil System") );
+    if (errFS) DSPL( dPrompt + F("error in Opening File System") );
     else DSPL( dPrompt + F("File system corectly Open @ setup level") );
     
 	SerialCommand::init();
 	
     cParam.begin();
     wifiCred.begin();
+    
 	   
     /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                           //
@@ -231,6 +230,7 @@ void setup(){
 				wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
 				wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
 				DSP("\n" + dPrompt + F("softAP : "));
+                IPAddress apIP = cParam.getIPAdd();
 				WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0)); 
 				DSPL(WiFi.softAP(wifiCred.getSsid(),
 					wifiCred.getPass() )?F("Ready"):F("Failed!"));
@@ -285,37 +285,38 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     //  Server configurations                                                  //
     /////////////////////////////////////////////////////////////////////////////
+    server = new ESP8266WebServer( cParam.getServerPort() );
 	if ( !simpleManualMode ){
-		server.on("/list", HTTP_GET, handleFileList);
-		server.on("/PlugConfig", HTTP_GET, handlePlugConfig );
-		server.on("/plugonoff", HTTP_POST, handlePlugOnOff );
-		server.on("/edit", HTTP_GET, [](){
-			if(!handleFileRead("/edit.htm")) server.send(404, "text/plain", "FileNotFound");
+		server->on("/list", HTTP_GET, handleFileList);
+		server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
+		server->on("/plugonoff", HTTP_POST, handlePlugOnOff );
+		server->on("/edit", HTTP_GET, [](){
+			if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
 		});
-		server.on("/help", HTTP_GET, [](){
-			if(!handleFileRead("/help.htm")) server.send(404, "text/plain", "FileNotFound");
+		server->on("/help", HTTP_GET, [](){
+			if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
 		});
         /** @todo test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
-		server.on("/edit", HTTP_PUT, handleFileCreate);
-		server.on("/edit", HTTP_DELETE, handleFileDelete);
+		server->on("/edit", HTTP_PUT, handleFileCreate);
+		server->on("/edit", HTTP_DELETE, handleFileDelete);
 		//first callback is called after the request has ended with all parsed arguments
 		//second callback handles file uploads at that location
-		server.on("/edit", HTTP_POST, [](){ server.send(200, "text/plain", ""); }, handleFileUpload);
+		server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
 
 		//called when the url is not defined here
 		//use it to load content from SPIFFS
-		server.onNotFound([](){
-		if(!handleFileRead(server.uri()))
-			server.send(404, "text/plain", "FileNotFound");
+		server->onNotFound([](){
+		if(!handleFileRead(server->uri()))
+			server->send(404, "text/plain", "FileNotFound");
 		});    
 
-		server.on( "/time", displayTime );
+		server->on( "/time", displayTime );
 
-		server.on ( "/inline", []() {
-			server.send ( 200, "text/plain", "this works as well" );
+		server->on ( "/inline", []() {
+			server->send ( 200, "text/plain", "this works as well" );
 		} );
-		// server.onNotFound ( handleNotFound );
-		server.begin();
+		// server->onNotFound ( handleNotFound );
+		server->begin();
 		Serial.println ( "HTTP server started" );
 	
 	}
@@ -333,7 +334,7 @@ unsigned long prevMillis = millis();
 void loop(){
     
     DEFDPROMPT("in the loop")
-    if ( !simpleManualMode ) server.handleClient();
+    if ( !simpleManualMode ) server->handleClient();
     mainPowerSiwtch.update();
     SerialCommand::process();
 	int mainPowerSate = !mainPowerSiwtch.getState();

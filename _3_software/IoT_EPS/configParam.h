@@ -11,6 +11,7 @@
 #ifndef CONFIGPARAM_H
 #define CONFIGPARAM_H
 #include "debugSerialPort.h"
+#include <IPAddress.h>
 
 
 class ConfigParam{
@@ -24,13 +25,20 @@ class ConfigParam{
 		void displayWifiMode();
         static void write2Json( String param, String value );
         static void chgSSID( String value );
+        IPAddress getIPAdd(){ return _addIP; }
+        int getNumberOfPlugs(){ return _numberOfPlugs; }
+        int getServerPort(){ return _serverPort; }
+        
     
     private:
         String _wifimode = "softAP" ; //default value
         String _host= "PowerStrip";
         bool readFromJson();
+        IPAddress _addIP;
+        int _numberOfPlugs;
+        int _serverPort;
         
-    
+
 };
 
 #endif

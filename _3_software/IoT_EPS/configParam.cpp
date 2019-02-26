@@ -49,7 +49,10 @@ bool ConfigParam::readFromJson(){
                 JsonObject& json = jsonBuffer.parseObject(buf.get());
                 // json.printTo(DEBUGPORT);
                 if (json.success()) {
-                    
+                    String s_IpAdd = json["general"]["IP"].as<String>();
+                    _addIP.fromString( s_IpAdd );
+                    _numberOfPlugs = json["general"]["numberOfPlugs"].as<String>().toInt();
+                    _serverPort = json["general"]["Port"].as<String>().toInt();
                     _wifimode = json["general"]["wifimode"].as<String>();
                     _host = json["general"]["hostName"].as<String>();
                 } else {
