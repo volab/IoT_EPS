@@ -70,7 +70,8 @@ ESP8266WebServer *server;
 // IPAddress apIP(192, 168, 95, 42);
 
 
-CPowerPlug plugs[NBRPLUGS];
+// CPowerPlug plugs[NBRPLUGS];
+CPowerPlug *plugs;
 
 // bool errRTCinit = true;
 bool errFS = true;
@@ -106,7 +107,21 @@ void setup(){
 	
     cParam.begin();
     wifiCred.begin();
-    
+
+    delete [] plugs;
+    plugs = new CPowerPlug[ cParam.getNumberOfPlugs() ];
+    //if above dosen't work see @
+    //https://arduino.stackexchange.com/questions/3774/how-can-i-declare-an-array-of-variable-size-globally
+    ////First you create a pointer for the memory space to be separated for the set you're creating
+    // int* myArray;
+    // int arrSize; //Then you define the variable that will determine the amount 
+    // of elements the array is going to have, you can give it a value whenever you want as long 
+    // as this int is defined before the values in myArray are set 
+    // myArray=(int*)calloc(arrSize,sizeof(int)) 
+    //Here, you establish that the instance myArray (whose memory space has already been separated 
+    // through the creation of the pointer) will be separated into arrSize amount of elements of type 
+    // int with a maximum memory value (in bytes) equal to the maximum available 
+    // for the int type variables
 	   
     /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                           //
