@@ -110,6 +110,7 @@ void setup(){
     wifiCred.begin();
 
     delete [] plugs;
+    DSPL( dPrompt + F("number of plugs : ") + cParam.getNumberOfPlugs() );
     plugs = new CPowerPlug[ cParam.getNumberOfPlugs() ];
     //if above dosen't work see @
     //https://arduino.stackexchange.com/questions/3774/how-can-i-declare-an-array-of-variable-size-globally

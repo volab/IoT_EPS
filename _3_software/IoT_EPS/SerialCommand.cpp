@@ -114,7 +114,6 @@ nanoI2C.pinMode( 9, OUTPUT );
 //nanoI2C.pinMode( 8, INPUT_PULLUP );
 int eightState;
 	
- /** @todo instnaciate command for set Hours, minutes, seconds separatly */
  /** @todo perhaps instanciate other commands to check hardware */
     switch(com[0]){
 		case 'S':

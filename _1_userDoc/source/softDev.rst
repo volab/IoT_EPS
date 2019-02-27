@@ -26,7 +26,7 @@ Avancement
 #. Réflèchir à la gestion des erreurs
 #. manage wif led : ok
 #. integrate nano expander with analog inputs : ok
-#. exhaustive test of hebdo mode : 20%
+#. exhaustive test of hebdo mode : 50%
 #. preparer un infographie résumant fonctionnalité et besoin : 
 
 Don't forget the todo list of the doxygen documentation
@@ -320,7 +320,7 @@ Json genrator sur `ObjGen.com`_
 .. _`ObjGen.com` : http://www.objgen.com/json
 
 ========================
-Librairies utilisées
+used library
 ========================
 last update : 02/12/2018
 

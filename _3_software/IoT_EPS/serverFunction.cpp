@@ -182,7 +182,8 @@ Received args : COLOR=redPlug/ State=OFF/ Mode=Hebdomadaire/ dureeOn=210/ dureeO
 hDebut=17:10/ hFin=HH:MM/ clonedPlug=greenPlug/ 
 OK
 */
-extern CPowerPlug plugs[4];
+// extern CPowerPlug plugs[4];
+extern CPowerPlug *plugs;
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
     /////////////////////////////////////////////////////////////////////////////
@@ -209,7 +210,7 @@ void handlePlugOnOff(){
     int i;
     
     for ( i = 0; i < 4 ; i++ ){
-        // DSPL( dPrompt + "plugName : " + plugs[i].getPlugName() );
+        //DSPL( dPrompt + "plugName : " + plugs[i].getPlugName() );
         if ( plugs[i].getPlugName() == plugColor ) break;
     }
     String returnVal;

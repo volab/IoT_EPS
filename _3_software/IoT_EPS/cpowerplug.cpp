@@ -149,7 +149,7 @@ void CPowerPlug::updateOutputs( bool writeToJsonCount ){
 }
 
 /** 
-@fn bool CPowerPlug::readFromJson()
+@fn bool CPowerPlug::readFromJson( bool restaurePhyState )
 @brief read from json  configuration file the parameters for the instancied plug
 
 Search are made in the file on the name of the plug as redPlug for exemple
