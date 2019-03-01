@@ -2,12 +2,12 @@ body{
     font-family: 'Times New Roman', Times, serif !important;
 }
 
-nav{
+/* nav{
     line-height: 0rem;
-}
+} */
 
 fieldset{
-    box-shadow: 6px 6px 0;
+    box-shadow: 6px 6px 3px 3px;
     border: 2px ridge black;
     border-radius:0 10px 0 10px;
     padding: 0.75rem;
@@ -37,14 +37,14 @@ input[type="checkbox"] + span{
     padding-right: 50px;
 }
 
-}
 
 .bg-gris{
     background-color: #aeb6bf;
 }
 
 .bg-lightBlue{
-    background-color: #d6eaf8;
+    /* background-color: #d6eaf8; */
+    background-color: #ccccff;
 }
 
 .bg-lynch{
@@ -64,20 +64,21 @@ input[type="checkbox"] + span{
     padding: 1.5rem 1.5rem;
 }
 
-.redPlug fieldset{
-    color: #b11721 !important;
+fieldset.redPlug {
+    color: #b11721;
 }
 
-.greenPlug fieldset{
-    color: #30880c !important;
+fieldset.greenPlug {
+    color: #30880c;
 }
 
-.bluePlug fieldset{
-    color: #0b40a9 !important;
+
+fieldset.bluePlug {
+    color: #0b40a9;
 }
 
-.yellowPlug fieldset{
-    color: #fffc47 !important; 
+fieldset.yellowPlug {
+    color: #fffc47; 
 }
 
 .modeSelector{
@@ -88,7 +89,7 @@ input[type="checkbox"] + span{
     color: black;
     }
 
-.div_subSummary h5{
+h5.div_subSummary {
     text-align: center;
     margin: 0;
     padding: 0;

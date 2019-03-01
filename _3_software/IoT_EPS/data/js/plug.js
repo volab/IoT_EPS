@@ -124,7 +124,7 @@ class C_Plug{
 
     f_setQueryModeSelector(v_colorPlug){
         /* Permet d'initialiser les QuerySelector des boutons radio pour le 'modeSelector */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
         this.divLeft            = $(`.div_left`);
         this.modeManuel         = $(`.modeSelector.Manuel`);
@@ -136,7 +136,7 @@ class C_Plug{
 
     f_setQueryManuel(v_colorPlug){
         /* Permet d'initialiser les QerySelector pour le mode Manuel */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
         this.manuelDiv = $(`.Manuel.div_subSummary`);
             //sub div colone 1
@@ -160,7 +160,7 @@ class C_Plug{
 
     f_setQueryMinuterie(v_colorPlug){
         /* Permet d'initialiser les QerySelector pour le mode Minuterie */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
         
         this.minuterieDiv = $(`.Minuterie.div_subSummary`);
         this.minuterie_dureeOn = $(`.Minuterie.dureeOn`);
@@ -170,7 +170,7 @@ class C_Plug{
 
     f_setQueryCyclique(v_colorPlug){
         /* Permet d'intialiser les QuerySelector pour le mode Cyclique */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
         this.cycliqueDiv = $(`.Cyclique.div_subSummary`);
         this.cyclique_dureeOn = $(`.Cyclique.dureeOn`);
@@ -184,7 +184,7 @@ class C_Plug{
 
     f_setQueryHebdomadaire(v_colorPlug){
         /* Permet d'intialiser les QuerySelector pour le mode Hebdomadaire */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
             //DIV
         this.hebdomadaireDiv = $(`.Hebdomadaire.div_subSummary`);
             //QuerySelectorAll (liste d'objet)
@@ -210,7 +210,7 @@ class C_Plug{
 
     f_setQueryClone(v_colorPlug){
         /* Permet d'initialiser les QuerySelector pour le mode Clone */
-        v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
+        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
         this.cloneDiv               = $(`.Clone.div_subSummary`);
         this.cloneInputHide         = $(`input[name="clonedPlug"]`)
@@ -256,7 +256,6 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV Manuel 
          * Les valeur attendue sont: "none" ou "block"
          */
-
         if ((v_displayStatus === "block")||(v_displayStatus === "none")){
             this.f_displayNoneAll();
             this.manuelDiv.css("display", v_displayStatus);
@@ -265,7 +264,7 @@ class C_Plug{
     }
 
     f_displayTypeSelector(v_displayStatus){
-        /* permet d'fficher ou de masquer le DIV DiffTypeSelector
+        /* permet d'afficher ou de masquer le DIV DiffTypeSelector
          * Les valeur attendue sont: "none" ou "block"
          */
         if ((v_displayStatus === "block")||(v_displayStatus === "none")){
@@ -274,8 +273,8 @@ class C_Plug{
     }
 
     f_displayDiv_dureeOff(v_displayStatus){
-        /* permet d'fficher ou de masquer le DIV dureeOff
-         * Les valeur attendue sont: "none" ou "block"
+        /* permet d'afficher ou de masquer le DIV dureeOff
+         * Les valeur attendue sont: "none", "block" ou "flex"
          */
         if (((v_displayStatus === "block")||(v_displayStatus === "flex"))||(v_displayStatus === "none")){
             if (v_displayStatus === "none"){
@@ -287,8 +286,8 @@ class C_Plug{
     }
 
     f_displayDiv_hFin(v_displayStatus){
-        /* permet d'fficher ou de masquer le DIV f_displayDiv_hFin
-         * Les valeur attendue sont: "none" ou "block"
+        /* permet d'afficher ou de masquer le DIV f_displayDiv_hFin
+         * Les valeur attendue sont: "none", "block" ou "flex"
          */
         if (((v_displayStatus === "block")||(v_displayStatus === "flex"))||(v_displayStatus === "none")){
             if (v_displayStatus === "none"){
@@ -303,7 +302,6 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV Minuterie 
          * Les valeur attendue sont: "none" ou "block"
          */
-
         if ((v_displayStatus === "block")||(v_displayStatus === "none")){
             this.f_displayNoneAll();
             this.minuterieDiv.css("display", v_displayStatus);
@@ -314,7 +312,6 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV Cyclique 
          * Les valeur attendue sont: "none" ou "block"
          */
-
         if ((v_displayStatus === "block")||(v_displayStatus === "none")){
             this.f_displayNoneAll();
             this.cycliqueDiv.css("display", v_displayStatus);
@@ -325,7 +322,6 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV Hebdomadaire 
          * Les valeur attendue sont: "none" ou "block"
          */
-
         if ((v_displayStatus === "block")||(v_displayStatus === "none")){
             this.f_displayNoneAll();
             this.hebdomadaireDiv.css("display", v_displayStatus);
@@ -355,12 +351,93 @@ class C_Plug{
         let v_target = $(event.target);
         if (v_target.hasClass("redPlug")){
             $(".div_cloneRed").hide();
+            $(".div_cloneGreen").show();
+            $(".div_cloneBlue").show();
+            $(".div_cloneYellow").show();
         } else if (v_target.hasClass("greenPlug")){
+            $(".div_cloneRed").show();
             $(".div_cloneGreen").hide();
+            $(".div_cloneBlue").show();
+            $(".div_cloneYellow").show();
         } else if (v_target.hasClass("bluePlug")) {
+            $(".div_cloneRed").show();
+            $(".div_cloneGreen").show();
             $(".div_cloneBlue").hide();
+            $(".div_cloneYellow").show();
         } else if (v_target.hasClass("yellowPlug")) {
+            $(".div_cloneRed").show();
+            $(".div_cloneGreen").show();
+            $(".div_cloneBlue").show();
             $(".div_cloneYellow").hide();
         }
     }
+
+    f_switchClass(v_eventTarget){
+        /* Permet de permuter les class 'home', 'redPlug', 'greenPlug', 'bluePlug', 'yellowPlug', 'help' et 'cfg' */
+        let HOME        = "home";
+        let REDPLUG     = "redPlug";
+        let GREENPLUG   = "greenPlug";
+        let BLUEPLUG    = "bluePlug";
+        let YELLOWPLUG  = "yellowPlug";
+        let HELP        = "help";
+        let CFG         = "cfg";
+
+        let v_target = $(v_eventTarget);
+        let v_fieldset = $("fieldset");
+        let v_fieldsetClass = v_fieldset.attr("class");
+
+        let v_hiddenInput = $(".hidden")
+
+        if (v_target.hasClass(HOME)){
+            v_fieldset.toggleClass(`${v_fieldsetClass} ${HOME}`);
+            $("h2").text("Résumé")
+
+            v_hiddenInput.each( (i)=>{
+                $(v_hiddenInput[i]).val(HOME);
+            } );
+        } else if (v_target.hasClass(REDPLUG)){
+            v_fieldset.toggleClass(`${v_fieldsetClass} ${REDPLUG}`);
+            $("h2").text("Prise Rouge");
+
+            v_hiddenInput.each( (i)=>{
+                $(v_hiddenInput[i]).val(REDPLUG);
+            } );
+        } else if (v_target.hasClass(GREENPLUG)){
+            v_fieldset.toggleClass(`${v_fieldsetClass} ${GREENPLUG}`);
+            $("h2").text("Prise Verte");
+
+            v_hiddenInput.each( (i)=>{
+                $(v_hiddenInput[i]).val(GREENPLUG);
+            } );
+        } else if (v_target.hasClass(BLUEPLUG)){
+            v_fieldset.toggleClass(`${v_fieldsetClass} ${BLUEPLUG}`);
+            $("h2").text("Prise Bleue");
+
+            v_hiddenInput.each( (i)=>{
+                $(v_hiddenInput[i]).val(BLUEPLUG);
+            } );
+        } else if (v_target.hasClass(YELLOWPLUG)){
+            v_fieldset.toggleClass(`${v_fieldsetClass} ${YELLOWPLUG}`);
+            $("h2").text("Prise Jaune");
+
+                v_hiddenInput.each( (i)=>{
+                $(v_hiddenInput[i]).val(YELLOWPLUG);
+            } );
+        } else if (v_target.hasClass(HELP)){
+            v_fieldset.toggleClass(`${v_fieldsetClass} ${HELP}`);
+            $("h2").text("Aide");
+
+            v_hiddenInput.each( (i)=>{
+                $(v_hiddenInput[i]).val(HELP);
+            } );
+        } else if (v_target.hasClass(CFG)){
+            v_fieldset.toggleClass(`${v_fieldsetClass} ${CFG}`);
+            $("h2").text("Configuration");
+
+            v_hiddenInput.each( (i)=>{
+                $(v_hiddenInput[i]).val(CFG);
+            } );
+        }
+    }
+
 }

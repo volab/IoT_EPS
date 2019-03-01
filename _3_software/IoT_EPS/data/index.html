@@ -26,7 +26,7 @@
             <nav id="sidebar"> <!-- Sidebar -->
                 <ul class="list-unstyled components">
                     <li>
-                        <a href="#">Accueil</a>
+                        <a class="home" href="#">Accueil</a>
                     </li>
                     <li class="redPlug nav-item dropdown"> <!-- Menu redPlug -->
                         <a class="redPlug nav-link dropdown-toggle text-danger" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Prise Rouge</a>
@@ -74,16 +74,15 @@
 
                     <br/><hr/><br/>
                     <li>
-                        <a href="#">Aide</a>
+                        <a class="help" href="#">Aide</a>
                     </li>
                     <li>
-                        <a href="#">Personalisation</a>
+                        <a class="cfg" href="#">Configuration</a>
                     </li>
                 </ul>
             </nav> <!--End Sidebar -->
     
-            <!-- Page Content -->
-            <div id="content">
+            <div id="content"> <!-- Page Content -->
                 <!-- We'll fill this with dummy content -->
                 <!-- <div class="container-fluid mb-4 align-items-center">
                     <div class="row">
@@ -220,7 +219,7 @@
                                                 method="post"
                                                 action="/">
                                                 
-                                                <input type="hidden" name="COLOR" value="redPlug">
+                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug">
                                                 <input type="hidden" name="Mode" value="Manuel">
                                                 <div class="row">
                                                     <!-- ON_OFF Selector -->
@@ -293,7 +292,7 @@
                                                     <!-- Colone 3 (1/2)-->
                                                     <div class="redPlug Manuel div_hFin col-md-4">
                                                         <label>
-                                                            <span>Arréter la prise à ... </br>(Heure d'arrêt -- hh:mm):</span>
+                                                            <span>Arréter la prise à ... </br>(Heure d'arrêt -- hh:mm):</span><br>
                                                             <input 
                                                                 type="text" 
                                                                 name="hFin" 
@@ -306,7 +305,7 @@
                                                     <!-- Colone 3 (2/2) -->
                                                     <div class="redPlug Manuel div_dureeOff col-md-4">
                                                         <label>
-                                                            <span>Arréter la prise dans ... </br>(Durée en minute, 300 minutes Max):</span>
+                                                            <span>Arréter la prise dans ... </br>(Durée en minute, 300 minutes Max):</span><br>
                                                             <input 
                                                                 type="text" 
                                                                 name="dureeOff" 
@@ -335,7 +334,7 @@
                                                 method="post"
                                                 action="/plugonoff">
 
-                                                <input type="hidden" name="COLOR" value="redPlug">
+                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug">
                                                 <input type="hidden" name="Mode" value="Minuterie">
                                                 <div class="row">
                                                     <!-- Minuterie dureeOn -->
@@ -372,7 +371,7 @@
                                                 method="post"
                                                 action="/">
 
-                                                <input type="hidden" name="COLOR" value="redPlug">
+                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug">
                                                 <input type="hidden" name="Mode" value="Cyclique">
                                                 <p>Réglage de la période de fonctionnement et de repos (en minute):</p>
                                                 <div class="row justify">
@@ -452,7 +451,7 @@
                                                 method="post"
                                                 action="/plugonoff">
 
-                                                <input type="hidden" name="COLOR" value="redPlug">
+                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug">
                                                 <input type="hidden" name="Mode" value="Hebdomadaire">
 
                                                 <!-- Day selector -->
@@ -609,7 +608,7 @@
                                                 method="post"
                                                 action="/">
 
-                                                <input type="hidden" name="COLOR" value="redPlug">
+                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug">
                                                 <input type="hidden" name="Mode" value="Clone">
                                                 <input type="hidden" name="clonedPlug" value="null">
                                                 <div class="row">

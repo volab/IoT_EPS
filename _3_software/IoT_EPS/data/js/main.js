@@ -15,7 +15,11 @@ red.f_clean();
  * Menu (Hamberger + Sidebar)
  */
 
-var toggleSidebar = ()=>{ $('#sidebar').toggleClass('active')};
+var v_sidebar = $('#sidebar');
+
+var toggleSidebar = ()=>{ 
+    v_sidebar.toggleClass('active');
+};
 
 toggleSidebar()
 
@@ -28,10 +32,11 @@ $('#sidebarCollapse').on('click', () => {
  */
 $(red.modeManuel).on(
     "click", 
-    ()=>{
+    (event)=>{
         regEx.f_clean();
         red.f_displayManuelDiv("block");
         toggleSidebar();
+        red.f_switchClass(event.target);
     }
 );
 
@@ -100,6 +105,7 @@ $(red.modeMinuterie).on(
         regEx.f_clean();
         red.f_displayMinuterieDiv("block");
         toggleSidebar();
+        red.f_switchClass(event.target);
     });
 
 $(red.minuterie_dureeOn).on(
@@ -127,6 +133,7 @@ $(red.modeCyclique).on(
         regEx.f_clean();
         red.f_displayCycliqueDiv("block");
         toggleSidebar();
+        red.f_switchClass(event.target);
     });
 
 $(red.cyclique_dureeOn).on(
@@ -188,6 +195,7 @@ $(red.modeHedbomadaire).on(
         regEx.f_clean();
         red.f_displayHebdomadaireDiv("block");
         toggleSidebar();
+        red.f_switchClass(event.target);
     });
 
 $(red.hebdmadaireAllDays).on(
@@ -264,6 +272,7 @@ $(red.modeClone).on(
         red.f_cloneHideCurrentPlug(event);
         red.f_displayCloneDiv("block");
         toggleSidebar();
+        red.f_switchClass(event.target);
     });
 
 $(red.cloneToRed).on(
@@ -324,10 +333,6 @@ $(red.cloneForm).on(
  *
  * ####
  *
- * #. Chagement de class automatique
- * 
- * ####
- *
  * #. Ajouter un fieldset de résumé de l'état des prises
  *    /!\ tenir compte de l'état du boutons pause dans le JSON lors du chargement
  *        des modes Cyclique et Hebdomadoare
@@ -335,10 +340,6 @@ $(red.cloneForm).on(
  * ####
  *  
  * #. Gestion de la transition entre les DIV (jqueryui .effect "drop" et "slide")
- * 
- * ####
- * 
- * #. Navigation responcive (navbar et menu selector)
  * 
  * ####
  * 
