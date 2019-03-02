@@ -38,11 +38,13 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
 
- @li pause mode in html request
  @li double clic display mode action
- @li error handling
- @li take into account when start hour is higher than end hour 
+ @li pause mode in html request
+ @li all led off after json configured json time
+ @li take into account when start hour is higher than end hour  
+ @li improve error handling
  @li DS3231 power bat ! Yes it is harware but...
+ @li power measurment
  
 */
 
@@ -59,7 +61,7 @@ function is defined at the end of this file.
 
 There is 2 flashing speeds one for AP mode and one for Station mode
 */
-void wifiLedFlash( int speed, int count );
+void wifiLedFlash( int speed, int count ); //defined at eh end of the rpesent file
 
 ConfigParam cParam; /**< @brief to hold the configuration parameters*/
 Credential wifiCred;
@@ -89,7 +91,11 @@ Flasher wifiLed;
 CSwitchNano mainPowerSiwtch;
 int mainPowerPrevState = 0;
 
+// CFlasherNanoExp extraLed;
+
 void setup(){
+
+
 
     DEFDPROMPT("setUp") // define dPrompt String
     DateTime now;
@@ -105,7 +111,7 @@ void setup(){
     else DSPL( dPrompt + F("File system corectly Open @ setup level") );
     
 	SerialCommand::init();
-	
+    // extraLed.begin( 9, 100, 500, 4, 5000 );
     cParam.begin();
     wifiCred.begin();
 
@@ -306,7 +312,7 @@ void setup(){
 	if ( !simpleManualMode ){
 		server->on("/list", HTTP_GET, handleFileList);
 		server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
-		server->on("/plugonoff", HTTP_POST, handlePlugOnOff );
+		server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
 		server->on("/edit", HTTP_GET, [](){
 			if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
 		});
@@ -347,21 +353,34 @@ void setup(){
 /////////////////////////////////////////////////////////////////////////////
 //        LOOP                                                             //
 /////////////////////////////////////////////////////////////////////////////
-unsigned long prevMillis = millis();
+// unsigned long prevMillis = millis();
+bool cycleState = false;
 void loop(){
-    
+    // cycleState = !cycleState;
+    // digitalWrite( WIFILED, cycleState);    
     DEFDPROMPT("in the loop")
     if ( !simpleManualMode ) server->handleClient();
     mainPowerSiwtch.update();
     SerialCommand::process();
 	int mainPowerSate = !mainPowerSiwtch.getState();
-    
+    // extraLed.update();
     
 	if ( cParam.getWifiMode() == "softAP" ) wifiLed.update();
 
     FastLED.show();
     if ( mainPowerPrevState == HIGH ){
-        for ( int i = 0; i < NBRPLUGS ; i++ ) plugs[i].bp.update();
+        for ( int i = 0; i < NBRPLUGS ; i++ ){
+            plugs[i].bp.update();
+            if ( plugs[i].flashLedReq() ){
+                plugs[i].onOffFlasher.update();
+                int flashCount =( plugs[i].getMode() + 1) *2;
+                // DSPL( dPrompt + F("changtSate cpt : ") + String(plugs[i].onOffFlasher.getChangeStateCpt() ) );
+                if ( plugs[i].onOffFlasher.getChangeStateCpt() >= flashCount ){
+                    DSPL( dPrompt + F("flash count condition ") + String(flashCount) );
+                    plugs[i].handleBpDoubleClic(); //ie : stop flasher
+                } 
+            }  
+        } 
         for ( int i = 0; i < NBRPLUGS ; i++ ){
             if ( plugs[i].bp.clic() ){
                 plugs[i].handleBpClic();
@@ -373,10 +392,16 @@ void loop(){
             if ( plugs[i].bp.longClic() ){
                 plugs[i].handleBpLongClic();
             }
+            if ( plugs[i].bp.doubleClic() ){
+                plugs[i].handleBpDoubleClic();
+            }
         }  
     }        
  
-    
+
+    /////////////////////////////////////////////////////////////////////////////
+    //  main power switch actions                                              //
+    ///////////////////////////////////////////////////////////////////////////// 
     if ( mainPowerSate != mainPowerPrevState){
         mainPowerPrevState = mainPowerSate;
         if (mainPowerSate == HIGH ){ 
@@ -391,7 +416,7 @@ void loop(){
             }
         }
     }
-    /** @todo add main power switch actions */
+
     yield();
 }
 

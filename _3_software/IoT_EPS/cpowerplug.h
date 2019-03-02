@@ -74,10 +74,15 @@ class CPowerPlug : public CNano {
         String getStringMode(){ return modes[ _mode ]; }
         void handleBpClic();
         void handleBpLongClic();
+        void handleBpDoubleClic();
         uint8_t getDays(){ return _daysOnWeek; }
         bool getPause(){ return _pause; }
         
+        CFlasherNanoExp onOffFlasher;
+        bool flashLedReq(){ return _flashLed; }
+        
     private:
+        bool _flashLed = false;
         static const String modes[5];
         int _pin = 0; /**< @brief The relay command plug pin*/
         bool _state; /**< @brief on off state of the physical plug*/

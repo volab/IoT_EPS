@@ -5,9 +5,13 @@
     "numberOfPlugs": "4",
     "rtcValidity": "true",
     "IP": "192.168.95.42",
-    "Port": "80"
+    "Port": "80",
+    "allLedsOnTime": "30",
+    "ledsGlobalLuminosity": "5"
   },
   "redPlug": {
+    "nickName": "Aquarium",
+    "emplacement": "salon",
     "State": "ON",
     "Pause": "OFF",
     "Mode": "Manuel",
@@ -29,6 +33,8 @@
     "nextTimeToSwitch": "0"
   },
   "greenPlug": {
+    "nickName": "Télé",
+    "emplacement": "cuisine",
     "State": "OFF",
     "Pause": "OFF",
     "Mode": "Cyclique",
@@ -50,6 +56,8 @@
     "nextTimeToSwitch": "0"
   },
   "bluePlug": {
+    "nickName": "jardin",
+    "emplacement": "plaquard",
     "State": "ON",
     "Pause": "OFF",
     "Mode": "Hebdomadaire",
@@ -71,6 +79,8 @@
     "nextTimeToSwitch": "0"
   },
   "yellowPlug": {
+    "nickName": "liseuse",
+    "emplacement": "chiotte",
     "State": "ON",
     "Pause": "OFF",
     "Mode": "Minuterie",

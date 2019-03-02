@@ -36,7 +36,7 @@
 // longClic, acquit
 
 #ifndef BUTONSPEED //normaly defined in config.h
-#define BUTONSPEED 70 //ms
+#define BUTONSPEED 10 //ms
 #endif
 
 class bouton{

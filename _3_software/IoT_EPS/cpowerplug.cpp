@@ -859,11 +859,40 @@ writeToJson open the file, read the entire file, change one parm, rewrite the fi
         // return true;  
 /** @todo perhaps add error handling as in readFromJson()*/        
     }    
-    
-
     // writeDaysToJson(); 
-
-
-    
     bp.acquit();    
+}
+
+/** 
+ @fn void CPowerPlug::handleBpDoubleClic()
+ @brief A function that handle action of the push button double clic...
+ @return no return value and no parameter
+ 
+ flash led 1 time in mode manual
+ 2 time in timer
+ 3 time cycle
+ 4 time in hebdo mode
+ Flash on or flash off regarless of _state attribute
+*/
+void CPowerPlug::handleBpDoubleClic(){
+
+    DEFDPROMPT( "handleBpDoubleClic");
+    if ( !_flashLed ){
+        DSPL( dPrompt + F("flash mode : 1 for manual, 2 timer, 3 cyclique, 4 hebdo.") );
+        int flashCounter = _mode + 1 ;
+        // if (_state)flashCounter++;
+        // onOffFlasher.begin( _onOffLedPin, 100, 500, flashCounter, 3000);
+        onOffFlasher.begin( _onOffLedPin, 100, 500, 5, 5000); // a great number (loop that stop flashing)
+        // DSPL( dPrompt + F("changt sate cpt : ") + String( onOffFlasher.getChangeStateCpt() ) );
+        // if ( _state) onOffFlasher.reverseMode();
+        _flashLed = true;
+    } else {
+        onOffFlasher.stop();
+        DSPL( dPrompt + F("flash mode : stop.") );
+        _flashLed = false;
+        _nano.pinMode( _onOffLedPin, OUTPUT );
+        _nano.digitalWrite( _onOffLedPin, _state );
+    }
+    bp.acquit(); 
+    
 }
