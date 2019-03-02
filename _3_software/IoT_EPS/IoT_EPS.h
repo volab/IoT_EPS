@@ -105,6 +105,7 @@
 #define PLUG3_ONOFFLEDPIN 7
 
 #define MAINSWITCHPIN 8 //nanoI2CIOExpander pin D10
+#define SPECIALBP 10 //to ask plug state
 
 #define BP0 D6 
 #define BP1 D5

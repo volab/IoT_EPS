@@ -440,6 +440,22 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         /////////////////////////////////////////////////////////////////////////////
         DSPL( dPrompt + F("Cyclic mode actions") ); 
         if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
+        String pauseRequested = extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_PAUSE );
+        if ( pauseRequested == "ON" ){
+            if (_state) {
+                off();
+                writeToJson( JSON_PARAMNAME_PAUSE, "ON" );
+                _pause = true;
+                DSPL( dPrompt + F("mise en pause HTML")  );
+                return;
+            }     
+        } else if (_pause){
+            on();
+            writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+            _pause = false;
+            DSPL( dPrompt + F("sortie de pause par HTML") );
+            return;
+        }
         CEpsStrTime dureeOn;
         dureeOn = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_ONDURATION ), \
             CEpsStrTime::MMM );
@@ -486,6 +502,22 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         /////////////////////////////////////////////////////////////////////////////
         //hebdo mode parameters
         //hdebut hFin
+        String pauseRequested = extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_PAUSE );
+        if ( pauseRequested == "ON" ){
+            if (_state) {
+                off();
+                writeToJson( JSON_PARAMNAME_PAUSE, "ON" );
+                _pause = true;
+                DSPL( dPrompt + F("mise en pause HTML")  );
+                return;
+            }     
+        } else if (_pause){
+            on();
+            writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+            _pause = false;
+            DSPL( dPrompt + F("sortie de pause par HTML") );
+            return;
+        }        
         CEpsStrTime hDebut, hFin;
         hDebut = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STARTTIME ),\
             CEpsStrTime::HHMM );
@@ -884,7 +916,7 @@ void CPowerPlug::handleBpDoubleClic(){
         // onOffFlasher.begin( _onOffLedPin, 100, 500, flashCounter, 3000);
         onOffFlasher.begin( _onOffLedPin, 100, 500, 5, 5000); // a great number (loop that stop flashing)
         // DSPL( dPrompt + F("changt sate cpt : ") + String( onOffFlasher.getChangeStateCpt() ) );
-        // if ( _state) onOffFlasher.reverseMode();
+        if ( _state) onOffFlasher.reverseMode();
         _flashLed = true;
     } else {
         onOffFlasher.stop();

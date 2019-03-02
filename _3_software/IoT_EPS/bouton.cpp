@@ -50,7 +50,7 @@ void bouton::update(){
             // multiple de la periode d'echantillonnage du bouton
             // ex : Te = 50ms, BTNLONGTIME = 16*Te, BTNSHORTTIME = 4*Te
             if (digitalRead(_boutonPin)==HIGH && \
-                millis()<_debutDernierAppui+800){
+                millis()<_debutDernierAppui + LONGCLICKTIME){
               _etat=2;
               _finDernierAppui=millis();
               // la variable _finDernierAppui n'est pas utile
@@ -59,7 +59,7 @@ void bouton::update(){
             }
             //detection clique long
             if (digitalRead(_boutonPin)==HIGH \
-                    && millis()>=_debutDernierAppui+800){ 
+                    && millis()>=_debutDernierAppui + LONGCLICKTIME){ 
                 _etat=0;
                 _longClicked=true; //clic long detected
             }
@@ -78,12 +78,12 @@ void bouton::update(){
         case 2:
             //check if there is a second push in less than 200ms
             if (digitalRead(_boutonPin)==HIGH \
-                    && millis()>_finDernierAppui+200){
+                    && millis()>_finDernierAppui + DOUBLECLICKSAMPLETIME ){
                 _etat=0;
                 _clicked=true;
                 //_simpleClicCount++;
             }
-            if (digitalRead(_boutonPin)==LOW && millis()<_finDernierAppui+200){
+            if (digitalRead(_boutonPin)==LOW && millis()<_finDernierAppui + DOUBLECLICKSAMPLETIME ){
             // A tester mais si le bouton est vu low a cet instant c'est forcement
             // un clic double quelque soit le temps non.
             // si on arrive dans la situation low apres 200ms c'est qu'on est

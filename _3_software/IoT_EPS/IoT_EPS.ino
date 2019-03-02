@@ -38,12 +38,11 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
 
- @li double clic display mode action
- @li pause mode in html request
  @li all led off after json configured json time
  @li take into account when start hour is higher than end hour  
  @li improve error handling
  @li DS3231 power bat ! Yes it is harware but...
+ @li add physicaly special bp and main power switch on the mock-up
  @li power measurment
  
 */
@@ -90,6 +89,7 @@ Flasher wifiLed;
 
 CSwitchNano mainPowerSiwtch;
 int mainPowerPrevState = 0;
+CSwitchNano specialBp;
 
 // CFlasherNanoExp extraLed;
 
@@ -172,6 +172,8 @@ void setup(){
     int mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
     mainPowerPrevState = mainPowerSwitchState; // for the loop
     DSPL( dPrompt + "Main power state : " +  ( mainPowerSwitchState?"ON":"OFF") );
+    specialBp.begin( SPECIALBP, 5, INPUT_PULLUP );
+    
     /** @todo test if CNano::initOk = true - if not don't start anything*/
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CPowerPlug::modeId("MANUEL") );
     plugs[0].setColor( CRGB::Red );
@@ -361,6 +363,7 @@ void loop(){
     DEFDPROMPT("in the loop")
     if ( !simpleManualMode ) server->handleClient();
     mainPowerSiwtch.update();
+    specialBp.update();
     SerialCommand::process();
 	int mainPowerSate = !mainPowerSiwtch.getState();
     // extraLed.update();
@@ -374,17 +377,24 @@ void loop(){
             if ( plugs[i].flashLedReq() ){
                 plugs[i].onOffFlasher.update();
                 int flashCount =( plugs[i].getMode() + 1) *2;
-                // DSPL( dPrompt + F("changtSate cpt : ") + String(plugs[i].onOffFlasher.getChangeStateCpt() ) );
+                if ( plugs[i].getState() ) flashCount++;
                 if ( plugs[i].onOffFlasher.getChangeStateCpt() >= flashCount ){
-                    DSPL( dPrompt + F("flash count condition ") + String(flashCount) );
+                    // DSPL( dPrompt + F("flash count condition ") + String(flashCount) );
                     plugs[i].handleBpDoubleClic(); //ie : stop flasher
                 } 
             }  
         } 
+        
         for ( int i = 0; i < NBRPLUGS ; i++ ){
             if ( plugs[i].bp.clic() ){
-                plugs[i].handleBpClic();
-            } // else if plugs[i].bp.longClic(){ plugs[i].return2ManuelMode() }
+                // DSPL( dPrompt + F("I10 state : ") + (specialBp.getState()?"ON":"OFF") );
+                if ( specialBp.getState() ){
+                    plugs[i].handleBpClic();
+                } else {
+                    plugs[i].handleBpDoubleClic();
+                }
+                
+            } 
             if ( plugs[i].isItTimeToSwitch() ){
                 DSPL( dPrompt + "It is time for : " + plugs[i].getPlugName() );
                 plugs[i].switchAtTime();
@@ -392,9 +402,9 @@ void loop(){
             if ( plugs[i].bp.longClic() ){
                 plugs[i].handleBpLongClic();
             }
-            if ( plugs[i].bp.doubleClic() ){
-                plugs[i].handleBpDoubleClic();
-            }
+            // if ( plugs[i].bp.doubleClic() ){
+                
+            // }
         }  
     }        
  
