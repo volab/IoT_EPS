@@ -33,7 +33,8 @@ class C_RexExPatern{
          */
         let v_targetClassList = (event.target.classList);
         let v_tmp = "";
-        for (let i=0; i<2; i++){
+        // for (let i=0; i<2; i++){
+        for (let i=0; i<1; i++){
             v_tmp += "." + v_targetClassList[i];
         }
         this.v_classList = v_tmp;
@@ -51,7 +52,8 @@ class C_RexExPatern{
         let v_targetClassList = (event.target.classList);
         let v_tmp = this.v_classList;
         if (target === "input") {
-            for (let i=2; i<v_targetClassList.length; i++){
+            // for (let i=2; i<v_targetClassList.length; i++){
+            for (let i=1; i<v_targetClassList.length; i++){
                 v_tmp += "." + v_targetClassList[i];
             }
             this.queryTarget = $(v_tmp);

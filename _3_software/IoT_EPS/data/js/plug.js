@@ -374,13 +374,13 @@ class C_Plug{
 
     f_switchClass(v_eventTarget){
         /* Permet de permuter les class 'home', 'redPlug', 'greenPlug', 'bluePlug', 'yellowPlug', 'help' et 'cfg' */
-        let HOME        = "home";
+        // let HOME        = "home";
         let REDPLUG     = "redPlug";
         let GREENPLUG   = "greenPlug";
         let BLUEPLUG    = "bluePlug";
         let YELLOWPLUG  = "yellowPlug";
-        let HELP        = "help";
-        let CFG         = "cfg";
+        // let HELP        = "help";
+        // let CFG         = "cfg";
 
         let v_target = $(v_eventTarget);
         let v_fieldset = $("fieldset");
@@ -388,14 +388,15 @@ class C_Plug{
 
         let v_hiddenInput = $(".hidden")
 
-        if (v_target.hasClass(HOME)){
-            v_fieldset.toggleClass(`${v_fieldsetClass} ${HOME}`);
-            $("h2").text("Résumé")
+        // if (v_target.hasClass(HOME)){
+        //     v_fieldset.toggleClass(`${v_fieldsetClass} ${HOME}`);
+        //     $("h2").text("Résumé")
 
-            v_hiddenInput.each( (i)=>{
-                $(v_hiddenInput[i]).val(HOME);
-            } );
-        } else if (v_target.hasClass(REDPLUG)){
+        //     v_hiddenInput.each( (i)=>{
+        //         $(v_hiddenInput[i]).val(HOME);
+        //     } );
+        // } else
+         if (v_target.hasClass(REDPLUG)){
             v_fieldset.toggleClass(`${v_fieldsetClass} ${REDPLUG}`);
             $("h2").text("Prise Rouge");
 
@@ -423,21 +424,22 @@ class C_Plug{
                 v_hiddenInput.each( (i)=>{
                 $(v_hiddenInput[i]).val(YELLOWPLUG);
             } );
-        } else if (v_target.hasClass(HELP)){
-            v_fieldset.toggleClass(`${v_fieldsetClass} ${HELP}`);
-            $("h2").text("Aide");
-
-            v_hiddenInput.each( (i)=>{
-                $(v_hiddenInput[i]).val(HELP);
-            } );
-        } else if (v_target.hasClass(CFG)){
-            v_fieldset.toggleClass(`${v_fieldsetClass} ${CFG}`);
-            $("h2").text("Configuration");
-
-            v_hiddenInput.each( (i)=>{
-                $(v_hiddenInput[i]).val(CFG);
-            } );
         }
+        //  else if (v_target.hasClass(HELP)){
+        //     v_fieldset.toggleClass(`${v_fieldsetClass} ${HELP}`);
+        //     $("h2").text("Aide");
+
+        //     v_hiddenInput.each( (i)=>{
+        //         $(v_hiddenInput[i]).val(HELP);
+        //     } );
+        // } else if (v_target.hasClass(CFG)){
+        //     v_fieldset.toggleClass(`${v_fieldsetClass} ${CFG}`);
+        //     $("h2").text("Configuration");
+
+        //     v_hiddenInput.each( (i)=>{
+        //         $(v_hiddenInput[i]).val(CFG);
+        //     } );
+        // }
     }
 
 }

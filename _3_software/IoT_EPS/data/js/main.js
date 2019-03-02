@@ -1,326 +1,459 @@
-$(document).ready(()=>{
-// start .ready()
+$(document).ready( ()=>{
+    // start .ready()
 
-const log = new C_MyLog();
-const regEx = new C_RexExPatern();
-const red = new C_Plug("redPlug");
+    const log           = new C_MyLog();
+    const regEx         = new C_RexExPatern();
+    const red           = new C_Plug("redPlug");
+    const v_jsonFile    = 'config3.json';
 
-/*
- * Nettoyage avant usage
- */
-regEx.f_clean();
-red.f_clean();
+    const HOME          = $("div.home");
+    const FIELDSET      = $("fieldset");
+    // const HELP          = $("div.help");
+    // const CFG           = $("div.cfg");
 
-/*
- * Menu (Hamberger + Sidebar)
- */
+    const menuHome      = $(".home.modeSelector");
+    const menuHelp      = $(".help.modeSelector");
+    const menuCfg      = $(".cfg.modeSelector");
 
-var v_sidebar = $('#sidebar');
+    /*
+    * Nettoyage avant usage
+    */
+    function f_hideAll(){
+        /* Permet de masquer tous les élémets ('home', 'fieldset', 'help' et 'cfg') */
+        HOME.hide();
+        FIELDSET.hide();
+        // HELP.hide();
+        // CFG.hide();
+    }
 
-var toggleSidebar = ()=>{ 
-    v_sidebar.toggleClass('active');
-};
+    function f_showOne(v_target){
+        /* permet d'afficher un éléments parmi : HOME, FIELDSET, HELP et CFG */
+        v_target.show();
+    }
 
-toggleSidebar()
+    regEx.f_clean();
+    red.f_clean();
 
-$('#sidebarCollapse').on('click', () => {
-    toggleSidebar();
-});
+    f_hideAll();
+    f_showOne(HOME);
 
-/*
- * Events Manuel
- */
-$(red.modeManuel).on(
-    "click", 
-    (event)=>{
-        regEx.f_clean();
-        red.f_displayManuelDiv("block");
+
+    /*
+    * Menu (Hamberger + Sidebar)
+    */
+
+    var v_sidebar = $('#sidebar');
+
+    var toggleSidebar = ()=>{ 
+        v_sidebar.toggleClass('active');
+    };
+
+    toggleSidebar()
+
+    $('#sidebarCollapse').on('click', () => {
         toggleSidebar();
-        red.f_switchClass(event.target);
-    }
-);
+    });
 
-$(red.manuelON).on(
-    "click",
-    ()=>{
-        red.f_displayTypeSelector("block"); 
-    }
-);
+    /*
+     * Selecteurs sidebar != des prises
+     */
 
-$(red.manuelOFF).on(
-    "click",
-    ()=>{
-        red.f_displayTypeSelector("none"); 
-        red.f_displayDiv_dureeOff("none");
-        red.f_displayDiv_hFin("none");
-    }
-);
+    menuHome.on(
+        "click",
+        ()=>{
+            regEx.f_clean();
+            f_hideAll();
+            f_showOne(HOME);
+        });
 
-$(red.manuelDiffAt).on(
-    "click",
-    ()=>{
-        red.f_displayDiv_hFin("flex")
-        red.f_displayDiv_dureeOff("none");
-    }
-);    
+    menuHelp.on(
+        "click",
+        ()=>{
+            regEx.f_clean();
+            f_hideAll();
+            f_showOne(HELP);
+        });
 
-$(red.manuelDiffIn).on(
-    "click",
-    ()=>{
-        red.f_displayDiv_hFin("none");
-        red.f_displayDiv_dureeOff("flex");
-    }
-);
+    menuCfg.on(
+        "click",
+        ()=>{
+            regEx.f_clean();
+            f_hideAll();
+            f_showOne(CFG);
+    });
 
-$(red.manuel_hFin).on(
-    "input",
-    (event)=>{
-        regEx.f_callbackRegEx(event)
-    }
-);
+    /*
+    * Events Manuel
+    */
+    $(red.modeManuel).on(
+        "click", 
+        (event)=>{
+            regEx.f_clean();
+            f_hideAll();
+            f_showOne(FIELDSET);
+            red.f_displayManuelDiv("block");
+            toggleSidebar();
+            red.f_switchClass(event.target);
+        }
+    );
 
-$(red.manuel_dureeOff).on(
-    "input",
-    (event)=>{
-        regEx.f_callbackRegEx(event)
-    }
-);
+    $(red.manuelON).on(
+        "click",
+        ()=>{
+            red.f_displayTypeSelector("block"); 
+        }
+    );
 
-$(red.manuelForm).on(
-    "submit",
-    (event)=>{
+    $(red.manuelOFF).on(
+        "click",
+        ()=>{
+            red.f_displayTypeSelector("none"); 
+            red.f_displayDiv_dureeOff("none");
+            red.f_displayDiv_hFin("none");
+        }
+    );
+
+    $(red.manuelDiffAt).on(
+        "click",
+        ()=>{
+            red.f_displayDiv_hFin("flex")
+            red.f_displayDiv_dureeOff("none");
+        }
+    );    
+
+    $(red.manuelDiffIn).on(
+        "click",
+        ()=>{
+            red.f_displayDiv_hFin("none");
+            red.f_displayDiv_dureeOff("flex");
+        }
+    );
+
+    $(red.manuel_hFin).on(
+        "input",
+        (event)=>{
+            regEx.f_callbackRegEx(event)
+        }
+    );
+
+    $(red.manuel_dureeOff).on(
+        "input",
+        (event)=>{
+            regEx.f_callbackRegEx(event)
+        }
+    );
+
+    $(red.manuelForm).on(
+        "submit",
+        (event)=>{
+            event.preventDefault();
+            $(this).submit();
+            log.f_formLog( red.f_getQueryTarget(event));
+            $(red.manuelForm)[0].reset();
+        }
+    );
+
+    /*
+    * Events Minuterie
+    */
+    $(red.modeMinuterie).on(
+        "click", 
+        ()=>{
+            regEx.f_clean();
+            f_hideAll();
+            f_showOne(FIELDSET);
+            red.f_displayMinuterieDiv("block");
+            toggleSidebar();
+            red.f_switchClass(event.target);
+        });
+
+    $(red.minuterie_dureeOn).on(
+        "input",
+        (event)=>{
+            regEx.f_callbackRegEx(event)
+        });
+
+    $(red.minuterieForm).on(
+        "submit",
+        (event)=>{
+            event.preventDefault();
+            $(this).submit();
+            log.f_formLog( red.f_getQueryTarget(event));
+            $(red.minuterieForm)[0].reset();
+        }
+    );
+
+    /*
+    * Events Cyclique
+    */
+    $(red.modeCyclique).on(
+        "click", 
+        function(){
+            regEx.f_clean();
+            f_hideAll();
+            f_showOne(FIELDSET);
+            red.f_displayCycliqueDiv("block");
+            toggleSidebar();
+            red.f_switchClass(event.target);
+        });
+
+    $(red.cyclique_dureeOn).on(
+        "input",
+        function(event){
+            regEx.f_callbackRegEx(event);
+        });
+
+    $(red.cyclique_dureeOff).on(
+        "input",
+        function(event){
+            regEx.f_callbackRegEx(event);
+        });
+            
+    $(red.cyclique_hDebut).on(
+        "input",
+        function(event){
+            regEx.f_callbackRegEx(event);
+        });
+
+    $(red.cycliquePause).on(
+        "click",
+        (event)=>{
+            let inputJQSelector = $("input.redPlug.Cyclique").not(".pause").not($(red.modeCyclique));
+            if ($(red.cycliquePause).is(":checked")){
+                red.f_toggleCycliquePauseBool();
+                inputJQSelector.each((i)=>{
+                    inputJQSelector[i].disabled=true;
+                });
+            } else {
+                red.f_toggleCycliquePauseBool();
+                inputJQSelector.each((i)=>{
+                    inputJQSelector[i].disabled=false;
+                });
+            }
+            red.cycliqueForm.submit();
+        }
+    );    
+
+    $(red.cycliqueForm).on(
+        "submit",
+        (event)=>{
+            event.preventDefault();
+            $(this).submit();
+            log.f_formLog( red.f_getQueryTarget(event));
+            if (!red.cycliquePauseBool){
+                $(red.cycliqueForm)[0].reset();
+            }
+        }
+    );
+
+    /* 
+    * event Hebdomadaire
+    */
+
+    $(red.modeHedbomadaire).on(
+        "click", 
+        ()=>{
+            regEx.f_clean();
+            f_hideAll();
+        f_showOne(FIELDSET);
+            red.f_displayHebdomadaireDiv("block");
+            toggleSidebar();
+            red.f_switchClass(event.target);
+        });
+
+    $(red.hebdmadaireAllDays).on(
+        "click",
+        (event)=>{
+            let inputJQSelector = $("input.redPlug.daySelector").not(".AllDays");
+            if ($(red.hebdmadaireAllDays).is(":checked")){
+                inputJQSelector.each((i)=>{
+                    inputJQSelector[i].checked=true;
+                });
+            }
+        }
+    );
+
+    $(red.hebdomadaireWeekDay).on(
+        "click",
+        (event)=>{
+            if ($(red.hebdomadaireWeekDay).is(":checked")){
+                red.hebdmadaireAllDays[0].checked=false;
+            }
+    });
+
+    $(red.hebdomadaire_hDebut).on(
+        "input",
+        function(event){
+            regEx.f_callbackRegEx(event);
+        });
+
+    $(red.hebdomadaire_hFin).on(
+        "input",
+        function(event){
+            regEx.f_callbackRegEx(event);
+    });
+
+    $(red.hebdomadairePause).on(
+        "click",
+        (event)=>{
+            let inputJQSelector = $("input.redPlug.Hebdomadaire").not(".pause").not($(red.modeHedbomadaire));
+            if ($(red.hebdomadairePause).is(":checked")){
+                red.f_toggleHebdomadairePauseBool();
+                inputJQSelector.each((i)=>{
+                    inputJQSelector[i].disabled=true;
+                });
+            } else {
+                red.f_toggleHebdomadairePauseBool();
+                inputJQSelector.each((i)=>{
+                    inputJQSelector[i].disabled=false;
+                });
+            }
+            red.hebdomadaireForm.submit();
+        }
+    );    
+
+    $(red.hebdomadaireForm).on(
+        "submit",
+        (event)=>{
+            event.preventDefault();
+            $(this).submit();
+            log.f_formLog( red.f_getQueryTarget(event));
+            if (!red.hebdomadairePauseBool){
+                $(red.hebdomadaireForm)[0].reset();
+            }
+        }
+    );
+
+    /* 
+    * event Clone
+    */
+
+    $(red.modeClone).on(
+        "click", 
+        (event)=>{
+            regEx.f_clean();
+            f_hideAll();
+            f_showOne(FIELDSET);
+            red.f_cloneHideCurrentPlug(event);
+            red.f_displayCloneDiv("block");
+            toggleSidebar();
+            red.f_switchClass(event.target);
+        });
+
+    $(red.cloneToRed).on(
+        "click",
+        (event)=>{
         event.preventDefault();
-        $(this).submit();
-        log.f_formLog( red.f_getQueryTarget(event));
-        $(red.manuelForm)[0].reset();
-    }
-);
+        $(red.cloneInputHide).val("redPlug");
+        $(red.cloneForm).submit();
+        }
+    )
 
-/*
- * Events Minuterie
- */
-$(red.modeMinuterie).on(
-    "click", 
-    ()=>{
-        regEx.f_clean();
-        red.f_displayMinuterieDiv("block");
-        toggleSidebar();
-        red.f_switchClass(event.target);
-    });
-
-$(red.minuterie_dureeOn).on(
-    "input",
-    (event)=>{
-        regEx.f_callbackRegEx(event)
-    });
-
-$(red.minuterieForm).on(
-    "submit",
-    (event)=>{
+    $(red.cloneToGreen).on(
+        "click",
+        (event)=>{
         event.preventDefault();
-        $(this).submit();
-        log.f_formLog( red.f_getQueryTarget(event));
-        $(red.minuterieForm)[0].reset();
-    }
-);
-
-/*
- * Events Cyclique
- */
-$(red.modeCyclique).on(
-    "click", 
-    function(){
-        regEx.f_clean();
-        red.f_displayCycliqueDiv("block");
-        toggleSidebar();
-        red.f_switchClass(event.target);
-    });
-
-$(red.cyclique_dureeOn).on(
-    "input",
-    function(event){
-        regEx.f_callbackRegEx(event);
-    });
-
-$(red.cyclique_dureeOff).on(
-    "input",
-    function(event){
-        regEx.f_callbackRegEx(event);
-    });
-        
-$(red.cyclique_hDebut).on(
-    "input",
-    function(event){
-        regEx.f_callbackRegEx(event);
-    });
-
-$(red.cycliquePause).on(
-    "click",
-    (event)=>{
-        let inputJQSelector = $("input.redPlug.Cyclique").not(".pause").not($(red.modeCyclique));
-        if ($(red.cycliquePause).is(":checked")){
-            red.f_toggleCycliquePauseBool();
-            inputJQSelector.each((i)=>{
-                inputJQSelector[i].disabled=true;
-            });
-        } else {
-            red.f_toggleCycliquePauseBool();
-            inputJQSelector.each((i)=>{
-                inputJQSelector[i].disabled=false;
-            });
+        $(red.cloneInputHide).val("greenPlug");
+        $(red.cloneForm).submit();
         }
-        red.cycliqueForm.submit();
-    }
-);    
+    )
 
-$(red.cycliqueForm).on(
-    "submit",
-    (event)=>{
+    $(red.cloneToBlue).on(
+        "click",
+        (event)=>{
         event.preventDefault();
-        $(this).submit();
-        log.f_formLog( red.f_getQueryTarget(event));
-        if (!red.cycliquePauseBool){
-            $(red.cycliqueForm)[0].reset();
+        $(red.cloneInputHide).val("bluePlug");
+        $(red.cloneForm).submit();
         }
-    }
-);
+    )
 
-/* 
- * event Hebdomadaire
- */
-
-$(red.modeHedbomadaire).on(
-    "click", 
-    function(){
-        regEx.f_clean();
-        red.f_displayHebdomadaireDiv("block");
-        toggleSidebar();
-        red.f_switchClass(event.target);
-    });
-
-$(red.hebdmadaireAllDays).on(
-    "click",
-    (event)=>{
-        let inputJQSelector = $("input.redPlug.daySelector").not(".AllDays");
-        if ($(red.hebdmadaireAllDays).is(":checked")){
-            inputJQSelector.each((i)=>{
-                inputJQSelector[i].checked=true;
-            });
-        }
-    }
-);
-
-$(red.hebdomadaireWeekDay).on(
-    "click",
-    (event)=>{
-        if ($(red.hebdomadaireWeekDay).is(":checked")){
-            red.hebdmadaireAllDays[0].checked=false;
-        }
-});
-
-$(red.hebdomadaire_hDebut).on(
-    "input",
-    function(event){
-        regEx.f_callbackRegEx(event);
-    });
-
-$(red.hebdomadaire_hFin).on(
-    "input",
-    function(event){
-        regEx.f_callbackRegEx(event);
-});
-
-$(red.hebdomadairePause).on(
-    "click",
-    (event)=>{
-        let inputJQSelector = $("input.redPlug.Hebdomadaire").not(".pause").not($(red.modeHedbomadaire));
-        if ($(red.hebdomadairePause).is(":checked")){
-            red.f_toggleHebdomadairePauseBool();
-            inputJQSelector.each((i)=>{
-                inputJQSelector[i].disabled=true;
-            });
-        } else {
-            red.f_toggleHebdomadairePauseBool();
-            inputJQSelector.each((i)=>{
-                inputJQSelector[i].disabled=false;
-            });
-        }
-        red.hebdomadaireForm.submit();
-    }
-);    
-
-$(red.hebdomadaireForm).on(
-    "submit",
-    (event)=>{
+    $(red.cloneToYellow).on(
+        "click",
+        (event)=>{
         event.preventDefault();
-        $(this).submit();
-        log.f_formLog( red.f_getQueryTarget(event));
-        if (!red.hebdomadairePauseBool){
-            $(red.hebdomadaireForm)[0].reset();
+        $(red.cloneInputHide).val("yellowPlug");
+        $(red.cloneForm).submit();
         }
+    )
+
+    $(red.cloneForm).on(
+        "submit",
+        (event)=>{
+            event.preventDefault();
+            console.log("form Submit");
+            $(this).submit();
+            log.f_formLog( red.f_getQueryTarget(event));
+            $(red.cloneForm)[0].reset();
+        }
+    );
+
+    /*
+    * Traitemant Json
+    */
+
+    /* 
+    * la fonction loadJson à été piqué ici:
+    * http://www.askyb.com/javascript/load-json-file-locally-by-js-without-jquery/comment-page-1/#comment-4130
+    */
+    function f_loadJSON(v_file, callback) { 
+        var xobj = new XMLHttpRequest();
+        xobj.overrideMimeType("application/json");
+        xobj.open('GET', v_file, true);
+        xobj.onreadystatechange = function () {
+        if (xobj.readyState == 4 && xobj.status == "200") {
+            callback(xobj.responseText);
+        }
+        }
+        xobj.send(null);
     }
-);
 
-/* 
- * event Clone
- */
+    function f_populateTitle( v_hostname ){
+        /* permet de modifier le titre de la page (Onglet) */
+        $("#autoTitle").text(v_hostname)};
 
-$(red.modeClone).on(
-    "click", 
-    (event)=>{
-        regEx.f_clean();
-        red.f_cloneHideCurrentPlug(event);
-        red.f_displayCloneDiv("block");
-        toggleSidebar();
-        red.f_switchClass(event.target);
+    function f_populateTable( plug ){
+        /* rempli le tableau de la page d'accueil avec les informations contenu dans le ficier JSON */
+        var v_tbody = $(".home.tBody");
+        var v_body = `
+            <tr>
+                <td>${plug}</td>
+            </tr>`
+        v_tbody.prepend(v_body);
+
+    }
+
+    f_loadJSON(v_jsonFile, function(response) {
+        var jsonresponse = JSON.parse(response);
+
+        /* general */
+        var v_hostname = jsonresponse["general"]["hostName"];
+        var v_numberOfPlug = jsonresponse["general"]["numberOfPlugs"];
+        //document.getElementById("autoTitle").innerHTML=v_hostname;
+        //document.getElementById("autoH1").innerHTML=v_hostname;
+        //
+        //N.B: l'emploi de 'innerHTML' est déconseiller car il représente une faille de sécurité
+        //potenciel.
+        f_populateTitle(v_hostname);
+
+        switch (v_numberOfPlug){
+            case "4": f_populateTable("yellowPlug");
+            case "3": f_populateTable("bluePlug");
+            case "2": f_populateTable("greenPlug");
+            case "1": f_populateTable("redPlug");
+        }
+
+        // let rplg = jsonresponse["redPlug"];
+
+        // for (var prop in rplg){
+        //     console.log(`${prop}:${rplg[prop]}`);
+        //     if ((prop == "hFin") && rplg[prop]){console.log("####")}
+        // }
+
+        // f_populatePlug("redPlug");
+        // f_populatePlug("greenPlug");
+        // f_populatePlug("bluePlug");
+        // f_populatePlug("yellowPlug");
     });
-
-$(red.cloneToRed).on(
-    "click",
-    (event)=>{
-    event.preventDefault();
-    $(red.cloneInputHide).val("redPlug");
-    $(red.cloneForm).submit();
-    }
-)
-
-$(red.cloneToGreen).on(
-    "click",
-    (event)=>{
-    event.preventDefault();
-    $(red.cloneInputHide).val("greenPlug");
-    $(red.cloneForm).submit();
-    }
-)
-
-$(red.cloneToBlue).on(
-    "click",
-    (event)=>{
-    event.preventDefault();
-    $(red.cloneInputHide).val("bluePlug");
-    $(red.cloneForm).submit();
-    }
-)
-
-$(red.cloneToYellow).on(
-    "click",
-    (event)=>{
-    event.preventDefault();
-    $(red.cloneInputHide).val("yellowPlug");
-    $(red.cloneForm).submit();
-    }
-)
-
-$(red.cloneForm).on(
-    "submit",
-    (event)=>{
-        event.preventDefault();
-        console.log("form Submit");
-        $(this).submit();
-        log.f_formLog( red.f_getQueryTarget(event));
-        $(red.cloneForm)[0].reset();
-    }
-);
 
 // .ready() end
 });
@@ -350,6 +483,10 @@ $(red.cloneForm).on(
  * 
  * #. Ajouter un fieldset ou un div pour la personnalisation
  *    (toujours sur la même page)
+ * 
+ * ####
+ * 
+ * #. Mode responcive, vérfier le bon affichage sur chacun des modes de la prise
  * 
  * ## TODO
  */
