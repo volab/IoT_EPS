@@ -55,6 +55,9 @@ bool ConfigParam::readFromJson(){
                     _serverPort = json["general"]["Port"].as<String>().toInt();
                     _wifimode = json["general"]["wifimode"].as<String>();
                     _host = json["general"]["hostName"].as<String>();
+                    _allLedsOnTime = json["general"]["allLedsOnTime"].as<String>().toInt();
+                    _ledsGlobalLuminosity = \
+                        json["general"]["ledsGlobalLuminosity"].as<String>().toInt();
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
                     return false;

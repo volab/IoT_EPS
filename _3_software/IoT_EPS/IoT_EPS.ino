@@ -200,8 +200,11 @@ void setup(){
         colorLeds[i] = plugs[i].getColor();
         /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/
     }
-    FastLED.setBrightness(5); /**< @brief normaly in the json config file*/
+    // FastLED.setBrightness(5);
+    FastLED.setBrightness( cParam.getLedsLuminosity() );
+    /**< @brief normaly in the json config file*/
     /** @todo Read the general brightness of color LED in JSON config file*/
+    
     FastLED.show();
 	
     /** @todo document simpleManualMode with no wifi at all */
@@ -347,7 +350,8 @@ void setup(){
 	}
 	
 	SerialCommand::displayCommandsList();
-
+    DSPL( dPrompt + "Leds On config : " + String( cParam.getAllLedsOnTime() ) );
+    DSPL( dPrompt + "Leds On lumi : " + String( cParam.getLedsLuminosity() ) );
     
 
 }

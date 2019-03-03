@@ -28,6 +28,8 @@ class ConfigParam{
         IPAddress getIPAdd(){ return _addIP; }
         int getNumberOfPlugs(){ return _numberOfPlugs; }
         int getServerPort(){ return _serverPort; }
+        long getAllLedsOnTime(){ return _allLedsOnTime; }
+        int getLedsLuminosity(){return _ledsGlobalLuminosity; }
         
     
     private:
@@ -37,7 +39,9 @@ class ConfigParam{
         IPAddress _addIP;
         int _numberOfPlugs;
         int _serverPort;
-        
+        long _allLedsOnTime;
+        //in seconds (not unsigned cause -1 could serve to allways on in future)
+        int _ledsGlobalLuminosity;
 
 };
 
