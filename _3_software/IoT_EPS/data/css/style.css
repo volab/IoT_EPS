@@ -13,12 +13,16 @@ fieldset{
     padding: 0.75rem;
 }
 
-li{
+/* li{
     list-style: none;
-}
+} */
 
 label, p{
     color: inherit;
+}
+
+.header_h1, .header_h4{
+    text-align: center;
 }
 
 input::placeholder{
@@ -178,6 +182,11 @@ h5.div_subSummary {
 
 .text-warning{
     color: #fffc47 !important;
+}
+
+.table-dark {
+    /* color: #fff; */
+    background-color: #666 !important;
 }
 
 .dropdown-menu.show{

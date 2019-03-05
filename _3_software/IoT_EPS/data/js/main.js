@@ -64,6 +64,7 @@ $(document).ready( ()=>{
             regEx.f_clean();
             f_hideAll();
             f_showOne(HOME);
+            toggleSidebar();
         });
 
     menuHelp.on(
@@ -413,17 +414,101 @@ $(document).ready( ()=>{
 
     function f_populateTable( plug ){
         /* rempli le tableau de la page d'accueil avec les informations contenu dans le ficier JSON */
-        var v_tbody = $(".home.tBody");
-        var v_body = `
-            <tr>
-                <td>${plug}</td>
+        let v_plug          = jsonresponse[plug];
+        let v_nicName       = v_plug["nickName"];
+        let v_emplacement   = v_plug["emplacement"];
+        let v_state         = v_plug["State"];
+        let v_mode          = v_plug["Mode"];
+        let v_pause         = v_plug["Pause"];
+
+        let v_modeConed     = "";
+        let v_pauseOn       = "";
+        let v_tableColor    = "";
+
+        let v_detail        = "";
+
+        switch (plug){
+            case "redPlug": {
+                v_tableColor = "table-danger";
+                break;}
+            case "greenPlug": {
+                v_tableColor = "table-success";
+                break;}
+            case "bluePlug": {
+                v_tableColor = "table-primary";
+                break;}
+            case "yellowPlug": {
+                v_tableColor = "table-warning";
+                break;}
+        }
+
+        switch (v_mode){
+            case "Manuel": {
+                if (v_state=="ON" && v_plug["hFin"]){
+                    v_detail = `Heure d'arrêt : ${v_plug["hFin"]}`;
+                } else if (v_state=="ON" && v_plug["dureeOff"]) {
+                    v_detail = `Durée avant arrêt : ${v_plug["dureeOff"]} min`;
+                }
+                break;
+            };
+            case "Minuterie": {
+                v_detail = `Durée de fonctionnement : ${v_plug["dureeOn"]} min `;
+                break;
+            };
+            case "Cyclique": {
+
+                let v_cycl_hDebut = v_plug["hDebut"];
+                let v_cycl_dureeOn = v_plug["dureeOn"];
+                let v_cycl_dureeOff = v_plug["dureeOff"];
+
+                if (v_cycl_hDebut){
+                    v_detail = `
+                        <ul>
+                            <li>Durée 'ON' : ${v_cycl_dureeOn} min</li>
+                            <li>Durée 'OFF' : ${v_cycl_dureeOff} min</li>
+                            <li>Heure de début : ${v_cycl_hDebut}</li>
+                        </ul>`;
+                } else {
+                    v_detail = `
+                        <ul>
+                            <li>Durée 'ON' : ${v_cycl_dureeOn} min</li>
+                            <li>Durée 'OFF' : ${v_cycl_dureeOff} min</li>
+                        </ul>`;
+                }
+                break;
+            };
+            case "Hebdomadaire": {
+                break;
+            };
+        }
+
+        if (jsonresponse[plug]["clonedPlug"]){
+            let v_clonedPlug = v_plug["clonedPlug"];
+            let v_clonePlugName = jsonresponse[v_clonedPlug]["nickName"];
+            v_modeConed = `<br>(prise clonée depuis la prise ${v_clonePlugName})`
+        }
+
+        if ((v_mode=="Cyclique" || v_mode=="Hebdomadaire") && v_pause=="ON" && v_state=="ON"){
+            v_pauseOn = `<br><span class="text-danger">Actuellement en PAUSE</span>`;
+        }
+
+        let v_tbody         = $(".home.tBody");
+        let v_body = `
+            <tr class="${v_tableColor}">
+                <td>${v_nicName}<br>
+                    (${v_emplacement})
+                </td>
+                <td>${v_state}${v_pauseOn}</td>
+                <td>${v_mode}${v_modeConed}</td>
+                <td>${v_detail}</td>
             </tr>`
+            ;
         v_tbody.prepend(v_body);
 
     }
 
     f_loadJSON(v_jsonFile, function(response) {
-        var jsonresponse = JSON.parse(response);
+        jsonresponse = JSON.parse(response);
 
         /* general */
         var v_hostname = jsonresponse["general"]["hostName"];
@@ -467,8 +552,11 @@ $(document).ready( ()=>{
  * ####
  *
  * #. Ajouter un fieldset de résumé de l'état des prises
- *    /!\ tenir compte de l'état du boutons pause dans le JSON lors du chargement
+ *    * /!\ tenir compte de l'état du boutons pause dans le JSON lors du chargement
  *        des modes Cyclique et Hebdomadoare
+ *
+ *    * Pour le mode hedomadaire utiliser une boucle for ("for (variable of iterable)")
+ *      https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Instructions/for...of
  * 
  * ####
  *  
