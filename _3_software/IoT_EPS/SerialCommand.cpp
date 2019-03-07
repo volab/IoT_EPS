@@ -16,8 +16,6 @@
 
 < S > for set DS3231 date, format JJ MM AAAA HH MM SS
 
-< H HH > set DS3231 hours
-@todo implement this
 
 < s > for station status and COM connections
 
@@ -89,8 +87,7 @@ void SerialCommand::process(){
 ///////////////////////////////////////////////////////////////////////////////
 
 void SerialCommand::parse(char *com){
-    /** @todo remove after debug of nextCheckedDay */
-CEpsStrTime hDebut;	
+// CEpsStrTime hDebut;	
 String s;
 String key,value;
 char k[40];
@@ -179,18 +176,6 @@ int eightState;
 		case 'w':
 			cParam.displayWifiMode();
 			break;
-            /** @todo remove after debug of computeNextTime */
-        case 'D':
-        case 'd':
-        /** @todo remove after debug of the hebdo mode */
-            // INTERFACE.println( "Before scaning : " +String(com+1) );
-            n = sscanf( com+1,"%d:%d %d", &h, &m, &deux);
-            if ( n == 3){  
-                hDebut = CEpsStrTime( String(h)+":"+String(m), CEpsStrTime::HHMM );
-                // INTERFACE.println( " h debut is "+ hDebut.isValid?"valid":"not valid" );
-                if (hDebut.isValid) hDebut.computeNextTime( deux );
-            }
-            // INTERFACE.println( "after scan : " + String(n) );
         case 't':
             now = CRtc::now();
             date = (String)now.day() + "/" + (String)now.month() + "/" + (String)now.year();
@@ -232,8 +217,6 @@ void SerialCommand::displayCommandsList(){
 	list += F("<W> or <w> display WIFI mode\n");
     list += F("<P key value> write config parameter in json WARNING\n");
     list += F("<I _newSSID> write SSID in credentials WARNING\n");
-    /** @todo remove after debug of nextCheckedDay */
-    list += F("<D or d HH:MM days>\n");
     list += F("<t various_param> for code test\n");
     list += F("<N> nano IO expander test\n");
     list += F("<O> nano out test HIGH\n");

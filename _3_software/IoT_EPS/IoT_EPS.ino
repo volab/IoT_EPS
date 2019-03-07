@@ -202,8 +202,6 @@ void setup(){
     }
     // FastLED.setBrightness(5);
     FastLED.setBrightness( cParam.getLedsLuminosity() );
-    /**< @brief normaly in the json config file*/
-    /** @todo Read the general brightness of color LED in JSON config file*/
     
     FastLED.show();
 	

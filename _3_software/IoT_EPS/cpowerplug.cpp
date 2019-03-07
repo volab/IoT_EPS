@@ -205,9 +205,6 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
                     _state = (sState == "ON");                    
                     _nextTimeToSwitch = sNextTime2switch.toInt();
                     _pause = ( sPause == "ON" );
-/** @todo continue to converts and store the string parameters
- in the members of the class
-*/
 /////////////////////////////////////////////////////////////////////////////
 //    Restaure physical state                                                       //
 /////////////////////////////////////////////////////////////////////////////
@@ -243,7 +240,6 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
                     }
                     DSPL("");
 /////////////////////////////////////////////////////////////////////////////
-/** @todo update output regarless of mode and the state of main power switch*/
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
                     return false;
