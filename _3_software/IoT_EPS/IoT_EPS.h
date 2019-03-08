@@ -48,6 +48,7 @@
 // #include "Cmcp.h"
 #include "cnano.h"
 #include "CPowerPlug.h"
+#include "tempo.h"
 
 #define HTML_JSON_REDPLUGNAME "redPlug"
 #define HTML_JSON_GREENPLUGNAME "greenPlug"

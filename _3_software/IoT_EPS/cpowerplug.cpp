@@ -902,6 +902,7 @@ writeToJson open the file, read the entire file, change one parm, rewrite the fi
  4 time in hebdo mode
  Flash on or flash off regarless of _state attribute
 */
+/** @todo rename handleBpDoubleClic in handelBPclicAndSpecialBP */
 void CPowerPlug::handleBpDoubleClic(){
 
     DEFDPROMPT( "handleBpDoubleClic");
@@ -923,4 +924,19 @@ void CPowerPlug::handleBpDoubleClic(){
     }
     bp.acquit(); 
     
+}
+
+/** 
+ @fn void CPowerPlug::manageLeds( bool ledState )
+ @brief this function switch on or off plug leds (for now only one led)
+ @param ledState input state off led
+ @return no return
+*/
+void CPowerPlug::manageLeds( bool ledState ){
+    _ledOn = ledState;
+    if ( _ledOn ){
+        _nano.digitalWrite( _onOffLedPin, _state );
+    } else {
+        _nano.digitalWrite( _onOffLedPin, LOW );
+    }
 }

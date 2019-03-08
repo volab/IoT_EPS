@@ -5,7 +5,7 @@
 extern RTC_DS3231 rtc;
 
 //==================================================================================================
-// integration FSBrowser example functions
+// FSBrowser samples functions integration 
 // begin
 
 String getContentType(String filename){
@@ -184,6 +184,7 @@ OK
 */
 // extern CPowerPlug plugs[4];
 extern CPowerPlug *plugs;
+extern bool restartTempoLed;
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
     /////////////////////////////////////////////////////////////////////////////
@@ -198,7 +199,7 @@ void handlePlugOnOff(){
     }
     DSPL( dPrompt + allArgs);
     /////////////////////////////////////////////////////////////////////////////
-
+    restartTempoLed = true;
     String plugColor = server->arg("COLOR");
     DSPL( dPrompt + " Plug color = " + plugColor );
     String plugVal = server->arg("State");

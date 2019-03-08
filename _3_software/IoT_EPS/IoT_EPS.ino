@@ -93,6 +93,10 @@ CSwitchNano specialBp;
 
 // CFlasherNanoExp extraLed;
 
+// bool allLedsOn = true;
+CTempo allLeds;
+bool restartTempoLed = false;
+
 void setup(){
 
 
@@ -109,6 +113,8 @@ void setup(){
     // The response was already in the code : about line
     if (errFS) DSPL( dPrompt + F("error in Opening File System") );
     else DSPL( dPrompt + F("File system corectly Open @ setup level") );
+    
+ 
     
 	SerialCommand::init();
     // extraLed.begin( 9, 100, 500, 4, 5000 );
@@ -350,33 +356,90 @@ void setup(){
 	SerialCommand::displayCommandsList();
     DSPL( dPrompt + "Leds On config : " + String( cParam.getAllLedsOnTime() ) );
     DSPL( dPrompt + "Leds On lumi : " + String( cParam.getLedsLuminosity() ) );
-    
+
+    if (cParam.getAllLedsOnTime() != -1 ){
+        allLeds.begin();
+        allLeds.start( cParam.getAllLedsOnTime() );
+    }
 
 }
 
 /////////////////////////////////////////////////////////////////////////////
 //        LOOP                                                             //
 /////////////////////////////////////////////////////////////////////////////
-// unsigned long prevMillis = millis();
+
 bool cycleState = false;
 void loop(){
     // cycleState = !cycleState;
-    // digitalWrite( WIFILED, cycleState);    
+    // digitalWrite( WIFILED, cycleState); 
+    // static unsigned long prevMillis = millis();
+    // static bool prevAllLedsOn;
+    // prevAllLedsOn = allLedsOn;
     DEFDPROMPT("in the loop")
     if ( !simpleManualMode ) server->handleClient();
+    
     mainPowerSiwtch.update();
     specialBp.update();
+    
     SerialCommand::process();
-	int mainPowerSate = !mainPowerSiwtch.getState();
+
     // extraLed.update();
     
-	if ( cParam.getWifiMode() == "softAP" ) wifiLed.update();
-
+	   
+    
+    /////////////////////////////////////////////////////////////////////////////
+    //  manage leds                                                            //
+    /////////////////////////////////////////////////////////////////////////////
     FastLED.show();
+    
+    if ( cParam.getWifiMode() == "softAP" ) wifiLed.update();
+    
+    if (cParam.getAllLedsOnTime() != -1 ){
+        
+        allLeds.update();
+        if ( allLeds.finie ){
+            for ( int i = 0; i < 4 ; i++ ){
+                plugs[i].setColor( CRGB::Black ); 
+                plugs[i].manageLeds( false );
+            }
+            wifiLed.stop();
+            pinMode( WIFILED, OUTPUT );
+            digitalWrite( WIFILED, LOW);
+            allLeds.stop();
+        }
+        if ( restartTempoLed ){
+            plugs[0].setColor( CRGB::Red );
+            plugs[1].setColor( CRGB::Green );
+            plugs[2].setColor( CRGB::Blue );
+            plugs[3].setColor( CRGB::Yellow );        
+            for ( int i = 0; i < 4 ; i++ ){ 
+                plugs[i].manageLeds( true );
+            }
+            allLeds.start( cParam.getAllLedsOnTime() );
+            if ( cParam.getWifiMode() == "softAP" ){
+                wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
+            }
+            restartTempoLed = false;
+        }
+    }
+    // if ( millis() - prevMillis >= cParam.getAllLedsOnTime() &&
+        // cParam.getAllLedsOnTime() != -1  ){
+        // for ( int i = 0; i < 4 ; i++ ){
+           // plugs[i].setColor( CRGB::Black ); 
+        // }            
+        // allLedsOn = false;
+    // }
+
+
+    /////////////////////////////////////////////////////////////////////////////
+    //  manage bps                                                            //
+    /////////////////////////////////////////////////////////////////////////////     
     if ( mainPowerPrevState == HIGH ){
         for ( int i = 0; i < NBRPLUGS ; i++ ){
             plugs[i].bp.update();
-            if ( plugs[i].flashLedReq() ){
+            if ( plugs[i].flashLedReq() ){ 
+            // flashLedReq can be turned ON by plugs[i].handleBpDoubleClic
+            // ie by simple clic and special BP simultanusly
                 plugs[i].onOffFlasher.update();
                 int flashCount =( plugs[i].getMode() + 1) *2;
                 if ( plugs[i].getState() ) flashCount++;
@@ -386,10 +449,11 @@ void loop(){
                 } 
             }  
         } 
-        
+/** @todo merge 2 for loops */        
         for ( int i = 0; i < NBRPLUGS ; i++ ){
             if ( plugs[i].bp.clic() ){
                 // DSPL( dPrompt + F("I10 state : ") + (specialBp.getState()?"ON":"OFF") );
+                restartTempoLed = true;
                 if ( specialBp.getState() ){
                     plugs[i].handleBpClic();
                 } else {
@@ -402,18 +466,17 @@ void loop(){
                 plugs[i].switchAtTime();
             }
             if ( plugs[i].bp.longClic() ){
+                restartTempoLed = true;
                 plugs[i].handleBpLongClic();
             }
-            // if ( plugs[i].bp.doubleClic() ){
-                
-            // }
         }  
     }        
  
 
     /////////////////////////////////////////////////////////////////////////////
     //  main power switch actions                                              //
-    ///////////////////////////////////////////////////////////////////////////// 
+    /////////////////////////////////////////////////////////////////////////////
+	int mainPowerSate = !mainPowerSiwtch.getState();    
     if ( mainPowerSate != mainPowerPrevState){
         mainPowerPrevState = mainPowerSate;
         if (mainPowerSate == HIGH ){ 
