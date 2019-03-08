@@ -1,8 +1,0 @@
-{
-    "wifimode" : "client",
-    "hostName" : "PowerStrip01",
-    "yellowPlugState" : "ON",
-    "redPlugState" : "ON",
-    "greenPlugState" : "ON",
-    "bleuPlugState" : "ON"
-}

@@ -1,106 +1,201 @@
-html{
-    height: 100%;
+body{
+    font-family: 'Times New Roman', Times, serif !important;
 }
 
-body{
-    background-color: #aeb6bf;
+/* nav{
+    line-height: 0rem;
+} */
+
+fieldset{
+    box-shadow: 6px 6px 3px 3px;
+    border: 2px ridge black;
+    border-radius:0 10px 0 10px;
+    padding: 0.75rem;
+}
+
+/* li{
+    list-style: none;
+} */
+
+label, p{
+    color: inherit;
+}
+
+.header_h1, .header_h4{
+    text-align: center;
+}
+
+input::placeholder{
+    color: blue;
+}
+
+input[type="text"]{
+    border-radius: 25rem;
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
     }
 
-nav{
-    max-height: 30px;
-    list-style-type: none;
+input[type="checkbox"] + span{
+    cursor: pointer;
+    padding-right: 50px;
+}
+
+
+.bg-gris{
+    background-color: #aeb6bf;
+}
+
+.bg-lightBlue{
+    /* background-color: #d6eaf8; */
+    background-color: #ccccff;
+}
+
+.bg-lynch{
+    background-color: #95a5a6;
+}
+
+.bg-hoki{
+    background-color: #67809f;
+}
+
+.bg-warning{
+    background-color: #fcfcf3 !important;
+}
+
+.nav-link {
+    display: block;
+    padding: 1.5rem 1.5rem;
+}
+
+fieldset.redPlug {
+    color: #b11721;
+}
+
+fieldset.greenPlug {
+    color: #30880c;
+}
+
+
+fieldset.bluePlug {
+    color: #0b40a9;
+}
+
+fieldset.yellowPlug {
+    color: #fffc47; 
+}
+
+.modeSelector{
+    color: black;
+}
+
+.div_subSummary{
+    color: black;
+    }
+
+h5.div_subSummary {
     text-align: center;
     margin: 0;
     padding: 0;
 }
 
-footer{
-      position: absolute;
-      bottom: 0;
-      }
-
-header, nav, footer{padding: 0 1%;}
-
-nav li{
-        display: inline-block;
+.submitReset{
+    text-align: center;
 }
 
-.header_logo{
-    width: 100%;
-    height: auto;
-    vertical-align: middle;
-    }
-
-.header_h1{
-    vertical-align: middle;
-    text-align:   center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    font-size: 3em;
-    }
-
-fieldset{
-    box-shadow: 6px 6px 0;
-    border: 2px ridge black;
+.infobulle{
+    position: absolute;
+    /* background: #FF4F4F; */
+    background: #ff3300;
+    padding:3px 7px;
+    opacity: 50%;
     border-radius:0 10px 0 10px;
-    }
-
-.redPlug,.greenPlug,.bluePlug,.yellowPlug{
-    margin: 0 2% 0 2%;
-    }
-  
-/* RED */
-.redPlug{
+    color:black;
+    text-align: center;
+    margin: -13px;
 }
 
-.redPlug fieldset{
-    color: #b11721;
+/* .Red, .Green, .Blue, .Yellow {
+    max-width: 150px;
+    max-width: 25%;
+    max-height: auto;
+} */
+
+.div_cloneRed, .div_cloneGreen, .div_cloneBlue, .div_cloneYellow {
+    text-align: center;
+
 }
 
-/* GREEN */
-.greenPlug{
+.toCloneBTN{
+    max-width: 25%;
+    max-height: auto;
+    cursor: pointer;
+    color: #fff;
+    padding: 5px 5px;
+    border-radius: 50%;
 }
 
-.greenPlug fieldset{
-    color: #30880c;
-}
+.toCloneBTN:hover {background-color: #ab69c6;}
 
-/* Blue */
-.bluePlug{
-}
-
-.bluePlug fieldset{
-    color: #0b40a9;
-}
-
-    /* Yellow */
-.yellowPlug{
-}
-
-.yellowPlug fieldset{
-    color: #e4ff02;
-}
-
-@media only screen and (max-width: 414px) {
-  .header_h1 {
-    font-size: 2.3rem;
-    margin: 0;
+.toCloneBTN:active {
+    background-color: #3e005d;
+    box-shadow: 5px 5px #666;
+    transform: translateY(4px);
   }
-}
 
-@media only screen and (max-width: 375px) {
-  .header_h1 {
-    font-size: 2.2rem;
-    margin: 0;
+.hamberger{
+    max-width: 5%;
+    max-height: auto;
+    cursor: pointer;
+    color: #fff;
+    padding: 5px 5px;
+}  
+
+.hamberger:hover {background-color: #ab69c6;}
+
+.hamberger:active {
+    background-color: #3e005d;
   }
+
+.justify{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-
-@media only screen and (max-width: 360px) {
-  .header_h1 {
-    font-size: 2.1rem;
-    margin: 0;
-  }
+.Manuel .div_dureeOff {
+    display: flex;
+    align-items: center;
 }
 
+.Manuel .div_hFin {
+    display: flex;
+    align-items: center;
+}
+
+/* Sucharge cmposant Bootstrap */
+.custom-control-input:checked ~ .custom-control-label::before {
+    color: #fff;
+    border-color: #33cc33;
+    background-color: #33cc33;
+}
+
+.text-warning{
+    color: #fffc47 !important;
+}
+
+.table-dark {
+    /* color: #fff; */
+    background-color: #666 !important;
+}
+
+.dropdown-menu.show{
+    margin-left: 50%;
+}
+
+.row{margin-top: 5px;}
+
+.redPlug .dropdown-menu.show{background: #ffb3b3;}
+.greenPlug .dropdown-menu.show{background: #b3ffb3;}
+.bluePlug .dropdown-menu.show{background: #b3ccff;}
+.yellowPlug .dropdown-menu.show{background: #ffffb3;}

@@ -17,8 +17,8 @@
     "Mode": "Manuel",
     "hDebut": "",
     "hFin": "",
-    "dureeOn": "60",
-    "dureeOff": "",
+    "dureeOn": "",
+    "dureeOff": "60",
     "Jours": [
       "OFF",
       "OFF",
@@ -51,7 +51,7 @@
       "OFF",
       "OFF"
     ],
-    "clonedPlug": "",
+    "clonedPlug": "bluePlug",
     "onOffCount": "109",
     "nextTimeToSwitch": "0"
   },
@@ -59,7 +59,7 @@
     "nickName": "jardin",
     "emplacement": "plaquard",
     "State": "ON",
-    "Pause": "OFF",
+    "Pause": "ON",
     "Mode": "Hebdomadaire",
     "hDebut": "08:30",
     "hFin": "18:30",

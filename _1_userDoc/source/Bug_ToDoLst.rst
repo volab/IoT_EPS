@@ -45,10 +45,49 @@ Bug identifiés
 ToDo-list
 =========
 
+    :Date de saisie:        181214
+    :Date de traitemant:    
+    :Cible:                 software
+    :Status:                
+    :Problematique:         Implémenter Doxigen sur les codes HTML et JS.
+    :Traitement:            
+    
+------------------------------------------------------------------------------------------
+
+ToDo-list
+=========
+
+    :Date de saisie:        181214
+    :Date de traitemant:    
+    :Cible:                 software
+    :Status:                
+    :Problematique:         Faire correspondre dans index.html, style.css et dans IoT_EPS2.js les
+                            noms utilisés avec ceux définis dans configFile3.json.
+    :Traitement:            
+
+------------------------------------------------------------------------------------------
+
+ToDo-list
+=========
+
+    :Date de saisie:        181214
+    :Date de traitemant:    
+    :Cible:                 autre
+    :Status:                
+    :Problematique:         Créer la Branch 'gh-pages' pour y intégrer la documentation générer par
+                            Sphinx et par Doxigen.
+    :Traitement:            
+
+------------------------------------------------------------------------------------------
+
+ToDo-list
+=========
+
     :Date de saisie:        
     :Date de traitemant:    
     :Cible:                 [userDoc, modelisation, software, PCB, autre]
     :Status:                
     :Problematique:         
     :Traitement:            
+
 
