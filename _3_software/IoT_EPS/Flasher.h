@@ -51,6 +51,7 @@ class Flasher {
         unsigned long _previousMillis;
         int _ledState ;
         unsigned long _changeStateCpt;
+        bool _flasherEnable;
     
 };
 
