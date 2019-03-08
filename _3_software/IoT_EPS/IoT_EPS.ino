@@ -359,7 +359,7 @@ void setup(){
 
     if (cParam.getAllLedsOnTime() != -1 ){
         allLeds.begin();
-        allLeds.start( cParam.getAllLedsOnTime() );
+        allLeds.start( cParam.getAllLedsOnTime()*1000 );
     }
 
 }
@@ -398,8 +398,9 @@ void loop(){
         
         allLeds.update();
         if ( allLeds.finie ){
+            DSPL( dPrompt + F("leds : it is time to switch off") );
             for ( int i = 0; i < 4 ; i++ ){
-                plugs[i].setColor( CRGB::Black ); 
+                colorLeds[i] = CRGB::Black;
                 plugs[i].manageLeds( false );
             }
             wifiLed.stop();
@@ -408,16 +409,16 @@ void loop(){
             allLeds.stop();
         }
         if ( restartTempoLed ){
-            plugs[0].setColor( CRGB::Red );
-            plugs[1].setColor( CRGB::Green );
-            plugs[2].setColor( CRGB::Blue );
-            plugs[3].setColor( CRGB::Yellow );        
-            for ( int i = 0; i < 4 ; i++ ){ 
+            for ( int i = 0; i < 4 ; i++ ){
+                colorLeds[i] = plugs[i].getColor();
                 plugs[i].manageLeds( true );
             }
-            allLeds.start( cParam.getAllLedsOnTime() );
+            allLeds.start( cParam.getAllLedsOnTime()*1000 );
             if ( cParam.getWifiMode() == "softAP" ){
                 wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
+            } else {
+                pinMode( WIFILED, OUTPUT );
+                digitalWrite( WIFILED, HIGH);                
             }
             restartTempoLed = false;
         }
@@ -447,19 +448,15 @@ void loop(){
                     // DSPL( dPrompt + F("flash count condition ") + String(flashCount) );
                     plugs[i].handleBpDoubleClic(); //ie : stop flasher
                 } 
-            }  
-        } 
-/** @todo merge 2 for loops */        
-        for ( int i = 0; i < NBRPLUGS ; i++ ){
-            if ( plugs[i].bp.clic() ){
+            }
+           if ( plugs[i].bp.clic() ){
                 // DSPL( dPrompt + F("I10 state : ") + (specialBp.getState()?"ON":"OFF") );
                 restartTempoLed = true;
                 if ( specialBp.getState() ){
                     plugs[i].handleBpClic();
                 } else {
                     plugs[i].handleBpDoubleClic();
-                }
-                
+                }   
             } 
             if ( plugs[i].isItTimeToSwitch() ){
                 DSPL( dPrompt + "It is time for : " + plugs[i].getPlugName() );
@@ -468,8 +465,8 @@ void loop(){
             if ( plugs[i].bp.longClic() ){
                 restartTempoLed = true;
                 plugs[i].handleBpLongClic();
-            }
-        }  
+            }            
+        }   
     }        
  
 
