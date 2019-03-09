@@ -118,7 +118,6 @@ class C_Table{
         let l_dayList = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
         let v_renderList = `<ul>`;
         for (let i of this.v_Jours){
-            console.log(i);
             if (i=="ON"){
                 v_renderList += `<li>${l_dayList[v_count]}</li>`;
                 v_count ++;

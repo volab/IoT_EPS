@@ -150,6 +150,11 @@ $(document).ready( ()=>{
         (event)=>{
             event.preventDefault();
             $(this).submit();
+            var v_form = $(this);
+            var v_url = v_form.attr("action");
+            $.post(v_url);
+            // $(event).submit();
+            console.log(event);
             log.f_formLog( red.f_getQueryTarget(event));
             $(red.manuelForm)[0].reset();
         }
@@ -455,15 +460,6 @@ $(document).ready( ()=>{
  * #. Finir les fonction "clear". Les appliquer sur chaque chagement de mode, changement de prise
  *    et entre chaque action du mode manuel
  *
- * ####
- *
- * #. Ajouter un fieldset de résumé de l'état des prises
- *    * /!\ tenir compte de l'état du boutons pause dans le JSON lors du chargement
- *        des modes Cyclique et Hebdomadoare
- *
- *    * Pour le mode hedomadaire utiliser une boucle for ("for (variable of iterable)")
- *      https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Instructions/for...of
- * 
  * ####
  *  
  * #. Gestion de la transition entre les DIV (jqueryui .effect "drop" et "slide")
