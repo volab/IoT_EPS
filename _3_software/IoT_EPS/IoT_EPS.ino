@@ -321,6 +321,7 @@ void setup(){
 	if ( !simpleManualMode ){
 		server->on("/list", HTTP_GET, handleFileList);
 		server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
+		// server->on("/", HTTP_POST, handlePlugOnOff ); 
 		server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
 		server->on("/edit", HTTP_GET, [](){
 			if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");

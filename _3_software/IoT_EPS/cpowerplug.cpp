@@ -871,7 +871,8 @@ writeToJson open the file, read the entire file, change one parm, rewrite the fi
             plug[JSON_PARAMNAME_STARTTIME] = "";
             plug[JSON_PARAMNAME_CLONEDPLUG] = "";
             plug[JSON_PARAMNAME_MODE] = mode;
-            plug[JSON_PARAMNAME_PAUSE] = "OFF";            
+            plug[JSON_PARAMNAME_PAUSE] = "OFF";
+            plug[JSON_PARAMNAME_STATE] = "OFF";         
             for (int i = 0; i<7; i++){
                 plugJours[ i ] = "OFF";
             }
