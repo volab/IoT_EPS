@@ -37,10 +37,11 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  @tableofcontents
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
-  
- @li improve error handling
- @li DS3231 problem
+ 
+ @li html special page when main power is off 
  @li add physicaly special bp and main power switch on the mock-up
+ @li improve error handling
+ @li DS3231 problem : Adafruit version under test
  @li power measurment
  
 */
@@ -86,6 +87,7 @@ bool simpleManualMode = false;
 Flasher wifiLed;
 
 CSwitchNano mainPowerSiwtch;
+int mainPowerSwitchState;
 int mainPowerPrevState = 0;
 CSwitchNano specialBp;
 
@@ -96,9 +98,6 @@ CTempo allLeds;
 bool restartTempoLed = false;
 
 void setup(){
-
-
-
     DEFDPROMPT("setUp") // define dPrompt String
     DateTime now;
     DEBUGPORT.begin(DEBUGSPEED);
@@ -111,9 +110,7 @@ void setup(){
     // The response was already in the code : about line
     if (errFS) DSPL( dPrompt + F("error in Opening File System") );
     else DSPL( dPrompt + F("File system corectly Open @ setup level") );
-    
- 
-    
+
 	SerialCommand::init();
     // extraLed.begin( 9, 100, 500, 4, 5000 );
     cParam.begin();
@@ -173,8 +170,9 @@ void setup(){
     // Cmcp::init();
     CNano::init();
     mainPowerSiwtch.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
-    int mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
+    mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
     mainPowerPrevState = mainPowerSwitchState; // for the loop
+    
     DSPL( dPrompt + "Main power state : " +  ( mainPowerSwitchState?"ON":"OFF") );
     specialBp.begin( SPECIALBP, 5, INPUT_PULLUP );
     
@@ -203,10 +201,10 @@ void setup(){
     for ( int i = 0; i < NBRPLUGS ; i++ ){
         colorLeds[i] = plugs[i].getColor();
         /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/
+        plugs[i].setMainPow( mainPowerSwitchState );
     }
     // FastLED.setBrightness(5);
     FastLED.setBrightness( cParam.getLedsLuminosity() );
-    
     FastLED.show();
 	
     /** @todo document simpleManualMode with no wifi at all */
@@ -214,9 +212,7 @@ void setup(){
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
-
 	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
-	
 	if ( !simpleManualMode ){
 		int tryCount = 0;
 		if (cParam.ready){
@@ -366,7 +362,6 @@ void setup(){
 /////////////////////////////////////////////////////////////////////////////
 //        LOOP                                                             //
 /////////////////////////////////////////////////////////////////////////////
-
 bool cycleState = false;
 void loop(){
     // cycleState = !cycleState;
@@ -382,9 +377,7 @@ void loop(){
     
     SerialCommand::process();
 
-    // extraLed.update();
-    
-	   
+    // extraLed.update();  
     
     /////////////////////////////////////////////////////////////////////////////
     //  manage leds                                                            //
@@ -430,7 +423,6 @@ void loop(){
         // allLedsOn = false;
     // }
 
-
     /////////////////////////////////////////////////////////////////////////////
     //  manage bps                                                            //
     /////////////////////////////////////////////////////////////////////////////     
@@ -468,23 +460,25 @@ void loop(){
         }   
     }        
  
-
     /////////////////////////////////////////////////////////////////////////////
     //  main power switch actions                                              //
     /////////////////////////////////////////////////////////////////////////////
-	int mainPowerSate = !mainPowerSiwtch.getState();    
-    if ( mainPowerSate != mainPowerPrevState){
-        mainPowerPrevState = mainPowerSate;
-        if (mainPowerSate == HIGH ){ 
+	mainPowerSwitchState = !mainPowerSiwtch.getState();    
+    if ( mainPowerSwitchState != mainPowerPrevState){
+        mainPowerPrevState = mainPowerSwitchState;
+        if (mainPowerSwitchState == HIGH ){ 
             DSPL( dPrompt + F("main power switched ON."));
+            for ( int i = 0; i < NBRPLUGS ; i++ ){                
+                plugs[i].setMainPow( true );
+            }  
         } else {
             DSPL( dPrompt + F("main power switched OFF and all plugs are in manual state.") );
             for ( int i = 0; i < NBRPLUGS ; i++ ){
                 plugs[i].off();
-            }            
-            for ( int i = 0; i < NBRPLUGS ; i++ ){                
                 plugs[i].handleBpLongClic();
-            }
+                plugs[i].setMainPow( false );
+            }            
+
         }
     }
 

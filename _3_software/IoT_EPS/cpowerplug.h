@@ -81,6 +81,7 @@ class CPowerPlug : public CNano {
         CFlasherNanoExp onOffFlasher;
         bool flashLedReq(){ return _flashLed; }
         void manageLeds( bool ledState );
+        void setMainPow( bool mainP ){ _mainPower = mainP; }
         
     private:
         bool _flashLed = false;
@@ -99,6 +100,7 @@ class CPowerPlug : public CNano {
         uint8_t _daysOnWeek; 
         bool _pause = false;
         bool _ledOn = true;
+        bool _mainPower;
 };
 
 /*

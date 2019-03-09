@@ -185,8 +185,13 @@ OK
 // extern CPowerPlug plugs[4];
 extern CPowerPlug *plugs;
 extern bool restartTempoLed;
+extern int mainPowerSwitchState;
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
+    if ( !mainPowerSwitchState ){
+        server->send(404, "text/plain", "Main power is off");
+        return;
+    }
     /////////////////////////////////////////////////////////////////////////////
     //      DISPLAY URI                                                        //
     /////////////////////////////////////////////////////////////////////////////
