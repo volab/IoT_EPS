@@ -112,6 +112,22 @@ class C_Table{
         }
     }
 
+    f_dayList(){
+        /* Permet de définir la liste des jours actifs. */
+        let v_count = 0;
+        let l_dayList = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+        let v_renderList = `<ul>`;
+        for (let i of this.v_Jours){
+            console.log(i);
+            if (i=="ON"){
+                v_renderList += `<li>${l_dayList[v_count]}</li>`;
+                v_count ++;
+            }
+        }
+        v_renderList += `</ul>`;
+        return v_renderList;
+    }
+
     f_setDetail(){
         /* Permet de définir ' v_detail' */
         switch (this.v_mode){
@@ -154,6 +170,12 @@ class C_Table{
                 break;
             };
             case "Hebdomadaire": {
+                    this.v_detail = `
+                        <ul>
+                            <li>Heure de début : ${this.v_hDebut}</li>
+                            <li>Heure de fin : ${this.v_hFin}</li>
+                            <li>Jours actifs : ${this.f_dayList()}</li>
+                        </ul>`;
                 break;
             };
         }
