@@ -137,7 +137,7 @@ This function read and write onoffcount in the json file
 void CPowerPlug::updateOutputs( bool writeToJsonCount ){
     DEFDPROMPT( "updateOutputs");
     _nano.digitalWrite( _pin, _state );
-    _nano.digitalWrite( _onOffLedPin, _state );
+    if ( _ledOn ) _nano.digitalWrite( _onOffLedPin, _state );
     if ( writeToJsonCount ){
         String strCount = readFromJson( (String)JSON_PARAMNAME_ONOFCOUNT );
         strCount = String( strCount.toInt() + 1 );

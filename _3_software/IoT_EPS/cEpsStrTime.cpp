@@ -144,7 +144,6 @@ uint32_t  CEpsStrTime::computeNextTime( uint8_t CheckedDays ){
 		future = futurDT.unixtime();
 	} else {/* //HH:MM with day of week */
     // <d 18:00 63>
-/** @todo take inot account when start hour is higher than end hour */
         DateTime now = CRtc::now();
         uint8_t nextDay = nextCheckedDay( CheckedDays, now.dayOfTheWeek() );
         int h, m;

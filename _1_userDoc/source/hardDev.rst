@@ -83,7 +83,9 @@ Ajout d'un DS3231 comme dans le projet  `ESP_NTP_DS3231 <https://github.com/vola
   D1 : SCL
   D2 : SDA
   
-I2C pullup ? Visiblement sur le DS3231, il y en a !
+I2C pullup ? Visiblement sur le DS3231, il y en a ! Yes I checked it 4.7k
+
+Power consumption : 1.9mA measured 08/03/19
 
 ####
 
@@ -249,19 +251,20 @@ Nano pining :
 .. table:: Affectation des broches sur le MCP23017 obsolete
     :align: center
     
-    ===== =============,    pins  affectation
     ===== =============
-    D2    PLUG0-ROUGE
+    pins  affectation
+    ===== =============
+    D2(0) PLUG0-ROUGE
     D3    PLUG1-VERT
     D4    PLUG2-BLEUE
     D5    PLUG3-JAUNE
     D6    LED0
     D7    LED1
     D8    LED2
-    D9    LED3
+    D9 (7)LED3
     D10   MAIN POWER SWITCH STATE
     D11   DS3231 power
-    D12  
+    D12   Special BP
     A0    PLUG0 Current
     A1    PLUG1 Current
     A2    PLUG2 Current

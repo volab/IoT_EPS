@@ -37,11 +37,9 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  @tableofcontents
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
-
- @li all led off after json configured json time
- @li take into account when start hour is higher than end hour  
+  
  @li improve error handling
- @li DS3231 power bat ! Yes it is harware but...
+ @li DS3231 problem
  @li add physicaly special bp and main power switch on the mock-up
  @li power measurment
  
