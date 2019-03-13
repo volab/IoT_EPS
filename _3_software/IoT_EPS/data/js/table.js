@@ -101,14 +101,14 @@ class C_Table{
         /* Permet de définir 'v_modeCloned' */
         if (this.v_item["clonedPlug"]){
             let v_clonePlugName = this.jsonOBJ[this.v_clonedPlug]["nickName"];
-            this.v_modeCloned = `<br>(prise clonée depuis la prise ${v_clonePlugName})`
+            this.v_modeCloned = `<br/>(prise clonée depuis la prise ${v_clonePlugName})`
         }
     }
 
     f_ifPause(){
         /*  Permet de définir 'v_pauseOn' */
         if ((this.v_mode=="Cyclique" || this.v_mode=="Hebdomadaire") && this.v_pause=="ON" && this.v_state=="ON"){
-            this.v_pauseOn = `<br><span class="text-danger">Actuellement en PAUSE</span>`;
+            this.v_pauseOn = `<br/><span class="text-danger">Actuellement en PAUSE</span>`;
         }
     }
 
@@ -185,7 +185,7 @@ class C_Table{
         let v_tbody = $(".home.tBody");
         let v_body = `
             <tr class="${this.v_tableColor}">
-                <td>${this.v_nicName}<br>
+                <td>${this.v_nicName}<br/>
                     (${this.v_emplacement})
                 </td>
                 <td>${this.v_state}${this.v_pauseOn}</td>

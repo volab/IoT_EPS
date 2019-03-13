@@ -38,6 +38,42 @@ $(document).ready( ()=>{
     f_hideAll();
     f_showOne(HOME);
 
+    /*
+     * Centrage du titre
+     */
+    function f_resize(){
+        let winWidth = $(window).width();
+        let v_jimbotron = $(".jimbotron");
+        let v_headerTitle = $(".headerTitle");
+        let v_headerTitleWidth = v_headerTitle.width();
+
+        let v_offsetTitleTop = v_headerTitle.offset().top;
+        let v_offsetTitleLeft = (winWidth-v_headerTitleWidth)/2;
+
+
+        v_jimbotron.width(winWidth);
+        v_jimbotron.css({
+        "margin": "0 1.5% 0 1.5%"
+        });
+
+        v_headerTitle.css({
+        "position": "fixed",
+        "top": v_offsetTitleTop,
+        "left": v_offsetTitleLeft
+        });
+    }
+
+    f_resize();
+
+    /*
+     * Responcive
+     */
+    $(window).resize(
+        ()=>{
+            f_resize();
+            // console.log("reducteur de tête !")
+        }
+    )
 
     /*
     * Menu (Hamberger + Sidebar)
@@ -154,7 +190,7 @@ $(document).ready( ()=>{
             var v_url = v_form.attr("action");
             $.post(v_url);
             // $(event).submit();
-            console.log(event);
+            // console.log(event);
             log.f_formLog( red.f_getQueryTarget(event));
             $(red.manuelForm)[0].reset();
         }
