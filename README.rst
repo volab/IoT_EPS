@@ -13,9 +13,9 @@ Informations générales IoT_EPS
 
 ####
 
-------------
+
 Description
-------------
+==============
 
 IoT Electronic Power Strip : Une multiprise connectée sur laquelle chaque plot est configurable.
 
@@ -28,9 +28,9 @@ Pas de mode Cloud pour le moment.
 
 ####
 
------------------------
+
 Arborescence du projet
------------------------
+========================
 
 Pour aider à la compréhension de mon organisation,voici un bref descriptif de l'arborescence de ce projet.Cette arborescence est à reproduire si vous récupérez cedépôt depuis GitHub. ::
 

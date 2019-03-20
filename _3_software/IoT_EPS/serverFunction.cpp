@@ -25,8 +25,11 @@ String getContentType(String filename){
   return "text/plain";
 }
 
+
+
 bool handleFileRead(String path){
   DEBUGPORT.println("handleFileRead: " + path);
+  
   if(path.endsWith("/")) path += "index.html";
   String contentType = getContentType(path);
   String pathWithGz = path + ".gz";
@@ -230,4 +233,45 @@ void handlePlugOnOff(){
    
     String returnPage = allArgs + "\n" + returnVal ;
     server->send(200, "text/plain", returnPage );    
+}
+
+void handleSoftAPIndex(){
+    String page;
+
+    page = "<html><head>";
+    // page += "<meta http-equiv='refresh' content='5'/>";
+    page += "<title>IoT EPS softAP index page</title>";
+    page += "<style>";
+    page += "body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }";
+    page += "</style></head><body><h1>IoT EPS Soft Access Point Index Page!</h1>";
+    page += "<a href=\"index.html\">Accueil</a><p>";
+    page += "<p> While there is not internet connection in soft Access Point mode we can not";
+    page += " display a nice page with Bootsrap and others great features...</p>";
+    page += "</br></br></br></br><h1>Enter new credentials</h1>";
+    page += "<FORM action=\"/ChangeCred\" method=\"post\">";
+    page += "<p>";
+    page += "<label style=\"font-size:250%\">SSID";
+    page += "<INPUT type=\"text\" name=\"SSID\" style=\"font-size:115%\"></label><BR>";
+    page += "</br><label style=\"font-size:250%\">pasword";
+    page += "<INPUT type=\"text\" name=\"pass\" style=\"font-size:115%\" ></label><BR>";
+    page += "<INPUT type=\"submit\" value=\"Send\" style=\"font-size:250%\" >";
+    page += "<INPUT type=\"reset\" style=\"font-size:250%\"   > ";
+    page += "</p></form>";
+    page += "</body></html>";
+    server->send ( 200, "text/html", page );
+}
+
+void handleNewCred(){
+    //usage /ChangeCred?SSID=xxxx/pass="yyyy" or pass in softAP mode !
+    DEFDPROMPT( F("handel New Cred") );
+    String uriReceived = server->uri();
+    DSPL( dPrompt + F(" Received uri = ") + uriReceived );
+        DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
+    String allArgs = F(" Received args : ") ;
+    for ( int i = 0; i < server->args() ; i++ ){
+        allArgs += server->argName( i ) + "=" + server->arg( i ) + "/";
+    }
+    DSPL( dPrompt + allArgs);
+    String returnPage = allArgs ;
+    server->send(200, "text/plain", returnPage );     
 }

@@ -16,21 +16,36 @@ Avancement
 #. Affichage de l'heure à partir d'une page en dur dans le code : ok
 #. Affichage page avec CSS : ok
 #. Gestion des mode wifi SoftAP vs client : ok
-#. reception d'une action via un bouton :  
+#. reception d'une action via un bouton :  ok
 #. lecture du fichier de configuration : ok
 #. intégration MCP23017 : ok
-#. lecture du fichier de configuration config3.json : 90%
+#. lecture du fichier de configuration config3.json : ok
 #. gestion bouton poussoir mécanique : ok
 #. Ecriture fichier json : ok
 #. Traitement de la requete html avec analyze, exécution et écriture json: ok
-#. Réflèchir à la gestion des erreurs
 #. manage wif led : ok
 #. integrate nano expander with analog inputs : ok
-#. exhaustive test of hebdo mode : 50%
+#. exhaustive test of hebdo mode : 90%
+#. write index special page for softAP Mode with local boostrap or other light js.framework.
 #. preparer un infographie résumant fonctionnalité et besoin : 
+#. Write user manual
+#. Write builder manual
+#. Réflèchir à la gestion des erreurs 
 
 Don't forget the todo list of the doxygen documentation
 
+==================================
+Error handling
+==================================
+Can we work without File system or Json error ? No, fatal error => RED LED FLash and special web page index
+
+Can we work without credential file ? Yes start in AP mode
+
+Can we work without I2C and/or nanoI2CIOExpander ? No, fatal error
+
+Can we work without RTC ? Only if we are in Staion mode and connect to internet
+
+Can we work without WiFi ? yes in softAP mode Refine softAP mode behavior
 
 ====================================
 Convention de nommage
@@ -43,7 +58,7 @@ Référence : config3.json
 Penser à:
 ====================================
 
-#. terminer l'implémentation des méthodes de CPowerPlug ( isItTimeToSwitch )
+
 #. regarder javascript http request pour faire du DELETE
 
 
@@ -143,9 +158,6 @@ Comportement possibles:
 #. on informe l'utilisateur (canal à définir, MQTT ou autre...) qui décide mais on met en
 pause en attendant
 
-
-
-
 ==============
 Choix dev soft
 ==============
@@ -164,19 +176,60 @@ WEMOS D1 MIN ARDUINO configurattion:
 .. image:: ./image/wemosD1Mini_configArduino.jpg
 
 ==================
-WIFI LED
+WIFI Modes
 ==================
-In Station mode, fast flashing (20 times) and after slow flashing while waiting for connection (500ms with a 20 times time out - new in 24/12/2018).
 
-In Access Point LED FLash quickly (20 times) and led flash slowly while waiting for connection.
+In Json config file, it is configured with:
 
-Cause WiFi.softAPConfig function is a blocking function. This is wrong : test on 24/12/2018 softAP is non blocking !
+"wifimode": "xxxx",
 
-So if power led is on and WIFI Led flash WIFI wait for connection in AP mode. 
+No WiFi
+==========
+Also called simpleManualMode
 
-It rises a new problem : in this state it is not possible to use plugs even in simple  manual mode with push button. 
+When power on the powerStrip maintain power 1 (RED) bp...
+Power strip start in this mode independently of Json configured mode
+xxxx don't care
+Simple poor mode
+Only manual mode work
 
-Possible solution : check push button at startup if a particular combination is pressed, plugs do not try to connect to wifi and mork in simple manual mode. In Dec 2018, push button added on plug 0 while strating cause no WIFI mode (color LED FLASH in RED to confirm)
+SoftAP
+=========
+xxxx = softAP
+No acces to NTP server but all other functions work.
+After 20 false tries of station mode, power Strip automaticly switch in this mode
+
+Sation
+=========
+xxxx = Station or client
+
+The baset functionnal mode !
+
+==================
+WIFI LED behavior
+==================
+In Station mode, fast flashing (20 times 100ms, 100ms) before to try connection
+and after slow flashing while waiting for connection.
+(500ms with a 20 times time out - new in 24/12/2018). If no connection detected afte 20 tries
+Automaticaly switch in SoftAP mode.
+
+In Access Point LED FLash quickly (20 times 100ms-500ms) and 
+led flash slowly (50ms-2s) while waiting for connection.
+
+Cause WiFi.softAPConfig function is a blocking function. This is wrong : 
+test on 24/12/2018 softAP is non blocking !
+
+So - in summary - if power led is on and WIFI Led flash (50ms-2s) WIFI wait for connection in AP mode. 
+
+It rises a new problem : in this state it is not possible to use plugs even in simple  manual mode 
+with push button. 
+
+Possible solution : check push button at startup if a particular combination is pressed,
+plugs do not try to connect to wifi and mork in simple manual mode.
+In Dec 2018, push button
+added pressing plug 0 while power on the strip cause no WIFI mode (color LED FLASH in RED to confirm)
+This is : simpleManualMode (see above). To return to normal mode power off the strip 
+(not by the power on/off button but by removing the strip from the wall plug)
 
 ====================================
 Displaying plugs mode only with LED
@@ -186,16 +239,21 @@ Problem : how to displays functionnal mode of a plug without the web interface
 
 Problem2 : is it really necessary ?
 
-Solution1: Use de little plug red LED. When OFF flash 1 shortly one time for mode 1 manual to five time for mode Clone. When ON invert ton and toff of the flasher
+Solution1: Use the little plug red LED. When OFF flash 1 shortly one time for mode 1 manual to five
+ time for mode 5 Clone. When ON invert ton and toff of the flasher
 
-Solution2: use color LED with flash capability one time for mode manual to 5 times to mode Clone with a long periode between group of flash 3 seconds for example.
+Solution2: use color LED with flash capability one time for mode manual to 5 times to mode Clone
+with a long periode between group of flash 3 seconds for example.
+
+Implemented solution : n°1
 
 ===========================
-Développement des page Web
+WEB page development
 ===========================
-HTML5 et css
 
-Les requetes html
+HTML5 et css and bootstrap
+
+html requests
 =====================
 
 ipaddr/config?plug=redPlug
@@ -324,16 +382,24 @@ used library
 ========================
 last update : 02/12/2018
 
-8 libs:
+10 libs:
 
-- Utilisation de la bibliothèque ESP8266WiFi version 1.0
+- Utilisation de la bibliothèque ESP8266WiFi version 1.0 
 - Utilisation de la bibliothèque ESP8266WebServer version 1.0 
-- Utilisation de la bibliothèque ArduinoJson version 5.13.2 
-- Utilisation de la bibliothèque Wire version 1.0
+- Utilisation de la bibliothèque ArduinoJson version 5.13.2
+- Utilisation de la bibliothèque Wire version 1.0 
 - Utilisation de la bibliothèque RTClib version 1.2.0
-- Utilisation de la bibliothèque ESP8266mDNS
-- Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3
-- Utilisation de la bibliothèque FastLED version 3.2.1
+- Utilisation de la bibliothèque ESP8266mDNS prise
+- Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3 
+- Utilisation de la bibliothèque FastLED version 3.2.1 
+- Utilisation de la bibliothèque nanoI2CIOExpLib version 2.0
+- Utilisation de la bibliothèque NTPClient version 3.1.0
+
+9 libs are Arduino official lib and one lib is spécial:
+
+`nanoI2CIOExpLib`_
+ 
+.. _`nanoI2CIOExpLib` : https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc
 
 ===============================
 Eccueils et autres difficultés
@@ -355,6 +421,16 @@ Prise en main de la librairie JSON
 
 Nécessite un investissement personnel important.
 
+DS3231 stuck I2C bus
+======================
+
+It is a known problem with DS3231 see `method for recovering I2C bus #1025`_
+
+and `Reliable Startup for I2C Battery Backed RTC`_
+
+.. _`Reliable Startup for I2C Battery Backed RTC` : http://www.forward.com.au/pfod/ArduinoProgramming/I2C_ClearBus/index.html
+
+.. _`method for recovering I2C bus #1025` : https://github.com/esp8266/Arduino/issues/1025
 
 ===========================
 Vocabulary

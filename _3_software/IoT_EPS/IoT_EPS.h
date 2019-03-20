@@ -21,6 +21,7 @@
 #include <RTClib.h>
 #include <ESP8266mDNS.h>
 #include <Adafruit_MCP23017.h>
+/** @todo try to remove Adafruit_MCP23017.h0 */
 #include <FastLED.h>
 // #include <Array.h>
 #include <nanoI2CIOExpLib.h>
@@ -107,6 +108,7 @@
 
 #define MAINSWITCHPIN 8 //nanoI2CIOExpander pin D10
 #define SPECIALBP 10 //to ask plug state
+#define MAINPOWLED 9 //nanoI2CIOExpander pin D11
 
 #define BP0 D6 
 #define BP1 D5

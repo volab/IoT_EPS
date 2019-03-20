@@ -94,7 +94,8 @@ Choix current sensor
 ====================
 
 INA219 et INA220
-================
+=================
+
 - impossible "bus voltage 0-26V"
 
 ACS712
