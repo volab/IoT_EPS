@@ -249,31 +249,32 @@ That's my great surprise, nobody does it ! So I wrote it and I provide it on HAC
 
 Nano pining :
 
-.. table:: Affectation des broches sur le MCP23017 obsolete
+.. table:: Affectation des broches sur l'ARDUINO Nano I2C I/O Expander
     :align: center
     
-    ===== =============
-    pins  affectation
-    ===== =============
-    D2(0) PLUG0-ROUGE
-    D3    PLUG1-VERT
-    D4    PLUG2-BLEUE
-    D5    PLUG3-JAUNE
-    D6    LED0
-    D7    LED1
-    D8    LED2
-    D9 (7)LED3
-    D10   MAIN POWER SWITCH STATE
-    D11   DS3231 power
-    D12   Special BP
-    A0    PLUG0 Current
-    A1    PLUG1 Current
-    A2    PLUG2 Current
-    A3    PLUG3 Current
-    A6    LDR
+    ===== ======= =============
+    pins   Name    affectation
+    ===== ======= =============
+    D2       0     PLUG0-ROUGE
+    D3       1     PLUG1-VERT
+    D4       2     PLUG2-BLEUE
+    D5             PLUG3-JAUNE
+    D6             LED0
+    D7             LED1
+    D8             LED2
+    D9       7     LED3
+    D10      8     MAIN POWER SWITCH STATE
+    D11      9     MAIN POWER LED
+    D12      10    Special BP
+    A0            PLUG0 Current
+    A1            PLUG1 Current
+    A2             PLUG2 Current
+    A3             PLUG3 Current
+    A6    
     A7
-    ===== =============
+    ===== ======= =============
 
+ici
     
 ####
 

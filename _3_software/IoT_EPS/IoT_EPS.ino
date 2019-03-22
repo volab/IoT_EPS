@@ -38,7 +38,9 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
- @li start in AP mode when credential is not reachable - BUG
+ @li review work without rtc component strategy
+ @li review work without NTP access strategy
+ @li define rtc component versus NTP update strategy 
  @li improve error handling
  @li power measurment
  @li scan I2C response 57 and 58 nano IoExpander !!!! a bug !
@@ -105,58 +107,51 @@ void setup(){
     DSPL();
     DSPL( dPrompt + F("Sketch start..."));
 
+    /////////////////////////////////////////////////////////////////////////////
+    //     file system check                                                   //
+    /////////////////////////////////////////////////////////////////////////////
     DSPL( dPrompt + " Build : " + __DATE__ + " @ " + __TIME__);
     errFS = !SPIFFS.begin(); // to check if it's possible to begin twice the SPIFFS
     //next time is in cParam.begin
-    // The response was already in the code : about line
+    // The response was already in the code : about line 300
+    //secon time commented on 2019/03
     if (errFS){
         DSPL( dPrompt + F("error in Opening File System") );
         //can we work without file system ? No
-    } 
-    else DSPL( dPrompt + F("File system corectly Open @ setup level") );
+        fatalError();
+    } else DSPL( dPrompt + F("File system corectly Open @ setup level") );
 
 	SerialCommand::init();
     // extraLed.begin( 9, 100, 500, 4, 5000 );
-    cParam.begin();
-    wifiCred.begin();
     
-   
+    cParam.begin();
 
-    delete [] plugs;
-    DSPL( dPrompt + F("number of plugs : ") + cParam.getNumberOfPlugs() );
-    plugs = new CPowerPlug[ cParam.getNumberOfPlugs() ];
-    //if above dosen't work see @
-    //https://arduino.stackexchange.com/questions/3774/how-can-i-declare-an-array-of-variable-size-globally
-    ////First you create a pointer for the memory space to be separated for the set you're creating
-    // int* myArray;
-    // int arrSize; //Then you define the variable that will determine the amount 
-    // of elements the array is going to have, you can give it a value whenever you want as long 
-    // as this int is defined before the values in myArray are set 
-    // myArray=(int*)calloc(arrSize,sizeof(int)) 
-    //Here, you establish that the instance myArray (whose memory space has already been separated 
-    // through the creation of the pointer) will be separated into arrSize amount of elements of type 
-    // int with a maximum memory value (in bytes) equal to the maximum available 
-    // for the int type variables
-	   
+ 
     /////////////////////////////////////////////////////////////////////////////
-    //     rtc DS3231 start                                                           //
+    //     I2C bus check                                                    //
+    ///////////////////////////////////////////////////////////////////////////// 
+    CNano::init();
+    rtc.begin();
+    if ( !nanoioExp.test() && rtc.initErr){
+        DSPL(dPrompt + F("I2C bus fatal error !"));
+        /** @todo re- enable funcion call fateReeor after debug */
+        //fatalError();
+    }
+  
+    /////////////////////////////////////////////////////////////////////////////
+    //     rtc DS3231 start                                                    //
     /////////////////////////////////////////////////////////////////////////////
     rtc.begin();
-    // Wire.beginTransmission(DS3231_ADDRESS);
-    // errRTCinit = Wire.endTransmission();
-    if ( !rtc.initErr ){
-        if (rtc.lostPower()){
-            DSPL( dPrompt + "une remise a l'heure est necessaire");
-            //errRTCinit = true;
-            /** @todo enable or not ? errRTCinit due to lots power*/
-        }
-    }
     if ( rtc.initErr ) {
         DSPL(dPrompt + F("ERR : Couldn't find RTC"));
         /** @todo Stop EPS and warn with colors and others LED ,
         cause without right time EPS dosen't work.
         Except perhaps the manual mode ! */
     } else {
+        if (rtc.lostPower()){
+            DSPL( dPrompt + "une remise a l'heure est necessaire");
+            /** @todo enable or not ? errRTCinit due to lots power*/
+        }
         // errRTCinit = false;0
         /** @todo check time validity */
         now = rtc.now();
@@ -172,7 +167,7 @@ void setup(){
     //     Main power                                                          //
     /////////////////////////////////////////////////////////////////////////////    
     // Cmcp::init();
-    CNano::init();
+    
     
     mainPowerSiwtch.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
     mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
@@ -185,10 +180,26 @@ void setup(){
     DSPL( dPrompt + "Main power state : " +  ( mainPowerSwitchState?"ON":"OFF") );
     specialBp.begin( SPECIALBP, 5, INPUT_PULLUP );
 
-    
+  
     /////////////////////////////////////////////////////////////////////////////
     //     Plugs config                                                        //
     /////////////////////////////////////////////////////////////////////////////
+    delete [] plugs;
+    DSPL( dPrompt + F("number of plugs : ") + cParam.getNumberOfPlugs() );
+    plugs = new CPowerPlug[ cParam.getNumberOfPlugs() ];
+    //if above dosen't work see @
+    //https://arduino.stackexchange.com/questions/3774/how-can-i-declare-an-array-of-variable-size-globally
+    ////First you create a pointer for the memory space to be separated for the set you're creating
+    // int* myArray;
+    // int arrSize; //Then you define the variable that will determine the amount 
+    // of elements the array is going to have, you can give it a value whenever you want as long 
+    // as this int is defined before the values in myArray are set 
+    // myArray=(int*)calloc(arrSize,sizeof(int)) 
+    //Here, you establish that the instance myArray (whose memory space has already been separated 
+    // through the creation of the pointer) will be separated into arrSize amount of elements of type 
+    // int with a maximum memory value (in bytes) equal to the maximum available 
+    // for the int type variables
+    
     FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
 
     /** @todo test if CNano::initOk = true - if not don't start anything*/
@@ -227,6 +238,7 @@ void setup(){
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
+    wifiCred.begin();    
 	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
 	if ( !simpleManualMode ){
 		int tryCount = 0;
@@ -300,11 +312,11 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     //  Start of the check index.html file presence  (check file system)       //
     /////////////////////////////////////////////////////////////////////////////
-    if (!SPIFFS.begin()){
-        DSPL(dPrompt + F("SPIFFS Mount failed"));
-    } else {
-        DSPL(dPrompt + F("SPIFFS Mount succesfull"));
-    }
+    // if (!SPIFFS.begin()){
+        // DSPL(dPrompt + F("SPIFFS Mount failed"));
+    // } else {
+        // DSPL(dPrompt + F("SPIFFS Mount succesfull"));
+    // }
 /** @todo cleanup the .ino code to remove all unnecessary code like displaying SPIFFS health*/
     if (SPIFFS.exists("/index.html")) {
         DSPL( dPrompt + F("html index file found."));
@@ -536,6 +548,13 @@ void wifiLedFlash( Flasher led, int count ){
     led.stop();
 }
 
+
+/** 
+ @fn void simpleManualModeChaser()
+ @brief Flash 4 colored LEDs in PURPLE 200ms/200ms 20 times and restaure colors to indicate
+ Simple Manual mode activation
+ @return no return value and no parameter
+*/
 void simpleManualModeChaser(){
 	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
 	FastLED.show();
@@ -545,7 +564,7 @@ void simpleManualModeChaser(){
 		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
 		FastLED.show();
 		delay(200);	
-		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Red;
+		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Purple;
 		FastLED.show();
 		delay(200);				
 	}
@@ -553,4 +572,27 @@ void simpleManualModeChaser(){
 	//restaure Color Leds state
 	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = plugs[i].getColor();    
 	FastLED.show();
+}
+
+
+/** 
+ @fn void fatalError()
+ @brief flash 4 color LED 50ms/50ms in RED for all time
+ @return no return value and no parameter
+*/
+void fatalError(){
+    for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+    FastLED.show();
+    delay(500);
+    while (1){     
+        for (int i=0; i < 20; i++){
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+            FastLED.show();
+            delay(50);	
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Red;
+            FastLED.show();
+            delay(50);				
+        }
+        yield();
+    }
 }

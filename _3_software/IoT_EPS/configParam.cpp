@@ -127,9 +127,14 @@ void ConfigParam::displayWifiMode(){
 	DSPL( dPrompt + F("Mode = ") + _wifimode );
 	Credential wifiCred;
 	wifiCred.begin();
-	DSPL( dPrompt + F("SSDID = ") + (String)wifiCred.getSsid() );
+    if ( wifiCred.ready){
+        DSPL( dPrompt + F("SSID = ") + (String)wifiCred.getSsid() );
+        DSPL( dPrompt + F("pass = ") + (String)wifiCred.getPass() );
+    }
+	
 }
 
+/** @todo doc. void ConfigParam::write2Json( String param, String value ) */
 void ConfigParam::write2Json( String param, String value ){
     DEFDPROMPT( "write config param to jSon");
     File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
@@ -159,6 +164,7 @@ void ConfigParam::write2Json( String param, String value ){
     }     
 }
 
+/** @todo doc. void ConfigParam::chgSSID( String value ) */
 void ConfigParam::chgSSID( String value ){
     DEFDPROMPT( "write credentials SSID");
     File configFile = SPIFFS.open( "/credentials.json" , "r+");

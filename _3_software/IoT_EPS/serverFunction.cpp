@@ -235,6 +235,13 @@ void handlePlugOnOff(){
     server->send(200, "text/plain", returnPage );    
 }
 
+
+/** 
+ @fn void handleSoftAPIndex()
+ @brief A function to diplay SoftAP special Page
+ @return no return value and no parameter
+
+*/
 void handleSoftAPIndex(){
     String page;
 
@@ -251,7 +258,7 @@ void handleSoftAPIndex(){
     page += "<FORM action=\"/ChangeCred\" method=\"post\">";
     page += "<p>";
     page += "<label style=\"font-size:250%\">SSID";
-    page += "<INPUT type=\"text\" name=\"SSID\" style=\"font-size:115%\"></label><BR>";
+    page += "<INPUT type=\"text\" name=\"ssid\" style=\"font-size:115%\"></label><BR>";
     page += "</br><label style=\"font-size:250%\">pasword";
     page += "<INPUT type=\"text\" name=\"pass\" style=\"font-size:115%\" ></label><BR>";
     page += "<INPUT type=\"submit\" value=\"Send\" style=\"font-size:250%\" >";
@@ -259,10 +266,21 @@ void handleSoftAPIndex(){
     page += "</p></form>";
     page += "</body></html>";
     server->send ( 200, "text/html", page );
+    /** @todo add a link to the page to drive power strip without internet connection */
+    /** @todo add a page to set the DS3231 time without NTP server of course */
 }
 
+/** 
+ @fn void handleNewCred()
+ @brief fun tha handle new credential in response to handleSoftAPIndex...
+ @return no return value and no parameter
+
+ This function write credentials.json file in the SPIFFS with received SSID and password.
+ 
+*/
 void handleNewCred(){
-    //usage /ChangeCred?SSID=xxxx/pass="yyyy" or pass in softAP mode !
+    //usage /ChangeCred?SSID=xxxx/pass="yyyy" or connect to Stripplug in softAP mode to change
+    // credential.
     DEFDPROMPT( F("handel New Cred") );
     String uriReceived = server->uri();
     DSPL( dPrompt + F(" Received uri = ") + uriReceived );
@@ -272,6 +290,34 @@ void handleNewCred(){
         allArgs += server->argName( i ) + "=" + server->arg( i ) + "/";
     }
     DSPL( dPrompt + allArgs);
+    String ssid = server->arg( 0 );
+    String pass = server->arg( 1 );
+    DSPL( dPrompt + F("SSID = ") + ssid );
+    DSPL( dPrompt + F("pass = ") + pass );
+    //creat file : credentials.json
+    //ArduinoJson lib with pdf serialization documentation
+    /*
+    {
+    "ssid" : "VoLab",
+    "pass" : "V0L@b42net"
+    }
+    */
+    const int capacity = JSON_OBJECT_SIZE(4);
+    StaticJsonBuffer<capacity> jb;
+    JsonObject& obj = jb.createObject();
+    obj["ssid"] = ssid;
+    obj["pass"] = pass;
+    // jb.prettyPrintTo(configFile);
+    obj.prettyPrintTo(Serial);DSPL("");
+    File credFile = SPIFFS.open( "/credentials.json" , "w");
+    if (credFile){
+        DSPL( dPrompt + F("File /credentials.json open for write") );
+        obj.prettyPrintTo(credFile);
+    } else {
+        DSPL( dPrompt + F("File /credentials.json open for write fail !") );
+    }
+    credFile.close();
     String returnPage = allArgs ;
     server->send(200, "text/plain", returnPage );     
 }
+

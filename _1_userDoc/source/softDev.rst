@@ -26,26 +26,28 @@ Avancement
 #. manage wif led : ok
 #. integrate nano expander with analog inputs : ok
 #. exhaustive test of hebdo mode : 90%
-#. write index special page for softAP Mode with local boostrap or other light js.framework.
+#. write index special page for softAP Mode with local boostrap or other light js.framework 5%
 #. preparer un infographie résumant fonctionnalité et besoin : 
 #. Write user manual
 #. Write builder manual
-#. Réflèchir à la gestion des erreurs 
+#. Réflèchir à la gestion des erreurs 20%
 
 Don't forget the todo list of the doxygen documentation
 
 ==================================
 Error handling
 ==================================
-Can we work without File system or Json error ? No, fatal error => RED LED FLash and special web page index
+Can we work without File system or Json error ? No, fatal error => RED LED FLash 
+ The system won't be started so no special web page index
 
-Can we work without credential file ? Yes start in AP mode
+Can we work without credential file ? Yes start in AP mode : OK
 
-Can we work without I2C and/or nanoI2CIOExpander ? No, fatal error
+Can we work without I2C and/or nanoI2CIOExpander ? No, fatal error : OK
 
 Can we work without RTC ? Only if we are in Staion mode and connect to internet
 
-Can we work without WiFi ? yes in softAP mode Refine softAP mode behavior
+Can we work without internet connection or Wifi in station mode ?
+ yes in softAP mode Refine softAP mode behavior
 
 ====================================
 Convention de nommage
@@ -189,9 +191,12 @@ Also called simpleManualMode
 
 When power on the powerStrip maintain power 1 (RED) bp...
 Power strip start in this mode independently of Json configured mode
+
+4 Big color LED flasf 20 times in purple.
+
 xxxx don't care
-Simple poor mode
-Only manual mode work
+
+In this very simple poor mode, powerstrip works only in manual mode.
 
 SoftAP
 =========
@@ -392,7 +397,7 @@ last update : 02/12/2018
 - Utilisation de la bibliothèque ESP8266mDNS prise
 - Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3 
 - Utilisation de la bibliothèque FastLED version 3.2.1 
-- Utilisation de la bibliothèque nanoI2CIOExpLib version 2.0
+- Utilisation de la bibliothèque nanoI2CIOExpLib version 2.1
 - Utilisation de la bibliothèque NTPClient version 3.1.0
 
 9 libs are Arduino official lib and one lib is spécial:

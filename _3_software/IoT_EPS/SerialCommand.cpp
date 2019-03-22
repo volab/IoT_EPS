@@ -42,6 +42,7 @@ return see in the code for all informations.
 #include "configParam.h"
 #include "cEpsStrTime.h"
 #include <nanoI2CIOExpLib.h>
+#include <ESP8266WiFi.h>
 // #include <Array.h>
 // #include <nanoI2CIOExpLib.h>
 
@@ -209,7 +210,11 @@ int eightState;
             break; 
         case 'c': //recovery I2C         
             i2c_plantoir();
-            break;            
+            break; 
+        case 'a': //recovery I2C         
+            INTERFACE.print("IP add = ");
+            INTERFACE.println( WiFi.localIP().toString() );
+            break;             
 /***** PRINT CARRIAGE RETURN IN SERIAL MONITOR WINDOW  ****/       
 		case ' ':     // < >                
 			INTERFACE.println("");
@@ -238,6 +243,7 @@ void SerialCommand::displayCommandsList(){
     list += F("<F> Find I2C device I2C scan\n");
     list += F("<R> I2C recovery\n");
     list += F("<c> I2C crash\n");
+    list += F("<a> for Ip address\n");
 	INTERFACE.print( list );
 }
 
