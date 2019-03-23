@@ -106,11 +106,12 @@ h5.div_subSummary {
 .infobulle{
     position: absolute;
     /* background: #FF4F4F; */
-    background: #ff3300;
+    /* background: #ff3300; */
     padding:3px 7px;
+    margin: 3px;
     opacity: 50%;
-    border-radius:0 10px 0 10px;
-    color:black;
+    border-radius:10px 0 10px 0;
+    /* color:black; */
     text-align: center;
     margin: -13px;
 }

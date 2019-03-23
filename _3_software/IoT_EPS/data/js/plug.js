@@ -240,14 +240,16 @@ class C_Plug{
         this.manuelDivDiffTypeSelector.css("display", "none");
         this.manuelDiv_hFin.css("display", "none");
         this.manuelDiv_dureeOff.css("display", "none");
-        // this.manuelDiffAt.checked = false;
-        // this.manuelDiffIn.checked = false;
+
         //masquage des DIV Minuterie
         this.minuterieDiv.css("display", "none");
+        
         //masquage des DIV Cyclique
         this.cycliqueDiv.css("display", "none");
+        
         //masquage des DIV Hebdomadaire
         this.hebdomadaireDiv.css("display", "none");
+        
         //masquage des DIV Clone
         this.cloneDiv.css("display", "none");
     }
@@ -256,18 +258,22 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV Manuel 
          * Les valeur attendue sont: "none" ou "block"
          */
-        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
-            this.f_displayNoneAll();
+        this.f_displayNoneAll();
+        if (v_displayStatus === "block"){
+            this.manuelDiv.effect("slide", "slow");
+        } else if(v_displayStatus === "none"){
             this.manuelDiv.css("display", v_displayStatus);
-            this.manuelForm[0].reset();
         }
+        this.manuelForm[0].reset();
     }
 
     f_displayTypeSelector(v_displayStatus){
         /* permet d'afficher ou de masquer le DIV DiffTypeSelector
          * Les valeur attendue sont: "none" ou "block"
          */
-        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
+        if (v_displayStatus === "block"){
+            this.manuelDivDiffTypeSelector.effect("slide", "slow");
+        } else if (v_displayStatus === "none"){
             this.manuelDivDiffTypeSelector.css("display", v_displayStatus);
         }
     }
@@ -276,11 +282,11 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV dureeOff
          * Les valeur attendue sont: "none", "block" ou "flex"
          */
-        if (((v_displayStatus === "block")||(v_displayStatus === "flex"))||(v_displayStatus === "none")){
-            if (v_displayStatus === "none"){
-                this.manuel_dureeOff.value = "";
-                this.manuelDiffIn.checked = false;
-            }
+        if ((v_displayStatus === "block")||(v_displayStatus === "flex")){
+            this.manuelDiv_dureeOff.effect("slide", "slow");
+        } else if (v_displayStatus === "none"){
+            this.manuel_dureeOff.value = "";
+            this.manuelDiffIn.checked = false;
             this.manuelDiv_dureeOff.css("display", v_displayStatus);
         }
     }
@@ -289,11 +295,11 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV f_displayDiv_hFin
          * Les valeur attendue sont: "none", "block" ou "flex"
          */
-        if (((v_displayStatus === "block")||(v_displayStatus === "flex"))||(v_displayStatus === "none")){
-            if (v_displayStatus === "none"){
-                this.manuel_hFin.value = "";
-                this.manuelDiffAt.checked = false;
-            }
+        if ((v_displayStatus === "block")||(v_displayStatus === "flex")){
+            this.manuelDiv_hFin.effect("slide", "slow");
+        } else if(v_displayStatus === "none"){
+            this.manuel_hFin.value = "";
+            this.manuelDiffAt.checked = false;
             this.manuelDiv_hFin.css("display", v_displayStatus);
         }
     }
@@ -302,7 +308,10 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV Minuterie 
          * Les valeur attendue sont: "none" ou "block"
          */
-        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
+        this.f_displayNoneAll();
+        if (v_displayStatus === "block"){
+            this.minuterieDiv.effect("slide", "slow");
+        } else if(v_displayStatus === "none"){
             this.f_displayNoneAll();
             this.minuterieDiv.css("display", v_displayStatus);
         }
@@ -312,7 +321,10 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV Cyclique 
          * Les valeur attendue sont: "none" ou "block"
          */
-        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
+        this.f_displayNoneAll();
+        if (v_displayStatus === "block"){
+            this.cycliqueDiv.effect("slide", "slow");
+        } else if(v_displayStatus === "none"){
             this.f_displayNoneAll();
             this.cycliqueDiv.css("display", v_displayStatus);
         }
@@ -322,7 +334,10 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV Hebdomadaire 
          * Les valeur attendue sont: "none" ou "block"
          */
-        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
+        this.f_displayNoneAll();
+        if (v_displayStatus === "block"){
+            this.hebdomadaireDiv.effect("slide", "slow");
+        } else if(v_displayStatus === "none"){
             this.f_displayNoneAll();
             this.hebdomadaireDiv.css("display", v_displayStatus);
         }
@@ -332,7 +347,10 @@ class C_Plug{
         /* permet d'afficher ou de masquer le DIV Hebdomadaire 
          * Les valeur attendue sont: "none" ou "block"
          */
-        if ((v_displayStatus === "block")||(v_displayStatus === "none")){
+        this.f_displayNoneAll();
+        if (v_displayStatus === "block"){
+            this.cloneDiv.effect("slide", "slow");
+        } else if(v_displayStatus === "none"){
             this.f_displayNoneAll();
             this.cloneDiv.css("display", v_displayStatus);
         }
@@ -440,6 +458,29 @@ class C_Plug{
         //         $(v_hiddenInput[i]).val(CFG);
         //     } );
         // }
+    }
+
+    f_getDataForm(v_target){
+        /* Permet de retourner les données d'un formulaire*/
+        let it = new FormData(v_target).entries();
+        let current = {};
+        let v_modulo = 0;
+        var v_currentTmp = "";
+
+        while ( ! current.done ) {
+            current = it.next();
+            if (! current.done){
+                for (let i=0; i<current.value.length; i++){
+                    v_modulo = i%2;
+                    if (v_modulo==0){
+                        v_currentTmp += `"${current.value[i]}"=`;
+                    } else {
+                        v_currentTmp += `"${current.value[i]}"/`;
+                    }
+                }
+            }
+        }
+        return v_currentTmp;
     }
 
 }

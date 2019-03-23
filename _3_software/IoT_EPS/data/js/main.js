@@ -181,18 +181,36 @@ $(document).ready( ()=>{
         }
     );
 
+    function success(){
+
+    }
+
     $(red.manuelForm).on(
         "submit",
         (event)=>{
-            event.preventDefault();
-            $(this).submit();
-            var v_form = $(this);
-            var v_url = v_form.attr("action");
-            $.post(v_url);
+            // event.preventDefault();
+            // let v_target = red.f_getQueryTarget(event);
+            // let v_data = red.f_getDataForm(v_target);
+            // console.log(v_data);
+            // var v_form = $(".Manuel.formRequest");
+            // var v_url = v_form.attr("action");
             // $(event).submit();
             // console.log(event);
-            log.f_formLog( red.f_getQueryTarget(event));
-            $(red.manuelForm)[0].reset();
+            // log.f_formLog(v_target);
+            // $(red.manuelForm)[0].reset();
+            // $.post(v_url, v_data, "ok");
+            // $.ajax({
+            //     type: "POST",
+            //     url: v_url,
+            //     data: v_data,
+            //     success:(url, data) => {
+            //         console.log("ok");
+            //     },
+            //     error: () =>{
+            //         console.log("pas ok");
+            //     },
+            //     datatype: "text"
+            // })
         }
     );
 
@@ -499,6 +517,7 @@ $(document).ready( ()=>{
  * ####
  *  
  * #. Gestion de la transition entre les DIV (jqueryui .effect "drop" et "slide")
+ * 
  * 
  * ####
  * 

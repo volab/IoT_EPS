@@ -156,7 +156,8 @@
                                             <h5>Mode Manuel</h5>
                                             <form 
                                                 class="Manuel formRequest"
-                                                method="post"
+                                                name="Manuel_form"
+                                                method="POST"
                                                 action="plugonoff">
                                                 
                                                 <input type="hidden" class="hidden" name="COLOR" value="redPlug"/>
@@ -280,7 +281,7 @@
                                                     <!-- Minuterie dureeOn -->
                                                     <div class="redPlug Minuterie col-md-4">
                                                         <label>
-                                                            <span> Réglage de la minuterie (Durée en minute, 300 minutes Max -- mmm:ss ou mmm):<br/></span>
+                                                            <span> Réglage de la minuterie <br>(Durée en minute, 300 minutes Max -- mmm:ss ou mmm):<br/></span>
                                                             <input 
                                                                 type="text"
                                                                 name="dureeOn"
@@ -388,8 +389,9 @@
                                             <h5>Mode Hebdomadaire</h5>
                                             <form
                                                 class="redPlug Hebdomadaire formRequest"
+                                                name="Hebdomadaire_form"
                                                 method="post"
-                                                action="/plugonoff">
+                                                action="plugonoff.html">
 
                                                 <input type="hidden" class="hidden" name="COLOR" value="redPlug"/>
                                                 <input type="hidden" name="Mode" value="Hebdomadaire"/>
@@ -594,10 +596,18 @@
 
         <!-- Script framwork CDN -->
             <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+
+        <!-- JQuery complet (avec ajax) -->
         <script
 			src="https://code.jquery.com/jquery-3.3.1.js"
 			integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous">
+        </script>
+
+        <!-- JQueryUI -->
+        <script
+            src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"
+            integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
             crossorigin="anonymous">
         </script>
 
