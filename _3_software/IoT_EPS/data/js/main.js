@@ -181,38 +181,34 @@ $(document).ready( ()=>{
         }
     );
 
-    function success(){
-
-    }
-
-    $(red.manuelForm).on(
-        "submit",
-        (event)=>{
-            // event.preventDefault();
-            // let v_target = red.f_getQueryTarget(event);
-            // let v_data = red.f_getDataForm(v_target);
-            // console.log(v_data);
-            // var v_form = $(".Manuel.formRequest");
-            // var v_url = v_form.attr("action");
-            // $(event).submit();
-            // console.log(event);
-            // log.f_formLog(v_target);
-            // $(red.manuelForm)[0].reset();
-            // $.post(v_url, v_data, "ok");
-            // $.ajax({
-            //     type: "POST",
-            //     url: v_url,
-            //     data: v_data,
-            //     success:(url, data) => {
-            //         console.log("ok");
-            //     },
-            //     error: () =>{
-            //         console.log("pas ok");
-            //     },
-            //     datatype: "text"
-            // })
-        }
-    );
+    // $(red.manuelForm).on(
+    //     "submit",
+    //     (event)=>{
+    //         event.preventDefault();
+    //         let v_target = red.f_getQueryTarget(event);
+    //         let v_data = red.f_getDataForm(v_target);
+    //         console.log(v_data);
+    //         var v_form = $(".Manuel.formRequest");
+    //         var v_url = v_form.attr("action");
+    //         $(event).submit();
+    //         console.log(event);
+    //         log.f_formLog(v_target);
+    //         $(red.manuelForm)[0].reset();
+    //         $.post(v_url, v_data, "ok");
+    //         $.ajax({
+    //             type: "POST",
+    //             url: v_url,
+    //             data: v_data,
+    //             success:(url, data) => {
+    //                 console.log("ok");
+    //             },
+    //             error: () =>{
+    //                 console.log("pas ok");
+    //             },
+    //             datatype: "text"
+    //         })
+    //     }
+    // );
 
     /*
     * Events Minuterie
@@ -234,15 +230,15 @@ $(document).ready( ()=>{
             regEx.f_callbackRegEx(event)
         });
 
-    $(red.minuterieForm).on(
-        "submit",
-        (event)=>{
-            event.preventDefault();
-            $(this).submit();
-            log.f_formLog( red.f_getQueryTarget(event));
-            $(red.minuterieForm)[0].reset();
-        }
-    );
+    // $(red.minuterieForm).on(
+    //     "submit",
+    //     (event)=>{
+    //         event.preventDefault();
+    //         $(this).submit();
+    //         log.f_formLog( red.f_getQueryTarget(event));
+    //         $(red.minuterieForm)[0].reset();
+    //     }
+    // );
 
     /*
     * Events Cyclique
@@ -295,17 +291,17 @@ $(document).ready( ()=>{
         }
     );    
 
-    $(red.cycliqueForm).on(
-        "submit",
-        (event)=>{
-            event.preventDefault();
-            $(this).submit();
-            log.f_formLog( red.f_getQueryTarget(event));
-            if (!red.cycliquePauseBool){
-                $(red.cycliqueForm)[0].reset();
-            }
-        }
-    );
+    // $(red.cycliqueForm).on(
+    //     "submit",
+    //     (event)=>{
+    //         event.preventDefault();
+    //         $(this).submit();
+    //         log.f_formLog( red.f_getQueryTarget(event));
+    //         if (!red.cycliquePauseBool){
+    //             $(red.cycliqueForm)[0].reset();
+    //         }
+    //     }
+    // );
 
     /* 
     * event Hebdomadaire
@@ -373,17 +369,17 @@ $(document).ready( ()=>{
         }
     );    
 
-    $(red.hebdomadaireForm).on(
-        "submit",
-        (event)=>{
-            event.preventDefault();
-            $(this).submit();
-            log.f_formLog( red.f_getQueryTarget(event));
-            if (!red.hebdomadairePauseBool){
-                $(red.hebdomadaireForm)[0].reset();
-            }
-        }
-    );
+    // $(red.hebdomadaireForm).on(
+    //     "submit",
+    //     (event)=>{
+    //         event.preventDefault();
+    //         $(this).submit();
+    //         log.f_formLog( red.f_getQueryTarget(event));
+    //         if (!red.hebdomadairePauseBool){
+    //             $(red.hebdomadaireForm)[0].reset();
+    //         }
+    //     }
+    // );
 
     /* 
     * event Clone
@@ -437,16 +433,16 @@ $(document).ready( ()=>{
         }
     )
 
-    $(red.cloneForm).on(
-        "submit",
-        (event)=>{
-            event.preventDefault();
-            console.log("form Submit");
-            $(this).submit();
-            log.f_formLog( red.f_getQueryTarget(event));
-            $(red.cloneForm)[0].reset();
-        }
-    );
+    // $(red.cloneForm).on(
+    //     "submit",
+    //     (event)=>{
+    //         event.preventDefault();
+    //         console.log("form Submit");
+    //         $(this).submit();
+    //         log.f_formLog( red.f_getQueryTarget(event));
+    //         $(red.cloneForm)[0].reset();
+    //     }
+    // );
 
     /*
     * Traitemant Json
