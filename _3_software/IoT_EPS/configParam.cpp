@@ -12,6 +12,20 @@
 #include "IoT_EPS.h"
 // #include  "configParam.h"
 
+void ConfigParam::begin(){
+    _wifimode = "softAP" ; //default value
+    _host= "PowerStrip";
+    String ipad = DEFAULTIPADD;
+    _addIP.fromString( ipad );
+    _numberOfPlugs = 4;
+    _serverPort = 80;
+    // _allLedsOnTime = 30;
+    _allLedsOnTime = -1;
+    
+    _ledsGlobalLuminosity = 5;    
+    ready = readFromJson();
+}
+
 /**
 @fn bool ConfigParam::readFromJson()
 @brief the methode to read the file config parameters...
@@ -60,6 +74,7 @@ bool ConfigParam::readFromJson(){
                         json["general"]["ledsGlobalLuminosity"].as<String>().toInt();
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+                    
                     return false;
                 }
                 configFile.close();

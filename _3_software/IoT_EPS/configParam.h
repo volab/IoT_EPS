@@ -17,7 +17,7 @@
 class ConfigParam{
     public:
         bool ready = false;
-        void begin(){ ready = readFromJson(); } //pour le moment
+        void begin(); //pour le moment
         String getWifiMode(){ return _wifimode; }
 		void setWifiMode( String mode ){ _wifimode = mode ; }
         String getHostName(){ return _host; }
@@ -37,7 +37,7 @@ class ConfigParam{
         String _host= "PowerStrip";
         bool readFromJson();
         IPAddress _addIP;
-        int _numberOfPlugs;
+        int _numberOfPlugs = 4;
         int _serverPort;
         long _allLedsOnTime;
         //in seconds (not unsigned cause -1 could serve to allways on in future)

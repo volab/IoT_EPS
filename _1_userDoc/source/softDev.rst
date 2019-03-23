@@ -31,23 +31,9 @@ Avancement
 #. Write user manual
 #. Write builder manual
 #. Réflèchir à la gestion des erreurs 20%
+#. Time managment strategy : 10%
 
 Don't forget the todo list of the doxygen documentation
-
-==================================
-Error handling
-==================================
-Can we work without File system or Json error ? No, fatal error => RED LED FLash 
- The system won't be started so no special web page index
-
-Can we work without credential file ? Yes start in AP mode : OK
-
-Can we work without I2C and/or nanoI2CIOExpander ? No, fatal error : OK
-
-Can we work without RTC ? Only if we are in Staion mode and connect to internet
-
-Can we work without internet connection or Wifi in station mode ?
- yes in softAP mode Refine softAP mode behavior
 
 ====================================
 Convention de nommage
@@ -337,8 +323,34 @@ _initDone et _mpc (mpc étant la ressource commune à toutes les instances de la
     On aurait pu utiliser la broche de commande du relais mais au cas où les 2
     seraient inversées l'une par rapport à l'autre, cela apporte plus de liberté.
 
+    
+==================================
+Error handling
+==================================
+Can we work without File system or Json error ? No, fatal error => RED LED FLash 
+ The system won't be started so no special web page index
+
+Can we work without credential file ? Yes start in AP mode : OK
+
+Can we work without I2C and/or nanoI2CIOExpander ? No, fatal error : OK
+
+Can we work without RTC ? Only if we are in Staion mode and connect to internet
+
+Can we work without internet connection or Wifi in station mode ?
+ yes in softAP mode Refine softAP mode behavior
+ 
+================================
+Time managment strategy
+================================
+
+Normal
+
+No RTC component
+
+No NTP server (no Wifi)
+    
 ===============================
-Useful Documentation
+Usefull Documentation
 ===============================
 
 Html server

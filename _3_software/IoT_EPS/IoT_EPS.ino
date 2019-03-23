@@ -38,6 +38,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
+ @li bug report when json is no reachable !
  @li review work without rtc component strategy
  @li review work without NTP access strategy
  @li define rtc component versus NTP update strategy 
@@ -49,6 +50,8 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
 
 
 #include "IoT_EPS.h"
+#include "ESP8266FtpServer.h"
+FtpServer ftpSrv;
 
 /** 
 @fn void wifiLedFlash( int speed )
@@ -120,12 +123,17 @@ void setup(){
         //can we work without file system ? No
         fatalError();
     } else DSPL( dPrompt + F("File system corectly Open @ setup level") );
-
+    
+    ftpSrv.begin("esp8266","esp8266");
+    
 	SerialCommand::init();
     // extraLed.begin( 9, 100, 500, 4, 5000 );
     
     cParam.begin();
-
+    if ( !cParam.ready ) {
+        DSPL( dPrompt + F("cParam default values. Potential fatal error") );
+        // fatalErro();
+    }
  
     /////////////////////////////////////////////////////////////////////////////
     //     I2C bus check                                                    //
@@ -134,7 +142,7 @@ void setup(){
     rtc.begin();
     if ( !nanoioExp.test() && rtc.initErr){
         DSPL(dPrompt + F("I2C bus fatal error !"));
-        /** @todo re- enable funcion call fateReeor after debug */
+        /** @todo re- enable funcion call fatalError after debug */
         //fatalError();
     }
   
@@ -178,7 +186,7 @@ void setup(){
     nanoioExp.pinMode( MAINPOWLED, OUTPUT );
     nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
     DSPL( dPrompt + "Main power state : " +  ( mainPowerSwitchState?"ON":"OFF") );
-    specialBp.begin( SPECIALBP, 5, INPUT_PULLUP );
+    specialBp.begin( SPECIALBP, 20, INPUT_PULLUP );
 
   
     /////////////////////////////////////////////////////////////////////////////
@@ -409,6 +417,8 @@ void loop(){
     DEFDPROMPT("in the loop")
     if ( !simpleManualMode ) server->handleClient();
     
+    ftpSrv.handleFTP();
+    
     mainPowerSiwtch.update();
     specialBp.update();
     
@@ -465,7 +475,7 @@ void loop(){
     /////////////////////////////////////////////////////////////////////////////
     //  manage bps                                                            //
     /////////////////////////////////////////////////////////////////////////////     
-    if ( mainPowerPrevState == HIGH ){
+    if ( mainPowerPrevState == HIGH && cParam.ready ){
         for ( int i = 0; i < NBRPLUGS ; i++ ){
             plugs[i].bp.update();
             if ( plugs[i].flashLedReq() ){ 
@@ -482,7 +492,7 @@ void loop(){
            if ( plugs[i].bp.clic() ){
                 // DSPL( dPrompt + F("I10 state : ") + (specialBp.getState()?"ON":"OFF") );
                 restartTempoLed = true;
-                if ( specialBp.getState() ){
+                if ( specialBp.getState() ){ //input pull up so 1 means no action on BP
                     plugs[i].handleBpClic();
                 } else {
                     plugs[i].handleBpDoubleClic();
@@ -496,7 +506,14 @@ void loop(){
                 restartTempoLed = true;
                 plugs[i].handleBpLongClic();
             }            
-        }   
+        }
+        //led wake up
+        // int etatBP = specialBp.getState();
+        // DSPL( dPrompt + F("SPBp state = ") + String( etatBP ) );
+        if ( !specialBp.getState() && !allLeds.enCours() ){
+            DSPL( dPrompt + F("LEDs wake up ! ") + String( restartTempoLed ) );
+            restartTempoLed = true;
+        } 
     }        
  
     /////////////////////////////////////////////////////////////////////////////

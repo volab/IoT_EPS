@@ -214,6 +214,8 @@ int eightState;
         case 'a': //recovery I2C         
             INTERFACE.print("IP add = ");
             INTERFACE.println( WiFi.localIP().toString() );
+            INTERFACE.print("softAP IP add = ");
+            INTERFACE.println( WiFi.softAPIP().toString() );
             break;             
 /***** PRINT CARRIAGE RETURN IN SERIAL MONITOR WINDOW  ****/       
 		case ' ':     // < >                

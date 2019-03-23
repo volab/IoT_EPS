@@ -39,6 +39,7 @@
 #include "CRtc.h"
 #include "cswitchnano.h"
 
+#define DEFAULTIPADD "192.168.95.42"
 #define NBRPLUGS 4
 #define NUM_LEDS NBRPLUGS /**< for fastLED class */
 #define DATA_PIN D7 /**< for fastLED class strip data pin*/
