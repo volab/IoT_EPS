@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8"/>
         <!-- Responcive -->
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
 
         <!-- Import CSS framwork local-->
         <!-- <link type="text/css" rel="stylesheet" href="css/bootstrap.css" media="screen,projection"/> -->
         
         <!-- Import CSS framwork CDN -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous"/>
 
         <!-- CSS personalisés -->
         <link rel="stylesheet" type="text/css" href="css/sidebar.css" />
@@ -92,7 +92,7 @@
                                     type="image"
                                     src="img/align_justify.svg"
                                     id="sidebarCollapse"
-                                    class="hamberger">
+                                    class="hamberger"/>
                             </div>
                         </nav>
                     </div>
@@ -110,12 +110,12 @@
                 </nav>
 
                 <!-- header -->
-                <!-- <br> -->
+                <!-- <br/> -->
                 <header class="jimbotron">
                     <div class="container-fluid mb-4 d-none d-lg-block">
                         <div class="row align-items-center">
                             <div class="col-md-4">
-                                <img class="header_logo img-fluid" src="img/logo_alpha.png" alt="logo IoT_EPS">
+                                <img class="header_logo img-fluid" src="img/logo_alpha.png" alt="logo IoT_EPS"/>
                             </div>
                             <div class="headerTitle col-md-3">
                                 <h1 class="header_h1 display-1">IoT_EPS</h1>
@@ -156,11 +156,12 @@
                                             <h5>Mode Manuel</h5>
                                             <form 
                                                 class="Manuel formRequest"
-                                                method="post"
-                                                action="/">
+                                                name="Manuel_form"
+                                                method="POST"
+                                                action="/plugonoff">
                                                 
-                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug">
-                                                <input type="hidden" name="Mode" value="Manuel">
+                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug"/>
+                                                <input type="hidden" name="Mode" value="Manuel"/>
                                                 <div class="row">
                                                     <!-- ON_OFF Selector -->
                                                     <!-- Colone 1 -->
@@ -174,10 +175,10 @@
                                                                             type="radio"
                                                                             name="State"
                                                                             value="ON"
-                                                                            class="Manuel ON custom-control-input">
+                                                                            class="Manuel ON custom-control-input"/>
                                                                         <span class="custom-control-label">Marche</span>
                                                                     </label>
-                                                                </div></br>
+                                                                </div><br/>
                                                             </li>
 
                                                             <li>
@@ -187,10 +188,10 @@
                                                                             type="radio" 
                                                                             name="State"
                                                                             value="OFF"
-                                                                            class="Manuel OFF custom-control-input">
+                                                                            class="Manuel OFF custom-control-input"/>
                                                                         <span class="custom-control-label">Arrêt</span>
                                                                     </label>
-                                                                </div></br>
+                                                                </div><br/>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -207,10 +208,10 @@
                                                                             type="radio" 
                                                                             name="diffSelector" 
                                                                             value="diffAt"
-                                                                            class="Manuel diffAt custom-control-input">
+                                                                            class="Manuel diffAt custom-control-input"/>
                                                                             <span class="custom-control-label">Heure d'arrêt</span>
                                                                     </label>
-                                                                </div></br>
+                                                                </div><br/>
                                                             </li>
 
                                                             <li>
@@ -220,10 +221,10 @@
                                                                             type="radio" 
                                                                             name="diffSelector" 
                                                                             value="diffIn"
-                                                                            class="Manuel diffIn custom-control-input">
+                                                                            class="Manuel diffIn custom-control-input"/>
                                                                             <span class="custom-control-label">Durée avant arrêt</span>
                                                                     </label>
-                                                                </div></br>
+                                                                </div><br/>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -232,12 +233,12 @@
                                                     <!-- Colone 3 (1/2)-->
                                                     <div class="redPlug Manuel div_hFin col-md-4">
                                                         <label>
-                                                            <span>Arréter la prise à ... </br>(Heure d'arrêt -- hh:mm):</span><br>
+                                                            <span>Arréter la prise à ... <br/>(Heure d'arrêt -- hh:mm):</span><br/>
                                                             <input 
                                                                 type="text" 
                                                                 name="hFin" 
                                                                 placeholder="hh:mm"
-                                                                class="Manuel hFin patern_heure">
+                                                                class="Manuel hFin patern_heure"/>
                                                         </label>
                                                     </div>
 
@@ -245,12 +246,12 @@
                                                     <!-- Colone 3 (2/2) -->
                                                     <div class="Manuel div_dureeOff col-md-4">
                                                         <label>
-                                                            <span>Arréter la prise dans ... </br>(Durée en minute, 300 minutes Max):</span><br>
+                                                            <span>Arréter la prise dans ... <br/>(Durée en minute, 300 minutes Max):</span><br/>
                                                             <input 
                                                                 type="text" 
                                                                 name="dureeOff" 
                                                                 placeholder="mmm"
-                                                                class="Manuel dureeOff patern_dureeNoSec"> 
+                                                                class="Manuel dureeOff patern_dureeNoSec"/> 
                                                         </label>
                                                     </div>
                                                 </div>
@@ -274,19 +275,19 @@
                                                 method="post"
                                                 action="/plugonoff">
 
-                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug">
-                                                <input type="hidden" name="Mode" value="Minuterie">
+                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug"/>
+                                                <input type="hidden" name="Mode" value="Minuterie"/>
                                                 <div class="row">
                                                     <!-- Minuterie dureeOn -->
                                                     <div class="redPlug Minuterie col-md-4">
                                                         <label>
-                                                            <span> Réglage de la minuterie (Durée en minute, 300 minutes Max -- mmm:ss ou mmm):</br></span>
+                                                            <span> Réglage de la minuterie <br>(Durée en minute, 300 minutes Max -- mmm:ss ou mmm):<br/></span>
                                                             <input 
                                                                 type="text"
-                                                                name="dureeOn" 
-                                                                placeholder="mmm:ss ou mmm" 
-                                                                class="redPlug Minuterie dureeOn patern_duree" 
-                                                                required> 
+                                                                name="dureeOn"
+                                                                placeholder="mmm:ss ou mmm"
+                                                                class="redPlug Minuterie dureeOn patern_duree"
+                                                                required="required"/>
                                                         </label>
                                                     </div>
                                                 </div>
@@ -309,45 +310,45 @@
                                                 id="myForm"
                                                 class="redPlug Cyclique formRequest"
                                                 method="post"
-                                                action="/">
+                                                action="/plugonoff">
 
-                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug">
-                                                <input type="hidden" name="Mode" value="Cyclique">
+                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug"/>
+                                                <input type="hidden" name="Mode" value="Cyclique"/>
                                                 <p>Réglage de la période de fonctionnement et de repos (en minute):</p>
                                                 <div class="row justify">
                                                     <!-- Cyclique dureeOn, 1ere colone -->
                                                     <div class="redPlug Cyclique div_dureeOn col-md-4 justify" >
                                                         <label>
-                                                            <span>Durée ON</br>(Durée en minute, 300 minutes Max) :</br></span>
+                                                            <span>Durée ON<br/>(Durée en minute, 300 minutes Max) :<br/></span>
                                                             <input 
                                                                 type="text"
                                                                 name="dureeOn"
                                                                 placeholder="mmm" 
                                                                 class="redPlug Cyclique dureeOn patern_dureeNoSec" 
-                                                                required>
+                                                                required="required"/>
                                                         </label>
                                                     </div>
                                                     <!-- Cyclique dureeOff, 2ème colone -->
                                                     <div class="redPlug Cyclique div_dureeOff col-md-4 justify" >
                                                         <label>
-                                                            <span>Durée OFF</br>(Durée en minute, 300 minutes Max) :</br></span>
+                                                            <span>Durée OFF<br/>(Durée en minute, 300 minutes Max) :<br/></span>
                                                             <input 
                                                                 type="text"
                                                                 name="dureeOff"
                                                                 placeholder="mmm"
                                                                 class="redPlug Cyclique dureeOff patern_dureeNoSec"
-                                                                required>
+                                                                required="required"/>
                                                         </label>
                                                     </div>
                                                     <!-- Cyclique hDebut, 3ème colone -->
                                                     <div class="redPlug Cyclique div_hDebut col-md-4 justify">
                                                         <label>
-                                                            <span>Heure de début</br>(facultatif)</br></span>
+                                                            <span>Heure de début<br/>(facultatif)<br/></span>
                                                             <input 
                                                                 type="text" 
                                                                 name="hDebut" 
                                                                 placeholder="hh:mm" 
-                                                                class="redPlug Cyclique hDebut patern_heure">
+                                                                class="redPlug Cyclique hDebut patern_heure"/>
                                                     </label>
                                                     </div>
                                                 </div>
@@ -356,13 +357,13 @@
                                                     <!-- switch Pause -->
                                                     <div class="col-md-4">
                                                         <div class="custom-control custom-switch">
-                                                            <br>
+                                                            <br/>
                                                             <input 
                                                                 type="checkbox" 
                                                                 name="Pause"
                                                                 value="ON"
                                                                 class="redPlug Cyclique pause custom-control-input"
-                                                                id="customSwitch1">
+                                                                id="customSwitch1"/>
                                                             <label 
                                                                 class="custom-control-label" 
                                                                 for="customSwitch1">
@@ -388,14 +389,15 @@
                                             <h5>Mode Hebdomadaire</h5>
                                             <form
                                                 class="redPlug Hebdomadaire formRequest"
+                                                name="Hebdomadaire_form"
                                                 method="post"
                                                 action="/plugonoff">
 
-                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug">
-                                                <input type="hidden" name="Mode" value="Hebdomadaire">
+                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug"/>
+                                                <input type="hidden" name="Mode" value="Hebdomadaire"/>
 
                                                 <!-- Day selector -->
-                                                <p>Selection des jours d'activité :</p></br>
+                                                <p>Selection des jours d'activité :</p><br/>
                                                 <div class="container">
                                                     <div class="row">
                                                         <div class="redPlug col-md-12 custom-control custom-checkbox justify">
@@ -404,7 +406,7 @@
                                                                     type="checkbox" 
                                                                     name="AllDays" 
                                                                     value="AllDays"
-                                                                    class="redPlug Hebdomadaire AllDays daySelector custom-control-input">
+                                                                    class="redPlug Hebdomadaire AllDays daySelector custom-control-input"/>
                                                                 <span class="custom-control-label">Sélectionner tous les jours</span>
                                                             </label>
 
@@ -417,7 +419,7 @@
                                                                     type="checkbox" 
                                                                     name="Lundi" 
                                                                     value="Lundi"
-                                                                    class="redPlug Hebdomadaire Lundi daySelector custom-control-input">
+                                                                    class="redPlug Hebdomadaire Lundi daySelector custom-control-input"/>
                                                                 <span class="custom-control-label">Lundi</span>
                                                             </label>
                                                             <label class="labelDaySelector">
@@ -425,7 +427,7 @@
                                                                     type="checkbox" 
                                                                     name="Mardi" 
                                                                     value="Mardi" 
-                                                                    class="redPlug Hebdomadaire Mardi daySelector custom-control-input">
+                                                                    class="redPlug Hebdomadaire Mardi daySelector custom-control-input"/>
                                                                 <span class="custom-control-label">Mardi</span>
                                                             </label>    
                                                             <label class="labelDaySelector">
@@ -433,7 +435,7 @@
                                                                     type="checkbox" 
                                                                     name="Mercredi" 
                                                                     value="Mercredi" 
-                                                                    class="redPlug Hebdomadaire Mercredi daySelector custom-control-input">
+                                                                    class="redPlug Hebdomadaire Mercredi daySelector custom-control-input"/>
                                                                 <span class="custom-control-label">Mercredi</span>
                                                             </label>    
                                                             <label class="labelDaySelector">
@@ -441,7 +443,7 @@
                                                                     type="checkbox" 
                                                                     name="Jeudi" 
                                                                     value="Jeudi"
-                                                                    class="redPlug Hebdomadaire Jeudi daySelector custom-control-input">
+                                                                    class="redPlug Hebdomadaire Jeudi daySelector custom-control-input"/>
                                                                 <span class="custom-control-label">Jeudi</span>
                                                             </label>    
                                                             <label class="labelDaySelector">
@@ -449,7 +451,7 @@
                                                                     type="checkbox" 
                                                                     name="Vendredi" 
                                                                     value="Vendredi" 
-                                                                    class="redPlug  Hebdomadaire Vendredi daySelector custom-control-input">
+                                                                    class="redPlug  Hebdomadaire Vendredi daySelector custom-control-input"/>
                                                                 <span class="custom-control-label">Vendredi</span>
                                                             </label>    
                                                             <label class="labelDaySelector">
@@ -457,7 +459,7 @@
                                                                     type="checkbox" 
                                                                     name="Samedi" 
                                                                     value="Samedi" 
-                                                                    class="redPlug Hebdomadaire Samedi daySelector custom-control-input">
+                                                                    class="redPlug Hebdomadaire Samedi daySelector custom-control-input"/>
                                                                 <span class="custom-control-label">Samedi</span>
                                                             </label>    
                                                             <label class="labelDaySelector">
@@ -465,7 +467,7 @@
                                                                     type="checkbox" 
                                                                     name="Dimanche" 
                                                                     value="Dimanche" 
-                                                                    class="redPlug Hebdomadaire Dimanche daySelector custom-control-input">
+                                                                    class="redPlug Hebdomadaire Dimanche daySelector custom-control-input"/>
                                                                 <span class="custom-control-label">Dimanche</span>
                                                             </label>    
                                                     </div>
@@ -475,24 +477,24 @@
                                                     <div class="row">
                                                         <div class="redPlug Hebdomadaire col-md-6 justify">
                                                             <label>
-                                                                <span>Heure de début : (hh:mm)</br></span>
+                                                                <span>Heure de début : (hh:mm)<br/></span>
                                                                 <input 
                                                                     type="text" 
                                                                     name="hDebut" 
                                                                     placeholder="hh:mm"
                                                                     class="redPlug Hebdomadaire hDebut patern_heure"
-                                                                    required/>
+                                                                    required="required"/>
                                                             </label>
                                                         </div>
                                                         <div class="redPlug Hebdomadaire col-md-6 justify">
                                                             <label>
-                                                                <span>Heure de fin : (hh:mm)</br></span>
+                                                                <span>Heure de fin : (hh:mm)<br/></span>
                                                                 <input 
                                                                     type="text" 
                                                                     name="hFin" 
                                                                     placeholder="hh:mm"
                                                                     class="redPlug Hebdomadaire hFin patern_heure"
-                                                                    required/>
+                                                                    required="required"/>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -501,13 +503,13 @@
                                                         <!-- switch Pause -->
                                                         <div class="col-md-4">
                                                             <div class="custom-control custom-switch">
-                                                                <br>
+                                                                <br/>
                                                                 <input 
                                                                     type="checkbox" 
                                                                     name="Pause"
                                                                     value="ON"
                                                                     class="redPlug Hebdomadaire pause custom-control-input"
-                                                                    id="customSwitch2">
+                                                                    id="customSwitch2"/>
                                                                 <label 
                                                                     class="custom-control-label" 
                                                                     for="customSwitch2">
@@ -537,18 +539,18 @@
                                             <form
                                                 class="redPlug Clone formRequest"
                                                 method="post"
-                                                action="/">
+                                                action="/plugonoff">
 
-                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug">
-                                                <input type="hidden" name="Mode" value="Clone">
-                                                <input type="hidden" name="clonedPlug" value="null">
+                                                <input type="hidden" class="hidden" name="COLOR" value="redPlug"/>
+                                                <input type="hidden" name="Mode" value="Clone"/>
+                                                <input type="hidden" name="clonedPlug" value="null"/>
                                                 <div class="row">
-                                                    <br>
+                                                    <br/>
                                                     <div class="div_cloneRed col-md-4">
                                                         <input
                                                             type="image"
                                                             src="img/red.png"
-                                                            class="redPlug Clone Red toCloneBTN">
+                                                            class="redPlug Clone Red toCloneBTN"/>
                                                     </div>
                                                     <div class="div_cloneGreen col-md-4">
                                                         <input 
@@ -556,19 +558,19 @@
                                                             name="clonedPlug"
                                                             value="greenPlug"
                                                             src="img/green.png"
-                                                            class="redPlug Clone Green toCloneBTN">
+                                                            class="redPlug Clone Green toCloneBTN"/>
                                                     </div>
                                                     <div class="div_cloneBlue col-md-4">
                                                         <input 
                                                             type="image"
                                                             src="img/blue.png"
-                                                            class="redPlug Clone Blue toCloneBTN">
+                                                            class="redPlug Clone Blue toCloneBTN"/>
                                                     </div>
                                                     <div class="div_cloneYellow col-md-4">
                                                         <input 
                                                             type="image"
                                                             src="img/yellow.png"
-                                                            class="redPlug Clone Yellow toCloneBTN">
+                                                            class="redPlug Clone Yellow toCloneBTN"/>
                                                     </div>
                                                 </div>
                                             </form>
@@ -582,14 +584,10 @@
 
                 <!-- Footer -->
                 <footer class="container"> <!-- Footer -->
-                <footer class="container"> <!-- End footer -->
-
-
-                </footer>
+                </footer><!-- End footer -->
             </div> <!-- End Content -->
         </div> <!-- End Warper -->
         
-
 
         <!-- script Framwork local -->
         <!-- <script type="text/javascript" src="js/jquery-3.3.1.js"></script> -->
@@ -598,23 +596,54 @@
 
         <!-- Script framwork CDN -->
             <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+
+        <!-- JQuery complet (avec ajax) -->
+        <script
+			src="https://code.jquery.com/jquery-3.3.1.js"
+			integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+            crossorigin="anonymous">
+        </script>
+
+        <!-- JQueryUI -->
+        <script
+            src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"
+            integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
+            crossorigin="anonymous">
+        </script>
 
         <!-- Font Awesome JS -->
-        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-        <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+        <script
+            defer="defer" 
+            src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+            integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+            crossorigin="anonymous">
+        </script>
+        <script
+            defer="defer"
+            src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+            integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+            crossorigin="anonymous">
+        </script>
         
         <!-- popper -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+            integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+            crossorigin="anonymous">
+        </script>
 
         <!-- Bootstrap -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+            integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+            crossorigin="anonymous">
+        </script>
 
         <!-- script interne -->
         <script type="text/javascript" src="js/myLog.js"></script>
         <script type="text/javascript" src="js/regExPatern.js"></script>
         <script type="text/javascript" src="js/plug.js"></script>
+        <script type="text/javascript" src="js/table.js"></script>
         <script type="text/javascript" src="js/main.js"></script>
     </body>
 </html>

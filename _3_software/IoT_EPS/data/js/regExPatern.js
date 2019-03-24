@@ -186,7 +186,9 @@ class C_RexExPatern{
             } else if (v_inputType == "duree") {
                 v_errMsg = `La durée doit être indiquée sous la forme 'MMM'`;
             }
-            $("body").append('<span class="infobulle"></span>');
+            $("body").append(
+                `<div class="infobulle alert alert-danger alert-dismisible fade show">
+                </div>`);
             let bulle = $(".infobulle");
             bulle.text(v_errMsg);
             let v_topPos = v_target.offset().top-v_target.height();

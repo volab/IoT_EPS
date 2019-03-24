@@ -4,6 +4,7 @@ $(document).ready( ()=>{
     const log           = new C_MyLog();
     const regEx         = new C_RexExPatern();
     const red           = new C_Plug("redPlug");
+    const table         = new C_Table();
     const v_jsonFile    = 'config3.json';
 
     const HOME          = $("div.home");
@@ -37,6 +38,42 @@ $(document).ready( ()=>{
     f_hideAll();
     f_showOne(HOME);
 
+    /*
+     * Centrage du titre
+     */
+    function f_resize(){
+        let winWidth = $(window).width();
+        let v_jimbotron = $(".jimbotron");
+        let v_headerTitle = $(".headerTitle");
+        let v_headerTitleWidth = v_headerTitle.width();
+
+        let v_offsetTitleTop = v_headerTitle.offset().top;
+        let v_offsetTitleLeft = (winWidth-v_headerTitleWidth)/2;
+
+
+        v_jimbotron.width(winWidth);
+        v_jimbotron.css({
+        "margin": "0 1.5% 0 1.5%"
+        });
+
+        v_headerTitle.css({
+        "position": "fixed",
+        "top": v_offsetTitleTop,
+        "left": v_offsetTitleLeft
+        });
+    }
+
+    f_resize();
+
+    /*
+     * Responcive
+     */
+    $(window).resize(
+        ()=>{
+            f_resize();
+            // console.log("reducteur de tête !")
+        }
+    )
 
     /*
     * Menu (Hamberger + Sidebar)
@@ -117,7 +154,7 @@ $(document).ready( ()=>{
     $(red.manuelDiffAt).on(
         "click",
         ()=>{
-            red.f_displayDiv_hFin("flex")
+            red.f_displayDiv_hFin("flex");
             red.f_displayDiv_dureeOff("none");
         }
     );    
@@ -144,15 +181,34 @@ $(document).ready( ()=>{
         }
     );
 
-    $(red.manuelForm).on(
-        "submit",
-        (event)=>{
-            event.preventDefault();
-            $(this).submit();
-            log.f_formLog( red.f_getQueryTarget(event));
-            $(red.manuelForm)[0].reset();
-        }
-    );
+    // $(red.manuelForm).on(
+    //     "submit",
+    //     (event)=>{
+    //         event.preventDefault();
+    //         let v_target = red.f_getQueryTarget(event);
+    //         let v_data = red.f_getDataForm(v_target);
+    //         console.log(v_data);
+    //         var v_form = $(".Manuel.formRequest");
+    //         var v_url = v_form.attr("action");
+    //         $(event).submit();
+    //         console.log(event);
+    //         log.f_formLog(v_target);
+    //         $(red.manuelForm)[0].reset();
+    //         $.post(v_url, v_data, "ok");
+    //         $.ajax({
+    //             type: "POST",
+    //             url: v_url,
+    //             data: v_data,
+    //             success:(url, data) => {
+    //                 console.log("ok");
+    //             },
+    //             error: () =>{
+    //                 console.log("pas ok");
+    //             },
+    //             datatype: "text"
+    //         })
+    //     }
+    // );
 
     /*
     * Events Minuterie
@@ -174,15 +230,15 @@ $(document).ready( ()=>{
             regEx.f_callbackRegEx(event)
         });
 
-    $(red.minuterieForm).on(
-        "submit",
-        (event)=>{
-            event.preventDefault();
-            $(this).submit();
-            log.f_formLog( red.f_getQueryTarget(event));
-            $(red.minuterieForm)[0].reset();
-        }
-    );
+    // $(red.minuterieForm).on(
+    //     "submit",
+    //     (event)=>{
+    //         event.preventDefault();
+    //         $(this).submit();
+    //         log.f_formLog( red.f_getQueryTarget(event));
+    //         $(red.minuterieForm)[0].reset();
+    //     }
+    // );
 
     /*
     * Events Cyclique
@@ -235,17 +291,17 @@ $(document).ready( ()=>{
         }
     );    
 
-    $(red.cycliqueForm).on(
-        "submit",
-        (event)=>{
-            event.preventDefault();
-            $(this).submit();
-            log.f_formLog( red.f_getQueryTarget(event));
-            if (!red.cycliquePauseBool){
-                $(red.cycliqueForm)[0].reset();
-            }
-        }
-    );
+    // $(red.cycliqueForm).on(
+    //     "submit",
+    //     (event)=>{
+    //         event.preventDefault();
+    //         $(this).submit();
+    //         log.f_formLog( red.f_getQueryTarget(event));
+    //         if (!red.cycliquePauseBool){
+    //             $(red.cycliqueForm)[0].reset();
+    //         }
+    //     }
+    // );
 
     /* 
     * event Hebdomadaire
@@ -313,17 +369,17 @@ $(document).ready( ()=>{
         }
     );    
 
-    $(red.hebdomadaireForm).on(
-        "submit",
-        (event)=>{
-            event.preventDefault();
-            $(this).submit();
-            log.f_formLog( red.f_getQueryTarget(event));
-            if (!red.hebdomadairePauseBool){
-                $(red.hebdomadaireForm)[0].reset();
-            }
-        }
-    );
+    // $(red.hebdomadaireForm).on(
+    //     "submit",
+    //     (event)=>{
+    //         event.preventDefault();
+    //         $(this).submit();
+    //         log.f_formLog( red.f_getQueryTarget(event));
+    //         if (!red.hebdomadairePauseBool){
+    //             $(red.hebdomadaireForm)[0].reset();
+    //         }
+    //     }
+    // );
 
     /* 
     * event Clone
@@ -377,16 +433,16 @@ $(document).ready( ()=>{
         }
     )
 
-    $(red.cloneForm).on(
-        "submit",
-        (event)=>{
-            event.preventDefault();
-            console.log("form Submit");
-            $(this).submit();
-            log.f_formLog( red.f_getQueryTarget(event));
-            $(red.cloneForm)[0].reset();
-        }
-    );
+    // $(red.cloneForm).on(
+    //     "submit",
+    //     (event)=>{
+    //         event.preventDefault();
+    //         console.log("form Submit");
+    //         $(this).submit();
+    //         log.f_formLog( red.f_getQueryTarget(event));
+    //         $(red.cloneForm)[0].reset();
+    //     }
+    // );
 
     /*
     * Traitemant Json
@@ -412,132 +468,37 @@ $(document).ready( ()=>{
         /* permet de modifier le titre de la page (Onglet) */
         $("#autoTitle").text(v_hostname)};
 
-    function f_populateTable( plug ){
-        /* rempli le tableau de la page d'accueil avec les informations contenu dans le ficier JSON */
-        let v_plug          = jsonresponse[plug];
-        let v_nicName       = v_plug["nickName"];
-        let v_emplacement   = v_plug["emplacement"];
-        let v_state         = v_plug["State"];
-        let v_mode          = v_plug["Mode"];
-        let v_pause         = v_plug["Pause"];
-
-        let v_modeConed     = "";
-        let v_pauseOn       = "";
-        let v_tableColor    = "";
-
-        let v_detail        = "";
-
-        switch (plug){
-            case "redPlug": {
-                v_tableColor = "table-danger";
-                break;}
-            case "greenPlug": {
-                v_tableColor = "table-success";
-                break;}
-            case "bluePlug": {
-                v_tableColor = "table-primary";
-                break;}
-            case "yellowPlug": {
-                v_tableColor = "table-warning";
-                break;}
-        }
-
-        switch (v_mode){
-            case "Manuel": {
-                if (v_state=="ON" && v_plug["hFin"]){
-                    v_detail = `Heure d'arrêt : ${v_plug["hFin"]}`;
-                } else if (v_state=="ON" && v_plug["dureeOff"]) {
-                    v_detail = `Durée avant arrêt : ${v_plug["dureeOff"]} min`;
-                }
-                break;
-            };
-            case "Minuterie": {
-                v_detail = `Durée de fonctionnement : ${v_plug["dureeOn"]} min `;
-                break;
-            };
-            case "Cyclique": {
-
-                let v_cycl_hDebut = v_plug["hDebut"];
-                let v_cycl_dureeOn = v_plug["dureeOn"];
-                let v_cycl_dureeOff = v_plug["dureeOff"];
-
-                if (v_cycl_hDebut){
-                    v_detail = `
-                        <ul>
-                            <li>Durée 'ON' : ${v_cycl_dureeOn} min</li>
-                            <li>Durée 'OFF' : ${v_cycl_dureeOff} min</li>
-                            <li>Heure de début : ${v_cycl_hDebut}</li>
-                        </ul>`;
-                } else {
-                    v_detail = `
-                        <ul>
-                            <li>Durée 'ON' : ${v_cycl_dureeOn} min</li>
-                            <li>Durée 'OFF' : ${v_cycl_dureeOff} min</li>
-                        </ul>`;
-                }
-                break;
-            };
-            case "Hebdomadaire": {
-                break;
-            };
-        }
-
-        if (jsonresponse[plug]["clonedPlug"]){
-            let v_clonedPlug = v_plug["clonedPlug"];
-            let v_clonePlugName = jsonresponse[v_clonedPlug]["nickName"];
-            v_modeConed = `<br>(prise clonée depuis la prise ${v_clonePlugName})`
-        }
-
-        if ((v_mode=="Cyclique" || v_mode=="Hebdomadaire") && v_pause=="ON" && v_state=="ON"){
-            v_pauseOn = `<br><span class="text-danger">Actuellement en PAUSE</span>`;
-        }
-
-        let v_tbody         = $(".home.tBody");
-        let v_body = `
-            <tr class="${v_tableColor}">
-                <td>${v_nicName}<br>
-                    (${v_emplacement})
-                </td>
-                <td>${v_state}${v_pauseOn}</td>
-                <td>${v_mode}${v_modeConed}</td>
-                <td>${v_detail}</td>
-            </tr>`
-            ;
-        v_tbody.prepend(v_body);
-
-    }
-
     f_loadJSON(v_jsonFile, function(response) {
-        jsonresponse = JSON.parse(response);
+        let jsonresponse = JSON.parse(response);
 
         /* general */
         var v_hostname = jsonresponse["general"]["hostName"];
         var v_numberOfPlug = jsonresponse["general"]["numberOfPlugs"];
-        //document.getElementById("autoTitle").innerHTML=v_hostname;
-        //document.getElementById("autoH1").innerHTML=v_hostname;
-        //
-        //N.B: l'emploi de 'innerHTML' est déconseiller car il représente une faille de sécurité
-        //potenciel.
         f_populateTitle(v_hostname);
 
         switch (v_numberOfPlug){
-            case "4": f_populateTable("yellowPlug");
-            case "3": f_populateTable("bluePlug");
-            case "2": f_populateTable("greenPlug");
-            case "1": f_populateTable("redPlug");
+            case "4": {
+                let v_plug = "yellowPlug";
+                table.f_refresh(jsonresponse, v_plug);
+                table.f_populateTable();
+            };
+            case "3": {
+                let v_plug = "bluePlug";
+                table.f_refresh(jsonresponse, v_plug);
+                table.f_populateTable();
+            };
+            case "2": {
+                let v_plug = "greenPlug";
+                table.f_refresh(jsonresponse, v_plug);
+                table.f_populateTable();
+            };
+            case "1": {
+                let v_plug = "redPlug";
+                table.f_refresh(jsonresponse, v_plug);
+                table.f_populateTable();
+            };
         }
 
-        // let rplg = jsonresponse["redPlug"];
-
-        // for (var prop in rplg){
-        //     console.log(`${prop}:${rplg[prop]}`);
-        //     if ((prop == "hFin") && rplg[prop]){console.log("####")}
-        // }
-
-        // f_populatePlug("redPlug");
-        // f_populatePlug("greenPlug");
-        // f_populatePlug("bluePlug");
-        // f_populatePlug("yellowPlug");
     });
 
 // .ready() end
@@ -550,17 +511,9 @@ $(document).ready( ()=>{
  *    et entre chaque action du mode manuel
  *
  * ####
- *
- * #. Ajouter un fieldset de résumé de l'état des prises
- *    * /!\ tenir compte de l'état du boutons pause dans le JSON lors du chargement
- *        des modes Cyclique et Hebdomadoare
- *
- *    * Pour le mode hedomadaire utiliser une boucle for ("for (variable of iterable)")
- *      https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Instructions/for...of
- * 
- * ####
  *  
  * #. Gestion de la transition entre les DIV (jqueryui .effect "drop" et "slide")
+ * 
  * 
  * ####
  * 
