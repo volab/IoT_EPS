@@ -162,10 +162,11 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
     String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
     String sClonedPlug, sOnOffCount, sNextTime2switch, sPause;
     String sJours[7];
-    if (!restaurePhyState){ //manuel mode and off
-        handleBpLongClic();
-        return true;
-    }
+    //comment du due to clone bug
+    // if (!restaurePhyState){ //manuel mode and off for main powwer swith is off
+        // handleBpLongClic();
+        // return true;
+    // }
     DEFDPROMPT("reading config values for " + getPlugName())
     // DSPL( dPrompt +F("Mounting FS..."));
     if (SPIFFS.begin()) {
@@ -206,7 +207,7 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
                     _nextTimeToSwitch = sNextTime2switch.toInt();
                     _pause = ( sPause == "ON" );
 /////////////////////////////////////////////////////////////////////////////
-//    Restaure physical state                                                       //
+//    Restaure physical state                                              //
 /////////////////////////////////////////////////////////////////////////////
                     if ( restaurePhyState )
                         if ( _state && !_pause ) on(); else off();
@@ -574,8 +575,12 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         }
     } else if ( mode == CLONE_MODE){//clode mode parameters
         DSPL( dPrompt + F("clone mode actions") );
+        /////////////////////////////////////////////////////////////////////////////
+        //    Compute CLONE MODE                                                  //
+        /////////////////////////////////////////////////////////////////////////////        
         CPowerPlug clonedPlug;
         String clonedPlugName = extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_CLONEDPLUG );
+        DSPL( dPrompt + "cloned plug find name =  " + clonedPlugName );
         clonedPlug.setPlugName( clonedPlugName );
         // parameters to be cloned : state, pause, mode, hdeb, hfin, don, doff
         // , days and nextTimeToSwitch
