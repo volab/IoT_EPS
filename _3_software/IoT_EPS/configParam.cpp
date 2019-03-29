@@ -152,7 +152,7 @@ void ConfigParam::displayWifiMode(){
 /** @todo doc. void ConfigParam::write2Json( String param, String value ) */
 void ConfigParam::write2Json( String param, String value ){
     DEFDPROMPT( "write config param to jSon");
-    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     //DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -165,8 +165,10 @@ void ConfigParam::write2Json( String param, String value ){
             JsonObject& plug = json["general"]; 
             DSPL( dPrompt + " general : " + param + " = " + value);
             plug[param] = value; 
-            configFile.seek(0, SeekSet);
-            json.prettyPrintTo(configFile);
+            // configFile.seek(0, SeekSet);
+            configFile.close();
+            configFile = SPIFFS.open( CONFIGFILENAME , "w");
+            json.printTo(configFile);
             // plug.prettyPrintTo(Serial);
             // DSPL();
         } else {
@@ -182,7 +184,7 @@ void ConfigParam::write2Json( String param, String value ){
 /** @todo doc. void ConfigParam::chgSSID( String value ) */
 void ConfigParam::chgSSID( String value ){
     DEFDPROMPT( "write credentials SSID");
-    File configFile = SPIFFS.open( "/credentials.json" , "r+");
+    File configFile = SPIFFS.open( "/credentials.json" , "r");
     //DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -194,7 +196,9 @@ void ConfigParam::chgSSID( String value ){
         if (json.success()) {
             DSPL( dPrompt + " written SSID = " + value);
             json["ssid"] = value; 
-            configFile.seek(0, SeekSet);
+            // configFile.seek(0, SeekSet);
+            configFile.close();
+            configFile = SPIFFS.open( CONFIGFILENAME , "w");
             json.prettyPrintTo(configFile);
             // plug.prettyPrintTo(Serial);
             // DSPL();

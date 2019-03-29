@@ -639,7 +639,7 @@ Writes value on parma for _plugName plug of course !
 */
 void CPowerPlug::writeToJson( String param, String value ){
     DEFDPROMPT( "write to jSon");
-    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     // DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -652,8 +652,11 @@ void CPowerPlug::writeToJson( String param, String value ){
             JsonObject& plug = json[_plugName]; 
             DSPL( dPrompt + _plugName + " : " + param + " = " + value);
             plug[param] = value; 
-            configFile.seek(0, SeekSet);
-            json.prettyPrintTo(configFile);
+            // configFile.seek(0, SeekSet);
+            configFile.close();
+            configFile = SPIFFS.open( CONFIGFILENAME , "w");
+            json.printTo(configFile);
+            // json.prettyPrintTo(configFile);
             // plug.prettyPrintTo(Serial);
             // DSPL();
         } else {
@@ -675,7 +678,7 @@ It works on _dayOfWeek member
 */
 void CPowerPlug::writeDaysToJson(){
     DEFDPROMPT( "write days to jSon");
-    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     // DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -696,8 +699,11 @@ void CPowerPlug::writeDaysToJson(){
                 else plugJours[ i ] = "OFF";
             }
         //and rewrite to the file
-            configFile.seek(0, SeekSet);
-            json.prettyPrintTo(configFile);
+            // configFile.seek(0, SeekSet);
+            configFile.close();
+            configFile = SPIFFS.open( CONFIGFILENAME , "w");
+            // json.prettyPrintTo(configFile);
+            json.printTo(configFile);
             // plug.prettyPrintTo(Serial);
             // DSPL();
         } else {
@@ -853,7 +859,7 @@ writeToJson open the file, read the entire file, change one parm, rewrite the fi
     // writeToJson( JSON_PARAMNAME_MODE, mode );
     // writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
     
-    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     if (configFile) {
         size_t size = configFile.size();
         // Allocate a buffer to store contents of the file.
@@ -876,8 +882,11 @@ writeToJson open the file, read the entire file, change one parm, rewrite the fi
             for (int i = 0; i<7; i++){
                 plugJours[ i ] = "OFF";
             }
-            configFile.seek(0, SeekSet);
-            json.prettyPrintTo(configFile);
+            // configFile.seek(0, SeekSet);
+            // json.prettyPrintTo(configFile);
+            configFile.close();
+            configFile = SPIFFS.open( CONFIGFILENAME , "w");
+            json.printTo(configFile);
             // plug.prettyPrintTo(Serial);
             // DSPL();
         } else {

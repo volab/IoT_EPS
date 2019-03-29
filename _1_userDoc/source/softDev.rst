@@ -348,6 +348,28 @@ Normal
 No RTC component
 
 No NTP server (no Wifi)
+
+================================
+HTML IHM integration
+================================
+Start on March 2019
+
+Used technologies:
+
+- HTML5/css
+- Javascipt
+- JQuery
+- Boostrap
+
+Test list:
+
+For all plugs
+
+- manual ON/OFF :  OK on RED
+- manual ON with OFF time : ok on RED
+- manual ON with delay : ok on RED 1 minutes
+- timer : RED plug ko, state no transmit
+
     
 ===============================
 Usefull Documentation
