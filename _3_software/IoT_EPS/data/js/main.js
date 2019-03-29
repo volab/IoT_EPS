@@ -215,7 +215,7 @@ $(document).ready( ()=>{
     */
     $(red.modeMinuterie).on(
         "click", 
-        ()=>{
+        (event)=>{
             regEx.f_clean();
             f_hideAll();
             f_showOne(FIELDSET);
@@ -245,7 +245,7 @@ $(document).ready( ()=>{
     */
     $(red.modeCyclique).on(
         "click", 
-        function(){
+        function(event){
             regEx.f_clean();
             f_hideAll();
             f_showOne(FIELDSET);
@@ -309,13 +309,13 @@ $(document).ready( ()=>{
 
     $(red.modeHedbomadaire).on(
         "click", 
-        ()=>{
+        (event)=>{
             regEx.f_clean();
             f_hideAll();
-        f_showOne(FIELDSET);
-            red.f_displayHebdomadaireDiv("block");
-            toggleSidebar();
-            red.f_switchClass(event.target);
+            f_showOne(FIELDSET);
+                red.f_displayHebdomadaireDiv("block");
+                toggleSidebar();
+                red.f_switchClass(event.target);
         });
 
     $(red.hebdmadaireAllDays).on(
@@ -512,11 +512,6 @@ $(document).ready( ()=>{
  *
  * ####
  *  
- * #. Gestion de la transition entre les DIV (jqueryui .effect "drop" et "slide")
- * 
- * 
- * ####
- * 
  * #. Ajouter un fieldset ou un div pour l'aide
  *    ==> ne plus utiliser la page "help.html"
  * 
@@ -528,6 +523,8 @@ $(document).ready( ()=>{
  * ####
  * 
  * #. Mode responcive, vérfier le bon affichage sur chacun des modes de la prise
+ * 
+ *      ==> Gérer l'espacement du tableau d'accueil en fonction de la taille de l'écran
  * 
  * ## TODO
  */
