@@ -216,7 +216,9 @@ void setup(){
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CPowerPlug::modeId("MANUEL") );
     plugs[0].setColor( CRGB::Red );
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
-    plugs[0].readFromJson( mainPowerSwitchState );
+    if ( mainPowerSwitchState ) plugs[0].readFromJson( true );
+    else  plugs[0].handleBpLongClic(); //change due to clone mode bug
+    
     /** @todo improve error check from CPowerPlug::readFromJson*/
     /** @todo add pin, pinLed and color to json file*/
     /** @todo + le nombre de plug pour rendre cette séquense dynamic*/
@@ -224,16 +226,19 @@ void setup(){
     plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, BP1, CPowerPlug::modeId("MANUEL") );
     plugs[1].setColor( CRGB::Green );
     plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
-    plugs[1].readFromJson(  mainPowerSwitchState );
+    if ( mainPowerSwitchState ) plugs[1].readFromJson( true );
+    else  plugs[1].handleBpLongClic();
     plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, BP2, CPowerPlug::modeId("MANUEL") );
     plugs[2].setColor( CRGB::Blue );
     plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
-    plugs[2].readFromJson( mainPowerSwitchState );
+    if ( mainPowerSwitchState ) plugs[2].readFromJson( true );
+    else  plugs[2].handleBpLongClic();
     // plugs[2].setColor( CRGB::Purple );
     plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, BP3, CPowerPlug::modeId("MANUEL") );
     plugs[3].setColor( CRGB::Yellow );
     plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
-    plugs[3].readFromJson( mainPowerSwitchState );
+    if ( mainPowerSwitchState ) plugs[3].readFromJson( true );
+    else  plugs[3].handleBpLongClic();
     for ( int i = 0; i < NBRPLUGS ; i++ ){
         colorLeds[i] = plugs[i].getColor();
         /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/

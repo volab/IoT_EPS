@@ -54,8 +54,8 @@ Configuration
 ==================================== 
 
 @first boot :
-@li mode AP connection and display config page to set SSID password and server name
-@li propose a unic ID for server name to the user@li explain that it will possible to change after
+ - mode AP connection and display config page to set SSID password and server name
+ - propose a unic ID for server name to the user@li explain that it will possible to change after
 
 ====================================
 Modes de fonctionnement des prises
@@ -242,7 +242,9 @@ Solution1: Use the little plug red LED. When OFF flash 1 shortly one time for mo
 Solution2: use color LED with flash capability one time for mode manual to 5 times to mode Clone
 with a long periode between group of flash 3 seconds for example.
 
-Implemented solution : n°1
+Implemented solution : n°1 with the little specialPB pushed in the same time as the plug Push Button
+
+Advice : retain special BP some seconds before pushing plug's PB to avoid to swith the plug.
 
 ===========================
 WEB page development
@@ -374,8 +376,13 @@ For all plugs
 - manual ON/OFF :  OK on RED
 - manual ON with OFF time : ok on RED
 - manual ON with delay : ok on RED 1 minutes
-- timer : RED plug ko, state no transmit
+- timer : RED plug ko, state no transmit: corrected ok
+- clone from green cyclic to bleu : ok
 
+bug finded :
+- no default state in manual mode
+- minuterie (timer mode) no default value for the ratio immediat start or differed start
+- bug in ESP source side effect of main power switch
     
 ===============================
 Usefull Documentation
