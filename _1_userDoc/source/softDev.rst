@@ -49,7 +49,13 @@ Penser à:
 
 #. regarder javascript http request pour faire du DELETE
 
+====================================
+Configuration
+==================================== 
 
+@first boot :
+@li mode AP connection and display config page to set SSID password and server name
+@li propose a unic ID for server name to the user@li explain that it will possible to change after
 
 ====================================
 Modes de fonctionnement des prises
