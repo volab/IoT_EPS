@@ -28,7 +28,7 @@ Avancement
 #. exhaustive test of hebdo mode : 90%
 #. write index special page for softAP Mode with local boostrap or other light js.framework 5%
 #. preparer un infographie résumant fonctionnalité et besoin : 
-#. Write user manual
+#. Write user manual : 1%
 #. Write builder manual
 #. Réflèchir à la gestion des erreurs 20%
 #. Time managment strategy : 10%
