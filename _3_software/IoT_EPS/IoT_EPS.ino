@@ -38,6 +38,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
+
  @li suppress html replies if main power is off 
  @li configuration page (see softdev.rst)
  @li generate a unic server name  
@@ -530,20 +531,28 @@ void loop(){
 	mainPowerSwitchState = !mainPowerSiwtch.getState();    
     if ( mainPowerSwitchState != mainPowerPrevState){ //main power switch change state
         mainPowerPrevState = mainPowerSwitchState;
-        restartTempoLed = true;
         if (mainPowerSwitchState == HIGH ){ 
             DSPL( dPrompt + F("main power switched ON."));
+            restartTempoLed = true;
             for ( int i = 0; i < NBRPLUGS ; i++ ){                
                 plugs[i].setMainPow( true );
-            }  
+                colorLeds[i] = plugs[i].getColor(); //restaure color LED
+            }
+            //restaure wifiLed state
+            /** @todo restaure wifi LED in AP mode */
+            if ( WiFi.status() == WL_CONNECTED ){
+                digitalWrite( WIFILED, HIGH);   
+            }
         } else {
             DSPL( dPrompt + F("main power switched OFF and all plugs are in manual state.") );
             for ( int i = 0; i < NBRPLUGS ; i++ ){
                 plugs[i].off();
                 plugs[i].handleBpLongClic();
                 plugs[i].setMainPow( false );
+                colorLeds[i] = CRGB::Black;
             }            
-
+            FastLED.show();
+            digitalWrite( WIFILED, LOW);  //stop wifi LED  
         }
         nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
     }

@@ -25,13 +25,25 @@ Avancement
 #. Traitement de la requete html avec analyze, exécution et écriture json: ok
 #. manage wif led : ok
 #. integrate nano expander with analog inputs : ok
+
+
+#. Error handling improvment 40%
+#. bug report when json is no reachable !
+#. Time managment strategy : 10%
+#. review work without rtc component strategy 10%
+#. review work without NTP access strategy 10%
+#. define rtc component versus NTP update strategy 
+#. suppress html replies if main power is off 
+#. configuration page (see softdev.rst)
+#. generate a unic server name  
+#. power measurment
+#. scan I2C response 57 and 58 nano IoExpander !!!! a bug !
+
 #. exhaustive test of hebdo mode : 90%
 #. write index special page for softAP Mode with local boostrap or other light js.framework 5%
 #. preparer un infographie résumant fonctionnalité et besoin : 
 #. Write user manual : 1%
 #. Write builder manual
-#. Réflèchir à la gestion des erreurs 20%
-#. Time managment strategy : 10%
 
 Don't forget the todo list of the doxygen documentation
 
@@ -40,6 +52,9 @@ Convention de nommage
 ====================================
 
 Référence : config3.json
+
+adds 30/30/2019
+ - firstBoot
 
 
 ====================================
@@ -349,7 +364,8 @@ Can we work without RTC ? Only if we are in Staion mode and connect to internet
 
 Can we work without internet connection or Wifi in station mode ?
  yes in softAP mode Refine softAP mode behavior
- 
+
+See dedicated Excel file.
 ================================
 Time managment strategy
 ================================
