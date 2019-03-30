@@ -544,6 +544,7 @@ void loop(){
             }            
 
         }
+        nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
     }
 
     yield();
