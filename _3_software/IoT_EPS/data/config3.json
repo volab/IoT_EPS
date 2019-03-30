@@ -53,7 +53,7 @@
     ],
     "clonedPlug": "bluePlug",
     "onOffCount": "109",
-    "nextTimeToSwitch": "1553897729779"
+    "nextTimeToSwitch": "1553897729"
   },
   "bluePlug": {
     "nickName": "jardin",
@@ -76,7 +76,7 @@
     ],
     "clonedPlug": "",
     "onOffCount": "18",
-    "nextTimeToSwitch": "1553901065356"
+    "nextTimeToSwitch": "1553909520"
   },
   "yellowPlug": {
     "nickName": "liseuse",
