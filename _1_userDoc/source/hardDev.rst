@@ -4,7 +4,7 @@ Document de conception hardware de IOT_ESP
 
 :Auteur: J.Soranzo
 :Date: Octobre 2018
-:version: 1
+:version: git versionning
 
 
 .. contents:: Table of Contents
@@ -20,16 +20,16 @@ Avancement
 #. choix curent sensor: 75%
 #. horloge temps réelle : ok
 #. bouton poussoirs : ok
-#. Affectation des io : 90%
+#. Affectation des io : ok
 #. module relais : ok
 #. définition des modes de fonctionnement : ok
 #. récup paramètre via form submit html : ok
 #. add  WS2801 LED : ok
 #. Alimentation du module relais en 5V (choix du conver.) : 60%
-#. add power led
-#. add power button : 80% 
+#. add power led ok
+#. add power button : ok 
 #. add wifi led : ok
-#. add LDR
+#. add LDR : removed
 #. add I2C nano expander with analog inputs ok
 #. packaging study
 #. integartion
