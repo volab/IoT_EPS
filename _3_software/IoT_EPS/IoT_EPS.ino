@@ -38,7 +38,8 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
- @li cobfuguration page (see softdev.rst)
+ @li suppress html replies if main power is off 
+ @li configuration page (see softdev.rst)
  @li generate a unic server name  
  @li bug report when json is no reachable !
  @li review work without rtc component strategy

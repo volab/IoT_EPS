@@ -185,13 +185,21 @@ class C_Table{
         }
     }
 
+    f_getOffsetTime(){
+        /* 
+        */
+        let v_timeNow = new Date()
+        return -1* (v_timeNow.getTimezoneOffset()*60)
+    }
+
     f_setHumanTimeFormat(){
         /* Permet de convertir 'nextTimeToSwitch' (unix Time) en valeurs comprehensible pour les humains */
         let v_nextTimeToSwitch = parseInt(this.v_nextTimeToSwitch);
 
-        if (v_nextTimeToSwitch == "0"){
+        if (!v_nextTimeToSwitch){
             this.v_uth = "";
         } else {
+        v_nextTimeToSwitch = v_nextTimeToSwitch-this.f_getOffsetTime(); 
         let date = new Date(v_nextTimeToSwitch*1000);
         this.v_uth = `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
         }

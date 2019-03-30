@@ -152,6 +152,9 @@ Comportement possibles:
 #. on informe l'utilisateur (canal à définir, MQTT ou autre...) qui décide mais on met en
 pause en attendant
 
+
+When main power switch is off : html server post no reply.
+
 ==============
 Choix dev soft
 ==============
