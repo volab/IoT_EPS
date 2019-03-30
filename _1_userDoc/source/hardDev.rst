@@ -46,7 +46,7 @@ It's incredible !
 
 See in `wikipedia power plug`_
 
-and in French : `prise secteur sur wikipedia`_
+and in French : `prises secteur sur wikipedia`_
 
 .. _`wikipedia power plug` : https://en.wikipedia.org/wiki/AC_power_plugs_and_sockets
 
@@ -62,7 +62,7 @@ Premier écueil: l'ESP peut-il s'alimenter en 5V ?
 Réponse : oui
 
 
-.. figure:: image/alimWemosD1Mini.jpg
+.. figure:: image/alimWemosD1Mini.png
     :align: center
     
     Circuit d'alimentation WEMOS D1 mini
@@ -153,7 +153,7 @@ Disponible entre autres chez `Banggood 8 Channel Module Module Relais`_
 
 .. _`Banggood 8 Channel Module Module Relais` : https://www.banggood.com/fr/5Pcs-5V-8-Channel-Relay-Module-Board-For-Arduino-PIC-AVR-DSP-ARM-p-968931.html?rmmds=detail-left-hotproducts__2&cur_warehouse=CN
 
-.. figure:: image/moduleRelais8Chan.jpg
+.. figure:: image/moduleRelais8Chan.png
     :align: center
     
     Photo module relais 8 voies de chez Banggod
@@ -205,7 +205,7 @@ Nécessite l'utilisation d'un IO expander
 
 MCP23017 I2C 16 bits IO expander obsolete in feb 2019 see nanI2CIOexpander
 
-.. figure:: image/mpc2307_pinout.jpg
+.. figure:: image/mpc2307_pinout.png
     :width: 400 px
     :align: center
     
