@@ -44,6 +44,7 @@ void CRtc::displayTime(){
     sDate += (String)now.hour()+":"+(String)now.minute()+":";
     sDate += (String)now.second();
 	DSPL( dPrompt + sDate );
+    DSPL( dPrompt + "unix local time : " + now.unixtime() );
 	
 }
 

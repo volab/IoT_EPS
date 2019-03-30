@@ -6,49 +6,53 @@
  */
 class C_Table{
     constructor(){
-        this.jsonOBJ        = "";
-        this.v_item         = "";
-        this.v_tableColor   = "";
-        this.v_pauseOn      = "";
-        this.v_detail       = "";
+        this.jsonOBJ            = "";
+        this.v_item             = "";
+        this.v_tableColor       = "";
+        this.v_pauseOn          = "";
+        this.v_detail           = "";
+        this.v_uth              = "";
 
-        this.v_nicName      = "";
-        this.v_emplacement  = "";
-        this.v_state        = "";
-        this.v_pause        = "";
-        this.v_mode         = "";
-        this.v_hDebut       = "";
-        this.v_hFin         = "";
-        this.v_dureeOn      = "";
-        this.v_dureeOff     = "";
-        this.v_Jours        = "";
-        this.v_clonedPlug   = "";
+        this.v_nicName          = "";
+        this.v_emplacement      = "";
+        this.v_state            = "";
+        this.v_pause            = "";
+        this.v_mode             = "";
+        this.v_hDebut           = "";
+        this.v_hFin             = "";
+        this.v_dureeOn          = "";
+        this.v_dureeOff         = "";
+        this.v_Jours            = "";
+        this.v_nextTimeToSwitch = "";
+        this.v_clonedPlug       = "";
 
-        this.v_modeCloned   = "";
+        this.v_modeCloned       = "";
 
     }
 
     f_resetData(){
         /* Permet de réinitialiser toutes les variables de l'instances */
-        this.jsonOBJ        = "";
-        this.v_item         = "";
-        this.v_tableColor   = "";
-        this.v_pauseOn      = "";
-        this.v_detail       = "";
+        this.jsonOBJ            = "";
+        this.v_item             = "";
+        this.v_tableColor       = "";
+        this.v_pauseOn          = "";
+        this.v_detail           = "";
+        this.v_uth              = "";
 
-        this.v_nicName      = "";
-        this.v_emplacement  = "";
-        this.v_state        = "";
-        this.v_pause        = "";
-        this.v_mode         = "";
-        this.v_hDebut       = "";
-        this.v_hFin         = "";
-        this.v_dureeOn      = "";
-        this.v_dureeOff     = "";
-        this.v_Jours        = "";
-        this.v_clonedPlug   = "";
+        this.v_nicName          = "";
+        this.v_emplacement      = "";
+        this.v_state            = "";
+        this.v_pause            = "";
+        this.v_mode             = "";
+        this.v_hDebut           = "";
+        this.v_hFin             = "";
+        this.v_dureeOn          = "";
+        this.v_dureeOff         = "";
+        this.v_Jours            = "";
+        this.v_nextTimeToSwitch = "";
+        this.v_clonedPlug       = "";
 
-        this.v_modeCloned   = "";
+        this.v_modeCloned       = "";
     }
 
     f_setJsonOB(jsonresponse){
@@ -84,17 +88,18 @@ class C_Table{
 
     f_setSubItem(){
         /* Permet de définir les différents sous éléments du fichier '.json' */
-        this.v_nicName      = this.v_item["nickName"];
-        this.v_emplacement  = this.v_item["emplacement"];
-        this.v_state        = this.v_item["State"];
-        this.v_pause        = this.v_item["Pause"];
-        this.v_mode         = this.v_item["Mode"];
-        this.v_hDebut       = this.v_item["hDebut"];
-        this.v_hFin         = this.v_item["hFin"];
-        this.v_dureeOn      = this.v_item["dureeOn"];
-        this.v_dureeOff     = this.v_item["dureeOff"];
-        this.v_Jours        = this.v_item["Jours"];
-        this.v_clonedPlug   = this.v_item["clonedPlug"];
+        this.v_nicName          = this.v_item["nickName"];
+        this.v_emplacement      = this.v_item["emplacement"];
+        this.v_state            = this.v_item["State"];
+        this.v_pause            = this.v_item["Pause"];
+        this.v_mode             = this.v_item["Mode"];
+        this.v_hDebut           = this.v_item["hDebut"];
+        this.v_hFin             = this.v_item["hFin"];
+        this.v_dureeOn          = this.v_item["dureeOn"];
+        this.v_dureeOff         = this.v_item["dureeOff"];
+        this.v_Jours            = this.v_item["Jours"];
+        this.v_clonedPlug       = this.v_item["clonedPlug"];
+        this.v_nextTimeToSwitch = this.v_item["nextTimeToSwitch"];
     }
 
     f_ifCloned(){
@@ -180,6 +185,18 @@ class C_Table{
         }
     }
 
+    f_setHumanTimeFormat(){
+        /* Permet de convertir 'nextTimeToSwitch' (unix Time) en valeurs comprehensible pour les humains */
+        let v_nextTimeToSwitch = parseInt(this.v_nextTimeToSwitch);
+
+        if (v_nextTimeToSwitch == "0"){
+            this.v_uth = "";
+        } else {
+        let date = new Date(v_nextTimeToSwitch*1000);
+        this.v_uth = `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
+        }
+    }
+
     f_populateTable(){
         /* rempli le tableau de la page d'accueil avec les informations contenues dans le ficier JSON */
         let v_tbody = $(".home.tBody");
@@ -191,6 +208,7 @@ class C_Table{
                 <td>${this.v_state}${this.v_pauseOn}</td>
                 <td>${this.v_mode}${this.v_modeCloned}</td>
                 <td>${this.v_detail}</td>
+                <td>${this.v_uth}</td>
             </tr>`;
         v_tbody.prepend(v_body);
     }
@@ -205,6 +223,7 @@ class C_Table{
         this.f_ifCloned();
         this.f_ifPause();
         this.f_setDetail();
+        this.f_setHumanTimeFormat();
     }
 
 }
