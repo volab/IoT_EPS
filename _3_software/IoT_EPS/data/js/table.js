@@ -189,12 +189,10 @@ class C_Table{
         /* Permet de convertir 'nextTimeToSwitch' (unix Time) en valeurs comprehensible pour les humains */
         let v_nextTimeToSwitch = parseInt(this.v_nextTimeToSwitch);
 
-        console.log(typeof(v_nextTimeToSwitch));
-
         if (v_nextTimeToSwitch == "0"){
             this.v_uth = "";
         } else {
-        let date = new Date(v_nextTimeToSwitch);
+        let date = new Date(v_nextTimeToSwitch*1000);
         this.v_uth = `${date.toLocaleDateString()} - ${date.toLocaleTimeString()}`;
         }
     }

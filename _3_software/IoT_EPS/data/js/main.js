@@ -526,5 +526,9 @@ $(document).ready( ()=>{
  * 
  *      ==> Gérer l'espacement du tableau d'accueil en fonction de la taille de l'écran
  * 
+ * ####
+ * 
+ * #. Générer la documentation automatique du code
+ * 
  * ## TODO
  */
