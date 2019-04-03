@@ -114,8 +114,8 @@ NTPClient timeClient(ntpUDP, "fr.pool.ntp.org");
 RTC_DS3231 rtc;
 DateTime NTPTime;
 bool errNTPinit = true;
-//int timeZone = 2; // Paris heure d'été
-int timeZone = 1; // Paris heure d'hiver
+int timeZone = 2; // Paris heure d'été
+// int timeZone = 1; // Paris heure d'hiver
 
 nanoI2C.pinMode( 9, OUTPUT );
 //nanoI2C.pinMode( 8, INPUT_PULLUP );

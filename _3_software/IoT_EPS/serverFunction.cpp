@@ -193,7 +193,7 @@ extern int mainPowerSwitchState;
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
     if ( !mainPowerSwitchState ){
-        server->send(404, "text/plain", "Main power is off");
+        server->send(404, "text/plain", "Page not found");
         return;
     }
     /////////////////////////////////////////////////////////////////////////////

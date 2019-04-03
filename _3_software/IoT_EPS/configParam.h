@@ -30,6 +30,8 @@ class ConfigParam{
         int getServerPort(){ return _serverPort; }
         long getAllLedsOnTime(){ return _allLedsOnTime; }
         int getLedsLuminosity(){return _ledsGlobalLuminosity; }
+        /** @todo read _powerLedEconomyMode parameter in the config file...*/
+        bool getPowLedEconomyMode(){ return _powerLedEconomyMode; } 
         
     
     private:
@@ -40,6 +42,7 @@ class ConfigParam{
         int _numberOfPlugs = 4;
         int _serverPort;
         long _allLedsOnTime;
+        bool _powerLedEconomyMode = false;
         //in seconds (not unsigned cause -1 could serve to allways on in future)
         int _ledsGlobalLuminosity;
 

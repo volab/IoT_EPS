@@ -53,8 +53,9 @@ Convention de nommage
 
 Référence : config3.json
 
-adds 30/30/2019
+To be added 30/30/2019
  - firstBoot
+ - Power led behavior versus economy mode (include or exclude)
 
 
 ====================================
@@ -185,7 +186,7 @@ Pourquoi ne pas utiliser wifi manager ?
 
 WEMOS D1 MIN ARDUINO configurattion:
 
-.. image:: ./image/wemosD1Mini_configArduino.jpg
+.. image:: ./image/wemosD1Mini_configArduino.png
 
 ==================
 WIFI Modes
@@ -377,6 +378,46 @@ No RTC component
 No NTP server (no Wifi)
 
 ================================
+RTCDS3231 EEPROM access
+================================
+nano ADD is 58
+
+I2C add of EEPROM AT24C32 is 57
+Changed to 0x53
+
+Ok but why access to this EEPROM ? 
+Perhaps to store a copy of config3.json
+
+Live time ? 10^6 write cycle
+
+8 bytes/page 4ko
+
+===================================
+Livetime of ESP8266 flash SPIFFS
+===================================
+hypothesis :
+- 4 plugs that work in clycle mode 1 minutes on and 1 minutes off
+- 4 plugs not synchronyzed
+With this hyp. the 4write/minutes 
+
+WEMOS D1 Flash is Ai ESP12-F module W25Q32 pour 32Mbits soit 4Mo
+100k erase/write cycle
+
+25k minutes = 416 hours = 17 days
+
+But it is a very hard hypothesis
+
+A great question : what is the realistic usage ?
+
+- one On/off cycle by hour on each plug every days only 12 hours by days
+ 25k hours /12 <=> 2083 days <=> more tehn 5 years
+ 
+ ====================================
+ Livetime of the relays
+ ====================================
+ 10^7 time 
+
+================================
 HTML IHM integration
 ================================
 Start on March 2019
@@ -396,10 +437,14 @@ For all plugs
 - manual ON with OFF time : ok on RED
 - manual ON with delay : ok on RED 1 minutes
 - timer : RED plug ko, state no transmit: corrected ok
+- timer red switched by bp : OK
 - clone from green cyclic to bleu : ok
+... see testAndErrorHandling.xlsx file for the rest of the tests
 
 bug finded :
-- no default state in manual mode
+- manual hfin and dureeOff without parameter should be KO
+- manual cleanup buton dont remove hfin and others param
+- no default state in manual mode : corrected
 - minuterie (timer mode) no default value for the ratio immediat start or differed start
 - bug in ESP source side effect of main power switch
     

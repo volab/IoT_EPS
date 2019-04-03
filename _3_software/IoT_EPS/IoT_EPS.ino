@@ -38,17 +38,17 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
-
- @li suppress html replies if main power is off 
+ @li manage sun and winter hour change
+ @li config power led economy mode 50% todo put it in the config3.json
  @li configuration page (see softdev.rst)
  @li generate a unic server name  
  @li bug report when json is no reachable !
- @li review work without rtc component strategy
+ @li review work without RTC component strategy
  @li review work without NTP access strategy
  @li define rtc component versus NTP update strategy 
  @li improve error handling
  @li power measurment
- @li scan I2C response 57 and 58 nano IoExpander !!!! a bug !
+
  
 */
 
@@ -455,7 +455,7 @@ void loop(){
             pinMode( WIFILED, OUTPUT );
             digitalWrite( WIFILED, LOW);
             allLeds.stop();
-            nanoioExp.digitalWrite( MAINPOWLED, LOW );
+            if ( cParam.getPowLedEconomyMode() ) nanoioExp.digitalWrite( MAINPOWLED, LOW );
         }
         if ( restartTempoLed ){
             for ( int i = 0; i < 4 ; i++ ){
