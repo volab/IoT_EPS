@@ -27,10 +27,17 @@ class Credential{
         String getPassString(){ return _pass;}
         const char* getSsid(){ return _ssid.c_str(); }
         const char* getPass(){ return _pass.c_str(); }
+        String getSoftApSsidString(){ return _softApSsid;}
+        String getSoftApPassString(){ return _softApPass;}
+        const char* getSoftApSsid(){ return _softApSsid.c_str(); }
+        const char* getSoftApPass(){ return _softApPass.c_str(); }        
+        
         
     private:
         String _ssid;
         String _pass;
+        String _softApSsid;
+        String _softApPass;
         bool readFromJson();
 
 };

@@ -28,6 +28,7 @@ __pycache__
 *.mp4
 #*.json
 *.ffs_db
+*.bak
 
 
 ## Compiled source
@@ -72,3 +73,11 @@ Thumbs.db
 /_2_modelisation/modelExterieur
 /_3_software/IoT_EPS/data/page2.htm
 /_3_software/esp8266FTPServer
+/_3_software/IoT_EPS/data/edit.htm
+/_4_PCB/d1_mini_kicad-master
+/_4_PCB/kicad_ArduinoNano-master
+/_4_PCB/kiwichrish-kicad_ArduinoNano- Arduino Nano libraries for Arduino Nano.url
+/_4_PCB/arduino_nano.kicad_mod
+/_4_PCB/d1_mini_kicad-master.zip
+/_4_PCB/jerome-labidurie-d1_mini_kicad- Kicad footrpints and templates for wemos D1 mini board.url
+/_4_PCB/kicad_ArduinoNano-master.zip

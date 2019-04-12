@@ -25,6 +25,7 @@ class ConfigParam{
 		void displayWifiMode();
         static void write2Json( String param, String value );
         static void chgSSID( String value );
+        static void chgWifiPass( String value );
         IPAddress getIPAdd(){ return _addIP; }
         int getNumberOfPlugs(){ return _numberOfPlugs; }
         int getServerPort(){ return _serverPort; }
@@ -32,6 +33,7 @@ class ConfigParam{
         int getLedsLuminosity(){return _ledsGlobalLuminosity; }
         /** @todo read _powerLedEconomyMode parameter in the config file...*/
         bool getPowLedEconomyMode(){ return _powerLedEconomyMode; } 
+        bool getfirstBoot(){ return _firstBoot; }
         
     
     private:
@@ -45,6 +47,8 @@ class ConfigParam{
         bool _powerLedEconomyMode = false;
         //in seconds (not unsigned cause -1 could serve to allways on in future)
         int _ledsGlobalLuminosity;
+        bool _firstBoot;
+       
 
 };
 

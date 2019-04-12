@@ -63,15 +63,20 @@ bool ConfigParam::readFromJson(){
                 JsonObject& json = jsonBuffer.parseObject(buf.get());
                 // json.printTo(DEBUGPORT);
                 if (json.success()) {
-                    String s_IpAdd = json["general"]["IP"].as<String>();
+                    String s_IpAdd = json["general"]["softAP_IP"].as<String>();
                     _addIP.fromString( s_IpAdd );
                     _numberOfPlugs = json["general"]["numberOfPlugs"].as<String>().toInt();
-                    _serverPort = json["general"]["Port"].as<String>().toInt();
-                    _wifimode = json["general"]["wifimode"].as<String>();
+                    _serverPort = json["general"]["softAP_port"].as<String>().toInt();
+                    // _wifimode = json["general"]["wifimode"].as<String>();
+                    String startInAPMode = json["general"]["startInAPMode"].as<String>();
+                    if ( startInAPMode == "OFF") _wifimode = "Station";
+                    else _wifimode = "softAP";
+                    _firstBoot = (json["general"]["firstBoot"].as<String>() == "ON");
                     _host = json["general"]["hostName"].as<String>();
                     _allLedsOnTime = json["general"]["allLedsOnTime"].as<String>().toInt();
                     _ledsGlobalLuminosity = \
                         json["general"]["ledsGlobalLuminosity"].as<String>().toInt();
+                    _powerLedEconomyMode = (json["general"]["powerLedEconomyMode"].as<String>() == "ON");
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
                     
@@ -181,7 +186,12 @@ void ConfigParam::write2Json( String param, String value ){
     }     
 }
 
-/** @todo doc. void ConfigParam::chgSSID( String value ) */
+/** 
+ @fn void ConfigParam::chgSSID( String value )
+ @brief a short static function call in SerialCommand.cpp to change Wifi SSID
+ @param value : password as a String
+ @return no return
+*/
 void ConfigParam::chgSSID( String value ){
     DEFDPROMPT( "write credentials SSID");
     File configFile = SPIFFS.open( "/credentials.json" , "r");
@@ -198,7 +208,43 @@ void ConfigParam::chgSSID( String value ){
             json["ssid"] = value; 
             // configFile.seek(0, SeekSet);
             configFile.close();
-            configFile = SPIFFS.open( CONFIGFILENAME , "w");
+            configFile = SPIFFS.open( "/credentials.json" , "w");
+            json.prettyPrintTo(configFile);
+            // plug.prettyPrintTo(Serial);
+            // DSPL();
+        } else {
+            DEBUGPORT.println(dPrompt + F("Failed to load json credentials"));
+            // return false;
+        }
+        configFile.close();
+        // return true;  
+/** @todo perhaps add error handling as in readFromJson()*/        
+    }     
+}
+
+/** 
+ @fn void ConfigParam::chgWifiPass( String value )
+ @brief a short static function call in SerialCommand.cpp to change Wifi Pass
+ @param value : password as a String
+ @return no return
+*/
+void ConfigParam::chgWifiPass( String value ){
+    DEFDPROMPT( "write credentials password");
+    File configFile = SPIFFS.open( "/credentials.json" , "r");
+    //DSPL( dPrompt);
+    if (configFile) {
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+        configFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+            DSPL( dPrompt + " written WiFi pass = " + value);
+            json["pass"] = value; 
+            // configFile.seek(0, SeekSet);
+            configFile.close();
+            configFile = SPIFFS.open( "/credentials.json" , "w");
             json.prettyPrintTo(configFile);
             // plug.prettyPrintTo(Serial);
             // DSPL();

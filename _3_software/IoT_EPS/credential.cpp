@@ -47,6 +47,8 @@ bool Credential::readFromJson(){
                 if (json.success()) {
                     _ssid = json["ssid"].as<String>();
                     _pass = json["pass"].as<String>();
+                    _softApSsid = json["softApSsid"].as<String>();
+                    _softApPass = json["sodtApPass"].as<String>();
                 } else {
                     DSPL(dPrompt + F("Failed to parse json credentials file."));
                     return false;

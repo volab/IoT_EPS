@@ -309,10 +309,11 @@ Total = 47.14
 - +1 current fault
 - +5 résistance 330ohm
 - +4 LED neopixel `diam 8mm sur aliexpress`_ 4x0.23€
-- +1 HLK-PM01 AC/DC 220V/5V 3.03€
+- +1 HLK-PM01 AC/DC 220V/5V seulement 3W soit 0.6A 3.03€ (un peu juste voir § `Choix du module relais`_ )
 - Fuse et porte fuse
 - DS3231 avec batterie
 - 4 x `2N7000 chez RS PArticulers`_
+
 
 .. _`2N7000 chez RS PArticulers` : https://www.rs-particuliers.com/Search.aspx?Terms=671-4733&Page=0
 
@@ -324,10 +325,13 @@ https://www.banggood.com/5pcs-AC-DC-5V-2A-10W-Switching-Power-Bare-Board-Stabili
 
 5pcs 6.03€
 
-
 https://www.banggood.com/AC-DC-5V-2A-Switching-Power-Supply-Board-Low-Ripple-Power-Supply-Board-10W-Switching-Module-p-1337342.html?rmmds=search&cur_warehouse=CN
 
 3€26 /pcs
+
+https://www.banggood.com/220V-to-5V-5W-AC-DC-Isolation-Switch-Power-Supply-Module-p-1420417.html?rmmds=detail-bottom-alsobought__4&cur_warehouse=CN
+
+3€23 seulement 1A mais à souder sur CI
 
 ====================
 Useful Documentation

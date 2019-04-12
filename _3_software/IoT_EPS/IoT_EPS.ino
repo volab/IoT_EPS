@@ -38,8 +38,10 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
- @li manage sun and winter hour change
+ @li add I and i like commands for softAP_SSID and soft_AP pass (more then 8c)
+ @li improve <W> commande to display the good SSID regardless of real connected mode 
  @li config power led economy mode 50% todo put it in the config3.json
+ @li change config3 to config4 (see softdev.rst)
  @li configuration page (see softdev.rst)
  @li generate a unic server name  
  @li bug report when json is no reachable !
@@ -48,7 +50,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  @li define rtc component versus NTP update strategy 
  @li improve error handling
  @li power measurment
-
+ @li manage sun and winter hour change
  
 */
 
@@ -266,8 +268,22 @@ void setup(){
 		DSP( dPrompt + F("Mode autoconnect : "));
 		DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
 		DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
-
-
+        WiFi.persistent(false);
+        /*******************************************************************************************
+        
+        *******************************************************************************************/
+        DSPL( dPrompt + F("Wifi def mode in FLASH : ") + String(wifi_get_opmode_default	() ) );
+        softap_config	config;
+        wifi_softap_get_config_default(&config);
+        DSPL( dPrompt + "Wifi default soft AP param:" );
+        DSPL( dPrompt + "SSID len : " + config.ssid_len );
+        DSP( dPrompt + F("Stored SSID :") );
+        for ( int i = 0; i < config.ssid_len ; i++ ){
+            DSP( char(config.ssid[i]) );
+        }
+        //strcpy(reinterpret_cast<char*>(conf.ssid), ssid); dans le fichier ESP8266WiFiSTA.cpp
+        DSPL( "." );
+        
         if ( cParam.getWifiMode() == "client" && wifiCred.ready
                 || cParam.getWifiMode() == "Station" ){ // Station WIFI mode
             WiFi.mode(WIFI_STA);
@@ -289,7 +305,7 @@ void setup(){
             wifiLed.stop();
             pinMode( WIFILED, OUTPUT );
             digitalWrite( WIFILED, HIGH);
-            DSPL( dPrompt + F("Number of Station wifi try : ") + (String)tryCount );
+            DSPL( dPrompt + F("\nNumber of Station wifi try : ") + (String)tryCount );
             if ( WiFi.status() == WL_CONNECTED){
                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
                     + WiFi.localIP().toString() );  
@@ -298,6 +314,18 @@ void setup(){
         if ( cParam.getWifiMode() == "softAP" || tryCount == MAX_WIFI_CONNECT_RETRY
                 || !wifiCred.ready ){
             //WIFI soft Access Point mode
+            //        bool mode(WiFiMode_t);
+            //        WiFiMode_t getMode();
+//cf. https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiGeneric.h
+//https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/generic-class.html
+//https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiType.h
+            displayWifiMode();           
+            WiFi.begin();
+            WiFi.disconnect( true ); 
+WiFi.softAPdisconnect();            
+            WiFi.mode(WIFI_AP);
+            
+            displayWifiMode();
             DSPL( dPrompt + F("Try softAccess") );
             wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
             wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
@@ -305,13 +333,15 @@ void setup(){
             IPAddress apIP = cParam.getIPAdd();
             WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
             cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
-            DSPL(  dPrompt + F("Adresse configured IP : ") + apIP.toString() );
             /** @todo review the interest of keeping code below! */
             if ( wifiCred.ready ){
-                DSP("\n" + dPrompt + F("softAP : "));
-                DSPL(WiFi.softAP(wifiCred.getSsid(),
-                    wifiCred.getPass() )?F("Ready"):F("Failed!"));
-                DSPL( dPrompt + F("SSID = ") + wifiCred.getSsid() );
+                DSPL( dPrompt + "Try soft AP with : " + wifiCred.getSoftApSsid() 
+                        + " and " + wifiCred.getSoftApPass() );
+                DSP( dPrompt + F("softAP : "));
+                DSPL(WiFi.softAP(wifiCred.getSoftApSsid(),
+                    wifiCred.getSoftApPass() )?F("Ready"):F("Failed!"));
+                IPAddress myIP = WiFi.softAPIP();
+                DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
             }
             // digitalWrite( WIFILED, LOW);
             wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
@@ -630,4 +660,20 @@ void fatalError(){
         }
         yield();
     }
+}
+
+
+void displayWifiMode(){
+    DEFDPROMPT("WiFi mode")
+    DSP( dPrompt ) ;
+    String s_wifiMode;
+    //WIFI_OFF = 0, WIFI_STA = 1, WIFI_AP = 2, WIFI_AP_STA = 3
+    switch ( WiFi.getMode() ){
+        case 0: s_wifiMode = F("WIFI_OFF"); break;
+        case 1: s_wifiMode = F("WIFI_STA"); break;
+        case 2: s_wifiMode = F("WIFI_AP"); break;
+        case 3: s_wifiMode = F("WIFI_STA and AP"); break;
+        default : s_wifiMode = F("???");
+    }
+    DSPL( s_wifiMode );
 }

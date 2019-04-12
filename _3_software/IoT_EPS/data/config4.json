@@ -1,24 +1,26 @@
 {
   "general": {
-    "wifimode": "client",
-    "hostName": "PowerStrip02",
+    "hostName": "PowerStrip01",
+    "startInAPMode": "OFF",
+    "firstBoot": "OFF",
     "numberOfPlugs": "4",
     "rtcValidity": "true",
-    "IP": "192.168.95.42",
-    "Port": "80",
+    "softAP_IP": "192.168.95.42",
+    "softAP_port": "80",
     "allLedsOnTime": "30",
-    "ledsGlobalLuminosity": "5"
+    "ledsGlobalLuminosity": "5",
+    "powerLedEconomyMode": "OFF"
   },
   "redPlug": {
     "nickName": "Aquarium",
     "emplacement": "salon",
-    "State": "ON",
+    "State": "OFF",
     "Pause": "OFF",
     "Mode": "Manuel",
     "hDebut": "",
     "hFin": "",
     "dureeOn": "",
-    "dureeOff": "60",
+    "dureeOff": "",
     "Jours": [
       "OFF",
       "OFF",
@@ -51,7 +53,7 @@
       "OFF",
       "OFF"
     ],
-    "clonedPlug": "bluePlug",
+    "clonedPlug": "",
     "onOffCount": "109",
     "nextTimeToSwitch": "0"
   },
@@ -75,7 +77,7 @@
       "OFF"
     ],
     "clonedPlug": "",
-    "onOffCount": "",
+    "onOffCount": "18",
     "nextTimeToSwitch": "0"
   },
   "yellowPlug": {

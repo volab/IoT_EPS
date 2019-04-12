@@ -26,6 +26,8 @@
 // #include <Array.h>
 #include <nanoI2CIOExpLib.h>
 // #include "nanoI2CIOExpLib.h"
+#include <user_interface.h> //espressif SDK function
+//Arduino\Croquis\hardware\esp8266com\esp8266\tools\sdk\include
 
 
 #include "SerialCommand.h"
@@ -45,7 +47,7 @@
 #define DATA_PIN D7 /**< for fastLED class strip data pin*/
 #define CLOCK_PIN D8 /**< for fastLED class strip data pin*/
 
-#define CONFIGFILENAME "/config3.json"
+#define CONFIGFILENAME "/config4.json"
 
 // #include "Cmcp.h"
 #include "cnano.h"

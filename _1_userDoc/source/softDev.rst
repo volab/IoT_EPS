@@ -53,9 +53,22 @@ Convention de nommage
 
 Référence : config3.json
 
+====================================
+To be added to config json file
+====================================
+
 To be added 30/30/2019
- - firstBoot
- - Power led behavior versus economy mode (include or exclude)
+ - firstBoot ON/OFF                                                                         ADDED
+ - Power led behavior versus economy mode (include or exclude) ON/OFF  powerLedEconomyMode  ADDED
+ - change/separate wifi Station param and soft app                                          DONE
+ - add wifiSoftApSsid, wifiSoftApPass SSid are in credentials                               DONE
+ - for C code, if wifiSoftApSsid or wifiSoftApPass are empty : creatIt (see @firstBoot)     
+ - startInApMode : ON/OFF                                                                   ADDED
+ - remove wifimode                                                                          DONE
+ - change IP in softAP_IP and Port in softAP_port                                           DONE
+ - change name of the file to config4.json                                                  DONE
+ 
+
 
 
 ====================================
@@ -71,10 +84,13 @@ Configuration
 
 @first boot :
  - mode AP connection and display config page to set SSID password and server name
- - propose a unic ID for server name to the user@li explain that it will possible to change after
+ - softAP ssid <32
+ - WARNING pass in AP mode >8 <63
+ - propose a unic ID for server name to the user
+ - explain that it will possible to change after
 
 ====================================
-Modes de fonctionnement des prises
+Plugs modes description
 ==================================== 
 
 Manuel
@@ -247,6 +263,55 @@ added pressing plug 0 while power on the strip cause no WIFI mode (color LED FLA
 This is : simpleManualMode (see above). To return to normal mode power off the strip 
 (not by the power on/off button but by removing the strip from the wall plug)
 
+===========================================
+ESP8266 and its wifi managment !
+===========================================
+ESP8266 store credentials information in FLASH but how to acces to them ???
+And how to contol them
+
+Question how to erase wifi flash param ?
+
+Memory mapping is not provided. Somem peace of informations
+like in SPIFFS des cription that provide the order of memory big blocks but not their respective add
+
+Second question : how to directly acces to flash memory ?
+Perthaps with SPI lib
+https://github.com/esp8266/Arduino/blob/master/doc/libraries.rst#spi
+Reponse :
+ESP.flashRead(...)https://github.com/esp8266/Arduino/blob/master/cores/esp8266/Esp.h
+ESP.flashWrite(..)
+ESP.flashEraseSector(...)
+ESP.eraseConfig() Efface tout à partir du haut de la flash jusqu'en -0x4000 soit 16k
+Fonction non documentée !
+
+
+ESP-SDK ? Rien vu qui permet erase
+
+persistant(false) <=> n'écrit pas en flash mais n'efface pas les info
+
+Question 3: How to read  flash info  ?
+Reponse : call Espressif SDK functions:
+#include <user_interface.h> in
+Arduino\Croquis\hardware\esp8266com\esp8266\tools\sdk\include
+page 62/179 pdf ESP8266 Non-OS SDK API Reference 
+3.5.33. wifi_softap_get_config_default
+
+.. code:: cpp
+
+    struct softap_config {
+        uint8 ssid[32];
+        uint8 password[64];
+        uint8 ssid_len;	// Note: Recommend to set it according to your ssid
+        uint8 channel;	// Note: support 1 ~ 13
+        AUTH_MODE authmode;	// Note: Don't support AUTH_WEP in softAP mode.
+        uint8 ssid_hidden;	// Note: default 0
+        uint8 max_connection;	// Note: default 4, max 4
+        uint16 beacon_interval;	// Note: support 100 ~ 60000 ms, default 100
+    };
+
+ESP12E module Flash size : W25Q32 32Mbits/4Mo 256octets /pages 16384 pages
+Peuvent être effacé ar groupe de 16 ou 128 ou 256 Soit 4(secteurs) ou 32kB ou 64kB
+
 ====================================
 Displaying plugs mode only with LED
 ====================================
@@ -410,11 +475,11 @@ But it is a very hard hypothesis
 A great question : what is the realistic usage ?
 
 - one On/off cycle by hour on each plug every days only 12 hours by days
- 25k hours /12 <=> 2083 days <=> more tehn 5 years
+  25k hours /12 <=> 2083 days <=> more than 5 years
  
- ====================================
+====================================
  Livetime of the relays
- ====================================
+====================================
  10^7 time 
 
 ================================
@@ -445,8 +510,8 @@ bug finded :
 - manual hfin and dureeOff without parameter should be KO
 - manual cleanup buton dont remove hfin and others param
 - no default state in manual mode : corrected
-- minuterie (timer mode) no default value for the ratio immediat start or differed start
-- bug in ESP source side effect of main power switch
+- minuterie (timer mode) no default value for the ratio immediat start or differed start - corrected
+- bug in ESP source side effect of main power switch  ?
     
 ===============================
 Usefull Documentation
@@ -494,7 +559,7 @@ Json genrator sur `ObjGen.com`_
 .. _`ObjGen.com` : http://www.objgen.com/json
 
 ========================
-used library
+Used library
 ========================
 last update : 02/12/2018
 

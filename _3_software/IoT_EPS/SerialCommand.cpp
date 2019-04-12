@@ -168,7 +168,17 @@ int eightState;
             } else {
                 INTERFACE.println("Warning this command riquires only ONE parameter !");
             }
-            break;           
+            break;
+         case 'i': //i for wifi pass
+            n = sscanf( com+1,"%s", v );
+            if ( n == 1){
+                value = String(v);
+                INTERFACE.println("new pass : " + value);
+                ConfigParam::chgWifiPass( value );
+            } else {
+                INTERFACE.println("Warning this command riquires only ONE parameter !");
+            }
+            break;            
 		case 'E':      // 
 			INTERFACE.print("<iElectrical Power Strip ");
 			// INTERFACE.print(ARDUINO_TYPE);
@@ -238,6 +248,7 @@ void SerialCommand::displayCommandsList(){
 	list += F("<W> or <w> display WIFI mode\n");
     list += F("<P key value> write config parameter in json WARNING\n");
     list += F("<I _newSSID> write SSID in credentials WARNING\n");
+    list += F("<i _wifiPass> write SSID password in credentials WARNING\n");
     list += F("<t various_param> for code test\n");
     list += F("<N> nano IO expander test\n");
     list += F("<O> nano out test HIGH\n");
