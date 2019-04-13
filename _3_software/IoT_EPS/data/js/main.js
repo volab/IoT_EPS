@@ -509,6 +509,8 @@ $(document).ready( ()=>{
  *
  * #. Finir les fonction "clear". Les appliquer sur chaque chagement de mode, changement de prise
  *    et entre chaque action du mode manuel
+ * 
+ *      * dans Manuel masquer les options lors de l'appuis sur "Effacer"
  *
  * ####
  *  
@@ -529,6 +531,9 @@ $(document).ready( ()=>{
  * ####
  * 
  * #. Générer la documentation automatique du code
+ * 
+ *      * voir JSDOC
+ *      * Sphinx-js
  * 
  * ## TODO
  */
