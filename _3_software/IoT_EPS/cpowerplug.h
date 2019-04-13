@@ -38,6 +38,9 @@ typedef CRGB::HTMLColorCode plugColor_t; /**< @brief see FastLed lib pixelstype.
 * @brief a class to oparate power plugs
 
 Inherit of the Cmcp class that initialize mcp23711 I2C Io expander component
+News from feb2019 mcp2371 was replaced by nanoI2Cexpander a new mother clas was used : Cnano
+So CPowerPlug class inherit from Cnano who instancite a _nano object from CNanoI2CIOExpander
+It's a bit tricky !
 */
 class CPowerPlug : public CNano {
     public:
@@ -81,6 +84,7 @@ class CPowerPlug : public CNano {
         CFlasherNanoExp onOffFlasher;
         bool flashLedReq(){ return _flashLed; }
         void manageLeds( bool ledState );
+        void setMainPow( bool mainP ){ _mainPower = mainP; }
         
     private:
         bool _flashLed = false;
@@ -99,6 +103,7 @@ class CPowerPlug : public CNano {
         uint8_t _daysOnWeek; 
         bool _pause = false;
         bool _ledOn = true;
+        bool _mainPower;
 };
 
 /*

@@ -1,12 +1,14 @@
 general
-  wifimode = client
   hostName = PowerStrip01
+  startInAPMode = OFF
+  firstBoot = OFF
   numberOfPlugs = 4
   rtcValidity = true
-  IP = 192.168.95.42
-  Port = 80
+  softAP_IP = 192.168.95.42
+  softAP_port = 80
   allLedsOnTime = 30
   ledsGlobalLuminosity = 5
+  powerLedEconomyMode = OFF 
 redPlug
   nickName = Aquarium
   emplacement = salon
@@ -38,8 +40,8 @@ greenPlug
 bluePlug
   nickName = jardin
   emplacement = plaquard
-  State = ON
-  Pause = ON
+  State = OFF
+  Pause = OFF
   Mode = Manuel
   hDebut = 
   hFin = 
@@ -52,8 +54,8 @@ bluePlug
 yellowPlug
   nickName = liseuse
   emplacement = chiotte
-  State = ON
-  Pause = ON
+  State = OFF
+  Pause = OFF
   Mode = Manuel
   hDebut =
   hFin = 

@@ -24,6 +24,8 @@ void handleFileUpload();
 void handleFileDelete();
 void handleFileCreate();
 void handleFileList();
+void handleSoftAPIndex();
+void handleNewCred();
 
 
 void handlePlugConfig();

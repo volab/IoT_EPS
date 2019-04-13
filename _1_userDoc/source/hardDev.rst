@@ -4,7 +4,7 @@ Document de conception hardware de IOT_ESP
 
 :Auteur: J.Soranzo
 :Date: Octobre 2018
-:version: 1
+:version: git versionning
 
 
 .. contents:: Table of Contents
@@ -20,16 +20,16 @@ Avancement
 #. choix curent sensor: 75%
 #. horloge temps réelle : ok
 #. bouton poussoirs : ok
-#. Affectation des io : 90%
+#. Affectation des io : ok
 #. module relais : ok
 #. définition des modes de fonctionnement : ok
 #. récup paramètre via form submit html : ok
 #. add  WS2801 LED : ok
 #. Alimentation du module relais en 5V (choix du conver.) : 60%
-#. add power led
-#. add power button : 80% 
+#. add power led ok
+#. add power button : ok 
 #. add wifi led : ok
-#. add LDR
+#. add LDR : removed
 #. add I2C nano expander with analog inputs ok
 #. packaging study
 #. integartion
@@ -46,7 +46,7 @@ It's incredible !
 
 See in `wikipedia power plug`_
 
-and in French : `prise secteur sur wikipedia`_
+and in French : `prises secteur sur wikipedia`_
 
 .. _`wikipedia power plug` : https://en.wikipedia.org/wiki/AC_power_plugs_and_sockets
 
@@ -62,7 +62,7 @@ Premier écueil: l'ESP peut-il s'alimenter en 5V ?
 Réponse : oui
 
 
-.. figure:: image/alimWemosD1Mini.jpg
+.. figure:: image/alimWemosD1Mini.png
     :align: center
     
     Circuit d'alimentation WEMOS D1 mini
@@ -83,7 +83,9 @@ Ajout d'un DS3231 comme dans le projet  `ESP_NTP_DS3231 <https://github.com/vola
   D1 : SCL
   D2 : SDA
   
-I2C pullup ? Visiblement sur le DS3231, il y en a !
+I2C pullup ? Visiblement sur le DS3231, il y en a ! Yes I checked it 4.7k
+
+Power consumption : 1.9mA measured 08/03/19
 
 ####
 
@@ -92,7 +94,8 @@ Choix current sensor
 ====================
 
 INA219 et INA220
-================
+=================
+
 - impossible "bus voltage 0-26V"
 
 ACS712
@@ -150,7 +153,7 @@ Disponible entre autres chez `Banggood 8 Channel Module Module Relais`_
 
 .. _`Banggood 8 Channel Module Module Relais` : https://www.banggood.com/fr/5Pcs-5V-8-Channel-Relay-Module-Board-For-Arduino-PIC-AVR-DSP-ARM-p-968931.html?rmmds=detail-left-hotproducts__2&cur_warehouse=CN
 
-.. figure:: image/moduleRelais8Chan.jpg
+.. figure:: image/moduleRelais8Chan.png
     :align: center
     
     Photo module relais 8 voies de chez Banggod
@@ -202,7 +205,7 @@ Nécessite l'utilisation d'un IO expander
 
 MCP23017 I2C 16 bits IO expander obsolete in feb 2019 see nanI2CIOexpander
 
-.. figure:: image/mpc2307_pinout.jpg
+.. figure:: image/mpc2307_pinout.png
     :width: 400 px
     :align: center
     
@@ -246,30 +249,32 @@ That's my great surprise, nobody does it ! So I wrote it and I provide it on HAC
 
 Nano pining :
 
-.. table:: Affectation des broches sur le MCP23017 obsolete
+.. table:: Affectation des broches sur l'ARDUINO Nano I2C I/O Expander
     :align: center
     
-    ===== =============,    pins  affectation
-    ===== =============
-    D2    PLUG0-ROUGE
-    D3    PLUG1-VERT
-    D4    PLUG2-BLEUE
-    D5    PLUG3-JAUNE
-    D6    LED0
-    D7    LED1
-    D8    LED2
-    D9    LED3
-    D10   MAIN POWER SWITCH STATE
-    D11   DS3231 power
-    D12  
-    A0    PLUG0 Current
-    A1    PLUG1 Current
-    A2    PLUG2 Current
-    A3    PLUG3 Current
-    A6    LDR
+    ===== ======= =============
+    pins   Name    affectation
+    ===== ======= =============
+    D2       0     PLUG0-ROUGE
+    D3       1     PLUG1-VERT
+    D4       2     PLUG2-BLEUE
+    D5             PLUG3-JAUNE
+    D6             LED0
+    D7             LED1
+    D8             LED2
+    D9       7     LED3
+    D10      8     MAIN POWER SWITCH STATE
+    D11      9     MAIN POWER LED
+    D12      10    Special BP
+    A0            PLUG0 Current
+    A1            PLUG1 Current
+    A2             PLUG2 Current
+    A3             PLUG3 Current
+    A6    
     A7
-    ===== =============
+    ===== ======= =============
 
+ici
     
 ####
 
@@ -304,10 +309,11 @@ Total = 47.14
 - +1 current fault
 - +5 résistance 330ohm
 - +4 LED neopixel `diam 8mm sur aliexpress`_ 4x0.23€
-- +1 HLK-PM01 AC/DC 220V/5V 3.03€
+- +1 HLK-PM01 AC/DC 220V/5V seulement 3W soit 0.6A 3.03€ (un peu juste voir § `Choix du module relais`_ )
 - Fuse et porte fuse
 - DS3231 avec batterie
 - 4 x `2N7000 chez RS PArticulers`_
+
 
 .. _`2N7000 chez RS PArticulers` : https://www.rs-particuliers.com/Search.aspx?Terms=671-4733&Page=0
 
@@ -319,10 +325,13 @@ https://www.banggood.com/5pcs-AC-DC-5V-2A-10W-Switching-Power-Bare-Board-Stabili
 
 5pcs 6.03€
 
-
 https://www.banggood.com/AC-DC-5V-2A-Switching-Power-Supply-Board-Low-Ripple-Power-Supply-Board-10W-Switching-Module-p-1337342.html?rmmds=search&cur_warehouse=CN
 
 3€26 /pcs
+
+https://www.banggood.com/220V-to-5V-5W-AC-DC-Isolation-Switch-Power-Supply-Module-p-1420417.html?rmmds=detail-bottom-alsobought__4&cur_warehouse=CN
+
+3€23 seulement 1A mais à souder sur CI
 
 ====================
 Useful Documentation

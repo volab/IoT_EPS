@@ -50,9 +50,12 @@ bool CEpsStrTime::checkValidity(){
     DEFDPROMPT( "CEpsStrTime::checkValidity")
     _seconds = -1;
     isValid = false;
+    
+    /** @bug dureeOff= soit une fois convertie 0 (chaine vide) 24/03/2019. */
 	if ( _sValue == NOT_FOUND \
 		|| _sValue == HTML_OFFDURATION_DEFAULT_VALUE \
-		|| _sValue == HTML_ENDTIME_DEFAULT_VALUE		){
+		|| _sValue == HTML_ENDTIME_DEFAULT_VALUE
+        || _sValue.length() == 0 ){
 	   return isValid;
 	}
 	pos = _sValue.indexOf( TIME_STRING_SEPARATOR );
@@ -70,7 +73,7 @@ bool CEpsStrTime::checkValidity(){
 			sTmp = _sValue.substring( pos +1 );
 			sTmp.trim();
 			_seconds = sTmp.toInt();
-			if (sTmp.length() >  2 || _seconds > 59 || _seconds < 0 ){
+			if (sTmp.length() >  2 || _seconds > 59 || _seconds <= 0 ){
 				_seconds = -1;
 				return isValid;
 			}
@@ -144,7 +147,6 @@ uint32_t  CEpsStrTime::computeNextTime( uint8_t CheckedDays ){
 		future = futurDT.unixtime();
 	} else {/* //HH:MM with day of week */
     // <d 18:00 63>
-/** @todo take inot account when start hour is higher than end hour */
         DateTime now = CRtc::now();
         uint8_t nextDay = nextCheckedDay( CheckedDays, now.dayOfTheWeek() );
         int h, m;

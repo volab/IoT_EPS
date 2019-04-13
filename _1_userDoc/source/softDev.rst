@@ -16,21 +16,36 @@ Avancement
 #. Affichage de l'heure à partir d'une page en dur dans le code : ok
 #. Affichage page avec CSS : ok
 #. Gestion des mode wifi SoftAP vs client : ok
-#. reception d'une action via un bouton :  
+#. reception d'une action via un bouton :  ok
 #. lecture du fichier de configuration : ok
 #. intégration MCP23017 : ok
-#. lecture du fichier de configuration config3.json : 90%
+#. lecture du fichier de configuration config3.json : ok
 #. gestion bouton poussoir mécanique : ok
 #. Ecriture fichier json : ok
 #. Traitement de la requete html avec analyze, exécution et écriture json: ok
-#. Réflèchir à la gestion des erreurs
 #. manage wif led : ok
 #. integrate nano expander with analog inputs : ok
-#. exhaustive test of hebdo mode : 50%
+
+
+#. Error handling improvment 40%
+#. bug report when json is no reachable !
+#. Time managment strategy : 10%
+#. review work without rtc component strategy 10%
+#. review work without NTP access strategy 10%
+#. define rtc component versus NTP update strategy 
+#. suppress html replies if main power is off 
+#. configuration page (see softdev.rst)
+#. generate a unic server name  
+#. power measurment
+#. scan I2C response 57 and 58 nano IoExpander !!!! a bug !
+
+#. exhaustive test of hebdo mode : 90%
+#. write index special page for softAP Mode with local boostrap or other light js.framework 5%
 #. preparer un infographie résumant fonctionnalité et besoin : 
+#. Write user manual : 1%
+#. Write builder manual
 
 Don't forget the todo list of the doxygen documentation
-
 
 ====================================
 Convention de nommage
@@ -38,18 +53,44 @@ Convention de nommage
 
 Référence : config3.json
 
+====================================
+To be added to config json file
+====================================
+
+To be added 30/30/2019
+ - firstBoot ON/OFF                                                                         ADDED
+ - Power led behavior versus economy mode (include or exclude) ON/OFF  powerLedEconomyMode  ADDED
+ - change/separate wifi Station param and soft app                                          DONE
+ - add wifiSoftApSsid, wifiSoftApPass SSid are in credentials                               DONE
+ - for C code, if wifiSoftApSsid or wifiSoftApPass are empty : creatIt (see @firstBoot)     
+ - startInApMode : ON/OFF                                                                   ADDED
+ - remove wifimode                                                                          DONE
+ - change IP in softAP_IP and Port in softAP_port                                           DONE
+ - change name of the file to config4.json                                                  DONE
+ 
+
+
 
 ====================================
 Penser à:
 ====================================
 
-#. terminer l'implémentation des méthodes de CPowerPlug ( isItTimeToSwitch )
+
 #. regarder javascript http request pour faire du DELETE
 
+====================================
+Configuration
+==================================== 
 
+@first boot :
+ - mode AP connection and display config page to set SSID password and server name
+ - softAP ssid <32
+ - WARNING pass in AP mode >8 <63
+ - propose a unic ID for server name to the user
+ - explain that it will possible to change after
 
 ====================================
-Modes de fonctionnement des prises
+Plugs modes description
 ==================================== 
 
 Manuel
@@ -144,7 +185,7 @@ Comportement possibles:
 pause en attendant
 
 
-
+When main power switch is off : html server post no reply.
 
 ==============
 Choix dev soft
@@ -161,22 +202,115 @@ Pourquoi ne pas utiliser wifi manager ?
 
 WEMOS D1 MIN ARDUINO configurattion:
 
-.. image:: ./image/wemosD1Mini_configArduino.jpg
+.. image:: ./image/wemosD1Mini_configArduino.png
 
 ==================
-WIFI LED
+WIFI Modes
 ==================
-In Station mode, fast flashing (20 times) and after slow flashing while waiting for connection (500ms with a 20 times time out - new in 24/12/2018).
 
-In Access Point LED FLash quickly (20 times) and led flash slowly while waiting for connection.
+In Json config file, it is configured with:
 
-Cause WiFi.softAPConfig function is a blocking function. This is wrong : test on 24/12/2018 softAP is non blocking !
+"wifimode": "xxxx",
 
-So if power led is on and WIFI Led flash WIFI wait for connection in AP mode. 
+No WiFi
+==========
+Also called simpleManualMode
 
-It rises a new problem : in this state it is not possible to use plugs even in simple  manual mode with push button. 
+When power on the powerStrip maintain power 1 (RED) bp...
+Power strip start in this mode independently of Json configured mode
 
-Possible solution : check push button at startup if a particular combination is pressed, plugs do not try to connect to wifi and mork in simple manual mode. In Dec 2018, push button added on plug 0 while strating cause no WIFI mode (color LED FLASH in RED to confirm)
+4 Big color LED flasf 20 times in purple.
+
+xxxx don't care
+
+In this very simple poor mode, powerstrip works only in manual mode.
+
+SoftAP
+=========
+xxxx = softAP
+No acces to NTP server but all other functions work.
+After 20 false tries of station mode, power Strip automaticly switch in this mode
+
+Sation
+=========
+xxxx = Station or client
+
+The baset functionnal mode !
+
+==================
+WIFI LED behavior
+==================
+In Station mode, fast flashing (20 times 100ms, 100ms) before to try connection
+and after slow flashing while waiting for connection.
+(500ms with a 20 times time out - new in 24/12/2018). If no connection detected afte 20 tries
+Automaticaly switch in SoftAP mode.
+
+In Access Point LED FLash quickly (20 times 100ms-500ms) and 
+led flash slowly (50ms-2s) while waiting for connection.
+
+Cause WiFi.softAPConfig function is a blocking function. This is wrong : 
+test on 24/12/2018 softAP is non blocking !
+
+So - in summary - if power led is on and WIFI Led flash (50ms-2s) WIFI wait for connection in AP mode. 
+
+It rises a new problem : in this state it is not possible to use plugs even in simple  manual mode 
+with push button. 
+
+Possible solution : check push button at startup if a particular combination is pressed,
+plugs do not try to connect to wifi and mork in simple manual mode.
+In Dec 2018, push button
+added pressing plug 0 while power on the strip cause no WIFI mode (color LED FLASH in RED to confirm)
+This is : simpleManualMode (see above). To return to normal mode power off the strip 
+(not by the power on/off button but by removing the strip from the wall plug)
+
+===========================================
+ESP8266 and its wifi managment !
+===========================================
+ESP8266 store credentials information in FLASH but how to acces to them ???
+And how to contol them
+
+Question how to erase wifi flash param ?
+
+Memory mapping is not provided. Somem peace of informations
+like in SPIFFS des cription that provide the order of memory big blocks but not their respective add
+
+Second question : how to directly acces to flash memory ?
+Perthaps with SPI lib
+https://github.com/esp8266/Arduino/blob/master/doc/libraries.rst#spi
+Reponse :
+ESP.flashRead(...)https://github.com/esp8266/Arduino/blob/master/cores/esp8266/Esp.h
+ESP.flashWrite(..)
+ESP.flashEraseSector(...)
+ESP.eraseConfig() Efface tout à partir du haut de la flash jusqu'en -0x4000 soit 16k
+Fonction non documentée !
+
+
+ESP-SDK ? Rien vu qui permet erase
+
+persistant(false) <=> n'écrit pas en flash mais n'efface pas les info
+
+Question 3: How to read  flash info  ?
+Reponse : call Espressif SDK functions:
+#include <user_interface.h> in
+Arduino\Croquis\hardware\esp8266com\esp8266\tools\sdk\include
+page 62/179 pdf ESP8266 Non-OS SDK API Reference 
+3.5.33. wifi_softap_get_config_default
+
+.. code:: cpp
+
+    struct softap_config {
+        uint8 ssid[32];
+        uint8 password[64];
+        uint8 ssid_len;	// Note: Recommend to set it according to your ssid
+        uint8 channel;	// Note: support 1 ~ 13
+        AUTH_MODE authmode;	// Note: Don't support AUTH_WEP in softAP mode.
+        uint8 ssid_hidden;	// Note: default 0
+        uint8 max_connection;	// Note: default 4, max 4
+        uint16 beacon_interval;	// Note: support 100 ~ 60000 ms, default 100
+    };
+
+ESP12E module Flash size : W25Q32 32Mbits/4Mo 256octets /pages 16384 pages
+Peuvent être effacé ar groupe de 16 ou 128 ou 256 Soit 4(secteurs) ou 32kB ou 64kB
 
 ====================================
 Displaying plugs mode only with LED
@@ -186,16 +320,23 @@ Problem : how to displays functionnal mode of a plug without the web interface
 
 Problem2 : is it really necessary ?
 
-Solution1: Use de little plug red LED. When OFF flash 1 shortly one time for mode 1 manual to five time for mode Clone. When ON invert ton and toff of the flasher
+Solution1: Use the little plug red LED. When OFF flash 1 shortly one time for mode 1 manual to five
+ time for mode 5 Clone. When ON invert ton and toff of the flasher
 
-Solution2: use color LED with flash capability one time for mode manual to 5 times to mode Clone with a long periode between group of flash 3 seconds for example.
+Solution2: use color LED with flash capability one time for mode manual to 5 times to mode Clone
+with a long periode between group of flash 3 seconds for example.
+
+Implemented solution : n°1 with the little specialPB pushed in the same time as the plug Push Button
+
+Advice : retain special BP some seconds before pushing plug's PB to avoid to swith the plug.
 
 ===========================
-Développement des page Web
+WEB page development
 ===========================
-HTML5 et css
 
-Les requetes html
+HTML5 et css and bootstrap
+
+html requests
 =====================
 
 ipaddr/config?plug=redPlug
@@ -274,8 +415,109 @@ _initDone et _mpc (mpc étant la ressource commune à toutes les instances de la
     On aurait pu utiliser la broche de commande du relais mais au cas où les 2
     seraient inversées l'une par rapport à l'autre, cela apporte plus de liberté.
 
+    
+==================================
+Error handling
+==================================
+Can we work without File system or Json error ? No, fatal error => RED LED FLash 
+ The system won't be started so no special web page index
+
+Can we work without credential file ? Yes start in AP mode : OK
+
+Can we work without I2C and/or nanoI2CIOExpander ? No, fatal error : OK
+
+Can we work without RTC ? Only if we are in Staion mode and connect to internet
+
+Can we work without internet connection or Wifi in station mode ?
+ yes in softAP mode Refine softAP mode behavior
+
+See dedicated Excel file.
+================================
+Time managment strategy
+================================
+
+Normal
+
+No RTC component
+
+No NTP server (no Wifi)
+
+================================
+RTCDS3231 EEPROM access
+================================
+nano ADD is 58
+
+I2C add of EEPROM AT24C32 is 57
+Changed to 0x53
+
+Ok but why access to this EEPROM ? 
+Perhaps to store a copy of config3.json
+
+Live time ? 10^6 write cycle
+
+8 bytes/page 4ko
+
+===================================
+Livetime of ESP8266 flash SPIFFS
+===================================
+hypothesis :
+- 4 plugs that work in clycle mode 1 minutes on and 1 minutes off
+- 4 plugs not synchronyzed
+With this hyp. the 4write/minutes 
+
+WEMOS D1 Flash is Ai ESP12-F module W25Q32 pour 32Mbits soit 4Mo
+100k erase/write cycle
+
+25k minutes = 416 hours = 17 days
+
+But it is a very hard hypothesis
+
+A great question : what is the realistic usage ?
+
+- one On/off cycle by hour on each plug every days only 12 hours by days
+  25k hours /12 <=> 2083 days <=> more than 5 years
+ 
+====================================
+ Livetime of the relays
+====================================
+ 10^7 time 
+
+================================
+HTML IHM integration
+================================
+Start on March 2019
+
+Used technologies:
+
+- HTML5/css
+- Javascipt
+- JQuery
+- Boostrap
+
+Test list:
+
+For all plugs
+
+- manual ON/OFF :  OK on RED
+- manual ON with OFF time : ok on RED
+- manual ON with delay : ok on RED 1 minutes
+- timer : RED plug ko, state no transmit: corrected ok
+- timer red switched by bp : OK
+- clone from green cyclic to bleu : ok
+... see testAndErrorHandling.xlsx file for the rest of the tests
+
+bug finded :
+- manual hfin and dureeOff without parameter should be KO
+- manual cleanup buton dont remove hfin and others param
+- no default state in manual mode : corrected
+- minuterie (timer mode) no default value for the ratio immediat start or differed start - corrected
+- bug in ESP source side effect of main power switch  ?
+
+improvments:
+- add tips on main page : To refresh this page press F5
+    
 ===============================
-Useful Documentation
+Usefull Documentation
 ===============================
 
 Html server
@@ -320,20 +562,28 @@ Json genrator sur `ObjGen.com`_
 .. _`ObjGen.com` : http://www.objgen.com/json
 
 ========================
-used library
+Used library
 ========================
 last update : 02/12/2018
 
-8 libs:
+10 libs:
 
-- Utilisation de la bibliothèque ESP8266WiFi version 1.0
+- Utilisation de la bibliothèque ESP8266WiFi version 1.0 
 - Utilisation de la bibliothèque ESP8266WebServer version 1.0 
-- Utilisation de la bibliothèque ArduinoJson version 5.13.2 
-- Utilisation de la bibliothèque Wire version 1.0
+- Utilisation de la bibliothèque ArduinoJson version 5.13.2
+- Utilisation de la bibliothèque Wire version 1.0 
 - Utilisation de la bibliothèque RTClib version 1.2.0
-- Utilisation de la bibliothèque ESP8266mDNS
-- Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3
-- Utilisation de la bibliothèque FastLED version 3.2.1
+- Utilisation de la bibliothèque ESP8266mDNS prise
+- Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3 
+- Utilisation de la bibliothèque FastLED version 3.2.1 
+- Utilisation de la bibliothèque nanoI2CIOExpLib version 2.1
+- Utilisation de la bibliothèque NTPClient version 3.1.0
+
+9 libs are Arduino official lib and one lib is spécial:
+
+`nanoI2CIOExpLib`_
+ 
+.. _`nanoI2CIOExpLib` : https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc
 
 ===============================
 Eccueils et autres difficultés
@@ -355,6 +605,16 @@ Prise en main de la librairie JSON
 
 Nécessite un investissement personnel important.
 
+DS3231 stuck I2C bus
+======================
+
+It is a known problem with DS3231 see `method for recovering I2C bus #1025`_
+
+and `Reliable Startup for I2C Battery Backed RTC`_
+
+.. _`Reliable Startup for I2C Battery Backed RTC` : http://www.forward.com.au/pfod/ArduinoProgramming/I2C_ClearBus/index.html
+
+.. _`method for recovering I2C bus #1025` : https://github.com/esp8266/Arduino/issues/1025
 
 ===========================
 Vocabulary

@@ -37,18 +37,25 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  @tableofcontents
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
-
- @li all led off after json configured json time
- @li take into account when start hour is higher than end hour  
+ 
+ @li add I and i like commands for softAP_SSID and soft_AP pass (more then 8c)
+ @li config power led economy mode 50% todo put it in the config3.json
+ @li configuration page (see softdev.rst)
+ @li generate a unic server name and default AP ssid from prefix and mac add (end)  
+ @li bug report when json is no reachable !
+ @li review work without RTC component strategy
+ @li review work without NTP access strategy
+ @li define rtc component versus NTP update strategy 
  @li improve error handling
- @li DS3231 power bat ! Yes it is harware but...
- @li add physicaly special bp and main power switch on the mock-up
  @li power measurment
+ @li manage sun and winter hour change
  
 */
 
 
 #include "IoT_EPS.h"
+#include "ESP8266FtpServer.h"
+FtpServer ftpSrv;
 
 /** 
 @fn void wifiLedFlash( int speed )
@@ -88,8 +95,11 @@ bool simpleManualMode = false;
 Flasher wifiLed;
 
 CSwitchNano mainPowerSiwtch;
+int mainPowerSwitchState;
 int mainPowerPrevState = 0;
 CSwitchNano specialBp;
+
+CNanoI2CIOExpander nanoioExp; //just for main pow led
 
 // CFlasherNanoExp extraLed;
 
@@ -98,29 +108,95 @@ CTempo allLeds;
 bool restartTempoLed = false;
 
 void setup(){
-
-
-
     DEFDPROMPT("setUp") // define dPrompt String
     DateTime now;
     DEBUGPORT.begin(DEBUGSPEED);
+    // Serial.setDebugOutput(true); //Serial debug of Wifi lib
     DSPL();
     DSPL( dPrompt + F("Sketch start..."));
 
+    /////////////////////////////////////////////////////////////////////////////
+    //     file system check                                                   //
+    /////////////////////////////////////////////////////////////////////////////
     DSPL( dPrompt + " Build : " + __DATE__ + " @ " + __TIME__);
     errFS = !SPIFFS.begin(); // to check if it's possible to begin twice the SPIFFS
     //next time is in cParam.begin
-    // The response was already in the code : about line
-    if (errFS) DSPL( dPrompt + F("error in Opening File System") );
-    else DSPL( dPrompt + F("File system corectly Open @ setup level") );
+    // The response was already in the code : about line 300
+    //secon time commented on 2019/03
+    if (errFS){
+        DSPL( dPrompt + F("error in Opening File System") );
+        //can we work without file system ? No
+        fatalError();
+    } else DSPL( dPrompt + F("File system corectly Open @ setup level") );
     
- 
+    ftpSrv.begin("esp8266","esp8266");
     
 	SerialCommand::init();
     // extraLed.begin( 9, 100, 500, 4, 5000 );
+    
     cParam.begin();
-    wifiCred.begin();
+    if ( !cParam.ready ) {
+        DSPL( dPrompt + F("cParam default values. Potential fatal error") );
+        // fatalErro();
+    }
+ 
+    /////////////////////////////////////////////////////////////////////////////
+    //     I2C bus check                                                    //
+    ///////////////////////////////////////////////////////////////////////////// 
+    CNano::init();
+    rtc.begin();
+    if ( !nanoioExp.test() && rtc.initErr){
+        DSPL(dPrompt + F("I2C bus fatal error !"));
+        /** @todo re- enable funcion call fatalError after debug */
+        //fatalError();
+    }
+  
+    /////////////////////////////////////////////////////////////////////////////
+    //     rtc DS3231 start                                                    //
+    /////////////////////////////////////////////////////////////////////////////
+    rtc.begin();
+    if ( rtc.initErr ) {
+        DSPL(dPrompt + F("ERR : Couldn't find RTC"));
+        /** @todo Stop EPS and warn with colors and others LED ,
+        cause without right time EPS dosen't work.
+        Except perhaps the manual mode ! */
+    } else {
+        if (rtc.lostPower()){
+            DSPL( dPrompt + "une remise a l'heure est necessaire");
+            /** @todo enable or not ? errRTCinit due to lots power*/
+        }
+        // errRTCinit = false;0
+        /** @todo check time validity */
+        now = rtc.now();
+        String message = dPrompt + F("DS3231 Start date : ");
+        // sprintf(buf, "<VoLAB> DS3231 Start date : %d/%d/%d %d:%d:%d", 
+        message += (String)now.day()+"/"+(String)now.month()+"/";
+        message += (String)now.year()+" ";
+        message += (String)now.hour()+":"+ (String)now.minute()+":";
+        message += (String)now.second();      
+        DSPL( message);
+    }
+    /////////////////////////////////////////////////////////////////////////////
+    //     Main power                                                          //
+    /////////////////////////////////////////////////////////////////////////////    
+    // Cmcp::init();
+    
+    
+    mainPowerSiwtch.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
+    mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
+    mainPowerPrevState = mainPowerSwitchState; // for the loop
+    
+    // CNano::_nano.pinMode( MAINPOWLED, OUTPUT ); // _nano is protected
+    // CNano::_nano.digitalWrite( MAINPOWLED, mainPowerSwitchState );
+    nanoioExp.pinMode( MAINPOWLED, OUTPUT );
+    nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
+    DSPL( dPrompt + "Main power state : " +  ( mainPowerSwitchState?"ON":"OFF") );
+    specialBp.begin( SPECIALBP, 20, INPUT_PULLUP );
 
+  
+    /////////////////////////////////////////////////////////////////////////////
+    //     Plugs config                                                        //
+    /////////////////////////////////////////////////////////////////////////////
     delete [] plugs;
     DSPL( dPrompt + F("number of plugs : ") + cParam.getNumberOfPlugs() );
     plugs = new CPowerPlug[ cParam.getNumberOfPlugs() ];
@@ -136,55 +212,16 @@ void setup(){
     // through the creation of the pointer) will be separated into arrSize amount of elements of type 
     // int with a maximum memory value (in bytes) equal to the maximum available 
     // for the int type variables
-	   
-    /////////////////////////////////////////////////////////////////////////////
-    //     rtc DS3231 start                                                           //
-    /////////////////////////////////////////////////////////////////////////////
-    rtc.begin();
-    // Wire.beginTransmission(DS3231_ADDRESS);
-    // errRTCinit = Wire.endTransmission();
-    if ( !rtc.initErr ){
-        if (rtc.lostPower()){
-            DSPL( dPrompt + "une remise a l'heure est necessaire");
-            //errRTCinit = true;
-            /** @todo enable or not ? errRTCinit due to lots power*/
-        }
-    }
-    if ( rtc.initErr ) {
-        DSPL(dPrompt + F("ERR : Couldn't find RTC"));
-        /** @todo Stop EPS and warn with colors and others LED ,
-        cause without right time EPS dosen't work. No manual mode shall work */
-    } else {
-        // errRTCinit = false;0
-        /** @todo check time validity */
-        now = rtc.now();
-        String message = dPrompt + F("DS3231 Start date : ");
-        // sprintf(buf, "<VoLAB> DS3231 Start date : %d/%d/%d %d:%d:%d", 
-        message += (String)now.day()+"/"+(String)now.month()+"/";
-        message += (String)now.year()+" ";
-        message += (String)now.hour()+":"+ (String)now.minute()+":";
-        message += (String)now.second();      
-        DSPL( message);
-    }
     
-    /////////////////////////////////////////////////////////////////////////////
-    //     Plugs config                                                        //
-    /////////////////////////////////////////////////////////////////////////////
     FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
-    
-    // Cmcp::init();
-    CNano::init();
-    mainPowerSiwtch.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
-    int mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
-    mainPowerPrevState = mainPowerSwitchState; // for the loop
-    DSPL( dPrompt + "Main power state : " +  ( mainPowerSwitchState?"ON":"OFF") );
-    specialBp.begin( SPECIALBP, 5, INPUT_PULLUP );
-    
+
     /** @todo test if CNano::initOk = true - if not don't start anything*/
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CPowerPlug::modeId("MANUEL") );
     plugs[0].setColor( CRGB::Red );
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
-    plugs[0].readFromJson( mainPowerSwitchState );
+    if ( mainPowerSwitchState ) plugs[0].readFromJson( true );
+    else  plugs[0].handleBpLongClic(); //change due to clone mode bug
+    
     /** @todo improve error check from CPowerPlug::readFromJson*/
     /** @todo add pin, pinLed and color to json file*/
     /** @todo + le nombre de plug pour rendre cette séquense dynamic*/
@@ -192,23 +229,26 @@ void setup(){
     plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, BP1, CPowerPlug::modeId("MANUEL") );
     plugs[1].setColor( CRGB::Green );
     plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
-    plugs[1].readFromJson(  mainPowerSwitchState );
+    if ( mainPowerSwitchState ) plugs[1].readFromJson( true );
+    else  plugs[1].handleBpLongClic();
     plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, BP2, CPowerPlug::modeId("MANUEL") );
     plugs[2].setColor( CRGB::Blue );
     plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
-    plugs[2].readFromJson( mainPowerSwitchState );
+    if ( mainPowerSwitchState ) plugs[2].readFromJson( true );
+    else  plugs[2].handleBpLongClic();
     // plugs[2].setColor( CRGB::Purple );
     plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, BP3, CPowerPlug::modeId("MANUEL") );
     plugs[3].setColor( CRGB::Yellow );
     plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
-    plugs[3].readFromJson( mainPowerSwitchState );
+    if ( mainPowerSwitchState ) plugs[3].readFromJson( true );
+    else  plugs[3].handleBpLongClic();
     for ( int i = 0; i < NBRPLUGS ; i++ ){
         colorLeds[i] = plugs[i].getColor();
         /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/
+        plugs[i].setMainPow( mainPowerSwitchState );
     }
     // FastLED.setBrightness(5);
     FastLED.setBrightness( cParam.getLedsLuminosity() );
-    
     FastLED.show();
 	
     /** @todo document simpleManualMode with no wifi at all */
@@ -216,9 +256,8 @@ void setup(){
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
-
+    wifiCred.begin();    
 	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
-	
 	if ( !simpleManualMode ){
 		int tryCount = 0;
 		if (cParam.ready){
@@ -228,52 +267,85 @@ void setup(){
 		DSP( dPrompt + F("Mode autoconnect : "));
 		DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
 		DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
-
-		if ( wifiCred.ready ){ 
-			if ( cParam.getWifiMode() == "client" ){ // Station WIFI mode
-				WiFi.mode(WIFI_STA);
-				WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
-				DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
-				wifiLedFlash( wifiLed, WIFILED_FLASH_COUNT );
-				// wifiLedFlash( WIFILED_FLASH_FAST, WIFILED_FLASH_COUNT );
-				wifiLed.begin( WIFILED, WIFILED_FLASH_SLOW, WIFILED_FLASH_SLOW );
-				while (WiFi.status() != WL_CONNECTED) {
-					delay(500);
-					// digitalWrite( WIFILED , !digitalRead( WIFILED ) );
-					wifiLed.update();
-					DSP(".");
-					//a normal acces should came in 10 try
-					tryCount++;
-					if (tryCount == MAX_WIFI_CONNECT_RETRY ) break;
-					
-				}
-				wifiLed.stop();
-                pinMode( WIFILED, OUTPUT );
-				digitalWrite( WIFILED, HIGH);
-				DSPL( dPrompt + F("Number of Station wifi try : ") + (String)tryCount );
-				if ( WiFi.status() == WL_CONNECTED){
-					DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
-						+ WiFi.localIP().toString() );  
-				} else { WiFi.disconnect(); }
-			}
-			if ( cParam.getWifiMode() == "softAP" || tryCount == MAX_WIFI_CONNECT_RETRY ){
-				//WIFI soft Access Point mode
-				DSPL( dPrompt + F("Try softAccess") );
-				wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
-				wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
-				DSP("\n" + dPrompt + F("softAP : "));
-                IPAddress apIP = cParam.getIPAdd();
-				WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0)); 
-				DSPL(WiFi.softAP(wifiCred.getSsid(),
-					wifiCred.getPass() )?F("Ready"):F("Failed!"));
-				DSPL(  dPrompt + F("Adresse configured IP : ") + apIP.toString() );
-				cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
-				DSPL( dPrompt + F("SSID = ") + wifiCred.getSsid() );
-				// digitalWrite( WIFILED, LOW);
-				wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
-				// to prepare for loop
-			}
-		}
+        WiFi.persistent(false);
+        /*******************************************************************************************
+        
+        *******************************************************************************************/
+        DSPL( dPrompt + F("Wifi def mode in FLASH : ") + String(wifi_get_opmode_default	() ) );
+        softap_config	config;
+        wifi_softap_get_config_default(&config);
+        DSPL( dPrompt + "Wifi default soft AP param:" );
+        DSPL( dPrompt + "SSID len : " + config.ssid_len );
+        DSP( dPrompt + F("Stored SSID :") );
+        for ( int i = 0; i < config.ssid_len ; i++ ){
+            DSP( char(config.ssid[i]) );
+        }
+        //strcpy(reinterpret_cast<char*>(conf.ssid), ssid); dans le fichier ESP8266WiFiSTA.cpp
+        DSPL( "." );
+        
+        if ( cParam.getWifiMode() == "client" && wifiCred.ready
+                || cParam.getWifiMode() == "Station" ){ // Station WIFI mode
+            WiFi.mode(WIFI_STA);
+            WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
+            DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
+            wifiLedFlash( wifiLed, WIFILED_FLASH_COUNT );
+            // wifiLedFlash( WIFILED_FLASH_FAST, WIFILED_FLASH_COUNT );
+            wifiLed.begin( WIFILED, WIFILED_FLASH_SLOW, WIFILED_FLASH_SLOW );
+            while (WiFi.status() != WL_CONNECTED) {
+                delay(500);
+                // digitalWrite( WIFILED , !digitalRead( WIFILED ) );
+                wifiLed.update();
+                DSP(".");
+                //a normal acces should came in 10 try
+                tryCount++;
+                if (tryCount == MAX_WIFI_CONNECT_RETRY ) break;
+                
+            }
+            wifiLed.stop();
+            pinMode( WIFILED, OUTPUT );
+            digitalWrite( WIFILED, HIGH);
+            DSPL( dPrompt + F("\nNumber of Station wifi try : ") + (String)tryCount );
+            if ( WiFi.status() == WL_CONNECTED){
+                DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
+                    + WiFi.localIP().toString() );  
+            } else { WiFi.disconnect(); }
+        }
+        if ( cParam.getWifiMode() == "softAP" || tryCount == MAX_WIFI_CONNECT_RETRY
+                || !wifiCred.ready ){
+            //WIFI soft Access Point mode
+            //        bool mode(WiFiMode_t);
+            //        WiFiMode_t getMode();
+//cf. https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiGeneric.h
+//https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/generic-class.html
+//https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiType.h
+            displayWifiMode();           
+            WiFi.begin();
+            WiFi.disconnect( true ); 
+WiFi.softAPdisconnect();            
+            WiFi.mode(WIFI_AP);
+            
+            displayWifiMode();
+            DSPL( dPrompt + F("Try softAccess") );
+            wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
+            wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
+            
+            IPAddress apIP = cParam.getIPAdd();
+            WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
+            cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
+            /** @todo review the interest of keeping code below! */
+            if ( wifiCred.ready ){
+                DSPL( dPrompt + "Try soft AP with : " + wifiCred.getSoftApSsid() 
+                        + " and " + wifiCred.getSoftApPass() );
+                DSP( dPrompt + F("softAP : "));
+                DSPL(WiFi.softAP(wifiCred.getSoftApSsid(),
+                    wifiCred.getSoftApPass() )?F("Ready"):F("Failed!"));
+                IPAddress myIP = WiFi.softAPIP();
+                DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
+            }
+            // digitalWrite( WIFILED, LOW);
+            wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
+            // to prepare for loop
+        }
 		MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
 		DSPL( dPrompt + F("Host name that not work with Android is : ") + cParam.getHostName() );
 	
@@ -283,14 +355,14 @@ void setup(){
 		simpleManualModeChaser();
 	}
     
-   /////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
     //  Start of the check index.html file presence  (check file system)       //
     /////////////////////////////////////////////////////////////////////////////
-    if (!SPIFFS.begin()){
-        DSPL(dPrompt + F("SPIFFS Mount failed"));
-    } else {
-        DSPL(dPrompt + F("SPIFFS Mount succesfull"));
-    }
+    // if (!SPIFFS.begin()){
+        // DSPL(dPrompt + F("SPIFFS Mount failed"));
+    // } else {
+        // DSPL(dPrompt + F("SPIFFS Mount succesfull"));
+    // }
 /** @todo cleanup the .ino code to remove all unnecessary code like displaying SPIFFS health*/
     if (SPIFFS.exists("/index.html")) {
         DSPL( dPrompt + F("html index file found."));
@@ -319,6 +391,11 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     server = new ESP8266WebServer( cParam.getServerPort() );
 	if ( !simpleManualMode ){
+        if ( cParam.getWifiMode() == "softAP" ) {
+            server->on("/", HTTP_GET, handleSoftAPIndex );
+            DSPL( dPrompt + F("******************reg page") );
+        }
+        server->on("/ChangeCred", HTTP_POST, handleNewCred );
 		server->on("/list", HTTP_GET, handleFileList);
 		server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
 		// server->on("/", HTTP_POST, handlePlugOnOff ); 
@@ -339,16 +416,16 @@ void setup(){
 		//called when the url is not defined here
 		//use it to load content from SPIFFS
 		server->onNotFound([](){
-		if(!handleFileRead(server->uri()))
-			server->send(404, "text/plain", "FileNotFound");
-		});    
+            if(!handleFileRead(server->uri()))
+                server->send(404, "text/plain", "FileNotFound");
+		}
+        );    
 
 		server->on( "/time", displayTime );
 
 		server->on ( "/inline", []() {
 			server->send ( 200, "text/plain", "this works as well" );
 		} );
-		// server->onNotFound ( handleNotFound );
 		server->begin();
 		Serial.println ( "HTTP server started" );
 	
@@ -368,7 +445,6 @@ void setup(){
 /////////////////////////////////////////////////////////////////////////////
 //        LOOP                                                             //
 /////////////////////////////////////////////////////////////////////////////
-
 bool cycleState = false;
 void loop(){
     // cycleState = !cycleState;
@@ -379,14 +455,14 @@ void loop(){
     DEFDPROMPT("in the loop")
     if ( !simpleManualMode ) server->handleClient();
     
+    ftpSrv.handleFTP();
+    
     mainPowerSiwtch.update();
     specialBp.update();
     
     SerialCommand::process();
 
-    // extraLed.update();
-    
-	   
+    // extraLed.update();  
     
     /////////////////////////////////////////////////////////////////////////////
     //  manage leds                                                            //
@@ -408,6 +484,7 @@ void loop(){
             pinMode( WIFILED, OUTPUT );
             digitalWrite( WIFILED, LOW);
             allLeds.stop();
+            if ( cParam.getPowLedEconomyMode() ) nanoioExp.digitalWrite( MAINPOWLED, LOW );
         }
         if ( restartTempoLed ){
             for ( int i = 0; i < 4 ; i++ ){
@@ -421,6 +498,7 @@ void loop(){
                 pinMode( WIFILED, OUTPUT );
                 digitalWrite( WIFILED, HIGH);                
             }
+            nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
             restartTempoLed = false;
         }
     }
@@ -432,11 +510,10 @@ void loop(){
         // allLedsOn = false;
     // }
 
-
     /////////////////////////////////////////////////////////////////////////////
     //  manage bps                                                            //
     /////////////////////////////////////////////////////////////////////////////     
-    if ( mainPowerPrevState == HIGH ){
+    if ( mainPowerPrevState == HIGH && cParam.ready ){
         for ( int i = 0; i < NBRPLUGS ; i++ ){
             plugs[i].bp.update();
             if ( plugs[i].flashLedReq() ){ 
@@ -453,7 +530,7 @@ void loop(){
            if ( plugs[i].bp.clic() ){
                 // DSPL( dPrompt + F("I10 state : ") + (specialBp.getState()?"ON":"OFF") );
                 restartTempoLed = true;
-                if ( specialBp.getState() ){
+                if ( specialBp.getState() ){ //input pull up so 1 means no action on BP
                     plugs[i].handleBpClic();
                 } else {
                     plugs[i].handleBpDoubleClic();
@@ -467,27 +544,46 @@ void loop(){
                 restartTempoLed = true;
                 plugs[i].handleBpLongClic();
             }            
-        }   
+        }
+        //led wake up
+        // int etatBP = specialBp.getState();
+        // DSPL( dPrompt + F("SPBp state = ") + String( etatBP ) );
+        if ( !specialBp.getState() && !allLeds.enCours() ){
+            DSPL( dPrompt + F("LEDs wake up ! ") + String( restartTempoLed ) );
+            restartTempoLed = true;
+        } 
     }        
  
-
     /////////////////////////////////////////////////////////////////////////////
     //  main power switch actions                                              //
     /////////////////////////////////////////////////////////////////////////////
-	int mainPowerSate = !mainPowerSiwtch.getState();    
-    if ( mainPowerSate != mainPowerPrevState){
-        mainPowerPrevState = mainPowerSate;
-        if (mainPowerSate == HIGH ){ 
+	mainPowerSwitchState = !mainPowerSiwtch.getState();    
+    if ( mainPowerSwitchState != mainPowerPrevState){ //main power switch change state
+        mainPowerPrevState = mainPowerSwitchState;
+        if (mainPowerSwitchState == HIGH ){ 
             DSPL( dPrompt + F("main power switched ON."));
+            restartTempoLed = true;
+            for ( int i = 0; i < NBRPLUGS ; i++ ){                
+                plugs[i].setMainPow( true );
+                colorLeds[i] = plugs[i].getColor(); //restaure color LED
+            }
+            //restaure wifiLed state
+            /** @todo restaure wifi LED in AP mode */
+            if ( WiFi.status() == WL_CONNECTED ){
+                digitalWrite( WIFILED, HIGH);   
+            }
         } else {
             DSPL( dPrompt + F("main power switched OFF and all plugs are in manual state.") );
             for ( int i = 0; i < NBRPLUGS ; i++ ){
                 plugs[i].off();
-            }            
-            for ( int i = 0; i < NBRPLUGS ; i++ ){                
                 plugs[i].handleBpLongClic();
-            }
+                plugs[i].setMainPow( false );
+                colorLeds[i] = CRGB::Black;
+            }            
+            FastLED.show();
+            digitalWrite( WIFILED, LOW);  //stop wifi LED  
         }
+        nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
     }
 
     yield();
@@ -516,6 +612,13 @@ void wifiLedFlash( Flasher led, int count ){
     led.stop();
 }
 
+
+/** 
+ @fn void simpleManualModeChaser()
+ @brief Flash 4 colored LEDs in PURPLE 200ms/200ms 20 times and restaure colors to indicate
+ Simple Manual mode activation
+ @return no return value and no parameter
+*/
 void simpleManualModeChaser(){
 	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
 	FastLED.show();
@@ -525,12 +628,51 @@ void simpleManualModeChaser(){
 		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
 		FastLED.show();
 		delay(200);	
-		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Red;
+		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Purple;
 		FastLED.show();
 		delay(200);				
 	}
 	
-	//restaur Color Leds state
+	//restaure Color Leds state
 	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = plugs[i].getColor();    
 	FastLED.show();
+}
+
+
+/** 
+ @fn void fatalError()
+ @brief flash 4 color LED 50ms/50ms in RED for all time
+ @return no return value and no parameter
+*/
+void fatalError(){
+    for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+    FastLED.show();
+    delay(500);
+    while (1){     
+        for (int i=0; i < 20; i++){
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+            FastLED.show();
+            delay(50);	
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Red;
+            FastLED.show();
+            delay(50);				
+        }
+        yield();
+    }
+}
+
+
+void displayWifiMode(){
+    DEFDPROMPT("WiFi mode")
+    DSP( dPrompt ) ;
+    String s_wifiMode;
+    //WIFI_OFF = 0, WIFI_STA = 1, WIFI_AP = 2, WIFI_AP_STA = 3
+    switch ( WiFi.getMode() ){
+        case 0: s_wifiMode = F("WIFI_OFF"); break;
+        case 1: s_wifiMode = F("WIFI_STA"); break;
+        case 2: s_wifiMode = F("WIFI_AP"); break;
+        case 3: s_wifiMode = F("WIFI_STA and AP"); break;
+        default : s_wifiMode = F("???");
+    }
+    DSPL( s_wifiMode );
 }

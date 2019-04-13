@@ -21,10 +21,13 @@
 #include <RTClib.h>
 #include <ESP8266mDNS.h>
 #include <Adafruit_MCP23017.h>
+/** @todo try to remove Adafruit_MCP23017.h0 */
 #include <FastLED.h>
 // #include <Array.h>
 #include <nanoI2CIOExpLib.h>
 // #include "nanoI2CIOExpLib.h"
+#include <user_interface.h> //espressif SDK function
+//Arduino\Croquis\hardware\esp8266com\esp8266\tools\sdk\include
 
 
 #include "SerialCommand.h"
@@ -38,12 +41,13 @@
 #include "CRtc.h"
 #include "cswitchnano.h"
 
+#define DEFAULTIPADD "192.168.95.42"
 #define NBRPLUGS 4
 #define NUM_LEDS NBRPLUGS /**< for fastLED class */
 #define DATA_PIN D7 /**< for fastLED class strip data pin*/
 #define CLOCK_PIN D8 /**< for fastLED class strip data pin*/
 
-#define CONFIGFILENAME "/config3.json"
+#define CONFIGFILENAME "/config4.json"
 
 // #include "Cmcp.h"
 #include "cnano.h"
@@ -107,6 +111,7 @@
 
 #define MAINSWITCHPIN 8 //nanoI2CIOExpander pin D10
 #define SPECIALBP 10 //to ask plug state
+#define MAINPOWLED 9 //nanoI2CIOExpander pin D11
 
 #define BP0 D6 
 #define BP1 D5

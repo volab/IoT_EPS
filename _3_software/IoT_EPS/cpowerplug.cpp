@@ -137,7 +137,7 @@ This function read and write onoffcount in the json file
 void CPowerPlug::updateOutputs( bool writeToJsonCount ){
     DEFDPROMPT( "updateOutputs");
     _nano.digitalWrite( _pin, _state );
-    _nano.digitalWrite( _onOffLedPin, _state );
+    if ( _ledOn ) _nano.digitalWrite( _onOffLedPin, _state );
     if ( writeToJsonCount ){
         String strCount = readFromJson( (String)JSON_PARAMNAME_ONOFCOUNT );
         strCount = String( strCount.toInt() + 1 );
@@ -162,10 +162,11 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
     String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
     String sClonedPlug, sOnOffCount, sNextTime2switch, sPause;
     String sJours[7];
-    if (!restaurePhyState){ //manuel mode and off
-        handleBpLongClic();
-        return true;
-    }
+    //comment du due to clone bug
+    // if (!restaurePhyState){ //manuel mode and off for main powwer swith is off
+        // handleBpLongClic();
+        // return true;
+    // }
     DEFDPROMPT("reading config values for " + getPlugName())
     // DSPL( dPrompt +F("Mounting FS..."));
     if (SPIFFS.begin()) {
@@ -206,7 +207,7 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
                     _nextTimeToSwitch = sNextTime2switch.toInt();
                     _pause = ( sPause == "ON" );
 /////////////////////////////////////////////////////////////////////////////
-//    Restaure physical state                                                       //
+//    Restaure physical state                                              //
 /////////////////////////////////////////////////////////////////////////////
                     if ( restaurePhyState )
                         if ( _state && !_pause ) on(); else off();
@@ -574,8 +575,12 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         }
     } else if ( mode == CLONE_MODE){//clode mode parameters
         DSPL( dPrompt + F("clone mode actions") );
+        /////////////////////////////////////////////////////////////////////////////
+        //    Compute CLONE MODE                                                  //
+        /////////////////////////////////////////////////////////////////////////////        
         CPowerPlug clonedPlug;
         String clonedPlugName = extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_CLONEDPLUG );
+        DSPL( dPrompt + "cloned plug find name =  " + clonedPlugName );
         clonedPlug.setPlugName( clonedPlugName );
         // parameters to be cloned : state, pause, mode, hdeb, hfin, don, doff
         // , days and nextTimeToSwitch
@@ -639,7 +644,7 @@ Writes value on parma for _plugName plug of course !
 */
 void CPowerPlug::writeToJson( String param, String value ){
     DEFDPROMPT( "write to jSon");
-    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     // DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -652,8 +657,11 @@ void CPowerPlug::writeToJson( String param, String value ){
             JsonObject& plug = json[_plugName]; 
             DSPL( dPrompt + _plugName + " : " + param + " = " + value);
             plug[param] = value; 
-            configFile.seek(0, SeekSet);
-            json.prettyPrintTo(configFile);
+            // configFile.seek(0, SeekSet);
+            configFile.close();
+            configFile = SPIFFS.open( CONFIGFILENAME , "w");
+            json.printTo(configFile);
+            // json.prettyPrintTo(configFile);
             // plug.prettyPrintTo(Serial);
             // DSPL();
         } else {
@@ -675,7 +683,7 @@ It works on _dayOfWeek member
 */
 void CPowerPlug::writeDaysToJson(){
     DEFDPROMPT( "write days to jSon");
-    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     // DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -696,8 +704,11 @@ void CPowerPlug::writeDaysToJson(){
                 else plugJours[ i ] = "OFF";
             }
         //and rewrite to the file
-            configFile.seek(0, SeekSet);
-            json.prettyPrintTo(configFile);
+            // configFile.seek(0, SeekSet);
+            configFile.close();
+            configFile = SPIFFS.open( CONFIGFILENAME , "w");
+            // json.prettyPrintTo(configFile);
+            json.printTo(configFile);
             // plug.prettyPrintTo(Serial);
             // DSPL();
         } else {
@@ -853,7 +864,7 @@ writeToJson open the file, read the entire file, change one parm, rewrite the fi
     // writeToJson( JSON_PARAMNAME_MODE, mode );
     // writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
     
-    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     if (configFile) {
         size_t size = configFile.size();
         // Allocate a buffer to store contents of the file.
@@ -876,8 +887,11 @@ writeToJson open the file, read the entire file, change one parm, rewrite the fi
             for (int i = 0; i<7; i++){
                 plugJours[ i ] = "OFF";
             }
-            configFile.seek(0, SeekSet);
-            json.prettyPrintTo(configFile);
+            // configFile.seek(0, SeekSet);
+            // json.prettyPrintTo(configFile);
+            configFile.close();
+            configFile = SPIFFS.open( CONFIGFILENAME , "w");
+            json.printTo(configFile);
             // plug.prettyPrintTo(Serial);
             // DSPL();
         } else {

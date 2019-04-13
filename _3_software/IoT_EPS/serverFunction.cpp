@@ -22,11 +22,15 @@ String getContentType(String filename){
   else if(filename.endsWith(".pdf")) return "application/x-pdf";
   else if(filename.endsWith(".zip")) return "application/x-zip";
   else if(filename.endsWith(".gz")) return "application/x-gzip";
+  else if(filename.endsWith(".json")) return "application/json";
   return "text/plain";
 }
 
+
+
 bool handleFileRead(String path){
   DEBUGPORT.println("handleFileRead: " + path);
+  
   if(path.endsWith("/")) path += "index.html";
   String contentType = getContentType(path);
   String pathWithGz = path + ".gz";
@@ -185,8 +189,13 @@ OK
 // extern CPowerPlug plugs[4];
 extern CPowerPlug *plugs;
 extern bool restartTempoLed;
+extern int mainPowerSwitchState;
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
+    if ( !mainPowerSwitchState ){
+        server->send(404, "text/plain", "Page not found");
+        return;
+    }
     /////////////////////////////////////////////////////////////////////////////
     //      DISPLAY URI                                                        //
     /////////////////////////////////////////////////////////////////////////////
@@ -224,5 +233,93 @@ void handlePlugOnOff(){
     }
    
     String returnPage = allArgs + "\n" + returnVal ;
-    server->send(200, "text/plain", returnPage );    
+    // server->send(200, "text/plain", returnPage );    
+    handleFileRead("/");    
 }
+
+
+/** 
+ @fn void handleSoftAPIndex()
+ @brief A function to diplay SoftAP special Page
+ @return no return value and no parameter
+
+*/
+void handleSoftAPIndex(){
+    String page;
+
+    page = "<html><head>";
+    // page += "<meta http-equiv='refresh' content='5'/>";
+    page += "<title>IoT EPS softAP index page</title>";
+    page += "<style>";
+    page += "body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }";
+    page += "</style></head><body><h1>IoT EPS Soft Access Point Index Page!</h1>";
+    page += "<a href=\"index.html\">Accueil</a><p>";
+    page += "<p> While there is not internet connection in soft Access Point mode we can not";
+    page += " display a nice page with Bootsrap and others great features...</p>";
+    page += "</br></br></br></br><h1>Enter new credentials</h1>";
+    page += "<FORM action=\"/ChangeCred\" method=\"post\">";
+    page += "<p>";
+    page += "<label style=\"font-size:250%\">SSID";
+    page += "<INPUT type=\"text\" name=\"ssid\" style=\"font-size:115%\"></label><BR>";
+    page += "</br><label style=\"font-size:250%\">pasword";
+    page += "<INPUT type=\"text\" name=\"pass\" style=\"font-size:115%\" ></label><BR>";
+    page += "<INPUT type=\"submit\" value=\"Send\" style=\"font-size:250%\" >";
+    page += "<INPUT type=\"reset\" style=\"font-size:250%\"   > ";
+    page += "</p></form>";
+    page += "</body></html>";
+    server->send ( 200, "text/html", page );
+    /** @todo add a link to the page to drive power strip without internet connection */
+    /** @todo add a page to set the DS3231 time without NTP server of course */
+}
+
+/** 
+ @fn void handleNewCred()
+ @brief fun tha handle new credential in response to handleSoftAPIndex...
+ @return no return value and no parameter
+
+ This function write credentials.json file in the SPIFFS with received SSID and password.
+ 
+*/
+void handleNewCred(){
+    //usage /ChangeCred?SSID=xxxx/pass="yyyy" or connect to Stripplug in softAP mode to change
+    // credential.
+    DEFDPROMPT( F("handel New Cred") );
+    String uriReceived = server->uri();
+    DSPL( dPrompt + F(" Received uri = ") + uriReceived );
+        DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
+    String allArgs = F(" Received args : ") ;
+    for ( int i = 0; i < server->args() ; i++ ){
+        allArgs += server->argName( i ) + "=" + server->arg( i ) + "/";
+    }
+    DSPL( dPrompt + allArgs);
+    String ssid = server->arg( 0 );
+    String pass = server->arg( 1 );
+    DSPL( dPrompt + F("SSID = ") + ssid );
+    DSPL( dPrompt + F("pass = ") + pass );
+    //creat file : credentials.json
+    //ArduinoJson lib with pdf serialization documentation
+    /*
+    {
+    "ssid" : "VoLab",
+    "pass" : "V0L@b42net"
+    }
+    */
+    const int capacity = JSON_OBJECT_SIZE(4);
+    StaticJsonBuffer<capacity> jb;
+    JsonObject& obj = jb.createObject();
+    obj["ssid"] = ssid;
+    obj["pass"] = pass;
+    // jb.prettyPrintTo(configFile);
+    obj.prettyPrintTo(Serial);DSPL("");
+    File credFile = SPIFFS.open( "/credentials.json" , "w");
+    if (credFile){
+        DSPL( dPrompt + F("File /credentials.json open for write") );
+        obj.prettyPrintTo(credFile);
+    } else {
+        DSPL( dPrompt + F("File /credentials.json open for write fail !") );
+    }
+    credFile.close();
+    String returnPage = allArgs ;
+    server->send(200, "text/plain", returnPage );     
+}
+

@@ -12,6 +12,20 @@
 #include "IoT_EPS.h"
 // #include  "configParam.h"
 
+void ConfigParam::begin(){
+    _wifimode = "softAP" ; //default value
+    _host= "PowerStrip";
+    String ipad = DEFAULTIPADD;
+    _addIP.fromString( ipad );
+    _numberOfPlugs = 4;
+    _serverPort = 80;
+    // _allLedsOnTime = 30;
+    _allLedsOnTime = -1;
+    
+    _ledsGlobalLuminosity = 5;    
+    ready = readFromJson();
+}
+
 /**
 @fn bool ConfigParam::readFromJson()
 @brief the methode to read the file config parameters...
@@ -49,17 +63,23 @@ bool ConfigParam::readFromJson(){
                 JsonObject& json = jsonBuffer.parseObject(buf.get());
                 // json.printTo(DEBUGPORT);
                 if (json.success()) {
-                    String s_IpAdd = json["general"]["IP"].as<String>();
+                    String s_IpAdd = json["general"]["softAP_IP"].as<String>();
                     _addIP.fromString( s_IpAdd );
                     _numberOfPlugs = json["general"]["numberOfPlugs"].as<String>().toInt();
-                    _serverPort = json["general"]["Port"].as<String>().toInt();
-                    _wifimode = json["general"]["wifimode"].as<String>();
+                    _serverPort = json["general"]["softAP_port"].as<String>().toInt();
+                    // _wifimode = json["general"]["wifimode"].as<String>();
+                    String startInAPMode = json["general"]["startInAPMode"].as<String>();
+                    if ( startInAPMode == "OFF") _wifimode = "Station";
+                    else _wifimode = "softAP";
+                    _firstBoot = (json["general"]["firstBoot"].as<String>() == "ON");
                     _host = json["general"]["hostName"].as<String>();
                     _allLedsOnTime = json["general"]["allLedsOnTime"].as<String>().toInt();
                     _ledsGlobalLuminosity = \
                         json["general"]["ledsGlobalLuminosity"].as<String>().toInt();
+                    _powerLedEconomyMode = (json["general"]["powerLedEconomyMode"].as<String>() == "ON");
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+                    
                     return false;
                 }
                 configFile.close();
@@ -127,12 +147,21 @@ void ConfigParam::displayWifiMode(){
 	DSPL( dPrompt + F("Mode = ") + _wifimode );
 	Credential wifiCred;
 	wifiCred.begin();
-	DSPL( dPrompt + F("SSDID = ") + (String)wifiCred.getSsid() );
+    if ( wifiCred.ready){
+        DSPL( dPrompt + F("SSID for Station mode = ") + (String)wifiCred.getSsid() );
+        DSPL( dPrompt + F("pass for Station mode = ") + (String)wifiCred.getPass() );
+        DSPL( dPrompt + F("Sation MAC add = ") + WiFi.macAddress() );
+        DSPL( dPrompt + F("SSID for sofAP mode = ") + (String)wifiCred.getSoftApSsid() );
+        DSPL( dPrompt + F("pass for sofAP mode = ") + (String)wifiCred.getSoftApPass() ); 
+        DSPL( dPrompt + F("Acces Point MAC add = ") + WiFi.softAPmacAddress() );
+    } else DSPL(dPrompt + F("Credentials error") );
+	
 }
 
-void ConfigParam::write2Json( String param, String value ){
+/** @todo doc. void ConfigParam::write2Json( String param, String value ) */
+void ConfigParam::write2Json( String param, String value  ){
     DEFDPROMPT( "write config param to jSon");
-    File configFile = SPIFFS.open( CONFIGFILENAME , "r+");
+    File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     //DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -145,8 +174,10 @@ void ConfigParam::write2Json( String param, String value ){
             JsonObject& plug = json["general"]; 
             DSPL( dPrompt + " general : " + param + " = " + value);
             plug[param] = value; 
-            configFile.seek(0, SeekSet);
-            json.prettyPrintTo(configFile);
+            // configFile.seek(0, SeekSet);
+            configFile.close();
+            configFile = SPIFFS.open( CONFIGFILENAME , "w");
+            json.printTo(configFile);
             // plug.prettyPrintTo(Serial);
             // DSPL();
         } else {
@@ -155,13 +186,37 @@ void ConfigParam::write2Json( String param, String value ){
         }
         configFile.close();
         // return true;  
-/** @todo perhaps add error handling as in readFromJson()*/        
+/** @todo perhaps add error handling as in readFromJson() */ 
+      
     }     
 }
 
+/** 
+ @fn void ConfigParam::chgSSID( String value )
+ @brief a short static function call in SerialCommand.cpp to change Wifi SSID
+ @param value : password as a String
+ @return no return
+*/
 void ConfigParam::chgSSID( String value ){
     DEFDPROMPT( "write credentials SSID");
-    File configFile = SPIFFS.open( "/credentials.json" , "r+");
+    _write2CredJson( "ssid", value );  
+}
+
+/** 
+ @fn void ConfigParam::chgWifiPass( String value )
+ @brief a short static function call in SerialCommand.cpp to change Wifi Pass
+ @param value : password as a String
+ @return no return
+*/
+void ConfigParam::chgWifiPass( String value ){
+    DEFDPROMPT( "write credentials password");
+    _write2CredJson( "pass", value );
+}
+
+void ConfigParam::_write2CredJson( String param, String value ){
+    DEFDPROMPT( "write to credentials");
+    File configFile = SPIFFS.open( "/credentials.json" , "r");
+    // File configFile = SPIFFS.open( file.c_str() , "r");
     //DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -171,9 +226,11 @@ void ConfigParam::chgSSID( String value ){
         DynamicJsonBuffer jsonBuffer;
         JsonObject& json = jsonBuffer.parseObject(buf.get());
         if (json.success()) {
-            DSPL( dPrompt + " written SSID = " + value);
-            json["ssid"] = value; 
-            configFile.seek(0, SeekSet);
+            DSPL( dPrompt + " written WiFi "+ param +" : " + value);
+            json[param] = value; 
+            // configFile.seek(0, SeekSet);
+            configFile.close();
+            configFile = SPIFFS.open( "/credentials.json" , "w");
             json.prettyPrintTo(configFile);
             // plug.prettyPrintTo(Serial);
             // DSPL();
@@ -184,5 +241,5 @@ void ConfigParam::chgSSID( String value ){
         configFile.close();
         // return true;  
 /** @todo perhaps add error handling as in readFromJson()*/        
-    }     
+    } 
 }

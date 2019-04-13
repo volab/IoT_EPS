@@ -5,7 +5,7 @@ $(document).ready( ()=>{
     const regEx         = new C_RexExPatern();
     const red           = new C_Plug("redPlug");
     const table         = new C_Table();
-    const v_jsonFile    = 'config3.json';
+    const v_jsonFile    = 'config4.json';
 
     const HOME          = $("div.home");
     const FIELDSET      = $("fieldset");

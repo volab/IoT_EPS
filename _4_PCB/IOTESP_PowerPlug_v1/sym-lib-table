@@ -1,0 +1,5 @@
+(sym_lib_table
+  (lib (name espLib)(type Legacy)(uri ${KIPRJMOD}/espLib.lib)(options "")(descr ""))
+  (lib (name wemos_mini)(type Legacy)(uri ${KIPRJMOD}/wemos_mini.lib)(options "")(descr ""))
+  (lib (name arduino_nano)(type Legacy)(uri ${KIPRJMOD}/arduino_nano.lib)(options "")(descr ""))
+)
