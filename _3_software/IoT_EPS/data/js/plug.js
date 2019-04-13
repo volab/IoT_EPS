@@ -15,7 +15,7 @@ class C_Plug{
         this.targetClassList            = null;
 
         /* définition des radio 'modeSelector' */
-        this.divLeft                    = null;
+        // this.divLeft                    = null;
         this.modeManuel                 = null;
         this.modeMinuterie              = null;
         this.modeCyclique               = null;
@@ -39,9 +39,10 @@ class C_Plug{
             //sub div colone 3 (2/2)
         this.manuelDiv_dureeOff         = null;
         this.manuel_dureeOff            = null;
-            //submit
+            //submit, Reset
         this.manuelForm                 = null;
         this.manuelSubmit               = null;
+        this.manuelReset                = null;
 
         /* Mode Minuterie */
             //Time Selector
@@ -126,7 +127,7 @@ class C_Plug{
         /* Permet d'initialiser les QuerySelector des boutons radio pour le 'modeSelector */
         // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
 
-        this.divLeft            = $(`.div_left`);
+        // this.divLeft            = $(`.div_left`);
         this.modeManuel         = $(`.modeSelector.Manuel`);
         this.modeMinuterie      = $(`.modeSelector.Minuterie`);
         this.modeCyclique       = $(`.modeSelector.Cyclique`);
@@ -153,9 +154,10 @@ class C_Plug{
             //sub div colone 3 (2/2)
         this.manuelDiv_dureeOff  = $(`.Manuel.div_dureeOff`);
         this.manuel_dureeOff  = $(`.Manuel.dureeOff`);
-        //Submit
+        //Submit, Reset
         this.manuelForm = $(`.Manuel.formRequest`);
         this.manuelSubmit = $(`.Manuel.submit`);
+        this.manuelReset = $(".Manuel.reset");
     }
 
     f_setQueryMinuterie(v_colorPlug){
@@ -235,7 +237,7 @@ class C_Plug{
     f_displayNoneAll(){
         /* Permet de masquer tous les DIV à l'intérieur des FILDSET */
         //mode Manuel
-        this.divLeft.css("display", "none");
+        // this.divLeft.css("display", "none");
         this.manuelDiv.css("display", "none");
         this.manuelDivDiffTypeSelector.css("display", "none");
         this.manuelDiv_hFin.css("display", "none");

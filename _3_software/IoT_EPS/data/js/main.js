@@ -14,7 +14,7 @@ $(document).ready( ()=>{
 
     const menuHome      = $(".home.modeSelector");
     const menuHelp      = $(".help.modeSelector");
-    const menuCfg      = $(".cfg.modeSelector");
+    const menuCfg       = $(".cfg.modeSelector");
 
     /*
     * Nettoyage avant usage
@@ -178,6 +178,17 @@ $(document).ready( ()=>{
         "input",
         (event)=>{
             regEx.f_callbackRegEx(event)
+        }
+    );
+
+    red.manuelReset.on(
+        "click",
+        (event)=>{
+            red.f_displayDiv_dureeOff("none");
+            red.f_displayDiv_hFin("none");
+            red.f_displayTypeSelector("none");
+            // INFO : JQuery n'a pas de methode native 'reset()'. Il faut utiliser la methode Javascript
+            red.manuelForm[0].reset();
         }
     );
 
