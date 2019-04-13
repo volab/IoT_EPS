@@ -48,7 +48,7 @@ class ConfigParam{
         //in seconds (not unsigned cause -1 could serve to allways on in future)
         int _ledsGlobalLuminosity;
         bool _firstBoot;
-       
+        static void _write2CredJson( String param, String value );
 
 };
 

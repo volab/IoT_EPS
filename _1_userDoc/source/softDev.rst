@@ -512,6 +512,9 @@ bug finded :
 - no default state in manual mode : corrected
 - minuterie (timer mode) no default value for the ratio immediat start or differed start - corrected
 - bug in ESP source side effect of main power switch  ?
+
+improvments:
+- add tips on main page : To refresh this page press F5
     
 ===============================
 Usefull Documentation

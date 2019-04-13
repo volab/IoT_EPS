@@ -148,14 +148,18 @@ void ConfigParam::displayWifiMode(){
 	Credential wifiCred;
 	wifiCred.begin();
     if ( wifiCred.ready){
-        DSPL( dPrompt + F("SSID = ") + (String)wifiCred.getSsid() );
-        DSPL( dPrompt + F("pass = ") + (String)wifiCred.getPass() );
-    }
+        DSPL( dPrompt + F("SSID for Station mode = ") + (String)wifiCred.getSsid() );
+        DSPL( dPrompt + F("pass for Station mode = ") + (String)wifiCred.getPass() );
+        DSPL( dPrompt + F("Sation MAC add = ") + WiFi.macAddress() );
+        DSPL( dPrompt + F("SSID for sofAP mode = ") + (String)wifiCred.getSoftApSsid() );
+        DSPL( dPrompt + F("pass for sofAP mode = ") + (String)wifiCred.getSoftApPass() ); 
+        DSPL( dPrompt + F("Acces Point MAC add = ") + WiFi.softAPmacAddress() );
+    } else DSPL(dPrompt + F("Credentials error") );
 	
 }
 
 /** @todo doc. void ConfigParam::write2Json( String param, String value ) */
-void ConfigParam::write2Json( String param, String value ){
+void ConfigParam::write2Json( String param, String value  ){
     DEFDPROMPT( "write config param to jSon");
     File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     //DSPL( dPrompt);
@@ -182,7 +186,8 @@ void ConfigParam::write2Json( String param, String value ){
         }
         configFile.close();
         // return true;  
-/** @todo perhaps add error handling as in readFromJson()*/        
+/** @todo perhaps add error handling as in readFromJson() */ 
+      
     }     
 }
 
@@ -194,32 +199,7 @@ void ConfigParam::write2Json( String param, String value ){
 */
 void ConfigParam::chgSSID( String value ){
     DEFDPROMPT( "write credentials SSID");
-    File configFile = SPIFFS.open( "/credentials.json" , "r");
-    //DSPL( dPrompt);
-    if (configFile) {
-        size_t size = configFile.size();
-        // Allocate a buffer to store contents of the file.
-        std::unique_ptr<char[]> buf(new char[size]);
-        configFile.readBytes(buf.get(), size);
-        DynamicJsonBuffer jsonBuffer;
-        JsonObject& json = jsonBuffer.parseObject(buf.get());
-        if (json.success()) {
-            DSPL( dPrompt + " written SSID = " + value);
-            json["ssid"] = value; 
-            // configFile.seek(0, SeekSet);
-            configFile.close();
-            configFile = SPIFFS.open( "/credentials.json" , "w");
-            json.prettyPrintTo(configFile);
-            // plug.prettyPrintTo(Serial);
-            // DSPL();
-        } else {
-            DEBUGPORT.println(dPrompt + F("Failed to load json credentials"));
-            // return false;
-        }
-        configFile.close();
-        // return true;  
-/** @todo perhaps add error handling as in readFromJson()*/        
-    }     
+    _write2CredJson( "ssid", value );  
 }
 
 /** 
@@ -230,7 +210,13 @@ void ConfigParam::chgSSID( String value ){
 */
 void ConfigParam::chgWifiPass( String value ){
     DEFDPROMPT( "write credentials password");
+    _write2CredJson( "pass", value );
+}
+
+void ConfigParam::_write2CredJson( String param, String value ){
+    DEFDPROMPT( "write to credentials");
     File configFile = SPIFFS.open( "/credentials.json" , "r");
+    // File configFile = SPIFFS.open( file.c_str() , "r");
     //DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -240,8 +226,8 @@ void ConfigParam::chgWifiPass( String value ){
         DynamicJsonBuffer jsonBuffer;
         JsonObject& json = jsonBuffer.parseObject(buf.get());
         if (json.success()) {
-            DSPL( dPrompt + " written WiFi pass = " + value);
-            json["pass"] = value; 
+            DSPL( dPrompt + " written WiFi "+ param +" : " + value);
+            json[param] = value; 
             // configFile.seek(0, SeekSet);
             configFile.close();
             configFile = SPIFFS.open( "/credentials.json" , "w");
@@ -255,5 +241,5 @@ void ConfigParam::chgWifiPass( String value ){
         configFile.close();
         // return true;  
 /** @todo perhaps add error handling as in readFromJson()*/        
-    }     
+    } 
 }

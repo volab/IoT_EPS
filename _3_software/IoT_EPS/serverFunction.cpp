@@ -233,7 +233,8 @@ void handlePlugOnOff(){
     }
    
     String returnPage = allArgs + "\n" + returnVal ;
-    server->send(200, "text/plain", returnPage );    
+    // server->send(200, "text/plain", returnPage );    
+    handleFileRead("/");    
 }
 
 

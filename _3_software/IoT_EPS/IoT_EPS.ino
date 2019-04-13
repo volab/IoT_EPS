@@ -39,11 +39,9 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   Here I want to trace major features implementations.
  
  @li add I and i like commands for softAP_SSID and soft_AP pass (more then 8c)
- @li improve <W> commande to display the good SSID regardless of real connected mode 
  @li config power led economy mode 50% todo put it in the config3.json
- @li change config3 to config4 (see softdev.rst)
  @li configuration page (see softdev.rst)
- @li generate a unic server name  
+ @li generate a unic server name and default AP ssid from prefix and mac add (end)  
  @li bug report when json is no reachable !
  @li review work without RTC component strategy
  @li review work without NTP access strategy
@@ -113,6 +111,7 @@ void setup(){
     DEFDPROMPT("setUp") // define dPrompt String
     DateTime now;
     DEBUGPORT.begin(DEBUGSPEED);
+    // Serial.setDebugOutput(true); //Serial debug of Wifi lib
     DSPL();
     DSPL( dPrompt + F("Sketch start..."));
 
