@@ -15,7 +15,6 @@ class C_Plug{
         this.targetClassList            = null;
 
         /* définition des radio 'modeSelector' */
-        // this.divLeft                    = null;
         this.modeManuel                 = null;
         this.modeMinuterie              = null;
         this.modeCyclique               = null;
@@ -125,9 +124,6 @@ class C_Plug{
 
     f_setQueryModeSelector(v_colorPlug){
         /* Permet d'initialiser les QuerySelector des boutons radio pour le 'modeSelector */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
-
-        // this.divLeft            = $(`.div_left`);
         this.modeManuel         = $(`.modeSelector.Manuel`);
         this.modeMinuterie      = $(`.modeSelector.Minuterie`);
         this.modeCyclique       = $(`.modeSelector.Cyclique`);
@@ -137,8 +133,6 @@ class C_Plug{
 
     f_setQueryManuel(v_colorPlug){
         /* Permet d'initialiser les QerySelector pour le mode Manuel */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
-
         this.manuelDiv = $(`.Manuel.div_subSummary`);
             //sub div colone 1
         this.manuelDiv_on_off  = $(`.Manuel .on_off`);
@@ -162,8 +156,6 @@ class C_Plug{
 
     f_setQueryMinuterie(v_colorPlug){
         /* Permet d'initialiser les QerySelector pour le mode Minuterie */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
-        
         this.minuterieDiv = $(`.Minuterie.div_subSummary`);
         this.minuterie_dureeOn = $(`.Minuterie.dureeOn`);
         this.minuterieForm = $(`.Minuterie.formRequest`);
@@ -172,8 +164,6 @@ class C_Plug{
 
     f_setQueryCyclique(v_colorPlug){
         /* Permet d'intialiser les QuerySelector pour le mode Cyclique */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
-
         this.cycliqueDiv = $(`.Cyclique.div_subSummary`);
         this.cyclique_dureeOn = $(`.Cyclique.dureeOn`);
         this.cyclique_dureeOff = $(`.Cyclique.dureeOff`);
@@ -186,7 +176,6 @@ class C_Plug{
 
     f_setQueryHebdomadaire(v_colorPlug){
         /* Permet d'intialiser les QuerySelector pour le mode Hebdomadaire */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
             //DIV
         this.hebdomadaireDiv = $(`.Hebdomadaire.div_subSummary`);
             //QuerySelectorAll (liste d'objet)
@@ -212,8 +201,6 @@ class C_Plug{
 
     f_setQueryClone(v_colorPlug){
         /* Permet d'initialiser les QuerySelector pour le mode Clone */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
-
         this.cloneDiv               = $(`.Clone.div_subSummary`);
         this.cloneInputHide         = $(`input[name="clonedPlug"]`)
         this.cloneToRed             = $(`.Clone.Red`);
@@ -237,7 +224,6 @@ class C_Plug{
     f_displayNoneAll(){
         /* Permet de masquer tous les DIV à l'intérieur des FILDSET */
         //mode Manuel
-        // this.divLeft.css("display", "none");
         this.manuelDiv.css("display", "none");
         this.manuelDivDiffTypeSelector.css("display", "none");
         this.manuelDiv_hFin.css("display", "none");

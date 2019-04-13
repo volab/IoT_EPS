@@ -1,20 +1,23 @@
 $(document).ready( ()=>{
     // start .ready()
 
-    const log           = new C_MyLog();
-    const regEx         = new C_RexExPatern();
-    const red           = new C_Plug("redPlug");
-    const table         = new C_Table();
-    const v_jsonFile    = 'config4.json';
+    const log                   = new C_MyLog();
+    const regEx                 = new C_RexExPatern();
+    const red                   = new C_Plug("redPlug");
+    const table                 = new C_Table();
+    const v_jsonFile            = 'config4.json';
 
-    const HOME          = $("div.home");
-    const FIELDSET      = $("fieldset");
-    // const HELP          = $("div.help");
-    // const CFG           = $("div.cfg");
+    const HOME                  = $("div.home");
+    const FIELDSET              = $("fieldset");
+    // const HELP               = $("div.help");
+    // const CFG                = $("div.cfg");
 
-    const menuHome      = $(".home.modeSelector");
-    const menuHelp      = $(".help.modeSelector");
-    const menuCfg       = $(".cfg.modeSelector");
+    const BTN_RST_NOT_MANUEL    = $(".reset:not(:first)");
+    const FORM_NOT_MANUEL       = $(".formRequest:not(:first)");
+
+    const menuHome              = $(".home.modeSelector");
+    const menuHelp              = $(".help.modeSelector");
+    const menuCfg               = $(".cfg.modeSelector");
 
     /*
     * Nettoyage avant usage
@@ -71,14 +74,12 @@ $(document).ready( ()=>{
     $(window).resize(
         ()=>{
             f_resize();
-            // console.log("reducteur de tête !")
         }
     )
 
     /*
     * Menu (Hamberger + Sidebar)
     */
-
     var v_sidebar = $('#sidebar');
 
     var toggleSidebar = ()=>{ 
@@ -94,7 +95,6 @@ $(document).ready( ()=>{
     /*
      * Selecteurs sidebar != des prises
      */
-
     menuHome.on(
         "click",
         ()=>{
@@ -119,6 +119,21 @@ $(document).ready( ()=>{
             f_hideAll();
             f_showOne(CFG);
     });
+
+    /*
+     *  Common Events
+     */
+    BTN_RST_NOT_MANUEL.on(
+        "click", 
+        (event)=>{
+            regEx.f_clean();
+            BTN_RST_NOT_MANUEL.each(
+                (i)=>{
+                    FORM_NOT_MANUEL[i].reset();
+                }
+            );
+        }
+    );
 
     /*
     * Events Manuel
@@ -187,39 +202,11 @@ $(document).ready( ()=>{
             red.f_displayDiv_dureeOff("none");
             red.f_displayDiv_hFin("none");
             red.f_displayTypeSelector("none");
+            regEx.f_clean();
             // INFO : JQuery n'a pas de methode native 'reset()'. Il faut utiliser la methode Javascript
             red.manuelForm[0].reset();
         }
     );
-
-    // $(red.manuelForm).on(
-    //     "submit",
-    //     (event)=>{
-    //         event.preventDefault();
-    //         let v_target = red.f_getQueryTarget(event);
-    //         let v_data = red.f_getDataForm(v_target);
-    //         console.log(v_data);
-    //         var v_form = $(".Manuel.formRequest");
-    //         var v_url = v_form.attr("action");
-    //         $(event).submit();
-    //         console.log(event);
-    //         log.f_formLog(v_target);
-    //         $(red.manuelForm)[0].reset();
-    //         $.post(v_url, v_data, "ok");
-    //         $.ajax({
-    //             type: "POST",
-    //             url: v_url,
-    //             data: v_data,
-    //             success:(url, data) => {
-    //                 console.log("ok");
-    //             },
-    //             error: () =>{
-    //                 console.log("pas ok");
-    //             },
-    //             datatype: "text"
-    //         })
-    //     }
-    // );
 
     /*
     * Events Minuterie
@@ -240,16 +227,6 @@ $(document).ready( ()=>{
         (event)=>{
             regEx.f_callbackRegEx(event)
         });
-
-    // $(red.minuterieForm).on(
-    //     "submit",
-    //     (event)=>{
-    //         event.preventDefault();
-    //         $(this).submit();
-    //         log.f_formLog( red.f_getQueryTarget(event));
-    //         $(red.minuterieForm)[0].reset();
-    //     }
-    // );
 
     /*
     * Events Cyclique
@@ -302,22 +279,9 @@ $(document).ready( ()=>{
         }
     );    
 
-    // $(red.cycliqueForm).on(
-    //     "submit",
-    //     (event)=>{
-    //         event.preventDefault();
-    //         $(this).submit();
-    //         log.f_formLog( red.f_getQueryTarget(event));
-    //         if (!red.cycliquePauseBool){
-    //             $(red.cycliqueForm)[0].reset();
-    //         }
-    //     }
-    // );
-
     /* 
     * event Hebdomadaire
     */
-
     $(red.modeHedbomadaire).on(
         "click", 
         (event)=>{
@@ -380,22 +344,9 @@ $(document).ready( ()=>{
         }
     );    
 
-    // $(red.hebdomadaireForm).on(
-    //     "submit",
-    //     (event)=>{
-    //         event.preventDefault();
-    //         $(this).submit();
-    //         log.f_formLog( red.f_getQueryTarget(event));
-    //         if (!red.hebdomadairePauseBool){
-    //             $(red.hebdomadaireForm)[0].reset();
-    //         }
-    //     }
-    // );
-
     /* 
     * event Clone
     */
-
     $(red.modeClone).on(
         "click", 
         (event)=>{
@@ -444,17 +395,6 @@ $(document).ready( ()=>{
         }
     )
 
-    // $(red.cloneForm).on(
-    //     "submit",
-    //     (event)=>{
-    //         event.preventDefault();
-    //         console.log("form Submit");
-    //         $(this).submit();
-    //         log.f_formLog( red.f_getQueryTarget(event));
-    //         $(red.cloneForm)[0].reset();
-    //     }
-    // );
-
     /*
     * Traitemant Json
     */
@@ -477,40 +417,41 @@ $(document).ready( ()=>{
 
     function f_populateTitle( v_hostname ){
         /* permet de modifier le titre de la page (Onglet) */
-        $("#autoTitle").text(v_hostname)};
+        $("#autoTitle").text(v_hostname)
+    };
 
     f_loadJSON(v_jsonFile, function(response) {
-        let jsonresponse = JSON.parse(response);
+            let jsonresponse = JSON.parse(response);
 
-        /* general */
-        var v_hostname = jsonresponse["general"]["hostName"];
-        var v_numberOfPlug = jsonresponse["general"]["numberOfPlugs"];
-        f_populateTitle(v_hostname);
+            /* general */
+            var v_hostname = jsonresponse["general"]["hostName"];
+            var v_numberOfPlug = jsonresponse["general"]["numberOfPlugs"];
+            f_populateTitle(v_hostname);
 
-        switch (v_numberOfPlug){
-            case "4": {
-                let v_plug = "yellowPlug";
-                table.f_refresh(jsonresponse, v_plug);
-                table.f_populateTable();
-            };
-            case "3": {
-                let v_plug = "bluePlug";
-                table.f_refresh(jsonresponse, v_plug);
-                table.f_populateTable();
-            };
-            case "2": {
-                let v_plug = "greenPlug";
-                table.f_refresh(jsonresponse, v_plug);
-                table.f_populateTable();
-            };
-            case "1": {
-                let v_plug = "redPlug";
-                table.f_refresh(jsonresponse, v_plug);
-                table.f_populateTable();
-            };
+            switch (v_numberOfPlug){
+                case "4": {
+                    let v_plug = "yellowPlug";
+                    table.f_refresh(jsonresponse, v_plug);
+                    table.f_populateTable();
+                };
+                case "3": {
+                    let v_plug = "bluePlug";
+                    table.f_refresh(jsonresponse, v_plug);
+                    table.f_populateTable();
+                };
+                case "2": {
+                    let v_plug = "greenPlug";
+                    table.f_refresh(jsonresponse, v_plug);
+                    table.f_populateTable();
+                };
+                case "1": {
+                    let v_plug = "redPlug";
+                    table.f_refresh(jsonresponse, v_plug);
+                    table.f_populateTable();
+                };
+            }
         }
-
-    });
+    );
 
 // .ready() end
 });
