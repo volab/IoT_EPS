@@ -45,10 +45,10 @@ bool Credential::readFromJson(){
                 JsonObject& json = jsonBuffer.parseObject(buf.get());
                 // json.printTo(DEBUGPORT);
                 if (json.success()) {
-                    _ssid = json["ssid"].as<String>();
-                    _pass = json["pass"].as<String>();
-                    _softApSsid = json["softApSsid"].as<String>();
-                    _softApPass = json["sodtApPass"].as<String>();
+                    _ssid = json["general"]["ssid"].as<String>();
+                    _pass = json["general"]["pass"].as<String>();
+                    _softApSsid = json["general"]["softApSsid"].as<String>();
+                    _softApPass = json["general"]["softApPass"].as<String>();
                 } else {
                     DSPL(dPrompt + F("Failed to parse json credentials file."));
                     return false;

@@ -27,10 +27,11 @@ String getContentType(String filename){
 }
 
 
-
+//extern cParam
 bool handleFileRead(String path){
   DEBUGPORT.println("handleFileRead: " + path);
   
+  //if ( cParam.getFirstBoot() or firstBoot == tryStation ){ firstBootHtmlForm() }
   if(path.endsWith("/")) path += "index.html";
   String contentType = getContentType(path);
   String pathWithGz = path + ".gz";
@@ -323,3 +324,11 @@ void handleNewCred(){
     server->send(200, "text/plain", returnPage );     
 }
 
+
+// firstBootHtmlForm()
+// if (firstBoot == tryStattion ){ add warnig to the page}
+
+// firstBootHandler()
+// check parameters
+// if (mode == Station)  set firstBoot to tryStation and restart ESP
+// if (mode == AP) set firstBoot to OFF

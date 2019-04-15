@@ -122,8 +122,8 @@ nanoI2C.pinMode( 9, OUTPUT );
 int eightState;
 	
  /** @todo perhaps instanciate other commands to check hardware */
- //ABDGKLMQUVXYZ
- //bdefgjklmnpqruvxyz 
+ //ABDGKMQUVXYZ
+ //bdefgjkmnpqruvxy 
     switch(com[0]){
 		case 'C':   
 			CRtc::displayTime();
@@ -157,6 +157,16 @@ int eightState;
 		case 'J': //display config.json
 			ConfigParam::displayJson();
 			break;
+		case 'L': //Change AP_SSID
+            n = sscanf( com+1,"%s", v );
+            if ( n == 1){
+                value = String(v);
+                INTERFACE.println("new softAP SSID : " + value);
+                ConfigParam::chgSSID( value, "softApSsid" );
+            } else {
+                INTERFACE.println("Warning this command riquires only ONE parameter !");
+            }			
+			break;            
         case 'N': //nano I2C IO expander test
             nanoI2C.test();
             break;
@@ -206,6 +216,18 @@ int eightState;
             } else {
                 INTERFACE.println("Warning this command riquires only ONE parameter !");
             }
+            break;
+        case 'l': //l for wifi softAP_pass
+            n = sscanf( com+1,"%s", v );
+            if ( n == 1){
+                value = String(v);
+                if ( value.length() > 8 && value.length() < 63 ){
+                    INTERFACE.println("new soft AP pass : " + value);
+                    ConfigParam::chgWifiPass( value, "softApPass" );
+                } else INTERFACE.println( "Error : 8 < pass length < 63, nothing change");    
+            } else {
+                INTERFACE.println("Warning this command riquires only ONE parameter !");
+            }
             break;            
         case 'o': //nano I2C IO expander test
             INTERFACE.println("D11 out test low");           
@@ -231,8 +253,11 @@ int eightState;
 
         case 'w' : //for WiFi.diagFunction     
             WiFi.printDiag(Serial);
-            break;  
-              
+            break;
+/** @todo remove display credential command */            
+        case 'z' : //credential.json     
+            ConfigParam::displayJson( "/credentials.json");
+            break;               
 
  
             
@@ -257,7 +282,7 @@ void SerialCommand::displayCommandsList(){
 	list += F("<W> display WIFI mode\n");
     list += F("<P key value> write config parameter in json WARNING\n");
     list += F("<I _newSSID> write SSID in credentials WARNING\n");
-    list += F("<i _wifiPass> write SSID password in credentials WARNING\n");
+    list += F("<i _wifiPass> write password in credentials WARNING\n");
     list += F("<t various_param> for code test\n");
     list += F("<N> nano IO expander test\n");
     list += F("<O> nano out test HIGH\n");
@@ -267,6 +292,9 @@ void SerialCommand::displayCommandsList(){
     list += F("<c> I2C crash\n");
     list += F("<a> for Ip address\n");
     list += F("<w> for WiFi.printDig function\n");
+    list += F("<z> display credetial file\n");
+    list += F("<L> _newSoftAP_SSID> write SoftAP SSID in credentials WARNING\n");
+    list += F("<l> _wifiPass> write soft AP password in credentials WARNING\n");
 	INTERFACE.print( list );
 }
 

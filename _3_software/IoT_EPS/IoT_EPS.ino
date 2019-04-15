@@ -38,10 +38,11 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
- @li add I and i like commands for softAP_SSID and soft_AP pass (more then 8c)
- @li config power led economy mode 50% todo put it in the config3.json
+ @li check if main power is off to not connect to wifi
  @li configuration page (see softdev.rst)
- @li generate a unic server name and default AP ssid from prefix and mac add (end)  
+ @li generate a unic server name and default AP ssid from prefix and mac add (end) 
+ @li regarder pour recharger la pgae index lors d'un changement d'état pas BP(pas forcément an mode AP)
+ @li add IP and mac add to config.json (for display in web browser)
  @li bug report when json is no reachable !
  @li review work without RTC component strategy
  @li review work without NTP access strategy
@@ -134,14 +135,19 @@ void setup(){
 	SerialCommand::init();
     // extraLed.begin( 9, 100, 500, 4, 5000 );
     
+    
+
     cParam.begin();
     if ( !cParam.ready ) {
         DSPL( dPrompt + F("cParam default values. Potential fatal error") );
         // fatalErro();
     }
- 
+    /***************************************************************************/
+    /** FIRST BOOT TAG                                                         */
+    /***************************************************************************/
+    
     /////////////////////////////////////////////////////////////////////////////
-    //     I2C bus check                                                    //
+    //     I2C bus check                                                       //
     ///////////////////////////////////////////////////////////////////////////// 
     CNano::init();
     rtc.begin();
@@ -282,7 +288,9 @@ void setup(){
         }
         //strcpy(reinterpret_cast<char*>(conf.ssid), ssid); dans le fichier ESP8266WiFiSTA.cpp
         DSPL( "." );
-        
+        /////////////////////////////////////////////////////////////////////////////
+        //  Sation mode                                                           //
+        /////////////////////////////////////////////////////////////////////////////
         if ( cParam.getWifiMode() == "client" && wifiCred.ready
                 || cParam.getWifiMode() == "Station" ){ // Station WIFI mode
             WiFi.mode(WIFI_STA);
@@ -301,6 +309,7 @@ void setup(){
                 if (tryCount == MAX_WIFI_CONNECT_RETRY ) break;
                 
             }
+            // if ( firstBoot == "tryStation") { set FirstBoot to OFF }
             wifiLed.stop();
             pinMode( WIFILED, OUTPUT );
             digitalWrite( WIFILED, HIGH);
@@ -310,6 +319,9 @@ void setup(){
                     + WiFi.localIP().toString() );  
             } else { WiFi.disconnect(); }
         }
+        /////////////////////////////////////////////////////////////////////////////
+        //  soft AP mode                                                           //
+        /////////////////////////////////////////////////////////////////////////////
         if ( cParam.getWifiMode() == "softAP" || tryCount == MAX_WIFI_CONNECT_RETRY
                 || !wifiCred.ready ){
             //WIFI soft Access Point mode
@@ -400,6 +412,7 @@ WiFi.softAPdisconnect();
 		server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
 		// server->on("/", HTTP_POST, handlePlugOnOff ); 
 		server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
+        //server->on("/firstBoot", HTTP_GET, firstBottHandler);
 		server->on("/edit", HTTP_GET, [](){
 			if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
 		});

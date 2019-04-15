@@ -7,12 +7,15 @@
 * @brief header file of the ConfigParam class
 */
 
+#include "IoT_EPS.h"
 //#pragma once
 #ifndef CONFIGPARAM_H
 #define CONFIGPARAM_H
+
+
 #include "debugSerialPort.h"
 #include <IPAddress.h>
-
+// #define CONFIGFILENAME "/config4.json"
 
 class ConfigParam{
     public:
@@ -21,11 +24,11 @@ class ConfigParam{
         String getWifiMode(){ return _wifimode; }
 		void setWifiMode( String mode ){ _wifimode = mode ; }
         String getHostName(){ return _host; }
-		static void displayJson();
+		static void displayJson( String file = CONFIGFILENAME );
 		void displayWifiMode();
-        static void write2Json( String param, String value );
-        static void chgSSID( String value );
-        static void chgWifiPass( String value );
+        
+        static void chgSSID( String value, String key = "ssid" );
+        static void chgWifiPass( String value, String key = "pass" );
         IPAddress getIPAdd(){ return _addIP; }
         int getNumberOfPlugs(){ return _numberOfPlugs; }
         int getServerPort(){ return _serverPort; }
@@ -34,7 +37,8 @@ class ConfigParam{
         /** @todo read _powerLedEconomyMode parameter in the config file...*/
         bool getPowLedEconomyMode(){ return _powerLedEconomyMode; } 
         bool getfirstBoot(){ return _firstBoot; }
-        
+        static void write2Json( String param, String value, String file = CONFIGFILENAME );
+        // static void _write2CredJson( String param, String value );
     
     private:
         String _wifimode = "softAP" ; //default value
@@ -48,7 +52,7 @@ class ConfigParam{
         //in seconds (not unsigned cause -1 could serve to allways on in future)
         int _ledsGlobalLuminosity;
         bool _firstBoot;
-        static void _write2CredJson( String param, String value );
+        
 
 };
 

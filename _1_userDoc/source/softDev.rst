@@ -25,7 +25,8 @@ Avancement
 #. Traitement de la requete html avec analyze, exécution et écriture json: ok
 #. manage wif led : ok
 #. integrate nano expander with analog inputs : ok
-
+#. scan I2C response 57 and 58 nano IoExpander !!!! not a bug simply DS3231 board has 2 component
+   DS3231 an EEPROM ! OK
 
 #. Error handling improvment 40%
 #. bug report when json is no reachable !
@@ -37,7 +38,7 @@ Avancement
 #. configuration page (see softdev.rst)
 #. generate a unic server name  
 #. power measurment
-#. scan I2C response 57 and 58 nano IoExpander !!!! a bug !
+
 
 #. exhaustive test of hebdo mode : 90%
 #. write index special page for softAP Mode with local boostrap or other light js.framework 5%
@@ -75,11 +76,10 @@ To be added 30/30/2019
 Penser à:
 ====================================
 
-
 #. regarder javascript http request pour faire du DELETE
 
 ====================================
-Configuration
+First boot configuration
 ==================================== 
 
 @first boot :
@@ -88,6 +88,32 @@ Configuration
  - WARNING pass in AP mode >8 <63
  - propose a unic ID for server name to the user
  - explain that it will possible to change after
+ 
+What are hypothesys, when boot for the first time ?
+=====================================================
+Is a config json exist ? What is inside it ? Yes and it containt FirstBoot ON and osther stuff.
+
+Same questions with credentials ? No, we generate it
+
+We considere that the user upload sketch and data directory.
+
+When consider the first boot is OFF ? When we receive the folowing form
+ - station mode or AP choice
+ - SSID et pass du mode AP (WARNING provide diff SSID if you own more then one PowerStrip)
+ - SSID and pass of station mode [ optionel if user wish stay always in AP mode ]
+ - propose default same hostname and default SSID AP build with mac add:
+   IOT_EPS_HHHH
+
+First boot process
+=========================
+#. check firstBoot param in config.json if ON
+#. start in AP mode with page firstboot.html (in the code, not a real file) only if main power is on
+#. server.on( /firstBoot, firstBootHandler)
+#. in firstBootHandler check param, write credential, set firBoot param to "trySation" if needed
+#. restart ESP
+#. if Station is ok firstBoot is ended, set firstBoot param = off
+#. if station ko reload firstboot page with alerte
+
 
 ====================================
 Plugs modes description
@@ -231,7 +257,7 @@ xxxx = softAP
 No acces to NTP server but all other functions work.
 After 20 false tries of station mode, power Strip automaticly switch in this mode
 
-Sation
+Station
 =========
 xxxx = Station or client
 
