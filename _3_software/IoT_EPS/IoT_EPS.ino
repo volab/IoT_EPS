@@ -76,13 +76,9 @@ Credential wifiCred;
 CRtc rtc;
 
 ESP8266WebServer *server;
-// IPAddress apIP(192, 168, 95, 42);
 
-
-// CPowerPlug plugs[NBRPLUGS];
 CPowerPlug *plugs;
 
-// bool errRTCinit = true;
 bool errFS = true;
 
 /** @todo see for add colorLEd array in the class CPowerPlug as a static member*/
@@ -104,7 +100,6 @@ CNanoI2CIOExpander nanoioExp; //just for main pow led
 
 // CFlasherNanoExp extraLed;
 
-// bool allLedsOn = true;
 CTempo allLeds;
 bool restartTempoLed = false;
 
@@ -134,8 +129,6 @@ void setup(){
     
 	SerialCommand::init();
     // extraLed.begin( 9, 100, 500, 4, 5000 );
-    
-    
 
     cParam.begin();
     if ( !cParam.ready ) {
@@ -183,18 +176,16 @@ void setup(){
         DSPL( message);
     }
     /////////////////////////////////////////////////////////////////////////////
-    //     Main power                                                          //
+    //     Main power first check                                              //
     /////////////////////////////////////////////////////////////////////////////    
-    // Cmcp::init();
-    
-    
     mainPowerSiwtch.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
-    mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
+    nanoioExp.pinMode( MAINPOWLED, OUTPUT );
+    mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF    
     mainPowerPrevState = mainPowerSwitchState; // for the loop
     
     // CNano::_nano.pinMode( MAINPOWLED, OUTPUT ); // _nano is protected
     // CNano::_nano.digitalWrite( MAINPOWLED, mainPowerSwitchState );
-    nanoioExp.pinMode( MAINPOWLED, OUTPUT );
+   
     nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
     DSPL( dPrompt + "Main power state : " +  ( mainPowerSwitchState?"ON":"OFF") );
     specialBp.begin( SPECIALBP, 20, INPUT_PULLUP );
@@ -230,7 +221,7 @@ void setup(){
     
     /** @todo improve error check from CPowerPlug::readFromJson*/
     /** @todo add pin, pinLed and color to json file*/
-    /** @todo + le nombre de plug pour rendre cette séquense dynamic*/
+    /** @todo + the number of plug to make this sequence dynamic*/
     
     plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, BP1, CPowerPlug::modeId("MANUEL") );
     plugs[1].setColor( CRGB::Green );
@@ -255,10 +246,28 @@ void setup(){
     }
     // FastLED.setBrightness(5);
     FastLED.setBrightness( cParam.getLedsLuminosity() );
-    FastLED.show();
+    
 	
     /** @todo document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
+
+    /////////////////////////////////////////////////////////////////////////////
+    //     Main power wait ON (the purpose is to maintain Wifi off)            //
+    ///////////////////////////////////////////////////////////////////////////// 
+    // if ( !mainPowerSwitchState ){
+        // DSPL( dPrompt + "Wait main power switch ON");
+        // do {
+            // mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
+            // yield();
+        // } while( !mainPowerSwitchState );        
+    // }
+    // DSPL( dPrompt + "Main power ON"); 
+// with this way of doing it, we loose LED and other stuffs managment    
+    // replace by WIFI_OFF no ?
+    /** @todo try WIFI_OFF when power is off */
+    FastLED.show();
+    
+    
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
@@ -293,6 +302,7 @@ void setup(){
         /////////////////////////////////////////////////////////////////////////////
         if ( cParam.getWifiMode() == "client" && wifiCred.ready
                 || cParam.getWifiMode() == "Station" ){ // Station WIFI mode
+            //Wifi.mode( mainPowerSwitchState?WIFI_STA:WIFI_OFF);    
             WiFi.mode(WIFI_STA);
             WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
             DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
@@ -460,11 +470,7 @@ WiFi.softAPdisconnect();
 /////////////////////////////////////////////////////////////////////////////
 bool cycleState = false;
 void loop(){
-    // cycleState = !cycleState;
-    // digitalWrite( WIFILED, cycleState); 
-    // static unsigned long prevMillis = millis();
-    // static bool prevAllLedsOn;
-    // prevAllLedsOn = allLedsOn;
+
     DEFDPROMPT("in the loop")
     if ( !simpleManualMode ) server->handleClient();
     
@@ -559,8 +565,6 @@ void loop(){
             }            
         }
         //led wake up
-        // int etatBP = specialBp.getState();
-        // DSPL( dPrompt + F("SPBp state = ") + String( etatBP ) );
         if ( !specialBp.getState() && !allLeds.enCours() ){
             DSPL( dPrompt + F("LEDs wake up ! ") + String( restartTempoLed ) );
             restartTempoLed = true;
@@ -594,7 +598,8 @@ void loop(){
                 colorLeds[i] = CRGB::Black;
             }            
             FastLED.show();
-            digitalWrite( WIFILED, LOW);  //stop wifi LED  
+            digitalWrite( WIFILED, LOW);  //stop wifi LED
+            //ESP.restart();
         }
         nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
     }

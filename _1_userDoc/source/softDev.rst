@@ -188,8 +188,13 @@ Factorisation des varibales de mode
       onOffCount = 10  
   
 =====================================
-Comportement à la mise sous tension
+Start up behavior
 =====================================
+
+Question:what should be the behavior when power is switched to ON.
+
+2 cases are possible when power is On: the button is switche to ON or the system restart after a
+genaral power cut
 
 Soit l'interrupteur général est actif (cas de la coupure EDF) et on reprend où on en était.
 
@@ -204,14 +209,21 @@ Expliquer le coup de la coupure de courant.
 Evol : après coupure EDF : donner le choix à l'utilisateur de configurer le comportement de
 chaque prise.
 
-Comportement possibles:
-#. on repart d'où on en était (avec éventuellement alerte instantanée à l'utilisateur)
-#. on met tout la prise à OFF en manuel(avec éventuellement alerte instantanée à l'utilisateur)
-#. on informe l'utilisateur (canal à définir, MQTT ou autre...) qui décide mais on met en
-pause en attendant
+Possible behaviors:
 
+ #. on repart d'où on en était (avec éventuellement alerte instantanée à l'utilisateur)
+ #. on met tout la prise à OFF en manuel(avec éventuellement alerte instantanée à l'utilisateur)
+ #. on informe l'utilisateur (canal à définir, MQTT ou autre...) qui décide mais on met en
+    pause en attendant
 
 When main power switch is off : html server post no reply.
+
+Problem : when in AP mode WiFi start even if main power is OFF and in Station ESP connect to acces
+point. It is not a logicaly expected behavior. When power switch is in OFF position no Wifi activity
+should be detected.
+
+Solution wait for power on in ARDUINO setup function.
+Restart ESP in ARDUINO loop when power is switch to OFF.
 
 ==============
 Choix dev soft
