@@ -174,6 +174,39 @@ h5.div_subSummary {
     align-items: center;
 }
 
+/* First Boot Page */
+.FB_logo{
+    width:25%;
+}
+
+.FB_fieldset_color{
+    /* color:#9999ff; */
+    color: #661aff;
+}
+
+.hr{
+    text-align: center;
+}
+
+input[type="password"] {
+    border-radius: 25rem;
+    padding: 5px;
+    margin: 5px;
+    text-align: center;
+}
+
+.AP, .STA {
+    text-align: center;
+}
+
+.AP_STA_SUBMIT {
+    border-radius: 25rem;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+}
+
+
 /* Sucharge cmposant Bootstrap */
 .custom-control-input:checked ~ .custom-control-label::before {
     color: #fff;

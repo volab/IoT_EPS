@@ -400,7 +400,7 @@ $(document).ready( ()=>{
     */
 
     /* 
-    * la fonction loadJson à été piqué ici:
+    * la fonction loadJson à été piquée ici:
     * http://www.askyb.com/javascript/load-json-file-locally-by-js-without-jquery/comment-page-1/#comment-4130
     */
     function f_loadJSON(v_file, callback) { 
@@ -459,13 +459,6 @@ $(document).ready( ()=>{
 /*
  * ## TODO
  *
- * #. Finir les fonction "clear". Les appliquer sur chaque chagement de mode, changement de prise
- *    et entre chaque action du mode manuel
- * 
- *      * dans Manuel masquer les options lors de l'appuis sur "Effacer"
- *
- * ####
- *  
  * #. Ajouter un fieldset ou un div pour l'aide
  *    ==> ne plus utiliser la page "help.html"
  * 
