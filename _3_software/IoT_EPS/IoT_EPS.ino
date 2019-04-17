@@ -413,7 +413,11 @@ WiFi.softAPdisconnect();
     /////////////////////////////////////////////////////////////////////////////
     server = new ESP8266WebServer( cParam.getServerPort() );
 	if ( !simpleManualMode ){
-        if ( cParam.getWifiMode() == "softAP" ) {
+        if ( cParam.getFirstBoot() == ConfigParam::YES 
+                || cParam.getFirstBoot() == ConfigParam::TRY ){
+            server->on("/", HTTP_GET, firstBootHtmlForm );
+            DSPL( dPrompt + "First boot procedure");
+        } else if ( cParam.getWifiMode() == "softAP" ) {
             server->on("/", HTTP_GET, handleSoftAPIndex );
             DSPL( dPrompt + F("******************reg page") );
         }
@@ -422,7 +426,7 @@ WiFi.softAPdisconnect();
 		server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
 		// server->on("/", HTTP_POST, handlePlugOnOff ); 
 		server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
-        //server->on("/firstBoot", HTTP_GET, firstBottHandler);
+        server->on("/firstBoot", HTTP_POST, handleFirstBoot);
 		server->on("/edit", HTTP_GET, [](){
 			if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
 		});

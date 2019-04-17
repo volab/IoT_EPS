@@ -9,6 +9,9 @@
 #ifndef IOT_EPS_HEADER
 #define  IOT_EPS_HEADER
 
+#define DEFAULT_PREFIX_NAME "ESP_IOT"
+#define FIRSTBOOTFORMFILENAME "/firstboot.htm"
+
 #define NOT_FOUND "nf" //return code for extractParam()
 
 #include <Arduino.h>
@@ -40,6 +43,11 @@
 #include "Flasher.h"
 #include "CRtc.h"
 #include "cswitchnano.h"
+
+// #define FBTAG_STASSID "default_STA_SSID"
+// #define FBTAG_STAPWD "pwd_STA"
+#define FBTAG_APSSID "default_AP_SSID" 
+#define FBTAG_APPWD "azerty"
 
 #define DEFAULTIPADD "192.168.95.42"
 #define NBRPLUGS 4

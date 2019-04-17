@@ -71,12 +71,16 @@ bool ConfigParam::readFromJson(){
                     String startInAPMode = json["general"]["startInAPMode"].as<String>();
                     if ( startInAPMode == "OFF") _wifimode = "Station";
                     else _wifimode = "softAP";
-                    _firstBoot = (json["general"]["firstBoot"].as<String>() == "ON");
+                    String s_FirstBootTmp = json["general"]["firstBoot"].as<String>();
+                    if ( s_FirstBootTmp == "ON") _firstBoot = YES;
+                    else if ( s_FirstBootTmp == "OFF" )_firstBoot = NO;
+                    else _firstBoot = TRY;
                     _host = json["general"]["hostName"].as<String>();
                     _allLedsOnTime = json["general"]["allLedsOnTime"].as<String>().toInt();
                     _ledsGlobalLuminosity = \
                         json["general"]["ledsGlobalLuminosity"].as<String>().toInt();
                     _powerLedEconomyMode = (json["general"]["powerLedEconomyMode"].as<String>() == "ON");
+                    if (_firstBoot == YES ) _wifimode = "softAP";
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
                     

@@ -26,6 +26,9 @@ void handleFileCreate();
 void handleFileList();
 void handleSoftAPIndex();
 void handleNewCred();
+void firstBootHtmlForm();
+void handleFirstBoot();
+String buildMacAddName( String prefix);
 
 
 void handlePlugConfig();

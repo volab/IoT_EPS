@@ -120,7 +120,9 @@ int timeZone = 2; // Paris heure d'été
 nanoI2C.pinMode( 9, OUTPUT );
 //nanoI2C.pinMode( 8, INPUT_PULLUP );
 int eightState;
-	
+String str = "";
+Dir dir;	
+FSInfo filseSystemInfo;
  /** @todo perhaps instanciate other commands to check hardware */
  //ABDGKMQUVXYZ
  //bdefgjkmnpqruvxy 
@@ -137,6 +139,23 @@ int eightState;
 			INTERFACE.print(__TIME__);
 			INTERFACE.println(", COM TYPE : SERIAL >");
 			break;
+		case 'D': // for dir  
+            dir = SPIFFS.openDir("/");
+            while (dir.next()) {
+                str += dir.fileName();
+                str += " / ";
+                str += dir.fileSize();
+                str += "\r\n";
+            }
+            INTERFACE.print(str);
+            /**< @brief file system information to display it*/
+            SPIFFS.info( filseSystemInfo ); 
+            str = "SPIFFS ";
+            INTERFACE.println( str + F("total bytes : ") + (String)filseSystemInfo.totalBytes );
+            INTERFACE.println( str + F("used bytes : ") + (String)filseSystemInfo.usedBytes );
+            INTERFACE.println( str + F("max open files : ") + (String)filseSystemInfo.maxOpenFiles );
+            INTERFACE.println( str + F("max path lenght : ") + (String)filseSystemInfo.maxPathLength );			
+			break;            
         case 'F': //Find I2C
             i2c_scan();
             break; 
@@ -295,6 +314,7 @@ void SerialCommand::displayCommandsList(){
     list += F("<z> display credetial file\n");
     list += F("<L> _newSoftAP_SSID> write SoftAP SSID in credentials WARNING\n");
     list += F("<l> _wifiPass> write soft AP password in credentials WARNING\n");
+    list += F("<D> SPIFFS dir\n");
 	INTERFACE.print( list );
 }
 

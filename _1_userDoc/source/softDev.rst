@@ -91,7 +91,7 @@ First boot configuration
  
 What are hypothesys, when boot for the first time ?
 =====================================================
-Is a config json exist ? What is inside it ? Yes and it containt FirstBoot ON and osther stuff.
+Is a config json exist ? What is inside it ? Yes and it containt FirstBoot ON and other stuff.
 
 Same questions with credentials ? No, we generate it
 

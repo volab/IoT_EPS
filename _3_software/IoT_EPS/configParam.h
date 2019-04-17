@@ -17,8 +17,13 @@
 #include <IPAddress.h>
 // #define CONFIGFILENAME "/config4.json"
 
+
+
 class ConfigParam{
     public:
+
+    enum firstBootVal { YES, NO, TRY };
+    
         bool ready = false;
         void begin(); //pour le moment
         String getWifiMode(){ return _wifimode; }
@@ -36,7 +41,7 @@ class ConfigParam{
         int getLedsLuminosity(){return _ledsGlobalLuminosity; }
         /** @todo read _powerLedEconomyMode parameter in the config file...*/
         bool getPowLedEconomyMode(){ return _powerLedEconomyMode; } 
-        bool getfirstBoot(){ return _firstBoot; }
+        firstBootVal getFirstBoot(){ return _firstBoot; }
         static void write2Json( String param, String value, String file = CONFIGFILENAME );
         // static void _write2CredJson( String param, String value );
     
@@ -51,7 +56,7 @@ class ConfigParam{
         bool _powerLedEconomyMode = false;
         //in seconds (not unsigned cause -1 could serve to allways on in future)
         int _ledsGlobalLuminosity;
-        bool _firstBoot;
+        firstBootVal _firstBoot;
         
 
 };

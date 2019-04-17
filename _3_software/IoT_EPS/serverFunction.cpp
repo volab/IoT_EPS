@@ -325,10 +325,45 @@ void handleNewCred(){
 }
 
 
-// firstBootHtmlForm()
-// if (firstBoot == tryStattion ){ add warnig to the page}
+void firstBootHtmlForm(){
+    /** @todo if (firstBoot == tryStattion ){ add warnig to the page} */ 
+    DEFDPROMPT("Handle First boot html form");
+    DSPL( dPrompt );
+    String page;
+    File firstBFormFile = SPIFFS.open(FIRSTBOOTFORMFILENAME, "r");
+    if (firstBFormFile){
+        page = firstBFormFile.readString();
+        page.replace( FBTAG_APSSID , buildMacAddName( "IoT_ESP" ) );
+        //page.replace("__APPASS__"), getAPPass() );
+        server->send ( 200, "text/html", page );
+    } else DSPL( dPrompt + F("form first boot not found") );
 
-// firstBootHandler()
-// check parameters
-// if (mode == Station)  set firstBoot to tryStation and restart ESP
-// if (mode == AP) set firstBoot to OFF
+    
+}
+
+
+void handleFirstBoot(){
+    // check parameters
+    // if (mode == Station)  set firstBoot to tryStation and restart ESP
+    // if (mode == AP) set firstBoot to OFF
+    /** @todo check AP password length more than 8c and less than 63*/
+    DEFDPROMPT( "handle First Boot ");
+    
+    String allArgs = F(" Received args : ") ;
+    for ( int i = 0; i < server->args() ; i++ ){
+        allArgs += server->argName( i ) + "=" + server->arg( i ) + "/";
+    }
+    DSPL( dPrompt + allArgs );
+    String returnPage = allArgs ;
+    server->send(200, "text/plain", returnPage ); 
+}
+
+String buildMacAddName( String prefix){
+    uint8_t mac[6];
+    char macStr[18] = { 0 };
+    WiFi.macAddress( mac );
+    sprintf(macStr, "_%02X%02X", mac[4], mac[5]);
+    return prefix+String(macStr);
+    
+}
+
