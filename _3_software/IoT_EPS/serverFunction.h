@@ -29,6 +29,7 @@ void handleNewCred();
 void firstBootHtmlForm();
 void handleFirstBoot();
 String buildMacAddName( String prefix);
+String extractParamFromHtmlReq( String allRecParam, String param );
 
 
 void handlePlugConfig();

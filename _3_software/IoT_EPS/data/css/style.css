@@ -180,7 +180,12 @@ h5.div_subSummary {
 }
 
 .FB_fieldset_color{
-    color:#9999ff;
+    /* color:#9999ff; */
+    color: #661aff;
+}
+
+.hr{
+    text-align: center;
 }
 
 input[type="password"] {

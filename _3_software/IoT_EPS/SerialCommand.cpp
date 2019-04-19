@@ -124,8 +124,8 @@ String str = "";
 Dir dir;	
 FSInfo filseSystemInfo;
  /** @todo perhaps instanciate other commands to check hardware */
- //ABDGKMQUVXYZ
- //bdefgjkmnpqruvxy 
+ //ABGKMQUVXYZ
+ //befgkmnpqruvxy 
     switch(com[0]){
 		case 'C':   
 			CRtc::displayTime();
@@ -226,6 +226,18 @@ FSInfo filseSystemInfo;
         case 'c': //recovery I2C         
             i2c_plantoir();
             break;
+        case 'd': //delete file         
+            n = sscanf( com+1,"%s", v );
+            if ( n == 1){
+                value = String(v);
+                INTERFACE.println( String(F("Try to delete file : ")) + value );
+                if (SPIFFS.remove( v )){
+                    INTERFACE.println( F("File deleted") );
+                } else INTERFACE.println( F("Error File NOT deleted") );
+            } else {
+                INTERFACE.println( F("Warning this command riquires only ONE parameter !" ) );
+            }            
+            break;  
         case 'i': //i for wifi pass
             n = sscanf( com+1,"%s", v );
             if ( n == 1){
@@ -236,6 +248,9 @@ FSInfo filseSystemInfo;
                 INTERFACE.println("Warning this command riquires only ONE parameter !");
             }
             break;
+		case 'j': //display config.json general part
+			ConfigParam::displayJsonGeneral();
+			break;
         case 'l': //l for wifi softAP_pass
             n = sscanf( com+1,"%s", v );
             if ( n == 1){
@@ -315,6 +330,8 @@ void SerialCommand::displayCommandsList(){
     list += F("<L> _newSoftAP_SSID> write SoftAP SSID in credentials WARNING\n");
     list += F("<l> _wifiPass> write soft AP password in credentials WARNING\n");
     list += F("<D> SPIFFS dir\n");
+    list += F("<j> display general part of config json file\n");
+    list += F("<d _filename> erase a file WARNING\n");
 	INTERFACE.print( list );
 }
 

@@ -31,6 +31,7 @@ class ConfigParam{
         String getHostName(){ return _host; }
 		static void displayJson( String file = CONFIGFILENAME );
 		void displayWifiMode();
+        static void displayJsonGeneral();
         
         static void chgSSID( String value, String key = "ssid" );
         static void chgWifiPass( String value, String key = "pass" );
@@ -44,6 +45,7 @@ class ConfigParam{
         firstBootVal getFirstBoot(){ return _firstBoot; }
         static void write2Json( String param, String value, String file = CONFIGFILENAME );
         // static void _write2CredJson( String param, String value );
+        
     
     private:
         String _wifimode = "softAP" ; //default value

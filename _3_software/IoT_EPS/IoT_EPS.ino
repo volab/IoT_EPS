@@ -421,7 +421,8 @@ WiFi.softAPdisconnect();
             server->on("/", HTTP_GET, handleSoftAPIndex );
             DSPL( dPrompt + F("******************reg page") );
         }
-        server->on("/ChangeCred", HTTP_POST, handleNewCred );
+        // server->on("/ChangeCred", HTTP_POST, handleNewCred );
+        /** @todo update handleNewCred to reflect changes in credentials.json */
 		server->on("/list", HTTP_GET, handleFileList);
 		server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
 		// server->on("/", HTTP_POST, handlePlugOnOff ); 

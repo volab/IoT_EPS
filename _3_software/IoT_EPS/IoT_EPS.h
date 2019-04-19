@@ -47,8 +47,16 @@
 // #define FBTAG_STASSID "default_STA_SSID"
 // #define FBTAG_STAPWD "pwd_STA"
 #define FBTAG_APSSID "default_AP_SSID" 
-#define FBTAG_APPWD "azerty"
+#define FBTAG_APPWD "azertyuiop"
+#define FB_PARAMNAME_MODE "mode_selector"
+#define FB_PARAMVAL_MODEAP "AP"
+#define FB_PARAMVAL_MODESTA "STA"
+#define FB_PARAMNAME_STASSID "STA_SSID"
+#define FB_PARAMNAME_STAPASS "STA_PWD"
+#define FB_PARAMNAME_APSSID "AP_SSID"
+#define FB_PARAMNAME_APPASS "AP_PWD"
 
+ 
 #define DEFAULTIPADD "192.168.95.42"
 #define NBRPLUGS 4
 #define NUM_LEDS NBRPLUGS /**< for fastLED class */

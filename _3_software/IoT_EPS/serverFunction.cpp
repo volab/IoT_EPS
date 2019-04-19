@@ -1,4 +1,15 @@
-
+/**
+ @file serverFunction.cpp
+ @author J.SORANZO
+ @date 20 Oct 2018
+ @copyright 2018 CC0
+ @version git versionning
+ @brief a collection of simple C functions to handler server request
+ 
+ The first group of this functions are copy from ARDUINO FSBBrowse?ino example
+ 
+ The rest at the end of this file are our work
+*/
 
 #include "IoT_EPS.h"
 
@@ -137,10 +148,12 @@ void handleFileList() {
 //==================================================================================================
  
 /** 
-@fn void displayTime()
-To display the current time from DS3231
-
+ @fn void displayTime()
+ @brief To display the current time from DS3231...
+ @return no return value and no parameter
 HTML text is in the c code as String page var
+
+This is the handler of the /time action (see the setup function of IoT_ESP.ino)
 */
 void displayTime(){
     String page;
@@ -161,6 +174,13 @@ void displayTime(){
     
 }
 
+/** 
+ @fn void handlePlugConfig()
+ @brief handle /PlugConfig HTTP_GET action...
+ @return no return value and no parameter
+
+Not very usefull for now. Used for test purpose
+*/
 void handlePlugConfig(){
     
     DEFDPROMPT("Plug config")
@@ -172,7 +192,7 @@ void handlePlugConfig(){
 
 /** 
 @fn void handlePlugOnOff()
-@brief this the handler for html request
+@brief this the handler for html request...
 @return nothing and no parameter
 
 This function is activated when a request is received from the client's browser.
@@ -305,6 +325,7 @@ void handleNewCred(){
     "pass" : "V0L@b42net"
     }
     */
+    /** @todo changenge thois function to adapt to new credentials file */
     const int capacity = JSON_OBJECT_SIZE(4);
     StaticJsonBuffer<capacity> jb;
     JsonObject& obj = jb.createObject();
@@ -325,6 +346,13 @@ void handleNewCred(){
 }
 
 
+/** 
+ @fn void firstBootHtmlForm()
+ @brief Special firsboot page handler...
+ @return no return value and no parameter
+ 
+ Firstboot special page provide a way to the user to set SSID and pass for AP or Station mode.
+*/
 void firstBootHtmlForm(){
     /** @todo if (firstBoot == tryStattion ){ add warnig to the page} */ 
     DEFDPROMPT("Handle First boot html form");
@@ -341,23 +369,86 @@ void firstBootHtmlForm(){
     
 }
 
-
+/** 
+ @fn void firstBootHtmlForm()
+ @brief Special firsboot reponse handler...
+ @return no return value and no parameter
+ 
+ Firstboot special page provide a way to the user to set SSID and pass for AP or Station mode.
+ 
+ Here we process the answer of the user to write credential file and switch to normal mode.
+*/
 void handleFirstBoot(){
     // check parameters
     // if (mode == Station)  set firstBoot to tryStation and restart ESP
     // if (mode == AP) set firstBoot to OFF
     /** @todo check AP password length more than 8c and less than 63*/
-    DEFDPROMPT( "handle First Boot ");
+    DEFDPROMPT( "handle First Boot "); 
+    //piece of code generate by
+    //https://arduinojson.org/v5/assistant/
+    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(4);
+    DynamicJsonBuffer jsonBuffer(capacity);
+    JsonObject& root = jsonBuffer.createObject();
+    JsonObject& general = root.createNestedObject("general");
+    general["ssid"] = "yourSSID";
+    general["pass"] = "yourPass";
+    general["softApSsid"] = "";
+    general["softApPass"] = "";
+    // root.prettyPrintTo(DEBUGPORT);DSPL("");
+       
     
     String allArgs = F(" Received args : ") ;
     for ( int i = 0; i < server->args() ; i++ ){
         allArgs += server->argName( i ) + "=" + server->arg( i ) + "/";
     }
     DSPL( dPrompt + allArgs );
+    String mode = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_MODE );
+    if (mode == FB_PARAMVAL_MODEAP){//mode Access Point
+        String apSsid = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_APSSID );
+        String apPass = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_APPASS );
+        if ( apPass.length() < 8 || apPass.length() >63
+              || apSsid.length() == 0 || apSsid.length() > 31){
+                String returnPage = F("Longueur SSID et/ou pass incorrecte, plug reset");
+                server->send(200, "text/plain", returnPage );
+                ESP.reset();
+        }
+        //write to credentials
+        DSPL( dPrompt + F("credentials.json file creation.") );
+        
+        //creat credential.json
+        general["softApSsid"] = apSsid;
+        general["softApPass"] = apPass;
+        root.prettyPrintTo(DEBUGPORT);DSPL("");
+        File credFile = SPIFFS.open( "/credentials.json" , "w");
+        if (credFile){
+            DSPL( dPrompt + F("File /credentials.json open for write") );
+            root.prettyPrintTo(credFile);
+        } else {
+            DSPL( dPrompt + F("File /credentials.json open for write fail !") );
+        }
+        credFile.close();
+        //write to config.json
+        ConfigParam::write2Json( "firstBoot", "OFF" );
+        ConfigParam::write2Json( "startInAPMode", "ON" );
+        //Empty STA_SSId and pass
+        //AP_SSID and PASS
+        ESP.reset();
+    } else { //mode Station
+        
+    }
     String returnPage = allArgs ;
     server->send(200, "text/plain", returnPage ); 
 }
 
+
+/** 
+ @fn String buildMacAddName( String prefix)
+ @brief _abriefDescription
+ @param prefix the prefix of the wanted name example IoT_ESP
+ @return a tring with the prefix followed by _MMNN
+
+ Build a string by concatenate prefix provided with the 2 last octets of the mac address.
+*/
 String buildMacAddName( String prefix){
     uint8_t mac[6];
     char macStr[18] = { 0 };
@@ -365,5 +456,26 @@ String buildMacAddName( String prefix){
     sprintf(macStr, "_%02X%02X", mac[4], mac[5]);
     return prefix+String(macStr);
     
+}
+
+/** 
+@fn String extractParamFromHtmlReq( String allRecParam, String param )
+@brief to extract a parameter from all parameter
+@param allRecParam a concatened String containing all received parameters build in handlePlugOnOff()
+@param param the parameter to extract
+@return the value of the parameter or "nf" for not found or "" empty
+*/
+String extractParamFromHtmlReq( String allRecParam, String param ){
+    DEFDPROMPT("extract param");
+    DSPL( dPrompt + F("Search for : ") + param);
+    param +="=";
+    int pos = allRecParam.indexOf( param );
+    //DSPL( dPrompt + "Pos brut = " + (String)pos);
+    if ( pos == -1 ) return RETURN_NOT_FOUND_VALUE;
+    pos += param.length();
+    int fin = allRecParam.indexOf( "/", pos );
+    //DSPL( dPrompt + "fin = " +(String)fin );
+    return allRecParam.substring( pos, fin );
+    /** @todo remove debug informations*/
 }
 

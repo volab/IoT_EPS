@@ -96,7 +96,7 @@ class CPowerPlug : public CNano {
         int _onOffLedPin;/**< a pin to display plug state diff of the cmd plug pin*/
 
         plugColor_t _couleur = CRGB::Red;
-        String extractParamFromHtmlReq( String allRecParam, String Param );
+        //String extractParamFromHtmlReq( String allRecParam, String Param );
         void updateOutputs( bool writeToJsonCount = true );
         uint32_t _nextTimeToSwitch;        
         

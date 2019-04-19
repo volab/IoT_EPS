@@ -142,6 +142,43 @@ void ConfigParam::displayJson( String file ){
 }
 
 /** 
+ @fn void ConfigParam::displayJsonGeneral()
+ @brief A function to display config json file general part only...
+ @return no return value and no parameter
+
+This function is call by SerialCommand. It works with debugSerialPort
+*/
+void ConfigParam::displayJsonGeneral(){
+	DEFDPROMPT("Display json General part")
+    if (SPIFFS.begin()) {
+        String file = CONFIGFILENAME;
+        if (SPIFFS.exists( file)) {
+            File configFile = SPIFFS.open( file, "r");
+            if (configFile) {
+                size_t size = configFile.size();
+                DSPL( dPrompt + "Config file size : " + (String)size ) ;
+                // Allocate a buffer to store contents of the file.
+                std::unique_ptr<char[]> buf(new char[size]);
+
+                configFile.readBytes(buf.get(), size);
+                DynamicJsonBuffer jsonBuffer;
+                JsonObject& json = jsonBuffer.parseObject(buf.get());
+                JsonObject& jsonGen = json["general"];
+                // DSPL( dPrompt + mess );
+                jsonGen.prettyPrintTo(DEBUGPORT);
+				DSPL( );
+            }
+        } else {
+            dPrompt += F("Failed to open ");
+            dPrompt += file;
+            DSPL(dPrompt);
+        }
+    } else {
+        DSPL( dPrompt + F("Failed to mount FS"));
+    }  	
+}
+
+/** 
  @fn void ConfigParam::displayWifiMode()
  @brief A function to display cactual wifi mode...
  @return no return value and no parameter

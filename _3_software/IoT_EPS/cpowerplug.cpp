@@ -619,6 +619,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
 @param param the parameter to extract
 @return the value of the parameter or "nf" for not found or "" empty
 */
+/*
 String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
     DEFDPROMPT("extract param");
     DSPL( dPrompt + F("Search for : ") + param);
@@ -630,8 +631,9 @@ String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
     int fin = allRecParam.indexOf( "/", pos );
     //DSPL( dPrompt + "fin = " +(String)fin );
     return allRecParam.substring( pos, fin );
-    /** @todo remove debug informations*/
+
 }
+*/
 
 /** 
 @fn void CPowerPlug::writeToJson( String param, String value )
