@@ -135,9 +135,6 @@ void setup(){
         DSPL( dPrompt + F("cParam default values. Potential fatal error") );
         // fatalErro();
     }
-    /***************************************************************************/
-    /** FIRST BOOT TAG                                                         */
-    /***************************************************************************/
     
     /////////////////////////////////////////////////////////////////////////////
     //     I2C bus check                                                       //
@@ -179,6 +176,7 @@ void setup(){
     //     Main power first check                                              //
     /////////////////////////////////////////////////////////////////////////////    
     mainPowerSiwtch.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
+    nanoioExp.digitalWrite( MAINPOWLED, 0);
     nanoioExp.pinMode( MAINPOWLED, OUTPUT );
     mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF    
     mainPowerPrevState = mainPowerSwitchState; // for the loop
@@ -239,13 +237,7 @@ void setup(){
     plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
     if ( mainPowerSwitchState ) plugs[3].readFromJson( true );
     else  plugs[3].handleBpLongClic();
-    for ( int i = 0; i < NBRPLUGS ; i++ ){
-        colorLeds[i] = plugs[i].getColor();
-        /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/
-        plugs[i].setMainPow( mainPowerSwitchState );
-    }
-    // FastLED.setBrightness(5);
-    FastLED.setBrightness( cParam.getLedsLuminosity() );
+    
     
 	
     /** @todo document simpleManualMode with no wifi at all */
@@ -254,17 +246,27 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     //     Main power wait ON (the purpose is to maintain Wifi off)            //
     ///////////////////////////////////////////////////////////////////////////// 
-    // if ( !mainPowerSwitchState ){
-        // DSPL( dPrompt + "Wait main power switch ON");
-        // do {
-            // mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
-            // yield();
-        // } while( !mainPowerSwitchState );        
-    // }
-    // DSPL( dPrompt + "Main power ON"); 
+    if ( !mainPowerSwitchState ){
+        DSPL( dPrompt + "Wait main power switch ON");
+        for ( int i = 0; i < 4 ; i++ ) colorLeds[i] = CRGB::Black;
+        FastLED.show();
+        do {
+            mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
+            yield();
+        } while( !mainPowerSwitchState );        
+    }
+    DSPL( dPrompt + "Main power ON"); 
+    nanoioExp.digitalWrite( MAINPOWLED, 1);
 // with this way of doing it, we loose LED and other stuffs managment    
     // replace by WIFI_OFF no ?
     /** @todo try WIFI_OFF when power is off */
+    for ( int i = 0; i < NBRPLUGS ; i++ ){
+        colorLeds[i] = plugs[i].getColor();
+        /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/
+        plugs[i].setMainPow( mainPowerSwitchState );
+    }
+    // FastLED.setBrightness(5);
+    FastLED.setBrightness( cParam.getLedsLuminosity() );
     FastLED.show();
     
     
@@ -604,7 +606,8 @@ void loop(){
             }            
             FastLED.show();
             digitalWrite( WIFILED, LOW);  //stop wifi LED
-            //ESP.restart();
+            
+            ESP.restart();
         }
         nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
     }
