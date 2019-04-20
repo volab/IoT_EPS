@@ -33,6 +33,7 @@ struct SerialCommand{
   static void parse(char *);
   static void process();
   static void displayCommandsList();
+  static void i2c_recovery();
 }; // SerialCommand
   
 #endif

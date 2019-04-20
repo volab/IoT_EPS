@@ -57,7 +57,7 @@ extern ConfigParam cParam; /**< @brief to display wifi mode non static member ! 
 // extern CNanoI2CIOExpander ioexp;
 
 void i2c_scan();
-void i2c_recovery();
+// void i2c_recovery();
 void i2c_plantoir();
 
 #define SDAPIN D2
@@ -217,7 +217,7 @@ FSInfo filseSystemInfo;
 			cParam.displayWifiMode();
 			break;
             
-        case 'a': //recovery I2C         
+        case 'a': //a for address (IP)  
             INTERFACE.print("IP add = ");
             INTERFACE.println( WiFi.localIP().toString() );
             INTERFACE.print("softAP IP add = ");
@@ -396,7 +396,7 @@ void i2c_plantoir(){
       
 }
 
-void i2c_recovery(){
+void SerialCommand::i2c_recovery(){
     
     Serial.println("Starting I2C bus recovery");
     delay(2000);

@@ -133,6 +133,7 @@ void setup(){
     cParam.begin();
     if ( !cParam.ready ) {
         DSPL( dPrompt + F("cParam default values. Potential fatal error") );
+        
         // fatalErro();
     }
     
@@ -142,8 +143,9 @@ void setup(){
     CNano::init();
     rtc.begin();
     if ( !nanoioExp.test() && rtc.initErr){
-        DSPL(dPrompt + F("I2C bus fatal error !"));
-        /** @todo re- enable funcion call fatalError after debug */
+        DSPL(dPrompt + F("I2C bus fatal error ! Try recovery"));
+        /** @todo try 2 or 3 i2c_crecovery before to jump on fatal error*/
+        SerialCommand::i2c_recovery();
         //fatalError();
     }
   
@@ -325,10 +327,13 @@ void setup(){
             wifiLed.stop();
             pinMode( WIFILED, OUTPUT );
             digitalWrite( WIFILED, HIGH);
-            DSPL( dPrompt + F("\nNumber of Station wifi try : ") + (String)tryCount );
+            DSPL( "\n" + dPrompt + F("\nNumber of Station wifi try : ") + (String)tryCount );
             if ( WiFi.status() == WL_CONNECTED){
                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
-                    + WiFi.localIP().toString() );  
+                    + WiFi.localIP().toString() );
+                if ( cParam.getFirstBoot() == ConfigParam::TRY ){
+                    ConfigParam::write2Json( "firstBoot", "OFF" );
+                }                    
             } else { WiFi.disconnect(); }
         }
         /////////////////////////////////////////////////////////////////////////////

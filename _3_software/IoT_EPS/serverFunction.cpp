@@ -345,7 +345,7 @@ void handleNewCred(){
     server->send(200, "text/plain", returnPage );     
 }
 
-
+extern ConfigParam cParam;
 /** 
  @fn void firstBootHtmlForm()
  @brief Special firsboot page handler...
@@ -361,7 +361,14 @@ void firstBootHtmlForm(){
     File firstBFormFile = SPIFFS.open(FIRSTBOOTFORMFILENAME, "r");
     if (firstBFormFile){
         page = firstBFormFile.readString();
-        page.replace( FBTAG_APSSID , buildMacAddName( "IoT_ESP" ) );
+        if (cParam.getFirstBoot() == ConfigParam::TRY ){
+            page.replace( FBTAG_WARNIG_STAACCES_IMPOSSIBLE ,
+                FB_WARNING_STAACCES_IMPOSSIBLE_MESS );
+                DSPL(dPrompt + F("Warning HTML insertion !") );
+                page.replace( FBTAG_APSSID , buildMacAddName( "IoT_ESP_2" ) );
+        // }
+        } else page.replace( FBTAG_APSSID , buildMacAddName( "IoT_ESP" ) );
+        // page.replace( FBTAG_APSSID , buildMacAddName( "IoT_ESP" ) );
         //page.replace("__APPASS__"), getAPPass() );
         server->send ( 200, "text/html", page );
     } else DSPL( dPrompt + F("form first boot not found") );
@@ -392,8 +399,8 @@ void handleFirstBoot(){
     JsonObject& general = root.createNestedObject("general");
     general["ssid"] = "yourSSID";
     general["pass"] = "yourPass";
-    general["softApSsid"] = "";
-    general["softApPass"] = "";
+    general["softApSsid"] = buildMacAddName( "IoT_ESP" );
+    general["softApPass"] = "123456789";
     // root.prettyPrintTo(DEBUGPORT);DSPL("");
        
     
@@ -403,15 +410,21 @@ void handleFirstBoot(){
     }
     DSPL( dPrompt + allArgs );
     String mode = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_MODE );
-    if (mode == FB_PARAMVAL_MODEAP){//mode Access Point
+    
+    if (mode == FB_PARAMVAL_MODEAP){
+    //**********************************************************************************************
+    //   Access Point Mode
+    //**********************************************************************************************
         String apSsid = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_APSSID );
         String apPass = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_APPASS );
-        if ( apPass.length() < 8 || apPass.length() >63
-              || apSsid.length() == 0 || apSsid.length() > 31){
-                String returnPage = F("Longueur SSID et/ou pass incorrecte, plug reset");
-                server->send(200, "text/plain", returnPage );
-                ESP.reset();
-        }
+        // This erro is handle in the html fom
+        // if ( apPass.length() < 8 || apPass.length() >63
+              // || apSsid.length() == 0 || apSsid.length() > 31){
+                  // /** @todo improme error response from APmode error */
+                // String returnPage = F("Longueur SSID et/ou pass incorrecte, plug reset");
+                // server->send(200, "text/plain", returnPage );
+                // ESP.reset();
+        // }
         //write to credentials
         DSPL( dPrompt + F("credentials.json file creation.") );
         
@@ -434,7 +447,28 @@ void handleFirstBoot(){
         //AP_SSID and PASS
         ESP.reset();
     } else { //mode Station
-        
+    //**********************************************************************************************
+    //   Station Mode
+    //**********************************************************************************************
+        String stationSsid = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_STASSID );
+        String stationPass = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_STAPASS );
+        if ( stationSsid.length() == 0 ){
+            /** @todo manage error */
+        }
+        general["ssid"] = stationSsid;
+        general["pass"] = stationPass;
+        root.prettyPrintTo(DEBUGPORT);DSPL("");
+        File credFile = SPIFFS.open( "/credentials.json" , "w");
+        if (credFile){
+            DSPL( dPrompt + F("File /credentials.json open for write") );
+            root.prettyPrintTo(credFile);
+        } else {
+            DSPL( dPrompt + F("File /credentials.json open for write fail !") );
+        }
+        credFile.close();
+        ConfigParam::write2Json( "startInAPMode", "OFF" );
+        ConfigParam::write2Json( "firstBoot", "TRYSTA" );
+        ESP.reset();        
     }
     String returnPage = allArgs ;
     server->send(200, "text/plain", returnPage ); 

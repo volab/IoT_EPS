@@ -48,6 +48,8 @@
 // #define FBTAG_STAPWD "pwd_STA"
 #define FBTAG_APSSID "default_AP_SSID" 
 #define FBTAG_APPWD "azertyuiop"
+#define FBTAG_WARNIG_STAACCES_IMPOSSIBLE "<!--FB_WARNING_TAG-->"
+#define FB_WARNING_STAACCES_IMPOSSIBLE_MESS "<span id=\"fbstawarning\">Connexion impossible, vérifiez vos identifiants</span>"
 #define FB_PARAMNAME_MODE "mode_selector"
 #define FB_PARAMVAL_MODEAP "AP"
 #define FB_PARAMVAL_MODESTA "STA"

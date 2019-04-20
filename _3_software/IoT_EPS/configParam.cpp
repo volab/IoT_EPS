@@ -72,9 +72,12 @@ bool ConfigParam::readFromJson(){
                     if ( startInAPMode == "OFF") _wifimode = "Station";
                     else _wifimode = "softAP";
                     String s_FirstBootTmp = json["general"]["firstBoot"].as<String>();
+                    //possible value are "ON" "OFF" or "TRYSTA"
                     if ( s_FirstBootTmp == "ON") _firstBoot = YES;
                     else if ( s_FirstBootTmp == "OFF" )_firstBoot = NO;
-                    else _firstBoot = TRY;
+                    else if ( s_FirstBootTmp == "TRYSTA" )_firstBoot = TRY;
+                    else _firstBoot = YES; // default value
+                    
                     _host = json["general"]["hostName"].as<String>();
                     _allLedsOnTime = json["general"]["allLedsOnTime"].as<String>().toInt();
                     _ledsGlobalLuminosity = \
