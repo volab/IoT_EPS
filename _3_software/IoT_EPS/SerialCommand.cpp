@@ -43,6 +43,7 @@ return see in the code for all informations.
 #include "cEpsStrTime.h"
 #include <nanoI2CIOExpLib.h>
 #include <ESP8266WiFi.h>
+#include "csysstat.h"
 // #include <Array.h>
 // #include <nanoI2CIOExpLib.h>
 
@@ -125,7 +126,7 @@ Dir dir;
 FSInfo filseSystemInfo;
  /** @todo perhaps instanciate other commands to check hardware */
  //ABGKMQUVXYZ
- //befgkmnpqruvxy 
+ //bfgkmnpqruvxy 
     switch(com[0]){
 		case 'C':   
 			CRtc::displayTime();
@@ -237,7 +238,10 @@ FSInfo filseSystemInfo;
             } else {
                 INTERFACE.println( F("Warning this command riquires only ONE parameter !" ) );
             }            
-            break;  
+            break;
+        case 'e': //etat         
+            sysStatus.display();
+            break;            
         case 'i': //i for wifi pass
             n = sscanf( com+1,"%s", v );
             if ( n == 1){
@@ -332,6 +336,7 @@ void SerialCommand::displayCommandsList(){
     list += F("<D> SPIFFS dir\n");
     list += F("<j> display general part of config json file\n");
     list += F("<d _filename> erase a file WARNING\n");
+    list += F("<e> display system status\n");
 	INTERFACE.print( list );
 }
 

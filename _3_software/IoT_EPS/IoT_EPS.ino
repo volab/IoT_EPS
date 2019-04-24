@@ -142,11 +142,14 @@ void setup(){
     ///////////////////////////////////////////////////////////////////////////// 
     CNano::init();
     rtc.begin();
-    if ( !nanoioExp.test() && rtc.initErr){
+    sysStatus.rtcErr = rtc.initErr;
+    // if ( !nanoioExp.test() && rtc.initErr){
+    if ( !nanoioExp.test() ){
         DSPL(dPrompt + F("I2C bus fatal error ! Try recovery"));
         /** @todo try 2 or 3 i2c_crecovery before to jump on fatal error*/
+        fatalError();
         SerialCommand::i2c_recovery();
-        //fatalError();
+        
     }
   
     /////////////////////////////////////////////////////////////////////////////
