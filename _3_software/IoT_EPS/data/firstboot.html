@@ -5,7 +5,15 @@
         <meta charset="UTF-8" />
         
         <!--Import css-->
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="css/style.css" />
+        <link
+            rel="stylesheet"
+            media="screen"
+            type="text/css"
+            href="css/style.css" />
 
         <link rel="icon" href="volab.ico" />
 
@@ -14,7 +22,7 @@
     <body class="bg-lightBlue">
         <header> <!-- Logo + Titre de la page -->
             <div class="row">
-                <div class="col s3">
+                <div class="FB_DIV_Logo">
                         <img class="FB_logo" src="img/logo_alpha.png" alt="logo IoT_EPS"/>
                 </div>
                 <div class="col s9">
@@ -57,15 +65,18 @@
                                 name="AP_PWD"
                                 id="id_AP_PWD"
                                 value="123456789" >
-                            <br><br>***<br><br>
+                                <br>
+                            <div id="FB_AP_WARNING">La longueur du mot de passe doit être comprise entre 8 et 63 caractères.</div>
+                            <br>***<br>
                         </div>
                         <div class="STA">
+                            <!--FB_WARNING_TAG-->
                             <label for="STA_select">
                                 <input
                                     type="radio"
                                     name="mode_selector"
                                     id="STA_select"
-                                    value="pwd_STA"
+                                    value="STA"
                                     onclick="checkSTA()" >
                                 <span>Joindre un réseau existant</span>
                             </label><br><br>
@@ -75,7 +86,8 @@
                                 name="STA_SSID"
                                 id="id_STA_SSID"
                                 value=""
-                                placeholder="saisir votre SSID" >
+                                placeholder="saisir le SSID"
+                                required >
                             <br>
                             <span>Saisir le mot de passe du réseau à joindre</span><br>
                             <input
@@ -83,13 +95,16 @@
                                 name="STA_PWD"
                                 id="id_STA_PWD"
                                 value=""
-                                placeholder="saisir le mot de passe">
+                                placeholder="saisir le mot de passe"
+                                required >
                             <br><br>***<br><br>
                         </div>
                         <div class="submitReset">
                             <input 
                                 type="submit"
-                                class="submit AP_STA_SUBMIT" >
+                                id="FB_SUBMIT"
+                                class="submit AP_STA_SUBMIT" 
+                                default>
                             <input
                                 type="reset"
                                 class="reset AP_STA_SUBMIT" > 
@@ -99,23 +114,65 @@
         </main>
 
         <script>
+            const AP_SSID = document.getElementById("id_AP_SSID");
+            const AP_PWD = document.getElementById("id_AP_PWD");
+            const AP_select = document.getElementById("AP_select");
+            const AP_PWD_WARNING = document.getElementById("FB_AP_WARNING");
+
+            const STA_SSID = document.getElementById("id_STA_SSID");
+            const STA_PWD = document.getElementById("id_STA_PWD");
+            const STA_select = document.getElementById("STA_select");
+
+            const BTN_SUBMIT = document.getElementById("FB_SUBMIT");
+
+            const PWD_MIN = 8;
+            const PWD_MAX = 63;
+
+
+
             function checkAP(){
-                document.getElementById("id_STA_SSID").disabled = true;
-                document.getElementById("id_STA_PWD").disabled = true;
-                document.getElementById("id_AP_SSID").disabled = false;
-                document.getElementById("id_AP_PWD").disabled = false;
-                document.getElementById("AP_select").checked = true
+                checkLength();
+                STA_SSID.disabled = true;
+                STA_PWD.disabled = true;
+                AP_SSID.disabled = false;
+                AP_PWD.disabled = false;
+                AP_select.checked = true;
             }
 
             function checkSTA(){
-                document.getElementById("id_STA_SSID").disabled = false;
-                document.getElementById("id_STA_PWD").disabled = false;
-                document.getElementById("id_AP_SSID").disabled = true;
-                document.getElementById("id_AP_PWD").disabled = true;
-                document.getElementById("STA_select").checked = true
+                showHide("hide");
+                STA_SSID.disabled = false;
+                STA_PWD.disabled = false;
+                AP_SSID.disabled = true;
+                AP_PWD.disabled = true;
+                STA_select.checked = true;
             }
 
-            checkAP()
+            AP_PWD_WARNING.hidden = true;
+            checkAP();
+
+            function showHide(show_hide){
+                if (show_hide == "show"){
+                    BTN_SUBMIT.disabled = true;
+                    AP_PWD_WARNING.hidden = false;
+                } else if (show_hide == "hide"){
+                    BTN_SUBMIT.disabled = false;
+                    AP_PWD_WARNING.hidden = true;
+                }
+            }
+
+            function checkLength(){
+                if ((AP_PWD.value.length < PWD_MIN) || (AP_PWD.value.length > PWD_MAX)){
+                    showHide("show");
+                } else {
+                    showHide("hide");
+                }
+            }
+
+            AP_PWD.addEventListener("input", (event)=>{
+                checkLength();
+            });
+
         </script>
 
     </body>

@@ -480,5 +480,10 @@ $(document).ready( ()=>{
  *      * voir JSDOC
  *      * Sphinx-js
  * 
+ * ####
+ * 
+ * #. Dans firstboot.html, Vérifier que le mot de passe saisie dans AP fait bien entre 8 et 63
+ *    caractères
+ * 
  * ## TODO
  */
