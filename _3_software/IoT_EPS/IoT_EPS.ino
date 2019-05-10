@@ -38,10 +38,12 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
+ @li plug WiFi LED on nanoIOExpander and main power switch directly on ESP pin D0 (works in prog 08/05/2019)
+ todo : test : change to CnanoFlasher to be tested
  @li check if main power is off to not connect to wifi
  @li configuration page (see softdev.rst)
  @li generate a unic server name and default AP ssid from prefix and mac add (end) 
- @li regarder pour recharger la pgae index lors d'un changement d'état pas BP(pas forcément an mode AP)
+ @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
  @li add IP and mac add to config.json (for display in web browser)
  @li bug report when json is no reachable !
  @li review work without RTC component strategy
@@ -89,9 +91,10 @@ CpowerPlug class*/
 
 bool simpleManualMode = false;
 
-Flasher wifiLed;
+// Flasher wifiLed;
+CFlasherNanoExp wifiLed;
 
-CSwitchNano mainPowerSiwtch;
+// CSwitchNano mainPowerSiwtch;
 int mainPowerSwitchState;
 int mainPowerPrevState = 0;
 CSwitchNano specialBp;
@@ -180,11 +183,13 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     //     Main power first check                                              //
     /////////////////////////////////////////////////////////////////////////////    
-    mainPowerSiwtch.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
+    // mainPowerSiwtch.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
+    pinMode( MAINSWITCHPIN, INPUT_PULLUP);
     nanoioExp.digitalWrite( MAINPOWLED, 0);
     nanoioExp.pinMode( MAINPOWLED, OUTPUT );
-    mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF    
-    mainPowerPrevState = mainPowerSwitchState; // for the loop
+    // mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF    
+    mainPowerSwitchState = !digitalRead( MAINSWITCHPIN ); //open circuit = plug OFF    
+    
     
     // CNano::_nano.pinMode( MAINPOWLED, OUTPUT ); // _nano is protected
     // CNano::_nano.digitalWrite( MAINPOWLED, mainPowerSwitchState );
@@ -256,11 +261,13 @@ void setup(){
         for ( int i = 0; i < 4 ; i++ ) colorLeds[i] = CRGB::Black;
         FastLED.show();
         do {
-            mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
+            // mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
+            mainPowerSwitchState = !digitalRead( MAINSWITCHPIN ); //open circuit = plug OFF
             yield();
         } while( !mainPowerSwitchState );        
     }
     DSPL( dPrompt + "Main power ON"); 
+    mainPowerPrevState = mainPowerSwitchState; // for the loop
     nanoioExp.digitalWrite( MAINPOWLED, 1);
 // with this way of doing it, we loose LED and other stuffs managment    
     // replace by WIFI_OFF no ?
@@ -328,8 +335,8 @@ void setup(){
             }
             // if ( firstBoot == "tryStation") { set FirstBoot to OFF }
             wifiLed.stop();
-            pinMode( WIFILED, OUTPUT );
-            digitalWrite( WIFILED, HIGH);
+            // pinMode( WIFILED, OUTPUT );
+            // digitalWrite( WIFILED, HIGH);
             DSPL( "\n" + dPrompt + F("\nNumber of Station wifi try : ") + (String)tryCount );
             if ( WiFi.status() == WL_CONNECTED){
                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
@@ -491,7 +498,7 @@ void loop(){
     
     ftpSrv.handleFTP();
     
-    mainPowerSiwtch.update();
+    // mainPowerSiwtch.update();
     specialBp.update();
     
     SerialCommand::process();
@@ -515,8 +522,8 @@ void loop(){
                 plugs[i].manageLeds( false );
             }
             wifiLed.stop();
-            pinMode( WIFILED, OUTPUT );
-            digitalWrite( WIFILED, LOW);
+            // pinMode( WIFILED, OUTPUT );
+            // digitalWrite( WIFILED, LOW);
             allLeds.stop();
             if ( cParam.getPowLedEconomyMode() ) nanoioExp.digitalWrite( MAINPOWLED, LOW );
         }
@@ -530,7 +537,8 @@ void loop(){
                 wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
             } else {
                 pinMode( WIFILED, OUTPUT );
-                digitalWrite( WIFILED, HIGH);                
+                digitalWrite( WIFILED, HIGH);
+                wifiLed.high();
             }
             nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
             restartTempoLed = false;
@@ -589,7 +597,9 @@ void loop(){
     /////////////////////////////////////////////////////////////////////////////
     //  main power switch actions                                              //
     /////////////////////////////////////////////////////////////////////////////
-	mainPowerSwitchState = !mainPowerSiwtch.getState();    
+	// mainPowerSwitchState = !mainPowerSiwtch.getState();    
+	mainPowerSwitchState = !digitalRead( MAINSWITCHPIN );
+/** @todo recover debounce function */    
     if ( mainPowerSwitchState != mainPowerPrevState){ //main power switch change state
         mainPowerPrevState = mainPowerSwitchState;
         if (mainPowerSwitchState == HIGH ){ 
@@ -637,7 +647,8 @@ void wifiLedFlash( int speed, int count ){
 }
 
 //second implementation with Flasher
-void wifiLedFlash( Flasher led, int count ){
+// void wifiLedFlash( Flasher led, int count ){
+void wifiLedFlash( CFlasherNanoExp led, int count ){
     
 	while ( led.getChangeStateCpt() < count ){
 		led.update();

@@ -128,7 +128,8 @@
 #define PLUG2_ONOFFLEDPIN 6
 #define PLUG3_ONOFFLEDPIN 7
 
-#define MAINSWITCHPIN 8 //nanoI2CIOExpander pin D10
+// #define MAINSWITCHPIN 8 //nanoI2CIOExpander pin D10
+#define MAINSWITCHPIN D0 //Direct on ESP pin
 #define SPECIALBP 10 //to ask plug state
 #define MAINPOWLED 9 //nanoI2CIOExpander pin D11
 
@@ -137,7 +138,8 @@
 #define BP2 D4
 #define BP3 D3
 
-#define WIFILED D0
+// #define WIFILED D0
+#define WIFILED 8 //nanoI2CIOExpander pin D10
 #define WIFILED_FLASH_FAST 100
 #define WIFILED_FLASH_SLOW 500
 #define WIFILED_FLASH_COUNT 20
