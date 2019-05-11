@@ -32,6 +32,7 @@ Avancement
 #. add LDR : removed
 #. add I2C nano expander with analog inputs ok
 
+#. resolv power up problem
 #. packaging study
 #. integartion
 #. add a MOSFET on general power relay to switch them all in one time on power off
@@ -56,43 +57,57 @@ and in French : `prises secteur sur wikipedia`_
 ####
 
 ==================   
-Alimentation ESP
+ESP power 
 ==================
-Premier écueil: l'ESP peut-il s'alimenter en 5V ?
+First question: can we power ESP8266 with 5V external power  ?
 
-Réponse : oui
+Answer : yes
 
 
 .. figure:: image/alimWemosD1Mini.png
     :align: center
     
-    Circuit d'alimentation WEMOS D1 mini
+    Power schematic of WEMOS D1 mini
 
 ####
 
+================================
+ESP8266 power up problem
+================================
+When I power Wemos by external 5V, the system don't start correctly.
+
+Apparently it stay locked in an unknow state for about 6 seconds and finaly it start.
+
+I suspect a watch dog time out.
+
+I try to put à 47uF on reset. With oscilloscope I watch the signal and I thinks that the slex rate
+is to low.
+
+I consider to add a MAX1232 on the reset pin or an analog circuit.
+
+I checked IO0 (D3) used to flash the component is connect to BP3
 
 
+==========================
+Real time calendar clock
+==========================
 
-====================
-Horloge temps réelle
-====================
-
-Ajout d'un DS3231 comme dans le projet  `ESP_NTP_DS3231 <https://github.com/volab/ESP_NTP_DS3231>`_
+Add of a DS3231 as in the project : `ESP_NTP_DS3231 <https://github.com/volab/ESP_NTP_DS3231>`_
 
 .. important::
 
   D1 : SCL
   D2 : SDA
   
-I2C pullup ? Visiblement sur le DS3231, il y en a ! Yes I checked it 4.7k
+I2C pullup ? There is pull up on DS3231 ! Yes I checked it 4.7k
 
 Power consumption : 1.9mA measured 08/03/19
 
 ####
 
-====================
-Choix current sensor
-====================
+=======================
+Current sensor choice
+=======================
 
 INA219 et INA220
 =================
@@ -108,30 +123,30 @@ ACS712
 
 - "5V power supply"
 
-pb c'est pas de l'I2C et en plus x4
+pb it is not I2C compnent and more we need 4
 
 ACS764
 ======
-Je n'arrive pas à voir la tension de rail max
+I can't find rail to rail max  voltage
 
 - I2C
-- courant max programmable
-- Unidirectional DC current sensing and reporting : KO
+- max courant  programmable
+- but Unidirectional DC current sensing and reporting : KO
 
-Recherche internet
+Internet search
 ==================
 
 "AC isolated current sensor I2C"
 
-le vainqueur est `Si8901B-GS`_
+The winer is `Si8901B-GS`_
 
 .. _`Si8901B-GS` : https://www.silabs.com/products/isolation/current-sensors/si890x-isolated-adc-ac-mains-monitor
 
-dispo chez `Mouser`_ à 3.44€/10pcs
+dispo on `Mouser`_ à 3.44€/10pcs
 
 .. _`Mouser` : https://www.mouser.fr/Search/Refine.aspx?Keyword=SI8901 
 
-`Un exemple de mise en oeuvre`_
+`Usage example`_
 
 .. _`Un exemple de mise en oeuvre` : http://tinkerman.cat/the-espurna-board-a-smart-wall-switch-with-power-monitoring/#lightbox-gallery-oY6vOUw7/3/
 
@@ -189,7 +204,7 @@ Affectation des io
     ===== =============
     pins  affectation
     ===== =============
-    D0    WIFI LED
+    D0    Main Power sw
     D1    I2C SCL
     D2    I2C data
     D3    BP3

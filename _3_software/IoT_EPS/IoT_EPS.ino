@@ -38,8 +38,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
- @li plug WiFi LED on nanoIOExpander and main power switch directly on ESP pin D0 (works in prog 08/05/2019)
- todo : test : change to CnanoFlasher to be tested
+ @li resolve power up long start
  @li check if main power is off to not connect to wifi
  @li configuration page (see softdev.rst)
  @li generate a unic server name and default AP ssid from prefix and mac add (end) 
@@ -107,6 +106,7 @@ CTempo allLeds;
 bool restartTempoLed = false;
 
 void setup(){
+    delay(1000);//a try to correct the powerup pb
     DEFDPROMPT("setUp") // define dPrompt String
     DateTime now;
     DEBUGPORT.begin(DEBUGSPEED);
@@ -151,6 +151,7 @@ void setup(){
         DSPL(dPrompt + F("I2C bus fatal error ! Try recovery"));
         /** @todo try 2 or 3 i2c_crecovery before to jump on fatal error*/
         // fatalError();
+        /** @todo test and tune fatal error function */
         SerialCommand::i2c_recovery();
         
     }
@@ -183,17 +184,11 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     //     Main power first check                                              //
     /////////////////////////////////////////////////////////////////////////////    
-    // mainPowerSiwtch.begin( MAINSWITCHPIN, 5, INPUT_PULLUP );
     pinMode( MAINSWITCHPIN, INPUT_PULLUP);
     nanoioExp.digitalWrite( MAINPOWLED, 0);
-    nanoioExp.pinMode( MAINPOWLED, OUTPUT );
-    // mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF    
+    nanoioExp.pinMode( MAINPOWLED, OUTPUT ); 
     mainPowerSwitchState = !digitalRead( MAINSWITCHPIN ); //open circuit = plug OFF    
     
-    
-    // CNano::_nano.pinMode( MAINPOWLED, OUTPUT ); // _nano is protected
-    // CNano::_nano.digitalWrite( MAINPOWLED, mainPowerSwitchState );
-   
     nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
     DSPL( dPrompt + "Main power state : " +  ( mainPowerSwitchState?"ON":"OFF") );
     specialBp.begin( SPECIALBP, 20, INPUT_PULLUP );
@@ -336,6 +331,7 @@ void setup(){
             // if ( firstBoot == "tryStation") { set FirstBoot to OFF }
             wifiLed.stop();
             // pinMode( WIFILED, OUTPUT );
+            wifiLed.high();
             // digitalWrite( WIFILED, HIGH);
             DSPL( "\n" + dPrompt + F("\nNumber of Station wifi try : ") + (String)tryCount );
             if ( WiFi.status() == WL_CONNECTED){
@@ -523,6 +519,7 @@ void loop(){
             }
             wifiLed.stop();
             // pinMode( WIFILED, OUTPUT );
+            wifiLed.low();
             // digitalWrite( WIFILED, LOW);
             allLeds.stop();
             if ( cParam.getPowLedEconomyMode() ) nanoioExp.digitalWrite( MAINPOWLED, LOW );
@@ -611,6 +608,7 @@ void loop(){
             }            
             FastLED.show();
             // digitalWrite( WIFILED, LOW);  //stop wifi LED
+            wifiLed.low();
             ESP.restart();
     }
 

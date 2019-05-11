@@ -118,6 +118,26 @@ First boot process
 #. if Station is ok firstBoot is ended, set firstBoot param = off
 #. if station ko reload firstboot page with alerte
 
+Behavior when user move EPS from on site to another
+========================================================
+It is not a first boot
+
+EPS will search its WiFi station and will not find it so it restart in AP mode then user can acces
+to the config special page change SSID and password.
+
+===================================
+Configuration parmeter
+===================================
+add IP of AP mode
+EPS name (host name)
+Plugs names
+Station SSID
+Sation mode passwd
+Soft AP SSID and password
+
+All json general section parameter without:
+- numberOfPlugs
+- rtcValidity
 
 ====================================
 Plugs modes description
