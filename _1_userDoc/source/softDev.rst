@@ -8,6 +8,8 @@ Document de conception soft de IOT_ESP
 .. include:: ../../README.rst
    :encoding: UTF-8
 
+
+   
 ==============
 Avancement
 ==============
@@ -69,7 +71,9 @@ To be added 30/30/2019
  - change IP in softAP_IP and Port in softAP_port                                           DONE
  - change name of the file to config4.json                                                  DONE
  
-
+To be added 09/05/2019
+ - IP add in soft AP mode to display it (what the utility ?)
+ - mac add to display it
 
 
 ====================================

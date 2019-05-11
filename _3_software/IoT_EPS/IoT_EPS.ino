@@ -150,7 +150,7 @@ void setup(){
     if ( !nanoioExp.test() ){
         DSPL(dPrompt + F("I2C bus fatal error ! Try recovery"));
         /** @todo try 2 or 3 i2c_crecovery before to jump on fatal error*/
-        fatalError();
+        // fatalError();
         SerialCommand::i2c_recovery();
         
     }
@@ -536,8 +536,8 @@ void loop(){
             if ( cParam.getWifiMode() == "softAP" ){
                 wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
             } else {
-                pinMode( WIFILED, OUTPUT );
-                digitalWrite( WIFILED, HIGH);
+                // pinMode( WIFILED, OUTPUT );
+                // digitalWrite( WIFILED, HIGH);
                 wifiLed.high();
             }
             nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
@@ -598,23 +598,10 @@ void loop(){
     //  main power switch actions                                              //
     /////////////////////////////////////////////////////////////////////////////
 	// mainPowerSwitchState = !mainPowerSiwtch.getState();    
+    // pinMode( MAINSWITCHPIN, INPUT_PULLUP);
 	mainPowerSwitchState = !digitalRead( MAINSWITCHPIN );
 /** @todo recover debounce function */    
-    if ( mainPowerSwitchState != mainPowerPrevState){ //main power switch change state
-        mainPowerPrevState = mainPowerSwitchState;
-        if (mainPowerSwitchState == HIGH ){ 
-            DSPL( dPrompt + F("main power switched ON."));
-            restartTempoLed = true;
-            for ( int i = 0; i < NBRPLUGS ; i++ ){                
-                plugs[i].setMainPow( true );
-                colorLeds[i] = plugs[i].getColor(); //restaure color LED
-            }
-            //restaure wifiLed state
-            /** @todo restaure wifi LED in AP mode */
-            if ( WiFi.status() == WL_CONNECTED ){
-                digitalWrite( WIFILED, HIGH);   
-            }
-        } else {
+    if ( !mainPowerSwitchState) { //main power switch change state
             DSPL( dPrompt + F("main power switched OFF and all plugs are in manual state.") );
             for ( int i = 0; i < NBRPLUGS ; i++ ){
                 plugs[i].off();
@@ -623,11 +610,8 @@ void loop(){
                 colorLeds[i] = CRGB::Black;
             }            
             FastLED.show();
-            digitalWrite( WIFILED, LOW);  //stop wifi LED
-            
+            // digitalWrite( WIFILED, LOW);  //stop wifi LED
             ESP.restart();
-        }
-        nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
     }
 
     yield();
@@ -639,11 +623,11 @@ void loop(){
 /////////////////////////////////////////////////////////////////////////////
 
 void wifiLedFlash( int speed, int count ){
-    for ( int i = 0; i < count ; i++ ){
-        digitalWrite( WIFILED , !digitalRead( WIFILED ) );
-        delay( speed );        
-    }
-    digitalWrite( WIFILED, LOW);
+    // for ( int i = 0; i < count ; i++ ){
+        // digitalWrite( WIFILED , !digitalRead( WIFILED ) );
+        // delay( speed );        
+    // }
+    // digitalWrite( WIFILED, LOW);
 }
 
 //second implementation with Flasher

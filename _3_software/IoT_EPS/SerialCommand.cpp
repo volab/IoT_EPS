@@ -126,7 +126,7 @@ Dir dir;
 FSInfo filseSystemInfo;
  /** @todo perhaps instanciate other commands to check hardware */
  //ABGKMQUVXYZ
- //bfgkmnpqruvxy 
+ //bfgkmnqruvxy 
     switch(com[0]){
 		case 'C':   
 			CRtc::displayTime();
@@ -270,6 +270,11 @@ FSInfo filseSystemInfo;
         case 'o': //nano I2C IO expander test
             INTERFACE.println("D11 out test low");           
             nanoI2C.digitalWrite( 9, LOW );
+            break;   
+        case 'p': //mainpower state
+            // pinMode( MAINSWITCHPIN, INPUT);
+            INTERFACE.print("main power state (direct read):");           
+            INTERFACE.println( digitalRead( MAINSWITCHPIN ) );
             break;            
         case 's':
         timeClient.begin();
@@ -337,6 +342,7 @@ void SerialCommand::displayCommandsList(){
     list += F("<j> display general part of config json file\n");
     list += F("<d _filename> erase a file WARNING\n");
     list += F("<e> display system status\n");
+    list += F("<p> display main power state\n");
 	INTERFACE.print( list );
 }
 

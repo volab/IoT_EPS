@@ -31,6 +31,7 @@ Avancement
 #. add wifi led : ok
 #. add LDR : removed
 #. add I2C nano expander with analog inputs ok
+
 #. packaging study
 #. integartion
 #. add a MOSFET on general power relay to switch them all in one time on power off
