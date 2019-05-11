@@ -386,7 +386,7 @@ class C_Plug{
         let BLUEPLUG    = "bluePlug";
         let YELLOWPLUG  = "yellowPlug";
         // let HELP        = "help";
-        // let CFG         = "cfg";
+        let CFG         = "cfg";
 
         let v_target = $(v_eventTarget);
         let v_fieldset = $("fieldset");
@@ -438,14 +438,15 @@ class C_Plug{
         //     v_hiddenInput.each( (i)=>{
         //         $(v_hiddenInput[i]).val(HELP);
         //     } );
-        // } else if (v_target.hasClass(CFG)){
-        //     v_fieldset.toggleClass(`${v_fieldsetClass} ${CFG}`);
-        //     $("h2").text("Configuration");
-
-        //     v_hiddenInput.each( (i)=>{
-        //         $(v_hiddenInput[i]).val(CFG);
-        //     } );
         // }
+        else if (v_target.hasClass(CFG)){
+            v_fieldset.toggleClass(`${v_fieldsetClass} ${CFG}`);
+            $("h2").text("Configuration");
+
+            v_hiddenInput.each( (i)=>{
+                $(v_hiddenInput[i]).val(CFG);
+            } );
+        }
     }
 
     f_getDataForm(v_target){

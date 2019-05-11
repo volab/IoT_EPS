@@ -14,11 +14,11 @@
   "redPlug": {
     "nickName": "Aquarium",
     "emplacement": "salon",
-    "State": "OFF",
+    "State": "ON",
     "Pause": "OFF",
     "Mode": "Manuel",
     "hDebut": "",
-    "hFin": "",
+    "hFin": "23:00",
     "dureeOn": "",
     "dureeOff": "",
     "Jours": [
@@ -32,18 +32,18 @@
     ],
     "clonedPlug": "",
     "onOffCount": "70",
-    "nextTimeToSwitch": "0"
+    "nextTimeToSwitch": "100"
   },
   "greenPlug": {
     "nickName": "Télé",
     "emplacement": "cuisine",
-    "State": "OFF",
+    "State": "ON",
     "Pause": "OFF",
-    "Mode": "Manuel",
-    "hDebut": "",
+    "Mode": "Cyclique",
+    "hDebut": "22h30",
     "hFin": "",
-    "dureeOn": "",
-    "dureeOff": "",
+    "dureeOn": "30",
+    "dureeOff": "45",
     "Jours": [
       "OFF",
       "OFF",
@@ -55,40 +55,40 @@
     ],
     "clonedPlug": "",
     "onOffCount": "109",
-    "nextTimeToSwitch": "0"
+    "nextTimeToSwitch": "200"
   },
   "bluePlug": {
     "nickName": "jardin",
     "emplacement": "plaquard",
     "State": "OFF",
     "Pause": "OFF",
-    "Mode": "Manuel",
-    "hDebut": "",
-    "hFin": "",
+    "Mode": "Hebdomadaire",
+    "hDebut": "8:00",
+    "hFin": "20:00",
     "dureeOn": "",
     "dureeOff": "",
     "Jours": [
+      "ON",
       "OFF",
+      "ON",
       "OFF",
+      "ON",
       "OFF",
-      "OFF",
-      "OFF",
-      "OFF",
-      "OFF"
+      "ON"
     ],
     "clonedPlug": "",
     "onOffCount": "18",
-    "nextTimeToSwitch": "0"
+    "nextTimeToSwitch": "300"
   },
   "yellowPlug": {
     "nickName": "liseuse",
     "emplacement": "chiotte",
     "State": "OFF",
     "Pause": "OFF",
-    "Mode": "Manuel",
+    "Mode": "Minuterie",
     "hDebut": "",
     "hFin": "",
-    "dureeOn": "",
+    "dureeOn": "23",
     "dureeOff": "",
     "Jours": [
       "OFF",
@@ -101,6 +101,6 @@
     ],
     "clonedPlug": "",
     "onOffCount": "9",
-    "nextTimeToSwitch": "0"
+    "nextTimeToSwitch": "600"
   }
 }

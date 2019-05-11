@@ -6,12 +6,13 @@ body{
     line-height: 0rem;
 } */
 
-/* fieldset{
+fieldset{
     box-shadow: 6px 6px 3px 3px;
     border: 2px ridge black;
     border-radius:0 10px 0 10px;
     padding: 0.75rem;
-} */
+    margin: 2%;
+}
 
 /* li{
     list-style: none;
@@ -238,6 +239,11 @@ input[type="password"] {
 .table-dark {
     /* color: #fff; */
     background-color: #666 !important;
+}
+
+.table{
+    width: auto;
+    margin: auto;
 }
 
 .dropdown-menu.show{
