@@ -87,6 +87,8 @@ I consider to add a MAX1232 on the reset pin or an analog circuit.
 
 I checked IO0 (D3) used to flash the component is connect to BP3
 
+At the begin of the setup I add a delay of 1 s power on the built-in LEd for 1s and start and it 
+solves the problem !
 
 ==========================
 Real time calendar clock

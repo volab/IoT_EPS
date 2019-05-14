@@ -126,7 +126,7 @@ EPS will search its WiFi station and will not find it so it restart in AP mode t
 to the config special page change SSID and password.
 
 ===================================
-Configuration parmeter
+Configuration parameter
 ===================================
 add IP of AP mode
 EPS name (host name)
@@ -270,34 +270,33 @@ WEMOS D1 MIN ARDUINO configurattion:
 WIFI Modes
 ==================
 
-In Json config file, it is configured with:
-
-"wifimode": "xxxx",
+In Json config file, it is configured with: "startInAPMode" value,
 
 No WiFi
 ==========
 Also called simpleManualMode
 
-When power on the powerStrip maintain power 1 (RED) bp...
-Power strip start in this mode independently of Json configured mode
+When power on (by the wall plug not by the power switch) the powerStrip, maintain power 1 (RED) bp...
+
+Power strip start in this mode independently of Json configured mode.
 
 4 Big color LED flasf 20 times in purple.
 
-xxxx don't care
-
-In this very simple poor mode, powerstrip works only in manual mode.
+In this very simple poor mode, powerstrip works only in manual mode with BP actions ON/OFF.
 
 SoftAP
 =========
-xxxx = softAP
+EPS starts in this mode when value of "startInAPMode" parameter is "ON".
+
 No acces to NTP server but all other functions work.
+
 After 20 false tries of station mode, power Strip automaticly switch in this mode
 
 Station
 =========
-xxxx = Station or client
+EPS starts in this mode when value of "startInAPMode" parameter is "OFF".
 
-The baset functionnal mode !
+The best functionnal mode ! With full web interface and others functions.
 
 ==================
 WIFI LED behavior
@@ -566,6 +565,7 @@ For all plugs
 - timer : RED plug ko, state no transmit: corrected ok
 - timer red switched by bp : OK
 - clone from green cyclic to bleu : ok
+
 ... see testAndErrorHandling.xlsx file for the rest of the tests
 
 bug finded :
@@ -638,7 +638,7 @@ last update : 02/12/2018
 - Utilisation de la bibliothèque ESP8266mDNS prise
 - Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3 
 - Utilisation de la bibliothèque FastLED version 3.2.1 
-- Utilisation de la bibliothèque nanoI2CIOExpLib version 2.1
+- Utilisation de la bibliothèque nanoI2CIOExpLib version 3.1
 - Utilisation de la bibliothèque NTPClient version 3.1.0
 
 9 libs are Arduino official lib and one lib is spécial:

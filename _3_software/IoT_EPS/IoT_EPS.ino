@@ -38,12 +38,12 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
- @li resolve power up long start
- @li check if main power is off to not connect to wifi
+ 
+ @li STAmaxWifiConnectionRetry read from json
  @li configuration page (see softdev.rst)
  @li generate a unic server name and default AP ssid from prefix and mac add (end) 
  @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
- @li add IP and mac add to config.json (for display in web browser)
+
  @li bug report when json is no reachable !
  @li review work without RTC component strategy
  @li review work without NTP access strategy
@@ -107,6 +107,12 @@ bool restartTempoLed = false;
 
 void setup(){
     delay(1000);//a try to correct the powerup pb
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite( LED_BUILTIN, LOW ); //warning D4 BP blueu plug
+    delay(1000);
+    digitalWrite( LED_BUILTIN, HIGH ); //warning D4 BP blueu plug
+    pinMode(LED_BUILTIN, INPUT);
+    
     DEFDPROMPT("setUp") // define dPrompt String
     DateTime now;
     DEBUGPORT.begin(DEBUGSPEED);

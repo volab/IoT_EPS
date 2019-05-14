@@ -8,7 +8,8 @@ general
   softAP_port = 80
   allLedsOnTime = 30
   ledsGlobalLuminosity = 5
-  powerLedEconomyMode = OFF 
+  powerLedEconomyMode = OFF
+  STAmaxWifiConnectionRetry = 30
 redPlug
   nickName = Aquarium
   emplacement = salon
