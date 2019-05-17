@@ -41,8 +41,9 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  
  @li STAmaxWifiConnectionRetry read from json
  @li configuration page (see softdev.rst)
- @li generate a unic server name and default AP ssid from prefix and mac add (end) 
+
  @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
+ impossible this is the navigator to ask for a page and html refresh param is not a good idea !
 
  @li bug report when json is no reachable !
  @li review work without RTC component strategy

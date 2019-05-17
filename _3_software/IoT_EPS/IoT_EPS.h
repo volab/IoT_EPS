@@ -9,6 +9,8 @@
 #ifndef IOT_EPS_HEADER
 #define  IOT_EPS_HEADER
 
+#define NTPSERVER "fr.pool.ntp.org"
+
 #define DEFAULT_PREFIX_NAME "ESP_IOT"
 #define FIRSTBOOTFORMFILENAME "/firstboot.htm"
 

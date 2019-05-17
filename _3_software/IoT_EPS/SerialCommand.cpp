@@ -111,7 +111,7 @@ CNanoI2CIOExpander nanoI2C;
 bool nineState;
 
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, "fr.pool.ntp.org");
+NTPClient timeClient(ntpUDP, NTPSERVER);
 RTC_DS3231 rtc;
 DateTime NTPTime;
 bool errNTPinit = true;

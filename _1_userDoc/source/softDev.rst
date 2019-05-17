@@ -72,8 +72,10 @@ To be added 30/30/2019
  - change name of the file to config4.json                                                  DONE
  
 To be added 09/05/2019
- - IP add in soft AP mode to display it (what the utility ?)
+ - IP add in soft AP mode to display it (what the utility ? to configure it)                DONE
  - mac add to display it
+ - add ip in mode Station : to configure it if we are not in DHCP mode
+ - DHCP_mode : On or OFF
 
 
 ====================================
@@ -136,8 +138,15 @@ Sation mode passwd
 Soft AP SSID and password
 
 All json general section parameter without:
-- numberOfPlugs
-- rtcValidity
+ - numberOfPlugs
+ - rtcValidity
+ 
+set time in AP mode and perhaps for station mode summer and winter time.
+
+As for plugonof, we decide to biuld one configuration page for station mode and one configuration
+page for AP mode because in station mode we can use CDN( bootstrap and jquery) functionnality but 
+not in AP mode because the embeded version of this `content delivery network (CDN)`_ are too 
+big >3Mo.
 
 ====================================
 Plugs modes description
@@ -415,6 +424,10 @@ Possible requests:
 - Mode=Manuel&State=OFF
 - Mode=Manuel&State=ON
 
+NTP server name
+=================
+The name reside in the IoT_EPS.h file and is not a config param through web config page
+
 ====================
 Serveur html ESP8266
 ====================
@@ -480,17 +493,52 @@ _initDone et _mpc (mpc étant la ressource commune à toutes les instances de la
 ==================================
 Error handling
 ==================================
+
+Buildin test error BIT
+
+PBIT : preliminary BIT
+#. File system
+#. Config param (JSON config file)
+#. Credentials file (not in firstboot mode) - check its structure
+#. I2C acces
+#. rtc
+#. only in Station mode and after WIFI connection, check NTP access
+
+
+CBIT : Continus BIT every loop cycle, check :
+ - I2C acces (only one retry)
+ - RTC access
+ - JSON config file
+ - File system 
+ - NTP access
+...
+ - current monitoring for ON plugs and if it is possible with the choosen sensor when currents will 
+be very low
+
+Not in CBIT
+ - WIFI state if in Station mode and/or AP mode ???
+ 
+Because when wifi is down (wifi box shut down for exemple EPS could continue to work)
+
 Can we work without File system or Json error ? No, fatal error => RED LED FLash 
  The system won't be started so no special web page index
 
 Can we work without credential file ? Yes start in AP mode : OK
 
+Check credentials.json structure
+
 Can we work without I2C and/or nanoI2CIOExpander ? No, fatal error : OK
 
-Can we work without RTC ? Only if we are in Staion mode and connect to internet
+Can we work without RTC ? No, in the first release of IoT_EPS we consider that when one component
+is ko the entire EPS is ko (no degraded mode). 
+
+Perhaps in future version of the EPS, we can imagine that we work without DS3231 and only with
+NTP server and the ARDUINO Time.h. This version of the EPS could only work in Station mode.
 
 Can we work without internet connection or Wifi in station mode ?
  yes in softAP mode Refine softAP mode behavior
+ 
+ Can we work without NTP server ? Yes (it could be temporary)
 
 See dedicated Excel file.
 ================================
@@ -499,12 +547,26 @@ Time managment strategy
 
 Normal
 
-No RTC component
+
 
 No NTP server (no Wifi)
 
+First of all, what is the time usage in the EPS ? bool CPowerPlug::isItTimeToSwitch() =>
+CRtc::now().unixtime() <=>  DS3231::now().unixtime()
+
+if NTP is reachable ie in Station mode and all is ok update DS3231 time every 15mn.
+else do not update ds3231 and work with its time !
+
+if NTP not reachable or in AP Mode the time can be updated by configuration page.
+
+NTP server configuration ? not configurable for now only in IoT_EPS.hDebut
+
+RTC on error strategy, No RTC component
+
+
+
 ================================
-RTCDS3231 EEPROM access
+RTC DS3231 EEPROM access
 ================================
 nano ADD is 58
 
@@ -672,19 +734,21 @@ DS3231 stuck I2C bus
 
 It is a known problem with DS3231 see `method for recovering I2C bus #1025`_
 
+.. _`method for recovering I2C bus #1025` : https://github.com/esp8266/Arduino/issues/1025
+
 and `Reliable Startup for I2C Battery Backed RTC`_
 
 .. _`Reliable Startup for I2C Battery Backed RTC` : http://www.forward.com.au/pfod/ArduinoProgramming/I2C_ClearBus/index.html
 
-.. _`method for recovering I2C bus #1025` : https://github.com/esp8266/Arduino/issues/1025
+
 
 ===========================
 Vocabulary
 ===========================
 
-Un réseau de diffusion de contenu (RDC) ou en anglais content `delivery network (CDN)`_
+Un réseau de diffusion de contenu (RDC) ou en anglais `content delivery network (CDN)`_
 
-.. _`delivery network (CDN)` : https://en.wikipedia.org/wiki/Content_delivery_network
+.. _`content delivery network (CDN)` : https://en.wikipedia.org/wiki/Content_delivery_network
 
 =============
 Webography
