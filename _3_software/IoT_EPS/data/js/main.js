@@ -420,36 +420,45 @@ $(document).ready( ()=>{
         $("#autoTitle").text(v_hostname)
     };
 
-    f_loadJSON(v_jsonFile, function(response) {
-            let jsonresponse = JSON.parse(response);
+    function f_callbackJSON(response) {
+        let jsonresponse = JSON.parse(response);
 
-            /* general */
-            var v_hostname = jsonresponse["general"]["hostName"];
-            var v_numberOfPlug = jsonresponse["general"]["numberOfPlugs"];
-            f_populateTitle(v_hostname);
+        /* general */
+        var v_hostname = jsonresponse["general"]["hostName"];
+        var v_numberOfPlug = jsonresponse["general"]["numberOfPlugs"];
+        f_populateTitle(v_hostname);
 
-            switch (v_numberOfPlug){
-                case "4": {
-                    let v_plug = "yellowPlug";
-                    table.f_refresh(jsonresponse, v_plug);
-                    table.f_populateTable();
-                };
-                case "3": {
-                    let v_plug = "bluePlug";
-                    table.f_refresh(jsonresponse, v_plug);
-                    table.f_populateTable();
-                };
-                case "2": {
-                    let v_plug = "greenPlug";
-                    table.f_refresh(jsonresponse, v_plug);
-                    table.f_populateTable();
-                };
-                case "1": {
-                    let v_plug = "redPlug";
-                    table.f_refresh(jsonresponse, v_plug);
-                    table.f_populateTable();
-                };
-            }
+        switch (v_numberOfPlug){
+            case "4": {
+                let v_plug = "yellowPlug";
+                table.f_refresh(jsonresponse, v_plug);
+                table.f_populateTable();
+            };
+            case "3": {
+                let v_plug = "bluePlug";
+                table.f_refresh(jsonresponse, v_plug);
+                table.f_populateTable();
+            };
+            case "2": {
+                let v_plug = "greenPlug";
+                table.f_refresh(jsonresponse, v_plug);
+                table.f_populateTable();
+            };
+            case "1": {
+                let v_plug = "redPlug";
+                table.f_refresh(jsonresponse, v_plug);
+                table.f_populateTable();
+            };
+        }
+    }
+
+    f_loadJSON(v_jsonFile, f_callbackJSON);
+
+    $(table.btnUPD).on(
+        "click",
+        (event)=>{
+            table.f_removeTbody();
+            f_loadJSON(v_jsonFile, f_callbackJSON);
         }
     );
 
@@ -464,14 +473,27 @@ $(document).ready( ()=>{
  * 
  *  ####
  * 
- * #. Ajouter un fieldset ou un div pour la personnalisation
- *    (toujours sur la même page)
+ * #. Création d'une page de configuration
  * 
- * ####
- * 
- * #. Mode responcive, vérfier le bon affichage sur chacun des modes de la prise
- * 
- *      ==> Gérer l'espacement du tableau d'accueil en fonction de la taille de l'écran
+ *    - Ajouter un tableau de résumer de la configuration à l'accueil de la page de configuration
+ *    - Nom des prises
+ *    - Emplacemet des prises
+ *    - Les informations de config4.json sont à traiter.
+ *      "general": {
+ *          "hostName": "PowerStrip01",         --> Nom de l'EPS
+ *          "startInAPMode": "OFF",             --> Pour choisir de démarrer en mode AP en mode réseau
+ *                                                  (attaché à un accès wifi)
+ *          "firstBoot": "OFF",                 --> Si ON, on fait un reset usine
+ *          "numberOfPlugs": "4",               --> Ne pas afficher car non configurable
+ *          "rtcValidity": "true",              --> Ne pas afficher car non configurable
+ *          "softAP_IP": "192.168.95.42",       --> IP en mode AP
+ *                                                  Prévoir une IP Fixe pour le mode réseau
+ *          "softAP_port": "80",                --> port de connexion en http pour le mode AP
+ *          "allLedsOnTime": "30",              --> Délais avant exctinction des LEDs
+ *          "ledsGlobalLuminosity": "5",        --> Réglages de l'intensité lumineuse des LEDs (valeur de 0 à 255)
+ *          "powerLedEconomyMode": "OFF",       --> Alumer ou eteindre le témoin de mise sous tension
+ *          "STAmaxWifiConnexionRetry": "30"    --> Nombre maximum de tentative de connexion avant passage en mode AP
+ *          },
  * 
  * ####
  * 

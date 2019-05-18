@@ -6,6 +6,7 @@
  */
 class C_Table{
     constructor(){
+        this.btnUPD             = $(".home.upd-btn")
         this.jsonOBJ            = "";
         this.v_item             = "";
         this.v_tableColor       = "";
@@ -209,7 +210,7 @@ class C_Table{
         /* rempli le tableau de la page d'accueil avec les informations contenues dans le ficier JSON */
         let v_tbody = $(".home.tBody");
         let v_body = `
-            <tr class="${this.v_tableColor}">
+            <tr class="${this.v_tableColor} trBody">
                 <td>${this.v_nicName}<br/>
                     (${this.v_emplacement})
                 </td>
@@ -232,6 +233,12 @@ class C_Table{
         this.f_ifPause();
         this.f_setDetail();
         this.f_setHumanTimeFormat();
+    }
+
+    f_removeTbody(){
+        /* Permet de retirer / supprimer le corps du tableau */
+        let v_trBody = $(".trBody");
+        $(v_trBody).remove();
     }
 
 }

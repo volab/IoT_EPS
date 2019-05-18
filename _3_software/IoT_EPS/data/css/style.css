@@ -180,6 +180,11 @@ h5.div_subSummary {
     width: 100%;
 }
 
+/* Accueil */
+.upd-btn{
+    margin: 2%;
+}
+
 /* First Boot Page */
 .FB_logo{
     width:25%;
@@ -244,6 +249,7 @@ input[type="password"] {
 .table{
     width: auto;
     margin: auto;
+
 }
 
 .dropdown-menu.show{

@@ -14,7 +14,7 @@
   "redPlug": {
     "nickName": "Aquarium",
     "emplacement": "salon",
-    "State": "ON",
+    "State": "OFF",
     "Pause": "OFF",
     "Mode": "Manuel",
     "hDebut": "",
