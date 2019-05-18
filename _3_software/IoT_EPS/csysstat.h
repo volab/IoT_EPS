@@ -14,6 +14,12 @@ class CSysStatus {
     public:
         bool rtcErr = false;
         bool i2cErr = false;
+        bool nanoErr = false;
+        bool fsErr  = false;
+        bool ntpErr = false;
+        bool jsoFileErr = false;
+        bool credFileErr = false;
+        bool confFileErr = false;
         void display();
 };
 

@@ -538,7 +538,7 @@ NTP server and the ARDUINO Time.h. This version of the EPS could only work in St
 Can we work without internet connection or Wifi in station mode ?
  yes in softAP mode Refine softAP mode behavior
  
- Can we work without NTP server ? Yes (it could be temporary)
+ Can we work without NTP server ? Yes (it could be temporary down)
 
 See dedicated Excel file.
 ================================
@@ -662,6 +662,8 @@ Gros gros tuto sur  `Web serveur`_
 Demonstrate using an http server and an HTML form to `control an LED`_. The http server runs on the ESP8266. 
 
 .. _`control an LED` : https://gist.github.com/bbx10/5a2885a700f30af75fc5
+
+jQery slim : 70ko
 
 fastLed
 =============

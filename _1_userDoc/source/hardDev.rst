@@ -17,7 +17,6 @@ Document de conception hardware de IOT_ESP
 Avancement
 ============
 #. alimentation ESP/Wemos en 5V ? : ok
-#. choix curent sensor: 75%
 #. horloge temps réelle : ok
 #. bouton poussoirs : ok
 #. Affectation des io : ok
@@ -32,7 +31,9 @@ Avancement
 #. add LDR : removed
 #. add I2C nano expander with analog inputs ok
 
-#. resolv power up problem
+#. resolv power up problem : implement MAX1232
+#. choix curent sensor: 75%
+#. pcb study
 #. packaging study
 #. integartion
 #. add a MOSFET on general power relay to switch them all in one time on power off

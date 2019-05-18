@@ -38,21 +38,19 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
- 
- @li STAmaxWifiConnectionRetry read from json
- @li configuration page (see softdev.rst)
-
- @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
- impossible this is the navigator to ask for a page and html refresh param is not a good idea !
-
- @li bug report when json is no reachable !
- @li review work without RTC component strategy
- @li review work without NTP access strategy
- @li define rtc component versus NTP update strategy 
  @li improve error handling
+ @li bug report when json is no reachable !
+ @li STAmaxWifiConnectionRetry read from json
+ @li implement rtc strategy
+ @li configuration page (see softdev.rst)
+ 
+ @li see hardware
+ 
  @li power measurment
  @li manage sun and winter hour change
  
+ @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
+ impossible this is the navigator to ask for a page and html refresh param is not a good idea !
 */
 
 
@@ -81,7 +79,7 @@ ESP8266WebServer *server;
 
 CPowerPlug *plugs;
 
-bool errFS = true;
+// bool errFS = true;
 
 /** @todo see for add colorLEd array in the class CPowerPlug as a static member*/
 /** @todo convert colorLeds array in dynamic version as for plugs array */
@@ -125,11 +123,13 @@ void setup(){
     //     file system check                                                   //
     /////////////////////////////////////////////////////////////////////////////
     DSPL( dPrompt + " Build : " + __DATE__ + " @ " + __TIME__);
-    errFS = !SPIFFS.begin(); // to check if it's possible to begin twice the SPIFFS
+    
+    sysStatus.fsErr = !SPIFFS.begin(); // to check if it's possible to begin twice the SPIFFS
     //next time is in cParam.begin
     // The response was already in the code : about line 300
     //secon time commented on 2019/03
-    if (errFS){
+    // if (errFS){
+    if ( sysStatus.fsErr ){
         DSPL( dPrompt + F("error in Opening File System") );
         //can we work without file system ? No
         fatalError();
@@ -252,8 +252,9 @@ void setup(){
     
     
 	
-    /** @todo document simpleManualMode with no wifi at all */
+    /* done document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
+    if (sysStatus.fsErr) simpleManualMode = true;
 
     /////////////////////////////////////////////////////////////////////////////
     //     Main power wait ON (the purpose is to maintain Wifi off)            //
