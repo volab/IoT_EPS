@@ -31,6 +31,7 @@ Avancement
 #. add LDR : removed
 #. add I2C nano expander with analog inputs ok
 
+#. change BP to nano I2C and relay command to ESP directly (to allow turnoff relays in fatal error)
 #. resolv power up problem : implement MAX1232
 #. choix curent sensor: 75%
 #. pcb study
@@ -40,6 +41,22 @@ Avancement
 
 
 ####
+
+==================================
+Connect Relay direct to ESP
+==================================
+To day relays are connected to nano and BP are directly connected to ESP8266.
+The purpose is to connect relays to ESP8266 and push button to nano.
+Cause when ther is an error on I2C bus ralsy commands are no accessible and we can't switch 
+it off with main power switch.
+
+List of change:
+ - IoT_EPS.h Pinning
+ - void bouton::begin( int boutonPin ) : pinMode(boutonPin, INPUT_PULLUP); _nano.pinMode
+ - void bouton::update() : large changes digitalRead to _nano.digitalRead (group in one line)
+ - bool bouton::directRead() => one _nano.digitalRead.
+ - void CPowerPlug::begin : one line     _nano.pinMode( _pin, OUTPUT ); to normal pinMode 
+ - void CPowerPlug::updateOutputs : one line to change
 
 ============================
 AC power plug in the world 
@@ -151,9 +168,9 @@ dispo on `Mouser`_ à 3.44€/10pcs
 
 `Usage example`_
 
-.. _`Un exemple de mise en oeuvre` : http://tinkerman.cat/the-espurna-board-a-smart-wall-switch-with-power-monitoring/#lightbox-gallery-oY6vOUw7/3/
+.. _`Usage example` : http://tinkerman.cat/the-espurna-board-a-smart-wall-switch-with-power-monitoring/#lightbox-gallery-oY6vOUw7/3/
 
-Exemple open source
+ Open source example
 
 ####
 
@@ -218,42 +235,6 @@ Affectation des io
     D8    CLK WS2801
     ===== =============
 
-On va pas aller loin avec ça !
-
-Nécessite l'utilisation d'un IO expander
-
-MCP23017 I2C 16 bits IO expander obsolete in feb 2019 see nanI2CIOexpander
-
-.. figure:: image/mpc2307_pinout.png
-    :width: 400 px
-    :align: center
-    
-    MPC23017 pinout
-
-.. table:: Affectation des broches sur le MCP23017 obsolete
-    :align: center
-    
-    ===== =============
-    pins  affectation
-    ===== =============
-    GPA0  PLUG0-ROUGE
-    GPA1  PLUG1-VERT
-    GPA2  PLUG2-BLEUE
-    GPA3  PLUG3-JAUNE
-    GPA4  LED0
-    GPA5  LED1
-    GPA6  LED2
-    GPA7  LED3
-    GBP0  MAIN POWER SWITCH STATE
-    GPB1  
-    GPB2  
-    GPB3  
-    ===== =============
-
-Pour la mesure de courant ce serait bien de disposer de 4 entrée analogiques
-
-L'ESP n'en possède qu'une !
-
 ===========================
 nanoI2CIOExpander
 ===========================
@@ -282,7 +263,7 @@ Nano pining :
     D7             LED1
     D8             LED2
     D9       7     LED3
-    D10      8     MAIN POWER SWITCH STATE
+    D10      8     WIFI LED 
     D11      9     MAIN POWER LED
     D12      10    Special BP
     A0            PLUG0 Current
@@ -293,7 +274,8 @@ Nano pining :
     A7
     ===== ======= =============
 
-ici
+    
+
     
 ####
 

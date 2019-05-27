@@ -13,6 +13,8 @@
 
 #define DEFAULT_PREFIX_NAME "ESP_IOT"
 #define FIRSTBOOTFORMFILENAME "/firstboot.htm"
+#define DEFAULT_LED_LUMINOSITY 15
+#define FLASH_ERROR_PERIODE 500 //ms
 
 #define NOT_FOUND "nf" //return code for extractParam()
 

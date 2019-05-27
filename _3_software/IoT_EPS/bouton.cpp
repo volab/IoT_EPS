@@ -37,6 +37,7 @@ void bouton::update(){
     #else 
 #warning la classe Bouton est en mode timer
     #endif
+    // int bpState = _nano.digitalRead(_boutonPin)
     switch (_etat){
         case 0:
             if (digitalRead(_boutonPin) == LOW){ //active low buton due to INPUT_PULLUP

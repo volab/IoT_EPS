@@ -51,6 +51,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  
  @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
  impossible this is the navigator to ask for a page and html refresh param is not a good idea !
+ @li code and todo review : remove all unused commented code (cleanup)
 */
 
 
@@ -118,7 +119,9 @@ void setup(){
     // Serial.setDebugOutput(true); //Serial debug of Wifi lib
     DSPL();
     DSPL( dPrompt + F("Sketch start..."));
-
+    
+    FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
+    FastLED.setBrightness( DEFAULT_LED_LUMINOSITY ); //default value for error display
     /////////////////////////////////////////////////////////////////////////////
     //     file system check                                                   //
     /////////////////////////////////////////////////////////////////////////////
@@ -129,6 +132,7 @@ void setup(){
     // The response was already in the code : about line 300
     //secon time commented on 2019/03
     // if (errFS){
+    // sysStatus.fsErr = true;
     if ( sysStatus.fsErr ){
         DSPL( dPrompt + F("error in Opening File System") );
         //can we work without file system ? No
@@ -141,7 +145,8 @@ void setup(){
     // extraLed.begin( 9, 100, 500, 4, 5000 );
 
     cParam.begin();
-    if ( !cParam.ready ) {
+    sysStatus.confFileErr = !cParam.ready;
+    if ( sysStatus.confFileErr ) {
         DSPL( dPrompt + F("cParam default values. Potential fatal error") );
         
         // fatalErro();
@@ -152,7 +157,7 @@ void setup(){
     ///////////////////////////////////////////////////////////////////////////// 
     CNano::init();
     rtc.begin();
-    sysStatus.rtcErr = rtc.initErr;
+    sysStatus.rtcErr.err( rtc.initErr);
     // if ( !nanoioExp.test() && rtc.initErr){
     if ( !nanoioExp.test() ){
         DSPL(dPrompt + F("I2C bus fatal error ! Try recovery"));
@@ -220,7 +225,7 @@ void setup(){
     // int with a maximum memory value (in bytes) equal to the maximum available 
     // for the int type variables
     
-    FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
+
 
     /** @todo test if CNano::initOk = true - if not don't start anything*/
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CPowerPlug::modeId("MANUEL") );
@@ -680,17 +685,66 @@ void simpleManualModeChaser(){
  @return no return value and no parameter
 */
 void fatalError(){
+    DEFDPROMPT("Fatal error")
+    DSPL( dPrompt + "entry");
+    plugColor_t color;
+    
+    
+    
+    
+    //possible blue
+    //2 color blink possible
+    
     for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
     FastLED.show();
     delay(500);
-    while (1){     
-        for (int i=0; i < 20; i++){
+    while (1){ 
+        color = CRGB::Red;
+        for (int i=0; i < 5; i++){
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Chartreuse;
+            FastLED.show();
+            delay(FLASH_ERROR_PERIODE/2);	
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = color;
+            FastLED.show();
+            delay(FLASH_ERROR_PERIODE/2);				
+        }
+        color = CRGB::OrangeRed;
+        for (int i=0; i < 5; i++){
             for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
             FastLED.show();
-            delay(50);	
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Red;
+            delay(FLASH_ERROR_PERIODE/2);	
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = color;
             FastLED.show();
-            delay(50);				
+            delay(FLASH_ERROR_PERIODE/2);				
+        }
+        color = CRGB::Brown; //rose
+        for (int i=0; i < 5; i++){
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+            FastLED.show();
+            delay(FLASH_ERROR_PERIODE/2);	
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = color;
+            FastLED.show();
+            delay(FLASH_ERROR_PERIODE/2);				
+        }
+        color = CRGB::Snow; //blanc bleu
+        color = CRGB::Chartreuse;
+        for (int i=0; i < 5; i++){
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+            FastLED.show();
+            delay(FLASH_ERROR_PERIODE/2);	
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = color;
+            FastLED.show();
+            delay(FLASH_ERROR_PERIODE/2);				
+        }
+        color = CRGB::RoyalBlue;
+        
+        for (int i=0; i < 5; i++){
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+            FastLED.show();
+            delay(FLASH_ERROR_PERIODE/2);	
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = color;
+            FastLED.show();
+            delay(FLASH_ERROR_PERIODE/2);				
         }
         yield();
     }

@@ -98,7 +98,7 @@ bool ConfigParam::readFromJson(){
             DEBUGPORT.println(dPrompt);
             return false;
         }
-    } else {
+    } else { //normaly do not arrive cause there is a file system check before - 18/05/2019
         DEBUGPORT.println( dPrompt + F("Failed to mount FS"));
         return false;
     }  

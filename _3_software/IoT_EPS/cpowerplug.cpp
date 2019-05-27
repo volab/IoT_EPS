@@ -20,7 +20,7 @@ const String CPowerPlug::modes[5] = { MANUAL_MODE, TIMER_MODE, CYCLIC_MODE, HEBD
 @param mode the mode in String format
 @return the equivalent id
 
-The purpose of this is to replace an enum caus here we have the need to get both the text form
+The purpose of this is to replace an enum cause here we have the need to get both the text form
 for all json and html and its id in numerical form for other functionnalities like for loop.
 
 A possible workaround will be:
@@ -35,11 +35,11 @@ A possible workaround will be:
 int CPowerPlug::modeId( String mode ){
     int i;
     for ( i = 0; i <  5 ; i++ ){
-	//for ( i : modes ){ //possible syntax
         if ( mode == modes[i] ) break;
     }
     return i;
 }
+
 
 void CPowerPlug::begin( int pin , int onOffLedPin, int bpPin, int mode ){
     if (!_initDone) init();

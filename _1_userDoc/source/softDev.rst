@@ -202,6 +202,7 @@ Evolutions possibles
   période de la journée.
 - Sur le mode hebdo, prévoir la possibilité d'avoir plusieurs plage de fonctionnement par jours
   et différentes chaque jour
+- connexion MQTT, IFTTT, Flic, openHAB
 
 
 Factorisation des varibales de mode
@@ -497,6 +498,7 @@ Error handling
 Buildin test error BIT
 
 PBIT : preliminary BIT
+
 #. File system
 #. Config param (JSON config file)
 #. Credentials file (not in firstboot mode) - check its structure
@@ -511,9 +513,11 @@ CBIT : Continus BIT every loop cycle, check :
  - JSON config file
  - File system 
  - NTP access
+ 
 ...
+
  - current monitoring for ON plugs and if it is possible with the choosen sensor when currents will 
-be very low
+   be very low
 
 Not in CBIT
  - WIFI state if in Station mode and/or AP mode ???
