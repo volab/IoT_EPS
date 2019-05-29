@@ -45,9 +45,9 @@ Avancement
 ==================================
 Connect Relay direct to ESP
 ==================================
-To day relays are connected to nano and BP are directly connected to ESP8266.
+Today relays are connected to nano and Push Button are directly connected to ESP8266.
 The purpose is to connect relays to ESP8266 and push button to nano.
-Cause when ther is an error on I2C bus ralsy commands are no accessible and we can't switch 
+Cause when there is an error on I2C bus relay commands are no accessibles and we can't switch 
 it off with main power switch.
 
 List of change:
@@ -57,6 +57,20 @@ List of change:
  - bool bouton::directRead() => one _nano.digitalRead.
  - void CPowerPlug::begin : one line     _nano.pinMode( _pin, OUTPUT ); to normal pinMode 
  - void CPowerPlug::updateOutputs : one line to change
+ 
+A failure (work branch : relayChange) because ESP8266 pin are others usages that are not compatibles
+with relay command. Specaly D3 and D4 respectively IO-0 and IO-2 that are used during the reset 
+and that changes state. So we leave this work on its branche and return to the previous
+configuration with relay commands connected to the NanoI2CIOExpander.
+
+Others solutions to solve our problem:
+
+#. use a WEmos ESP32 with more IO (perhaps we can remove NanoI2CIOExpander...)
+#. use another relay or a transitor MOS to switch off the 5V Power supply of the relay commands.
+   This new relay would be drive directly by the Main Power Switch
+
+Problem solved with the second solution.
+
 
 ============================
 AC power plug in the world 
@@ -98,15 +112,15 @@ Apparently it stay locked in an unknow state for about 6 seconds and finaly it s
 
 I suspect a watch dog time out.
 
-I try to put à 47uF on reset. With oscilloscope I watch the signal and I thinks that the slex rate
+I try to put à 47uF on reset. With oscilloscope I watch the signal and I thinks that the slew rate
 is to low.
 
 I consider to add a MAX1232 on the reset pin or an analog circuit.
 
 I checked IO0 (D3) used to flash the component is connect to BP3
 
-At the begin of the setup I add a delay of 1 s power on the built-in LEd for 1s and start and it 
-solves the problem !
+At the begin of the setup I add a delay during this delay i drive the built-in LED for 1s and
+the rest of this application and it solves the problem ! Very strange behavior !
 
 ==========================
 Real time calendar clock
@@ -221,19 +235,19 @@ Affectation des io
 .. table:: Affectation des broches
     :align: center
     
-    ===== =============
-    pins  affectation
-    ===== =============
-    D0    Main Power sw
-    D1    I2C SCL
-    D2    I2C data
-    D3    BP3
-    D4    BP2
-    D5    BP1
-    D6    BP0
-    D7    DATA WS2801
-    D8    CLK WS2801
-    ===== =============
+    ===== =============  =====================
+    pins  affectation    ESP-GPIO
+    ===== =============  =====================
+    D0    Main Power sw  IO16
+    D1    I2C SCL        IO5
+    D2    I2C data       IO4
+    D3    BP3            IO0 - Warning PU10k
+    D4    BP2            IO2 - PU10k
+    D5    BP1            IO14
+    D6    BP0            IO12
+    D7    DATA WS2801    IO13           
+    D8    CLK WS2801     IO15 - PD10k    
+    ===== =============  =====================
 
 ===========================
 nanoI2CIOExpander

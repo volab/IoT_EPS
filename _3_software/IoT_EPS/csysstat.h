@@ -31,6 +31,11 @@ class sysError {
 class CSysStatus {
     public:
         // CSysStatus();
+        sysError rtcErr;
+        sysError i2cErr;
+        sysError nanoErr;
+        sysError fsErr;
+        sysError confFileErr;
         /** 
          @fn CSysStatus::CSysStatus()
          @brief CSysSattus constructor...
@@ -42,23 +47,24 @@ class CSysStatus {
               nanoErr( sysError::fatal, CRGB::RoyalBlue, CRGB::Black )
             , rtcErr( sysError::fatal, CRGB::Brown, CRGB::Black )
             , i2cErr( sysError::fatal, CRGB::Red, CRGB::Black )
+            , fsErr( sysError::fatal, CRGB::Red, CRGB::Blue )
+            , confFileErr( sysError::fatal, CRGB::Red, CRGB::Yellow )
+            
             {
             
         }
 
         // sysError *nanoErr = new sysError( sysError::fatal, CRGB::RoyalBlue, CRGB::Black);
         
-        bool fsErr  = false;
+        
         bool ntpErr = false;
-        bool jsoFileErr = false;
+        bool jsonFileErr = false;
         bool credFileErr = false;
-        bool confFileErr = false;
+        
         bool wifiErr = false;
         sysError internetErr;
         void display();
-        sysError rtcErr;
-        sysError i2cErr;
-        sysError nanoErr;        
+       
     private:
 
 };

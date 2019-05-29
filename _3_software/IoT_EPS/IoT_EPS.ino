@@ -127,13 +127,13 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     DSPL( dPrompt + " Build : " + __DATE__ + " @ " + __TIME__);
     
-    sysStatus.fsErr = !SPIFFS.begin(); // to check if it's possible to begin twice the SPIFFS
+    sysStatus.fsErr.err( !SPIFFS.begin() ); // to check if it's possible to begin twice the SPIFFS
     //next time is in cParam.begin
     // The response was already in the code : about line 300
     //secon time commented on 2019/03
     // if (errFS){
     // sysStatus.fsErr = true;
-    if ( sysStatus.fsErr ){
+    if ( sysStatus.fsErr.isErr() ){
         DSPL( dPrompt + F("error in Opening File System") );
         //can we work without file system ? No
         fatalError();
@@ -145,8 +145,8 @@ void setup(){
     // extraLed.begin( 9, 100, 500, 4, 5000 );
 
     cParam.begin();
-    sysStatus.confFileErr = !cParam.ready;
-    if ( sysStatus.confFileErr ) {
+    sysStatus.confFileErr.err( !cParam.ready );
+    if ( sysStatus.confFileErr.isErr() ) {
         DSPL( dPrompt + F("cParam default values. Potential fatal error") );
         
         // fatalErro();
@@ -259,7 +259,7 @@ void setup(){
 	
     /* done document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
-    if (sysStatus.fsErr) simpleManualMode = true;
+    // if (sysStatus.fsErr) simpleManualMode = true;
 
     /////////////////////////////////////////////////////////////////////////////
     //     Main power wait ON (the purpose is to maintain Wifi off)            //
