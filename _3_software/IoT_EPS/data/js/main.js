@@ -1,7 +1,7 @@
 $(document).ready( ()=>{
     // start .ready()
 
-    const log                   = new C_MyLog();
+    // const log                   = new C_MyLog();
     const regEx                 = new C_RexExPatern();
     const red                   = new C_Plug("redPlug");
     const table                 = new C_Table();
@@ -41,41 +41,41 @@ $(document).ready( ()=>{
     f_hideAll();
     f_showOne(HOME);
 
-    /*
-     * Centrage du titre
-     */
-    function f_resize(){
-        let winWidth = $(window).width();
-        let v_jimbotron = $(".jimbotron");
-        let v_headerTitle = $(".headerTitle");
-        let v_headerTitleWidth = v_headerTitle.width();
+    // /*
+    //  * Centrage du titre
+    //  */
+    // function f_resize(){
+    //     let winWidth = $(window).width();
+    //     let v_jimbotron = $(".jimbotron");
+    //     let v_headerTitle = $(".headerTitle");
+    //     let v_headerTitleWidth = v_headerTitle.width();
 
-        let v_offsetTitleTop = v_headerTitle.offset().top;
-        let v_offsetTitleLeft = (winWidth-v_headerTitleWidth)/2;
+    //     let v_offsetTitleTop = v_headerTitle.offset().top;
+    //     let v_offsetTitleLeft = (winWidth-v_headerTitleWidth)/2;
 
 
-        v_jimbotron.width(winWidth);
-        v_jimbotron.css({
-        "margin": "0 1.5% 0 1.5%"
-        });
+    //     v_jimbotron.width(winWidth);
+    //     v_jimbotron.css({
+    //     "margin": "0 1.5% 0 1.5%"
+    //     });
 
-        v_headerTitle.css({
-        "position": "fixed",
-        "top": v_offsetTitleTop,
-        "left": v_offsetTitleLeft
-        });
-    }
+    //     v_headerTitle.css({
+    //     "position": "fixed",
+    //     "top": v_offsetTitleTop,
+    //     "left": v_offsetTitleLeft
+    //     });
+    // }
 
-    f_resize();
+    // f_resize();
 
-    /*
-     * Responcive
-     */
-    $(window).resize(
-        ()=>{
-            f_resize();
-        }
-    )
+    // /*
+    //  * Responcive
+    //  */
+    // $(window).resize(
+    //     ()=>{
+    //         f_resize();
+    //     }
+    // )
 
     /*
     * Menu (Hamberger + Sidebar)
@@ -477,6 +477,7 @@ $(document).ready( ()=>{
  * 
  *    - Ajouter un tableau de résumer de la configuration à l'accueil de la page de configuration
  *    - Nom des prises
+ *    - Le mot clef de l'action Interface / serveur : "cfgsend"
  *    - Emplacemet des prises
  *    - Les informations de config4.json sont à traiter.
  *      "general": {
@@ -494,6 +495,18 @@ $(document).ready( ()=>{
  *          "powerLedEconomyMode": "OFF",       --> Alumer ou eteindre le témoin de mise sous tension
  *          "STAmaxWifiConnexionRetry": "30"    --> Nombre maximum de tentative de connexion avant passage en mode AP
  *          },
+ * 
+ *      "redPlug": {
+ *          "nickName": "Aquarium",             --> Correspond au nom de l'équipement branché
+ *          "emplacement": "salon",             --> Défini l'emplacement de la prise 
+ * 
+ *      - Les informations de credential.json sont à traiter
+ *        "general": {
+            "ssid" : "VoLab",
+            "pass" : "V0L@b42net",
+            "softApSsid" : "powerStrip01_mac",
+            "softApPass" : "plusDe8c"
+            }
  * 
  * ####
  * 
