@@ -61,21 +61,21 @@ To be added to config json file
 ====================================
 
 To be added 30/30/2019
- - firstBoot ON/OFF                                                                         ADDED
- - Power led behavior versus economy mode (include or exclude) ON/OFF  powerLedEconomyMode  ADDED
+ - firstBoot ON/OFF                                                                         DONE
+ - Power led behavior versus economy mode (include or exclude) ON/OFF  powerLedEconomyMode  DONE
  - change/separate wifi Station param and soft app                                          DONE
  - add wifiSoftApSsid, wifiSoftApPass SSid are in credentials                               DONE
  - for C code, if wifiSoftApSsid or wifiSoftApPass are empty : creatIt (see @firstBoot)     
- - startInApMode : ON/OFF                                                                   ADDED
+ - startInApMode : ON/OFF                                                                   DONE
  - remove wifimode                                                                          DONE
  - change IP in softAP_IP and Port in softAP_port                                           DONE
  - change name of the file to config4.json                                                  DONE
  
 To be added 09/05/2019
- - IP add in soft AP mode to display it (what the utility ? to configure it)                DONE
- - mac add to display it
- - add ip in mode Station : to configure it if we are not in DHCP mode
- - DHCP_mode : On or OFF
+ - IP add in soft AP mode to display it (what the utility ? to configure it)                ADDED
+ - mac add to display it                                                                    ADDED
+ - add ip in mode Station : to configure it if we are not in DHCP mode                      ADDED
+ - DHCP_mode : On or OFF                                                                    ADDED
 
 
 ====================================
@@ -130,12 +130,12 @@ to the config special page change SSID and password.
 ===================================
 Configuration parameter
 ===================================
-add IP of AP mode
-EPS name (host name)
-Plugs names
-Station SSID
-Sation mode passwd
-Soft AP SSID and password
+ - add IP of AP mode
+ - EPS name (host name)
+ - Plugs names
+ - Station SSID
+ - Sation mode passwd
+ - Soft AP SSID and password
 
 All json general section parameter without:
  - numberOfPlugs
@@ -143,10 +143,12 @@ All json general section parameter without:
  
 set time in AP mode and perhaps for station mode summer and winter time.
 
-As for plugonof, we decide to biuld one configuration page for station mode and one configuration
+As for plugonof, we decide to build one configuration page for station mode and one configuration
 page for AP mode because in station mode we can use CDN( bootstrap and jquery) functionnality but 
 not in AP mode because the embeded version of this `content delivery network (CDN)`_ are too 
 big >3Mo.
+
+Action name : cfgsend (all in lowercase)
 
 ====================================
 Plugs modes description
@@ -495,6 +497,9 @@ _initDone et _mpc (mpc étant la ressource commune à toutes les instances de la
 Error handling
 ==================================
 
+See dedicated Excel file. All below informations are obsoletes.
+
+
 Buildin test error BIT
 
 PBIT : preliminary BIT
@@ -544,7 +549,7 @@ Can we work without internet connection or Wifi in station mode ?
  
  Can we work without NTP server ? Yes (it could be temporary down)
 
-See dedicated Excel file.
+
 ================================
 Time managment strategy
 ================================

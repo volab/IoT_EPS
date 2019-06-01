@@ -6,10 +6,15 @@ general
   rtcValidity = true
   softAP_IP = 192.168.95.42
   softAP_port = 80
+  dhcp_mode = OFF
+  staIP = 192.168.1.42
+  macAdd = 11:22:33:44:55:66
   allLedsOnTime = 30
   ledsGlobalLuminosity = 5
   powerLedEconomyMode = OFF
-  STAmaxWifiConnectionRetry = 30
+  STAmaxWifiConnectionRetry = 30 
+error
+  ntpError = false
 redPlug
   nickName = Aquarium
   emplacement = salon

@@ -151,6 +151,20 @@
 #define WIFILED_SOFTAP_PERIOD 2000
 #define MAX_WIFI_CONNECT_RETRY 30 /**< @brief In Station mode number of try before to switch to access point connection*/
 
-
+const String necessaryFileList[] ={
+      "/index.html"
+    , "/config4.json"
+    , "/firstboot.html"
+    // , "config.html"
+    , "/js/main.js"
+    , "/js/plug.js"
+    , "/js/regExPatern.js"
+    , "/js/table.js"
+    // , "/js/jquery-3.3.1.min.js"
+    // , "/js/bootstrap.min.js"
+    , "/css/sidebar.css"
+    , "/css/style.css"
+    // , "/css/bootstrap.min.css"
+};
 
 #endif

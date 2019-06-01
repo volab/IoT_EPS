@@ -16,26 +16,33 @@ class sysError {
         typedef CRGB::HTMLColorCode gColor_t;
         enum  errGravity_t { low, medium, high, fatal };
         sysError(){ _err = false; };
-        sysError( errGravity_t grav ){ _err = false; _gravity = grav; };
-        sysError( errGravity_t grav,  gColor_t c1, gColor_t c2);
+        // sysError( errGravity_t grav ){ _err = false; _gravity = grav; };
+        sysError( errGravity_t grav, String s ){ _err = false; _gravity = grav; _errMsg = s; };
+        // sysError( errGravity_t grav,  gColor_t c1, gColor_t c2);
+        sysError( errGravity_t grav,  gColor_t c1, gColor_t c2, String s);
         void err( bool errorState );
         bool isErr(){ return _err; }
+        String getMsg(){ return _errMsg; }
         
     private:
         bool _err = false;
         errGravity_t _gravity = low;
         gColor_t _displayColor1 = CRGB::Black;
         gColor_t _displayColor2 = CRGB::Black;
+        String _errMsg;
 };
 
 class CSysStatus {
     public:
         // CSysStatus();
         sysError rtcErr;
-        sysError i2cErr;
+        // sysError i2cErr;
         sysError nanoErr;
         sysError fsErr;
-        sysError confFileErr;
+        sysError confFileErr; //config4.json gen parma part error
+        sysError plugParamErr;
+        sysError credFileErr;
+        sysError filesErr;
         /** 
          @fn CSysStatus::CSysStatus()
          @brief CSysSattus constructor...
@@ -44,12 +51,13 @@ class CSysStatus {
         Allow to creat and initialize erros variables
         */
         CSysStatus():
-              nanoErr( sysError::fatal, CRGB::RoyalBlue, CRGB::Black )
-            , rtcErr( sysError::fatal, CRGB::Brown, CRGB::Black )
-            , i2cErr( sysError::fatal, CRGB::Red, CRGB::Black )
-            , fsErr( sysError::fatal, CRGB::Red, CRGB::Blue )
-            , confFileErr( sysError::fatal, CRGB::Red, CRGB::Yellow )
-            
+              fsErr( sysError::fatal, CRGB::Red, CRGB::Black, "File system error" )
+            , nanoErr( sysError::fatal, CRGB::Red, CRGB::Blue, "Nano error" )
+            , rtcErr( sysError::fatal, CRGB::Brown, CRGB::Black, "DS3231 error" ) 
+            , confFileErr( sysError::fatal, CRGB::Red, CRGB::Yellow, "Config file error" )
+            , credFileErr( sysError::medium, "Credential error" )
+            , filesErr( sysError::fatal, CRGB::OrangeRed, CRGB::Black, "Necessary files error" )
+            , plugParamErr( sysError::fatal, CRGB::Red, CRGB::Snow, "Plug's file error"  )
             {
             
         }
@@ -58,8 +66,8 @@ class CSysStatus {
         
         
         bool ntpErr = false;
-        bool jsonFileErr = false;
-        bool credFileErr = false;
+        // bool jsonFileErr = false;
+        // bool credFileErr = false;
         
         bool wifiErr = false;
         sysError internetErr;

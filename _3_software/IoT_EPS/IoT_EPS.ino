@@ -38,8 +38,10 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
- @li improve error handling
- @li bug report when json is no reachable !
+
+
+ @li write mac add in json
+ @li add DHCP mode off
  @li STAmaxWifiConnectionRetry read from json
  @li implement rtc strategy
  @li configuration page (see softdev.rst)
@@ -58,6 +60,9 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
 #include "IoT_EPS.h"
 #include "ESP8266FtpServer.h"
 FtpServer ftpSrv;
+
+
+
 
 /** 
 @fn void wifiLedFlash( int speed )
@@ -128,71 +133,103 @@ void setup(){
     DSPL( dPrompt + " Build : " + __DATE__ + " @ " + __TIME__);
     
     sysStatus.fsErr.err( !SPIFFS.begin() ); // to check if it's possible to begin twice the SPIFFS
+
     //next time is in cParam.begin
     // The response was already in the code : about line 300
     //secon time commented on 2019/03
     // if (errFS){
     // sysStatus.fsErr = true;
-    if ( sysStatus.fsErr.isErr() ){
-        DSPL( dPrompt + F("error in Opening File System") );
-        //can we work without file system ? No
-        fatalError();
-    } else DSPL( dPrompt + F("File system corectly Open @ setup level") );
+    /** @todo review this when error handling will be treminated. It is not here that fatalError()
+        should be call*/
+    // if ( sysStatus.fsErr.isErr() ){
+        // DSPL( dPrompt + F("error in Opening File System") );
+        // can we work without file system ? No
+        // fatalError();
+    // } else 
+    DSPL( dPrompt + F("File system corectly Open @ setup level") );
+    /////////////////////////////////////////////////////////////////////////////
+    //  Start of the check necessary files  presence                           //
+    /////////////////////////////////////////////////////////////////////////////
+    DSPL(dPrompt + F("File check !") );
+    bool fileExist = true;
+    for ( String s : necessaryFileList ){
+        bool b = SPIFFS.exists(s);
+        fileExist &= b;
+        DSPL( dPrompt + F("file : ") + s + F(" is ") + (b?F("present"):F("not found")) );
+    }
+    DSPL( dPrompt + F("Result all files are present : ") + (fileExist?"OK":"ERROR") );
+    sysStatus.filesErr.err( !fileExist );
+
+    // if (SPIFFS.exists("/index.html")) {
+        // DSPL( dPrompt + F("html index file found."));
+    // } else {
+        // DSPL( dPrompt + F("html index file not found."));
+    // }
+    // String str = "";
+    // Dir dir = SPIFFS.openDir("/");
+    // while (dir.next()) {
+        // str += dir.fileName();
+        // str += " / ";
+        // str += dir.fileSize();
+        // str += "\r\n";
+    // }
+    // Serial.print(str);
+    // FSInfo filseSystemInfo;/**< @brief file system information to display it*/
+    // SPIFFS.info( filseSystemInfo ); 
+    
+    // DSPL( dPrompt + F("SPIFFS total bytes : ") + (String)filseSystemInfo.totalBytes );
+    // DSPL( dPrompt + F("SPIFFS used bytes : ") + (String)filseSystemInfo.usedBytes );
+    // DSPL( dPrompt + F("SPIFFS max open files : ") + (String)filseSystemInfo.maxOpenFiles );
+    // DSPL( dPrompt + F("SPIFFS max path lenght : ") + (String)filseSystemInfo.maxPathLength );
+    
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     
     ftpSrv.begin("esp8266","esp8266");
     
 	SerialCommand::init();
     // extraLed.begin( 9, 100, 500, 4, 5000 );
-
+    /////////////////////////////////////////////////////////////////////////////
+    //     Config param check                                                       //
+    /////////////////////////////////////////////////////////////////////////////
     cParam.begin();
     sysStatus.confFileErr.err( !cParam.ready );
-    if ( sysStatus.confFileErr.isErr() ) {
-        DSPL( dPrompt + F("cParam default values. Potential fatal error") );
-        
-        // fatalErro();
-    }
-    
+   
     /////////////////////////////////////////////////////////////////////////////
     //     I2C bus check                                                       //
     ///////////////////////////////////////////////////////////////////////////// 
     CNano::init();
-    rtc.begin();
-    sysStatus.rtcErr.err( rtc.initErr);
-    // if ( !nanoioExp.test() && rtc.initErr){
-    if ( !nanoioExp.test() ){
-        DSPL(dPrompt + F("I2C bus fatal error ! Try recovery"));
-        /** @todo try 2 or 3 i2c_crecovery before to jump on fatal error*/
-        // fatalError();
-        /** @todo test and tune fatal error function */
-        SerialCommand::i2c_recovery();
+
+    int cpt = 1;
+    do{
+        if ( !nanoioExp.test() ){
+            DSPL( dPrompt + "i2cRecov" + " number " + cpt);
+            SerialCommand::i2c_recovery();
+        } else cpt = 9;
         
-    }
-  
+        cpt++;
+    } while (cpt < 5 );
+    if (cpt != 10) sysStatus.nanoErr.err( true );
+    DSPL(dPrompt + F("Nano test ok"));
     /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                    //
     /////////////////////////////////////////////////////////////////////////////
     rtc.begin();
-    if ( rtc.initErr ) {
-        DSPL(dPrompt + F("ERR : Couldn't find RTC"));
-        /** @todo Stop EPS and warn with colors and others LED ,
-        cause without right time EPS dosen't work.
-        Except perhaps the manual mode ! */
-    } else {
-        if (rtc.lostPower()){
-            DSPL( dPrompt + "une remise a l'heure est necessaire");
-            /** @todo enable or not ? errRTCinit due to lots power*/
-        }
-        // errRTCinit = false;0
-        /** @todo check time validity */
-        now = rtc.now();
-        String message = dPrompt + F("DS3231 Start date : ");
-        // sprintf(buf, "<VoLAB> DS3231 Start date : %d/%d/%d %d:%d:%d", 
-        message += (String)now.day()+"/"+(String)now.month()+"/";
-        message += (String)now.year()+" ";
-        message += (String)now.hour()+":"+ (String)now.minute()+":";
-        message += (String)now.second();      
-        DSPL( message);
+    sysStatus.rtcErr.err( rtc.initErr);
+    if (rtc.lostPower()){
+        DSPL( dPrompt + "une remise a l'heure est necessaire");
+        /** @todo enable or not ? errRTCinit due to lots power*/
     }
+
+    /** @todo check time validity */
+    now = rtc.now();
+    String message = dPrompt + F("DS3231 Start date : ");
+    // sprintf(buf, "<VoLAB> DS3231 Start date : %d/%d/%d %d:%d:%d", 
+    message += (String)now.day()+"/"+(String)now.month()+"/";
+    message += (String)now.year()+" ";
+    message += (String)now.hour()+":"+ (String)now.minute()+":";
+    message += (String)now.second();      
+    DSPL( message);
+
     /////////////////////////////////////////////////////////////////////////////
     //     Main power first check                                              //
     /////////////////////////////////////////////////////////////////////////////    
@@ -231,7 +268,7 @@ void setup(){
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CPowerPlug::modeId("MANUEL") );
     plugs[0].setColor( CRGB::Red );
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
-    if ( mainPowerSwitchState ) plugs[0].readFromJson( true );
+    if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[0].readFromJson( true ) );
     else  plugs[0].handleBpLongClic(); //change due to clone mode bug
     
     /** @todo improve error check from CPowerPlug::readFromJson*/
@@ -241,21 +278,20 @@ void setup(){
     plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, BP1, CPowerPlug::modeId("MANUEL") );
     plugs[1].setColor( CRGB::Green );
     plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
-    if ( mainPowerSwitchState ) plugs[1].readFromJson( true );
+    if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[1].readFromJson( true ) );
     else  plugs[1].handleBpLongClic();
     plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, BP2, CPowerPlug::modeId("MANUEL") );
     plugs[2].setColor( CRGB::Blue );
     plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
-    if ( mainPowerSwitchState ) plugs[2].readFromJson( true );
+    if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[2].readFromJson( true ) );
     else  plugs[2].handleBpLongClic();
     // plugs[2].setColor( CRGB::Purple );
     plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, BP3, CPowerPlug::modeId("MANUEL") );
     plugs[3].setColor( CRGB::Yellow );
     plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
-    if ( mainPowerSwitchState ) plugs[3].readFromJson( true );
+    if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[3].readFromJson( true ) );
     else  plugs[3].handleBpLongClic();
-    
-    
+      
 	
     /* done document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
@@ -293,13 +329,16 @@ void setup(){
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
-    wifiCred.begin();    
+    wifiCred.begin();
+    sysStatus.credFileErr.err( !wifiCred.ready );
 	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
 	if ( !simpleManualMode ){
 		int tryCount = 0;
-		if (cParam.ready){
-			DSPL( dPrompt + F("Wifi mode = ") + cParam.getWifiMode() );
-		}
+		// if (cParam.ready){
+		// if ( !sysStatus.confFileErr.isErr() ){ // with sysStatus Fatal error managment 
+        //this test became not necessary cause confFileErr is fatalError
+        DSPL( dPrompt + F("Wifi mode = ") + cParam.getWifiMode() );
+		// }
 		WiFi.setAutoConnect(false); //to allways control wifi connection
 		DSP( dPrompt + F("Mode autoconnect : "));
 		DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
@@ -320,9 +359,10 @@ void setup(){
         //strcpy(reinterpret_cast<char*>(conf.ssid), ssid); dans le fichier ESP8266WiFiSTA.cpp
         DSPL( "." );
         /////////////////////////////////////////////////////////////////////////////
-        //  Sation mode                                                           //
+        //  Station mode                                                           //
         /////////////////////////////////////////////////////////////////////////////
-        if ( cParam.getWifiMode() == "client" && wifiCred.ready
+        // if ( cParam.getWifiMode() == "client" && wifiCred.ready
+        if ( cParam.getWifiMode() == "client" && !sysStatus.credFileErr.isErr()
                 || cParam.getWifiMode() == "Station" ){ // Station WIFI mode
             //Wifi.mode( mainPowerSwitchState?WIFI_STA:WIFI_OFF);    
             WiFi.mode(WIFI_STA);
@@ -359,7 +399,8 @@ void setup(){
         //  soft AP mode                                                           //
         /////////////////////////////////////////////////////////////////////////////
         if ( cParam.getWifiMode() == "softAP" || tryCount == MAX_WIFI_CONNECT_RETRY
-                || !wifiCred.ready ){
+                // || !wifiCred.ready ){
+                || sysStatus.credFileErr.isErr() ){
             //WIFI soft Access Point mode
             //        bool mode(WiFiMode_t);
             //        WiFiMode_t getMode();
@@ -402,37 +443,6 @@ WiFi.softAPdisconnect();
 		cParam.setWifiMode( "No wifi" );
 		simpleManualModeChaser();
 	}
-    
-    /////////////////////////////////////////////////////////////////////////////
-    //  Start of the check index.html file presence  (check file system)       //
-    /////////////////////////////////////////////////////////////////////////////
-    // if (!SPIFFS.begin()){
-        // DSPL(dPrompt + F("SPIFFS Mount failed"));
-    // } else {
-        // DSPL(dPrompt + F("SPIFFS Mount succesfull"));
-    // }
-/** @todo cleanup the .ino code to remove all unnecessary code like displaying SPIFFS health*/
-    if (SPIFFS.exists("/index.html")) {
-        DSPL( dPrompt + F("html index file found."));
-    } else {
-        DSPL( dPrompt + F("html index file not found."));
-    }
-    String str = "";
-    Dir dir = SPIFFS.openDir("/");
-    while (dir.next()) {
-        str += dir.fileName();
-        str += " / ";
-        str += dir.fileSize();
-        str += "\r\n";
-    }
-    Serial.print(str);
-    FSInfo filseSystemInfo;/**< @brief file system information to display it*/
-    SPIFFS.info( filseSystemInfo ); 
-    
-    DSPL( dPrompt + F("SPIFFS total bytes : ") + (String)filseSystemInfo.totalBytes );
-    DSPL( dPrompt + F("SPIFFS used bytes : ") + (String)filseSystemInfo.usedBytes );
-    DSPL( dPrompt + F("SPIFFS max open files : ") + (String)filseSystemInfo.maxOpenFiles );
-    DSPL( dPrompt + F("SPIFFS max path lenght : ") + (String)filseSystemInfo.maxPathLength );
     
     /////////////////////////////////////////////////////////////////////////////
     //  Server configurations                                                  //
@@ -501,7 +511,7 @@ WiFi.softAPdisconnect();
 /////////////////////////////////////////////////////////////////////////////
 bool cycleState = false;
 void loop(){
-
+/** @todo Place continuus builtin tests here */
     DEFDPROMPT("in the loop")
     if ( !simpleManualMode ) server->handleClient();
     
@@ -684,6 +694,7 @@ void simpleManualModeChaser(){
  @brief flash 4 color LED 50ms/50ms in RED for all time
  @return no return value and no parameter
 */
+/*
 void fatalError(){
     DEFDPROMPT("Fatal error")
     DSPL( dPrompt + "entry");
@@ -749,7 +760,7 @@ void fatalError(){
         yield();
     }
 }
-
+*/
 
 void displayWifiMode(){
     DEFDPROMPT("WiFi mode")

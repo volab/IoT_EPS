@@ -1,1 +1,113 @@
-{"general":{"hostName":"PowerStrip01_3FB1","startInAPMode":"OFF","firstBoot":"OFF","numberOfPlugs":"4","rtcValidity":"true","softAP_IP":"192.168.95.42","softAP_port":"80","allLedsOnTime":"-1","ledsGlobalLuminosity":"5","powerLedEconomyMode":"ON"},"redPlug":{"nickName":"Aquarium","emplacement":"salon","State":"OFF","Pause":"OFF","Mode":"Manuel","hDebut":"","hFin":"","dureeOn":"","dureeOff":"","Jours":["OFF","OFF","OFF","OFF","OFF","OFF","OFF"],"clonedPlug":"","onOffCount":"102","nextTimeToSwitch":"0"},"greenPlug":{"nickName":"Télé","emplacement":"cuisine","State":"OFF","Pause":"OFF","Mode":"Manuel","hDebut":"","hFin":"","dureeOn":"","dureeOff":"","Jours":["OFF","OFF","OFF","OFF","OFF","OFF","OFF"],"clonedPlug":"","onOffCount":"125","nextTimeToSwitch":"0"},"bluePlug":{"nickName":"jardin","emplacement":"plaquard","State":"OFF","Pause":"OFF","Mode":"Manuel","hDebut":"","hFin":"","dureeOn":"","dureeOff":"","Jours":["OFF","OFF","OFF","OFF","OFF","OFF","OFF"],"clonedPlug":"","onOffCount":"34","nextTimeToSwitch":"0"},"yellowPlug":{"nickName":"liseuse","emplacement":"chiotte","State":"OFF","Pause":"OFF","Mode":"Manuel","hDebut":"","hFin":"","dureeOn":"","dureeOff":"","Jours":["OFF","OFF","OFF","OFF","OFF","OFF","OFF"],"clonedPlug":"","onOffCount":"15","nextTimeToSwitch":"0"}}
+{
+  "general": {
+    "hostName": "PowerStrip01",
+    "startInAPMode": "OFF",
+    "firstBoot": "OFF",
+    "numberOfPlugs": "4",
+    "rtcValidity": "true",
+    "softAP_IP": "192.168.95.42",
+    "softAP_port": "80",
+    "dhcp_mode": "OFF",
+    "staIP": "192.168.1.42",
+    "macAdd": "11:22:33:44:55:66",
+    "allLedsOnTime": "30",
+    "ledsGlobalLuminosity": "5",
+    "powerLedEconomyMode": "OFF",
+    "STAmaxWifiConnectionRetry": "30"
+  },
+  "error": {
+    "ntpError": "false"
+  },
+  "redPlug": {
+    "nickName": "Aquarium",
+    "emplacement": "salon",
+    "State": "OFF",
+    "Pause": "OFF",
+    "Mode": "Manuel",
+    "hDebut": "",
+    "hFin": "",
+    "dureeOn": "",
+    "dureeOff": "",
+    "Jours": [
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "70",
+    "nextTimeToSwitch": "0"
+  },
+  "greenPlug": {
+    "nickName": "Télé",
+    "emplacement": "cuisine",
+    "State": "OFF",
+    "Pause": "OFF",
+    "Mode": "Manuel",
+    "hDebut": "",
+    "hFin": "",
+    "dureeOn": "",
+    "dureeOff": "",
+    "Jours": [
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "109",
+    "nextTimeToSwitch": "0"
+  },
+  "bluePlug": {
+    "nickName": "jardin",
+    "emplacement": "plaquard",
+    "State": "OFF",
+    "Pause": "OFF",
+    "Mode": "Manuel",
+    "hDebut": "",
+    "hFin": "",
+    "dureeOn": "",
+    "dureeOff": "",
+    "Jours": [
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "18",
+    "nextTimeToSwitch": "0"
+  },
+  "yellowPlug": {
+    "nickName": "liseuse",
+    "emplacement": "chiotte",
+    "State": "OFF",
+    "Pause": "OFF",
+    "Mode": "Manuel",
+    "hDebut": "",
+    "hFin": "",
+    "dureeOn": "",
+    "dureeOff": "",
+    "Jours": [
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "9",
+    "nextTimeToSwitch": "0"
+  }
+}

@@ -21,11 +21,12 @@
 
 Use this constructor when gravity is fatal
 */
-sysError::sysError( errGravity_t grav,  gColor_t c1, gColor_t c2){
+sysError::sysError( errGravity_t grav,  gColor_t c1, gColor_t c2, String errMsg){
     _displayColor1 = c1;
     _displayColor2 = c2;
     _err = false;
     _gravity = grav;
+    _errMsg = errMsg;
 }
 
 /** 
@@ -36,11 +37,25 @@ sysError::sysError( errGravity_t grav,  gColor_t c1, gColor_t c2){
 
 When a fatal error is fired...
 */
+extern CRGB colorLeds[];
 void sysError::err( bool errorState ){
     /** @todo implement err method */
+    DEFDPROMPT( "System error handler")
     _err = errorState;
+    if (_err) DSPL( dPrompt + _errMsg );
     if ( _gravity == fatal && _err){
-        //do blink c1, c2 color
+        for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+        FastLED.show();
+        delay(500);
+        while (1){ 
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = _displayColor1;
+            FastLED.show();
+            delay(FLASH_ERROR_PERIODE/2);	
+            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = _displayColor2;
+            FastLED.show();
+            delay(FLASH_ERROR_PERIODE/2);			
+            yield();
+        }
     }
 }
 
@@ -56,8 +71,14 @@ Call by SerialComand
 */
 void CSysStatus::display(){
     DEFDPROMPT( "System status" );
-    DSPL( dPrompt + F("i2c status : ") + (i2cErr.isErr()?"ERROR":"no error") );
-    DSPL( dPrompt + F("rtc status : ") + (rtcErr.isErr()?"ERROR":"no error") );
+    DSPL( dPrompt + fsErr.getMsg() + " : " + (fsErr.isErr()?"ERROR":"no error") );
+    DSPL( dPrompt + nanoErr.getMsg() + " : " + (nanoErr.isErr()?"ERROR":"no error") );
+    DSPL( dPrompt + rtcErr.getMsg() + " : " + (rtcErr.isErr()?"ERROR":"no error") );
+    DSPL( dPrompt + confFileErr.getMsg() + " : " + (confFileErr.isErr()?"ERROR":"no error") );
+    DSPL( dPrompt + credFileErr.getMsg() + " : " + (credFileErr.isErr()?"ERROR":"no error") );
+    DSPL( dPrompt + filesErr.getMsg() + " : " + (filesErr.isErr()?"ERROR":"no error") );
+    DSPL( dPrompt + plugParamErr.getMsg() + " : " + (plugParamErr.isErr()?"ERROR":"no error") );
+    
 }
 
 CSysStatus sysStatus;
