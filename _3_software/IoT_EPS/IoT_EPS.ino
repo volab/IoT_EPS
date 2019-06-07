@@ -134,18 +134,6 @@ void setup(){
     
     sysStatus.fsErr.err( !SPIFFS.begin() ); // to check if it's possible to begin twice the SPIFFS
 
-    //next time is in cParam.begin
-    // The response was already in the code : about line 300
-    //secon time commented on 2019/03
-    // if (errFS){
-    // sysStatus.fsErr = true;
-    /** @todo review this when error handling will be treminated. It is not here that fatalError()
-        should be call*/
-    // if ( sysStatus.fsErr.isErr() ){
-        // DSPL( dPrompt + F("error in Opening File System") );
-        // can we work without file system ? No
-        // fatalError();
-    // } else 
     DSPL( dPrompt + F("File system corectly Open @ setup level") );
     /////////////////////////////////////////////////////////////////////////////
     //  Start of the check necessary files  presence                           //
@@ -223,7 +211,6 @@ void setup(){
     /** @todo check time validity */
     now = rtc.now();
     String message = dPrompt + F("DS3231 Start date : ");
-    // sprintf(buf, "<VoLAB> DS3231 Start date : %d/%d/%d %d:%d:%d", 
     message += (String)now.day()+"/"+(String)now.month()+"/";
     message += (String)now.year()+" ";
     message += (String)now.hour()+":"+ (String)now.minute()+":";
@@ -270,8 +257,6 @@ void setup(){
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
     if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[0].readFromJson( true ) );
     else  plugs[0].handleBpLongClic(); //change due to clone mode bug
-    
-    /** @todo improve error check from CPowerPlug::readFromJson*/
     /** @todo add pin, pinLed and color to json file*/
     /** @todo + the number of plug to make this sequence dynamic*/
     
@@ -293,9 +278,8 @@ void setup(){
     else  plugs[3].handleBpLongClic();
       
 	
-    /* done document simpleManualMode with no wifi at all */
+    /* done : document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
-    // if (sysStatus.fsErr) simpleManualMode = true;
 
     /////////////////////////////////////////////////////////////////////////////
     //     Main power wait ON (the purpose is to maintain Wifi off)            //
@@ -305,7 +289,6 @@ void setup(){
         for ( int i = 0; i < 4 ; i++ ) colorLeds[i] = CRGB::Black;
         FastLED.show();
         do {
-            // mainPowerSwitchState = !mainPowerSiwtch.digitalRead(); //open circuit = plug OFF
             mainPowerSwitchState = !digitalRead( MAINSWITCHPIN ); //open circuit = plug OFF
             yield();
         } while( !mainPowerSwitchState );        
@@ -321,11 +304,9 @@ void setup(){
         /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/
         plugs[i].setMainPow( mainPowerSwitchState );
     }
-    // FastLED.setBrightness(5);
     FastLED.setBrightness( cParam.getLedsLuminosity() );
     FastLED.show();
-    
-    
+        
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
@@ -334,11 +315,7 @@ void setup(){
 	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
 	if ( !simpleManualMode ){
 		int tryCount = 0;
-		// if (cParam.ready){
-		// if ( !sysStatus.confFileErr.isErr() ){ // with sysStatus Fatal error managment 
-        //this test became not necessary cause confFileErr is fatalError
         DSPL( dPrompt + F("Wifi mode = ") + cParam.getWifiMode() );
-		// }
 		WiFi.setAutoConnect(false); //to allways control wifi connection
 		DSP( dPrompt + F("Mode autoconnect : "));
 		DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
@@ -356,36 +333,27 @@ void setup(){
         for ( int i = 0; i < config.ssid_len ; i++ ){
             DSP( char(config.ssid[i]) );
         }
-        //strcpy(reinterpret_cast<char*>(conf.ssid), ssid); dans le fichier ESP8266WiFiSTA.cpp
         DSPL( "." );
         /////////////////////////////////////////////////////////////////////////////
         //  Station mode                                                           //
         /////////////////////////////////////////////////////////////////////////////
-        // if ( cParam.getWifiMode() == "client" && wifiCred.ready
         if ( cParam.getWifiMode() == "client" && !sysStatus.credFileErr.isErr()
-                || cParam.getWifiMode() == "Station" ){ // Station WIFI mode
-            //Wifi.mode( mainPowerSwitchState?WIFI_STA:WIFI_OFF);    
+                || cParam.getWifiMode() == "Station" ){ // Station WIFI mode    
             WiFi.mode(WIFI_STA);
             WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
             DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
             wifiLedFlash( wifiLed, WIFILED_FLASH_COUNT );
-            // wifiLedFlash( WIFILED_FLASH_FAST, WIFILED_FLASH_COUNT );
             wifiLed.begin( WIFILED, WIFILED_FLASH_SLOW, WIFILED_FLASH_SLOW );
             while (WiFi.status() != WL_CONNECTED) {
                 delay(500);
-                // digitalWrite( WIFILED , !digitalRead( WIFILED ) );
                 wifiLed.update();
                 DSP(".");
                 //a normal acces should came in 10 try
                 tryCount++;
-                if (tryCount == MAX_WIFI_CONNECT_RETRY ) break;
-                
+                if (tryCount == MAX_WIFI_CONNECT_RETRY ) break;  
             }
-            // if ( firstBoot == "tryStation") { set FirstBoot to OFF }
             wifiLed.stop();
-            // pinMode( WIFILED, OUTPUT );
             wifiLed.high();
-            // digitalWrite( WIFILED, HIGH);
             DSPL( "\n" + dPrompt + F("\nNumber of Station wifi try : ") + (String)tryCount );
             if ( WiFi.status() == WL_CONNECTED){
                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
@@ -410,7 +378,7 @@ void setup(){
             displayWifiMode();           
             WiFi.begin();
             WiFi.disconnect( true ); 
-WiFi.softAPdisconnect();            
+            WiFi.softAPdisconnect();            
             WiFi.mode(WIFI_AP);
             
             displayWifiMode();
@@ -431,7 +399,6 @@ WiFi.softAPdisconnect();
                 IPAddress myIP = WiFi.softAPIP();
                 DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
             }
-            // digitalWrite( WIFILED, LOW);
             wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
             // to prepare for loop
         }
@@ -459,9 +426,10 @@ WiFi.softAPdisconnect();
         }
         // server->on("/ChangeCred", HTTP_POST, handleNewCred );
         /** @todo update handleNewCred to reflect changes in credentials.json */
+        //Note: The above function is disabled as long as the handleNewCred function has
+        //not been updated
 		server->on("/list", HTTP_GET, handleFileList);
 		server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
-		// server->on("/", HTTP_POST, handlePlugOnOff ); 
 		server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
         server->on("/firstBoot", HTTP_POST, handleFirstBoot);
 		server->on("/edit", HTTP_GET, [](){
@@ -516,8 +484,6 @@ void loop(){
     if ( !simpleManualMode ) server->handleClient();
     
     ftpSrv.handleFTP();
-    
-    // mainPowerSiwtch.update();
     specialBp.update();
     
     SerialCommand::process();
@@ -527,12 +493,9 @@ void loop(){
     /////////////////////////////////////////////////////////////////////////////
     //  manage leds                                                            //
     /////////////////////////////////////////////////////////////////////////////
-    FastLED.show();
-    
+    FastLED.show(); 
     if ( cParam.getWifiMode() == "softAP" ) wifiLed.update();
-    
-    if (cParam.getAllLedsOnTime() != -1 ){
-        
+    if (cParam.getAllLedsOnTime() != -1 ){  
         allLeds.update();
         if ( allLeds.finie ){
             DSPL( dPrompt + F("leds : it is time to switch off") );
@@ -564,14 +527,7 @@ void loop(){
             restartTempoLed = false;
         }
     }
-    // if ( millis() - prevMillis >= cParam.getAllLedsOnTime() &&
-        // cParam.getAllLedsOnTime() != -1  ){
-        // for ( int i = 0; i < 4 ; i++ ){
-           // plugs[i].setColor( CRGB::Black ); 
-        // }            
-        // allLedsOn = false;
-    // }
-
+    
     /////////////////////////////////////////////////////////////////////////////
     //  manage bps                                                            //
     /////////////////////////////////////////////////////////////////////////////     
@@ -617,8 +573,6 @@ void loop(){
     /////////////////////////////////////////////////////////////////////////////
     //  main power switch actions                                              //
     /////////////////////////////////////////////////////////////////////////////
-	// mainPowerSwitchState = !mainPowerSiwtch.getState();    
-    // pinMode( MAINSWITCHPIN, INPUT_PULLUP);
 	mainPowerSwitchState = !digitalRead( MAINSWITCHPIN );
 /** @todo recover debounce function */    
     if ( !mainPowerSwitchState) { //main power switch change state
@@ -630,7 +584,6 @@ void loop(){
                 colorLeds[i] = CRGB::Black;
             }            
             FastLED.show();
-            // digitalWrite( WIFILED, LOW);  //stop wifi LED
             wifiLed.low();
             ESP.restart();
     }
@@ -643,16 +596,6 @@ void loop(){
 //  Simple local functions                                                 //
 /////////////////////////////////////////////////////////////////////////////
 
-void wifiLedFlash( int speed, int count ){
-    // for ( int i = 0; i < count ; i++ ){
-        // digitalWrite( WIFILED , !digitalRead( WIFILED ) );
-        // delay( speed );        
-    // }
-    // digitalWrite( WIFILED, LOW);
-}
-
-//second implementation with Flasher
-// void wifiLedFlash( Flasher led, int count ){
 void wifiLedFlash( CFlasherNanoExp led, int count ){
     
 	while ( led.getChangeStateCpt() < count ){
@@ -661,7 +604,6 @@ void wifiLedFlash( CFlasherNanoExp led, int count ){
 	}
     led.stop();
 }
-
 
 /** 
  @fn void simpleManualModeChaser()
@@ -688,79 +630,6 @@ void simpleManualModeChaser(){
 	FastLED.show();
 }
 
-
-/** 
- @fn void fatalError()
- @brief flash 4 color LED 50ms/50ms in RED for all time
- @return no return value and no parameter
-*/
-/*
-void fatalError(){
-    DEFDPROMPT("Fatal error")
-    DSPL( dPrompt + "entry");
-    plugColor_t color;
-    
-    
-    
-    
-    //possible blue
-    //2 color blink possible
-    
-    for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
-    FastLED.show();
-    delay(500);
-    while (1){ 
-        color = CRGB::Red;
-        for (int i=0; i < 5; i++){
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Chartreuse;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);	
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = color;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);				
-        }
-        color = CRGB::OrangeRed;
-        for (int i=0; i < 5; i++){
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);	
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = color;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);				
-        }
-        color = CRGB::Brown; //rose
-        for (int i=0; i < 5; i++){
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);	
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = color;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);				
-        }
-        color = CRGB::Snow; //blanc bleu
-        color = CRGB::Chartreuse;
-        for (int i=0; i < 5; i++){
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);	
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = color;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);				
-        }
-        color = CRGB::RoyalBlue;
-        
-        for (int i=0; i < 5; i++){
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);	
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = color;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);				
-        }
-        yield();
-    }
-}
-*/
 
 void displayWifiMode(){
     DEFDPROMPT("WiFi mode")

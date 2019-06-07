@@ -325,7 +325,7 @@ void handleNewCred(){
     "pass" : "V0L@b42net"
     }
     */
-    /** @todo changenge thois function to adapt to new credentials file */
+    /** @todo changenge this function to adapt to new credentials file */
     const int capacity = JSON_OBJECT_SIZE(4);
     StaticJsonBuffer<capacity> jb;
     JsonObject& obj = jb.createObject();
