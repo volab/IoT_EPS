@@ -43,6 +43,7 @@ class CSysStatus {
         sysError plugParamErr;
         sysError credFileErr;
         sysError filesErr;
+        sysError ntpErr;
         /** 
          @fn CSysStatus::CSysStatus()
          @brief CSysSattus constructor...
@@ -58,6 +59,7 @@ class CSysStatus {
             , credFileErr( sysError::medium, "Credential error" )
             , filesErr( sysError::fatal, CRGB::OrangeRed, CRGB::Black, "Necessary files error" )
             , plugParamErr( sysError::fatal, CRGB::Red, CRGB::Snow, "Plug's file error"  )
+            , ntpErr( sysError::low, "NTP error")
             {
             
         }
@@ -65,7 +67,7 @@ class CSysStatus {
         // sysError *nanoErr = new sysError( sysError::fatal, CRGB::RoyalBlue, CRGB::Black);
         
         
-        bool ntpErr = false;
+        // bool ntpErr = false;
         // bool jsonFileErr = false;
         // bool credFileErr = false;
         

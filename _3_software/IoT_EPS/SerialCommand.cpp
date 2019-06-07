@@ -115,11 +115,10 @@ NTPClient timeClient(ntpUDP, NTPSERVER);
 RTC_DS3231 rtc;
 DateTime NTPTime;
 bool errNTPinit = true;
-int timeZone = 2; // Paris heure d'été
-// int timeZone = 1; // Paris heure d'hiver
+int timeZone = OFFSET_HEURE; 
 
 nanoI2C.pinMode( 9, OUTPUT );
-//nanoI2C.pinMode( 8, INPUT_PULLUP );
+
 int eightState;
 String str = "";
 Dir dir;	
@@ -277,16 +276,16 @@ FSInfo filseSystemInfo;
             INTERFACE.println( digitalRead( MAINSWITCHPIN ) );
             break;            
         case 's':
-        timeClient.begin();
-        errNTPinit = !timeClient.forceUpdate();
-        timeClient.setTimeOffset( timeZone * SECPERHOURS );
-        // setTime(  timeClient.getEpochTime() );
-        NTPTime = DateTime( timeClient.getEpochTime() );
-        if (!errNTPinit) {
-            RTC_DS3231::adjust( NTPTime );
-            INTERFACE.println( "Time set :");
-            CRtc::displayTime();
-        }
+            timeClient.begin();
+            errNTPinit = !timeClient.forceUpdate();
+            timeClient.setTimeOffset( timeZone * SECPERHOURS );
+            // setTime(  timeClient.getEpochTime() );
+            NTPTime = DateTime( timeClient.getEpochTime() );
+            if (!errNTPinit) {
+                RTC_DS3231::adjust( NTPTime );
+                INTERFACE.println( "Time set :");
+                CRtc::displayTime();
+            }
             break;      
         case 't':
             now = CRtc::now();

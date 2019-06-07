@@ -10,7 +10,8 @@
 #define  IOT_EPS_HEADER
 
 #define NTPSERVER "fr.pool.ntp.org"
-
+#define OFFSET_HEURE 2 //ETE
+// #define OFFSET_HEURE 1 //Hiver
 #define DEFAULT_PREFIX_NAME "ESP_IOT"
 #define FIRSTBOOTFORMFILENAME "/firstboot.htm"
 #define DEFAULT_LED_LUMINOSITY 15
@@ -35,6 +36,10 @@
 // #include "nanoI2CIOExpLib.h"
 #include <user_interface.h> //espressif SDK function
 //Arduino\Croquis\hardware\esp8266com\esp8266\tools\sdk\include
+
+#include <NTPClient.h>
+#include <WiFiUdp.h> 
+#define SECPERHOURS (int)3600
 
 #define CONFIGFILENAME "/config4.json"
 #include "SerialCommand.h"

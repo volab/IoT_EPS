@@ -95,7 +95,6 @@ CpowerPlug class*/
 
 bool simpleManualMode = false;
 
-// Flasher wifiLed;
 CFlasherNanoExp wifiLed;
 
 // CSwitchNano mainPowerSiwtch;
@@ -109,6 +108,11 @@ CNanoI2CIOExpander nanoioExp; //just for main pow led
 
 CTempo allLeds;
 bool restartTempoLed = false;
+
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP, NTPSERVER);
+int timeZone = OFFSET_HEURE; 
+DateTime NTPTime;
 
 void setup(){
     delay(1000);//a try to correct the powerup pb
@@ -202,7 +206,7 @@ void setup(){
     //     rtc DS3231 start                                                    //
     /////////////////////////////////////////////////////////////////////////////
     rtc.begin();
-    sysStatus.rtcErr.err( rtc.initErr);
+    sysStatus.rtcErr.err( rtc.initErr );
     if (rtc.lostPower()){
         DSPL( dPrompt + "une remise a l'heure est necessaire");
         /** @todo enable or not ? errRTCinit due to lots power*/
@@ -462,7 +466,25 @@ void setup(){
 		Serial.println ( "HTTP server started" );
 	
 	}
-	
+    
+    /////////////////////////////////////////////////////////////////////////////
+    //  Time serveur check                                                     //
+    /////////////////////////////////////////////////////////////////////////////
+        timeClient.begin();
+        // errNTPinit = !timeClient.forceUpdate();
+        sysStatus.ntpErr.err( !timeClient.forceUpdate() ) ;
+        timeClient.setTimeOffset( timeZone * SECPERHOURS );
+        // setTime(  timeClient.getEpochTime() );
+        NTPTime = DateTime( timeClient.getEpochTime() );
+        // if (!errNTPinit) {
+            // RTC_DS3231::adjust( NTPTime );
+            // INTERFACE.println( "Time set :");
+            // CRtc::displayTime();
+        // }
+
+    /////////////////////////////////////////////////////////////////////////////
+    //  Setup last operations                                                  //
+    /////////////////////////////////////////////////////////////////////////////    
 	SerialCommand::displayCommandsList();
     DSPL( dPrompt + "Leds On config : " + String( cParam.getAllLedsOnTime() ) );
     DSPL( dPrompt + "Leds On lumi : " + String( cParam.getLedsLuminosity() ) );
