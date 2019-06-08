@@ -53,6 +53,8 @@
 #include "CRtc.h"
 #include "cswitchnano.h"
 #include "csysstat.h"
+#define RTC_UPDATE_PERIOD 15 //every 15mn
+#define RTC_ALLOWED_TIME_ERROR 20//seconds
 
 // #define FBTAG_STASSID "default_STA_SSID"
 // #define FBTAG_STAPWD "pwd_STA"

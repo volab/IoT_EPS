@@ -71,6 +71,7 @@ class CSysStatus {
         // bool jsonFileErr = false;
         // bool credFileErr = false;
         
+        bool ntpEnabled = false; //set to true when Station mode is ok
         bool wifiErr = false;
         sysError internetErr;
         void display();

@@ -10,15 +10,16 @@
 @tableofcontents
 
 @section dependencies Lib dependencies
-- Utilisation de la bibliothèque ESP8266WebServer version 1.0
-- Utilisation de la bibliothèque ArduinoJson version 5.13.2
-- Utilisation de la bibliothèque Wire version 1.0
-- Utilisation de la bibliothèque RTClib version 1.2.0
-- Utilisation de la bibliothèque ESP8266mDNS
-- Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3
-- Utilisation de la bibliothèque FastLED version 3.2.1
-- Utilisation de la bibliothèque nanoI2CIOExpLib version 1.0
-- Utilisation de la bibliothèque NTPClient version 3.1.0 
+ - Utilisation de la bibliothèque ESP8266WiFi version 1.0
+ - Utilisation de la bibliothèque ESP8266WebServer version 1.0 
+ - Utilisation de la bibliothèque ArduinoJson version 5.13.2 
+ - Utilisation de la bibliothèque Wire version 1.0
+ - Utilisation de la bibliothèque RTClib version 1.2.0
+ - Utilisation de la bibliothèque ESP8266mDNS prise dans le dossier \2.4.1\libraries\ESP8266mDNS (legacy)
+ - Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library
+ - Utilisation de la bibliothèque FastLED version 3.2.1
+ - Utilisation de la bibliothèque nanoI2CIOExpLib version 3.1
+ - Utilisation de la bibliothèque NTPClient version 3.1.0
 
 @section wifi WIFIs connexions
 
@@ -111,10 +112,13 @@ bool restartTempoLed = false;
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTPSERVER);
-int timeZone = OFFSET_HEURE; 
-DateTime NTPTime;
+
+
 
 void setup(){
+    DateTime NTPTime;
+    int timeZone = OFFSET_HEURE; 
+    
     delay(1000);//a try to correct the powerup pb
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite( LED_BUILTIN, LOW ); //warning D4 BP blueu plug
@@ -209,10 +213,7 @@ void setup(){
     sysStatus.rtcErr.err( rtc.initErr );
     if (rtc.lostPower()){
         DSPL( dPrompt + "une remise a l'heure est necessaire");
-        /** @todo enable or not ? errRTCinit due to lots power*/
     }
-
-    /** @todo check time validity */
     now = rtc.now();
     String message = dPrompt + F("DS3231 Start date : ");
     message += (String)now.day()+"/"+(String)now.month()+"/";
@@ -360,6 +361,7 @@ void setup(){
             wifiLed.high();
             DSPL( "\n" + dPrompt + F("\nNumber of Station wifi try : ") + (String)tryCount );
             if ( WiFi.status() == WL_CONNECTED){
+                sysStatus.ntpEnabled = true;
                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
                     + WiFi.localIP().toString() );
                 if ( cParam.getFirstBoot() == ConfigParam::TRY ){
@@ -470,17 +472,23 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     //  Time serveur check                                                     //
     /////////////////////////////////////////////////////////////////////////////
+    // if ((wifi is on station mode connected))
+    if( sysStatus.ntpEnabled){
         timeClient.begin();
         // errNTPinit = !timeClient.forceUpdate();
         sysStatus.ntpErr.err( !timeClient.forceUpdate() ) ;
-        timeClient.setTimeOffset( timeZone * SECPERHOURS );
-        // setTime(  timeClient.getEpochTime() );
-        NTPTime = DateTime( timeClient.getEpochTime() );
-        // if (!errNTPinit) {
-            // RTC_DS3231::adjust( NTPTime );
-            // INTERFACE.println( "Time set :");
-            // CRtc::displayTime();
-        // }
+        if ( !sysStatus.ntpErr.isErr() ){
+            timeClient.setTimeOffset( timeZone * SECPERHOURS );
+            // setTime(  timeClient.getEpochTime() );
+            NTPTime = DateTime( timeClient.getEpochTime() );
+            if (rtc.lostPower()){
+                RTC_DS3231::adjust( NTPTime );
+                DSPL( dPrompt + F("DS3231 set to NTP time due to power lost.") );
+                CRtc::displayTime();
+            }            
+        }
+    }
+
 
     /////////////////////////////////////////////////////////////////////////////
     //  Setup last operations                                                  //
@@ -502,6 +510,10 @@ void setup(){
 bool cycleState = false;
 void loop(){
 /** @todo Place continuus builtin tests here */
+    if (sysStatus.ntpEnabled){
+        rtc.update();
+    }
+
     DEFDPROMPT("in the loop")
     if ( !simpleManualMode ) server->handleClient();
     

@@ -7,11 +7,12 @@
 * @brief Implementation file of CRtc 
 */
 
-#include "CRtc.h"
-#include "debugSerialPort.h"
+#include "IoT_EPS.h"
+// #include "CRtc.h"
+// #include "debugSerialPort.h"
 
 bool CRtc::initErr = false;
-
+extern NTPClient timeClient;
 
 /** 
 @fn bool CRtc::begin( void )
@@ -22,6 +23,7 @@ bool CRtc::begin( void ){
 	RTC_DS3231::begin();
 	Wire.beginTransmission(DS3231_ADDRESS);
     initErr = Wire.endTransmission();
+    lastMillis = millis();
 	return initErr;
 }
 
@@ -36,6 +38,7 @@ bool CRtc::begin( void ){
  
  This function could have used CEpsStrTime::displayUnixTime but it creat a depndency between this 2 class
 */
+
 void CRtc::displayTime(){
 	DEFDPROMPT( "DS3231 Time")
     DateTime now = RTC_DS3231::now();
@@ -44,7 +47,14 @@ void CRtc::displayTime(){
     sDate += (String)now.hour()+":"+(String)now.minute()+":";
     sDate += (String)now.second();
 	DSPL( dPrompt + sDate );
-    DSPL( dPrompt + "unix local time : " + now.unixtime() );
+    unsigned long RTCTime = RTC_DS3231::now().unixtime();
+    DSPL( dPrompt + "unix local time : " + RTCTime );
+    sysStatus.ntpErr.err( !timeClient.forceUpdate() );
+    if ( sysStatus.ntpErr.isErr() ) return ;
+    unsigned long NTPTime = timeClient.getEpochTime();
+    DSPL( dPrompt + "NTP time : " + String(timeClient.getEpochTime() ) );
+    DSPL( dPrompt + "time error : " + String( abs(NTPTime-RTCTime) ) );
+    // DSPL( dPrompt + "Next time check" + String(millis() - lastMillis ) );
 	
 }
 
@@ -96,4 +106,21 @@ void CRtc::adjustH( char *c ){
 		default :
 			DSPL( "<X>");
 	}
+}
+
+
+void CRtc::update(){
+    DEFDPROMPT( "DS3231 update");
+    if (millis() - lastMillis < (RTC_UPDATE_PERIOD * 60 * 1000 ) ) return;
+    DSPL( dPrompt + F("time to check clock system" ) );
+    sysStatus.ntpErr.err( !timeClient.forceUpdate() );
+    if ( sysStatus.ntpErr.isErr() ) return ;
+    unsigned long NTPTime = timeClient.getEpochTime();
+    unsigned long RTCTime = RTC_DS3231::now().unixtime();
+    if ( abs( RTCTime - NTPTime ) < RTC_ALLOWED_TIME_ERROR ) return;
+    // if ntp.uniw time - rtc unix time < 15s return;
+    RTC_DS3231::adjust( NTPTime );
+    DSPL( dPrompt + F("DS3231 time updated" ) );
+    /** @todo perhpas save a counter of updates */
+     
 }

@@ -714,7 +714,7 @@ last update : 02/12/2018
 - Utilisation de la bibliothèque nanoI2CIOExpLib version 3.1
 - Utilisation de la bibliothèque NTPClient version 3.1.0
 
-9 libs are Arduino official lib and one lib is spécial:
+9 libs are official Arduino libs and one lib is spéciale:
 
 `nanoI2CIOExpLib`_
  

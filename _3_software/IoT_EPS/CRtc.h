@@ -27,6 +27,11 @@ public:
 	static void displayTime(); /**< @brief a static function to display time in debug screen*/
 	static void adjust( char *c );
     static void adjustH( char *c );
+    
+    //bool isItTimeToUpdate();
+    void update();
+private:
+    unsigned long lastMillis;
 };
 
 
