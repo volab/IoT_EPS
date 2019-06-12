@@ -40,17 +40,16 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   Here I want to trace major features implementations.
  
 
-
+ @li CBIT : internet helth
  @li write mac add in json
  @li add DHCP mode off
  @li STAmaxWifiConnectionRetry read from json
- @li implement rtc strategy
  @li configuration page (see softdev.rst)
  
  @li see hardware
  
  @li power measurment
- @li manage sun and winter hour change
+ @li manage summer and winter hour change
  
  @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
  impossible this is the navigator to ask for a page and html refresh param is not a good idea !
@@ -203,7 +202,7 @@ void setup(){
         } else cpt = 9;
         
         cpt++;
-    } while (cpt < 5 );
+    } while (cpt < I2C_RETRIES );
     if (cpt != 10) sysStatus.nanoErr.err( true );
     DSPL(dPrompt + F("Nano test ok"));
     /////////////////////////////////////////////////////////////////////////////
@@ -508,21 +507,45 @@ void setup(){
 //        LOOP                                                             //
 /////////////////////////////////////////////////////////////////////////////
 bool cycleState = false;
-void loop(){
-/** @todo Place continuus builtin tests here */
-    if (sysStatus.ntpEnabled){
-        rtc.update();
-    }
 
+void loop(){
+    static unsigned long prevMillis = millis();
     DEFDPROMPT("in the loop")
+/** @todo Place continuus builtin tests here */
+    /////////////////////////////////////////////////////////////////////////////
+    //  CBIT : Continus Built In Test                                          //
+    /////////////////////////////////////////////////////////////////////////////
+    //I2C
+    if ( millis() - prevMillis > I2C_CBIT_TEST_PERIOD){
+        prevMillis = millis();
+        int cpt = 1;
+        do{
+            if ( !nanoioExp.test( true ) ){
+                DSPL( dPrompt + "i2cRecov" + " number " + cpt);
+                SerialCommand::i2c_recovery();
+            } else cpt = 9;
+            
+            cpt++;
+        } while (cpt < I2C_RETRIES );
+        if (cpt != 10) sysStatus.nanoErr.err( true ); 
+    }
+    
+    //NTP and RTC test
+    if (sysStatus.ntpEnabled){
+        rtc.update(); //this check NTP access and update sysStatus
+    }
+/** @todo check internet connection health */  
+// if (no internet) server->on("/", HTTP_GET, handleSoftAPIndex );
+    /////////////////////////////////////////////////////////////////////////////
+    //  CBIT : Continus Built In Test End                                         //
+    /////////////////////////////////////////////////////////////////////////////
+    
     if ( !simpleManualMode ) server->handleClient();
     
     ftpSrv.handleFTP();
     specialBp.update();
     
-    SerialCommand::process();
-
-    // extraLed.update();  
+    SerialCommand::process(); 
     
     /////////////////////////////////////////////////////////////////////////////
     //  manage leds                                                            //
@@ -538,9 +561,7 @@ void loop(){
                 plugs[i].manageLeds( false );
             }
             wifiLed.stop();
-            // pinMode( WIFILED, OUTPUT );
             wifiLed.low();
-            // digitalWrite( WIFILED, LOW);
             allLeds.stop();
             if ( cParam.getPowLedEconomyMode() ) nanoioExp.digitalWrite( MAINPOWLED, LOW );
         }
@@ -553,8 +574,6 @@ void loop(){
             if ( cParam.getWifiMode() == "softAP" ){
                 wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
             } else {
-                // pinMode( WIFILED, OUTPUT );
-                // digitalWrite( WIFILED, HIGH);
                 wifiLed.high();
             }
             nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );

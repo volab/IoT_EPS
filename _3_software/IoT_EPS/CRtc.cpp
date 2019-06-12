@@ -113,14 +113,24 @@ void CRtc::update(){
     DEFDPROMPT( "DS3231 update");
     if (millis() - lastMillis < (RTC_UPDATE_PERIOD * 60 * 1000 ) ) return;
     DSPL( dPrompt + F("time to check clock system" ) );
+    DateTime now = RTC_DS3231::now();
+    String sDate = "";
+    sDate += (String)now.day() +"/"+(String)now.month()+"/"+(String)now.year()+" ";
+    sDate += (String)now.hour()+":"+(String)now.minute()+":";
+    sDate += (String)now.second();
+	DSPL( dPrompt + sDate );
     sysStatus.ntpErr.err( !timeClient.forceUpdate() );
+    lastMillis = millis();
     if ( sysStatus.ntpErr.isErr() ) return ;
     unsigned long NTPTime = timeClient.getEpochTime();
     unsigned long RTCTime = RTC_DS3231::now().unixtime();
+    DSPL( dPrompt + F("Delta time = ") + String(abs( RTCTime - NTPTime )) );
     if ( abs( RTCTime - NTPTime ) < RTC_ALLOWED_TIME_ERROR ) return;
-    // if ntp.uniw time - rtc unix time < 15s return;
+    // if ntp.unix time - rtc unix time < 15s return;
     RTC_DS3231::adjust( NTPTime );
     DSPL( dPrompt + F("DS3231 time updated" ) );
     /** @todo perhpas save a counter of updates */
-     
+    //read cpt from eeprom or file
+    _updatesCpt++;
+    //write cpt to eeprom or file
 }

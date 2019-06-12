@@ -32,6 +32,7 @@ public:
     void update();
 private:
     unsigned long lastMillis;
+    unsigned long _updatesCpt;
 };
 
 
