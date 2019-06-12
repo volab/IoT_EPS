@@ -29,7 +29,7 @@
 #include <RTClib.h>
 #include <ESP8266mDNS.h>
 #include <Adafruit_MCP23017.h>
-/** @todo try to remove Adafruit_MCP23017.h0 */
+/** @todo try to remove Adafruit_MCP23017.h */
 #include <FastLED.h>
 // #include <Array.h>
 #include <nanoI2CIOExpLib.h>
@@ -45,6 +45,7 @@
 #include "SerialCommand.h"
 #include "debugSerialPort.h"
 #include "credential.h"
+#define MAX_WIFI_CONNECT_RETRY 30 /**< @brief In Station mode number of try before to switch to access point connection*/
 #include "configParam.h"
 #include "serverFunction.h"
 #include "bouton.h"
@@ -158,7 +159,7 @@
 #define WIFILED_FLASH_COUNT 20
 #define WIFILED_SOFTAP_FLASH 50
 #define WIFILED_SOFTAP_PERIOD 2000
-#define MAX_WIFI_CONNECT_RETRY 30 /**< @brief In Station mode number of try before to switch to access point connection*/
+
 
 const String necessaryFileList[] ={
       "/index.html"

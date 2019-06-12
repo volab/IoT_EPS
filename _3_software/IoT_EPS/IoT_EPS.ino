@@ -40,17 +40,17 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   Here I want to trace major features implementations.
  
 
- @li CBIT : internet helth
+ @li CBIT : internet health
  @li write mac add in json
  @li add DHCP mode off
- @li STAmaxWifiConnectionRetry read from json
+
  @li configuration page (see softdev.rst)
  
  @li see hardware
  
  @li power measurment
  @li manage summer and winter hour change
- 
+ @li document FATAL error color (see xlsx dedicate file)
  @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
  impossible this is the navigator to ask for a page and html refresh param is not a good idea !
  @li code and todo review : remove all unused commented code (cleanup)
@@ -354,11 +354,12 @@ void setup(){
                 DSP(".");
                 //a normal acces should came in 10 try
                 tryCount++;
-                if (tryCount == MAX_WIFI_CONNECT_RETRY ) break;  
+                if (tryCount == cParam.getSTAMaxRetries() ) break;  
             }
             wifiLed.stop();
             wifiLed.high();
-            DSPL( "\n" + dPrompt + F("\nNumber of Station wifi try : ") + (String)tryCount );
+            DSP( "\n" + dPrompt + F("\nNumber of Station wifi try : ") + (String)tryCount );
+            DSPL( ", max was : " + String( cParam.getSTAMaxRetries() ) );
             if ( WiFi.status() == WL_CONNECTED){
                 sysStatus.ntpEnabled = true;
                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \

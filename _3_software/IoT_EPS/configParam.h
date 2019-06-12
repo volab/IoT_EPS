@@ -18,7 +18,6 @@
 // #define CONFIGFILENAME "/config4.json"
 
 
-
 class ConfigParam{
     public:
 
@@ -45,6 +44,7 @@ class ConfigParam{
         firstBootVal getFirstBoot(){ return _firstBoot; }
         static void write2Json( String param, String value, String file = CONFIGFILENAME );
         // static void _write2CredJson( String param, String value );
+        unsigned int getSTAMaxRetries(){ return _STAmaxWifiConnectionRetries; }
         
     
     private:
@@ -59,6 +59,7 @@ class ConfigParam{
         //in seconds (not unsigned cause -1 could serve to allways on in future)
         int _ledsGlobalLuminosity;
         firstBootVal _firstBoot;
+        unsigned int _STAmaxWifiConnectionRetries = MAX_WIFI_CONNECT_RETRY ;
         
 
 };

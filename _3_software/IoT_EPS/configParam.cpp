@@ -67,7 +67,6 @@ bool ConfigParam::readFromJson(){
                     _addIP.fromString( s_IpAdd );
                     _numberOfPlugs = json["general"]["numberOfPlugs"].as<String>().toInt();
                     _serverPort = json["general"]["softAP_port"].as<String>().toInt();
-                    // _wifimode = json["general"]["wifimode"].as<String>();
                     String startInAPMode = json["general"]["startInAPMode"].as<String>();
                     if ( startInAPMode == "OFF") _wifimode = "Station";
                     else _wifimode = "softAP";
@@ -77,12 +76,14 @@ bool ConfigParam::readFromJson(){
                     else if ( s_FirstBootTmp == "OFF" )_firstBoot = NO;
                     else if ( s_FirstBootTmp == "TRYSTA" )_firstBoot = TRY;
                     else _firstBoot = YES; // default value
-                    
+                    _STAmaxWifiConnectionRetries = \
+                            json["general"]["STAmaxWifiConnectionRetry"].as<String>().toInt();
                     _host = json["general"]["hostName"].as<String>();
                     _allLedsOnTime = json["general"]["allLedsOnTime"].as<String>().toInt();
                     _ledsGlobalLuminosity = \
                         json["general"]["ledsGlobalLuminosity"].as<String>().toInt();
-                    _powerLedEconomyMode = (json["general"]["powerLedEconomyMode"].as<String>() == "ON");
+                    _powerLedEconomyMode = \
+                            (json["general"]["powerLedEconomyMode"].as<String>() == "ON");
                     if (_firstBoot == YES ) _wifimode = "softAP";
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
