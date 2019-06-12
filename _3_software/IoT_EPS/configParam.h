@@ -45,6 +45,7 @@ class ConfigParam{
         static void write2Json( String param, String value, String file = CONFIGFILENAME );
         // static void _write2CredJson( String param, String value );
         unsigned int getSTAMaxRetries(){ return _STAmaxWifiConnectionRetries; }
+        String getMacAdd(){ return _macAdd; }
         
     
     private:
@@ -60,6 +61,7 @@ class ConfigParam{
         int _ledsGlobalLuminosity;
         firstBootVal _firstBoot;
         unsigned int _STAmaxWifiConnectionRetries = MAX_WIFI_CONNECT_RETRY ;
+        String _macAdd;
         
 
 };

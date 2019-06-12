@@ -84,6 +84,7 @@ bool ConfigParam::readFromJson(){
                         json["general"]["ledsGlobalLuminosity"].as<String>().toInt();
                     _powerLedEconomyMode = \
                             (json["general"]["powerLedEconomyMode"].as<String>() == "ON");
+                    _macAdd = json["general"]["macAdd"].as<String>();
                     if (_firstBoot == YES ) _wifimode = "softAP";
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
@@ -168,7 +169,6 @@ void ConfigParam::displayJsonGeneral(){
                 DynamicJsonBuffer jsonBuffer;
                 JsonObject& json = jsonBuffer.parseObject(buf.get());
                 JsonObject& jsonGen = json["general"];
-                // DSPL( dPrompt + mess );
                 jsonGen.prettyPrintTo(DEBUGPORT);
 				DSPL( );
             }
@@ -242,21 +242,13 @@ void ConfigParam::write2Json( String param, String value, String file ){
             JsonObject& plug = json["general"]; // main level
             DSPL( dPrompt + " general : " + param + " = " + value);
             plug[param] = value; 
-            // configFile.seek(0, SeekSet);
             configFile.close();
-            // configFile = SPIFFS.open( CONFIGFILENAME , "w");
             configFile = SPIFFS.open( file , "w");
             json.printTo(configFile);
-            // plug.prettyPrintTo(Serial);
-            // DSPL();
         } else {
             DEBUGPORT.println(dPrompt + F("Failed to load json config"));
-            // return false;
         }
         configFile.close();
-        // return true;  
-/** @todo perhaps add error handling as in readFromJson() */ 
-      
     }     
 }
 

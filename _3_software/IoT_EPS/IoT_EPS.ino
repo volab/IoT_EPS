@@ -39,10 +39,10 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
-
+ @li CBIT : file access
  @li CBIT : internet health
- @li write mac add in json
- @li add DHCP mode off
+
+ @li add non DHCP mode off : WiFi.config()
 
  @li configuration page (see softdev.rst)
  
@@ -188,7 +188,13 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     cParam.begin();
     sysStatus.confFileErr.err( !cParam.ready );
-   
+    DSPL( dPrompt + F("json mac add : ") + cParam.getMacAdd() );
+    DSPL( dPrompt + F("Sation MAC add = ") + WiFi.macAddress() );
+    if ( cParam.getMacAdd() == WiFi.macAddress() ) DSPL( dPrompt + "equal add");
+    else {
+        DSPL( dPrompt + "diff add, write to json");
+        cParam.write2Json( "macAdd", WiFi.macAddress() );
+    }
     /////////////////////////////////////////////////////////////////////////////
     //     I2C bus check                                                       //
     ///////////////////////////////////////////////////////////////////////////// 
