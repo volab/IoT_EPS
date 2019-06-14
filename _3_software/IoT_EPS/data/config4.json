@@ -7,10 +7,11 @@
     "rtcValidity": "true",
     "softAP_IP": "192.168.95.42",
     "softAP_port": "80",
-    "dhcp_mode": "OFF",
+    "dhcp_mode": "ON",
     "staIP": "192.168.1.42",
     "macAdd": "11:22:33:44:55:66",
-    "allLedsOnTime": "30",
+    "softAP_macAdd" : "11:22:33:44:55:66",
+    "allLedsOnTime": "-1",
     "ledsGlobalLuminosity": "5",
     "powerLedEconomyMode": "OFF",
     "STAmaxWifiConnectionRetry": "30"

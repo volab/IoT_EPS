@@ -85,6 +85,10 @@ bool ConfigParam::readFromJson(){
                     _powerLedEconomyMode = \
                             (json["general"]["powerLedEconomyMode"].as<String>() == "ON");
                     _macAdd = json["general"]["macAdd"].as<String>();
+                    _softAPMacAdd = json["general"]["softAP_macAdd"].as<String>();
+                    _DHCPMode = ( json["general"]["dhcp_mode"].as<String>() == "ON" );
+                    String s_staIP = json["general"]["staIP"].as<String>();
+                    _staIP.fromString( s_staIP );
                     if (_firstBoot == YES ) _wifimode = "softAP";
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));

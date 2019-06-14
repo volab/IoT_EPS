@@ -41,8 +41,9 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  
  @li CBIT : file access
  @li CBIT : internet health
+ @li write ntpError in json
 
- @li add non DHCP mode off : WiFi.config()
+ @li add non DHCP mode off : to be tested
 
  @li configuration page (see softdev.rst)
  
@@ -189,11 +190,18 @@ void setup(){
     cParam.begin();
     sysStatus.confFileErr.err( !cParam.ready );
     DSPL( dPrompt + F("json mac add : ") + cParam.getMacAdd() );
-    DSPL( dPrompt + F("Sation MAC add = ") + WiFi.macAddress() );
+    DSPL( dPrompt + F("Board Sation MAC add = ") + WiFi.macAddress() );
     if ( cParam.getMacAdd() == WiFi.macAddress() ) DSPL( dPrompt + "equal add");
     else {
         DSPL( dPrompt + "diff add, write to json");
         cParam.write2Json( "macAdd", WiFi.macAddress() );
+    }
+    DSPL( dPrompt + F("json Soft AP mac add : ") + cParam.getSoftAPMacAdd() );
+    DSPL( dPrompt + F("Board Soft AP MAC add = ") + WiFi.softAPmacAddress() );
+    if ( cParam.getSoftAPMacAdd() == WiFi.softAPmacAddress() ) DSPL( dPrompt + "equal add");
+    else {
+        DSPL( dPrompt + "diff add, write to json");
+        cParam.write2Json( "softAP_macAdd", WiFi.softAPmacAddress() );
     }
     /////////////////////////////////////////////////////////////////////////////
     //     I2C bus check                                                       //
@@ -350,6 +358,12 @@ void setup(){
         if ( cParam.getWifiMode() == "client" && !sysStatus.credFileErr.isErr()
                 || cParam.getWifiMode() == "Station" ){ // Station WIFI mode    
             WiFi.mode(WIFI_STA);
+            //void config(IPAddress local_ip, IPAddress gateway, IPAddress subnet);
+            if ( !cParam.getDHCPMode() ){
+                IPAddress staIP = cParam.getStaIP();
+                WiFi.config( staIP, staIP, IPAddress(255, 255, 255, 0) );
+                DSPL( dPrompt + F("No DHCP mode, static IP add") );
+            } 
             WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
             DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
             wifiLedFlash( wifiLed, WIFILED_FLASH_COUNT );
@@ -358,7 +372,7 @@ void setup(){
                 delay(500);
                 wifiLed.update();
                 DSP(".");
-                //a normal acces should came in 10 try
+                //a normal acces should came in 18 try
                 tryCount++;
                 if (tryCount == cParam.getSTAMaxRetries() ) break;  
             }
@@ -542,9 +556,10 @@ void loop(){
         rtc.update(); //this check NTP access and update sysStatus
     }
 /** @todo check internet connection health */  
+/** @todo check json */
 // if (no internet) server->on("/", HTTP_GET, handleSoftAPIndex );
     /////////////////////////////////////////////////////////////////////////////
-    //  CBIT : Continus Built In Test End                                         //
+    //  CBIT : Continus Built In Test End                                      //
     /////////////////////////////////////////////////////////////////////////////
     
     if ( !simpleManualMode ) server->handleClient();

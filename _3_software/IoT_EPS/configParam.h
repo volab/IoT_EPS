@@ -46,7 +46,9 @@ class ConfigParam{
         // static void _write2CredJson( String param, String value );
         unsigned int getSTAMaxRetries(){ return _STAmaxWifiConnectionRetries; }
         String getMacAdd(){ return _macAdd; }
-        
+        String getSoftAPMacAdd(){ return _softAPMacAdd; }
+        bool getDHCPMode(){ return _DHCPMode; }
+        IPAddress getStaIP(){ return _staIP; }
     
     private:
         String _wifimode = "softAP" ; //default value
@@ -62,6 +64,9 @@ class ConfigParam{
         firstBootVal _firstBoot;
         unsigned int _STAmaxWifiConnectionRetries = MAX_WIFI_CONNECT_RETRY ;
         String _macAdd;
+        String _softAPMacAdd;
+        bool _DHCPMode;
+        IPAddress _staIP;
         
 
 };
