@@ -8,6 +8,7 @@ general
   softAP_port = 80
   dhcp_mode = ON
   staIP = 192.168.1.42
+  staGateway = 192.168.1.254
   macAdd = 11:22:33:44:55:66
   softAP_macAdd = 11:22:33:44:55:66
   allLedsOnTime = -1

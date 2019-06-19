@@ -41,9 +41,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  
  @li CBIT : file access
  @li CBIT : internet health
- @li write ntpError in json
-
- @li add non DHCP mode off : to be tested
+ @li write ntpError in json why ?
 
  @li configuration page (see softdev.rst)
  
@@ -361,7 +359,8 @@ void setup(){
             //void config(IPAddress local_ip, IPAddress gateway, IPAddress subnet);
             if ( !cParam.getDHCPMode() ){
                 IPAddress staIP = cParam.getStaIP();
-                WiFi.config( staIP, staIP, IPAddress(255, 255, 255, 0) );
+                IPAddress staGateway = cParam.getStaGatewayIP();
+                WiFi.config( staIP, staGateway, IPAddress(255, 255, 255, 0) );
                 DSPL( dPrompt + F("No DHCP mode, static IP add") );
             } 
             WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );

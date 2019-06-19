@@ -49,6 +49,7 @@ class ConfigParam{
         String getSoftAPMacAdd(){ return _softAPMacAdd; }
         bool getDHCPMode(){ return _DHCPMode; }
         IPAddress getStaIP(){ return _staIP; }
+        IPAddress getStaGatewayIP(){ return _staGateway; }
     
     private:
         String _wifimode = "softAP" ; //default value
@@ -67,6 +68,7 @@ class ConfigParam{
         String _softAPMacAdd;
         bool _DHCPMode;
         IPAddress _staIP;
+        IPAddress _staGateway;
         
 
 };
