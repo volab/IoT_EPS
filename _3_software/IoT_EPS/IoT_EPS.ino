@@ -360,7 +360,10 @@ void setup(){
             if ( !cParam.getDHCPMode() ){
                 IPAddress staIP = cParam.getStaIP();
                 IPAddress staGateway = cParam.getStaGatewayIP();
-                WiFi.config( staIP, staGateway, IPAddress(255, 255, 255, 0) );
+                IPAddress DNS1;
+                DNS1.fromString( "8.8.8.8");
+                /** @todo chnage DNS as a config param */
+                WiFi.config( staIP, staGateway, IPAddress(255, 255, 255, 0), DNS1 );
                 DSPL( dPrompt + F("No DHCP mode, static IP add") );
             } 
             WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );

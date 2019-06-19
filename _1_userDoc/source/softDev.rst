@@ -29,20 +29,19 @@ Avancement
 #. integrate nano expander with analog inputs : ok
 #. scan I2C response 57 and 58 nano IoExpander !!!! not a bug simply DS3231 board has 2 component
    DS3231 an EEPROM ! OK
+#. Time managment strategy : ok
+#. review work without rtc component strategy ok
+#. review work without NTP access strategy ok
+#. define rtc component versus NTP update strategy ok
+#. suppress html replies if main power is off ok
+#. generate a unic server name  ok
 
-#. Error handling improvment 40%
-#. bug report when json is no reachable !
-#. Time managment strategy : 10%
-#. review work without rtc component strategy 10%
-#. review work without NTP access strategy 10%
-#. define rtc component versus NTP update strategy 
-#. suppress html replies if main power is off 
+#. Error handling improvment 95% (todo dislay low error with LED ? Wich one : power led ?)
 #. configuration page (see softdev.rst)
-#. generate a unic server name  
+
 #. power measurment
 
-
-#. exhaustive test of hebdo mode : 90%
+#. exhaustive test of hebdo mode : 95%
 #. write index special page for softAP Mode with local boostrap or other light js.framework 5%
 #. preparer un infographie résumant fonctionnalité et besoin : 
 #. Write user manual : 1%
@@ -51,10 +50,10 @@ Avancement
 Don't forget the todo list of the doxygen documentation
 
 ====================================
-Convention de nommage
+Namming convention
 ====================================
 
-Référence : config3.json
+Référence : config4.json
 
 ====================================
 To be added to config json file
@@ -72,17 +71,18 @@ To be added 30/30/2019
  - change name of the file to config4.json                                                  DONE
  
 To be added 09/05/2019
- - IP add in soft AP mode to display it (what the utility ? to configure it)                ADDED
- - mac add to display it                                                                    ADDED
- - add ip in mode Station : to configure it if we are not in DHCP mode                      ADDED
- - DHCP_mode : On or OFF                                                                    ADDED
+ - IP add in soft AP mode to display it (what the utility ? to configure it)                DONE
+ - mac add to display it                                                                    DONE
+ - add ip in mode Station : to configure it if we are not in DHCP mode                      DONE
+ - DHCP_mode : On or OFF                                                                    DONE
+ - gateway add                                                                              DONE
 
 
 ====================================
-Penser à:
+Remember
 ====================================
 
-#. regarder javascript http request pour faire du DELETE
+#. see javascript http request to perform DELETE: obsolete
 
 ====================================
 First boot configuration
@@ -261,14 +261,14 @@ should be detected.
 Solution wait for power on in ARDUINO setup function.
 Restart ESP in ARDUINO loop when power is switch to OFF.
 
-==============
-Choix dev soft
-==============
+============================
+Sofware development choice
+============================
 wifi access point
 
 Les pages html sont dans le file système SPIFFS
 
-Pourquoi ne pas utiliser wifi manager ?
+Why do not use wifi manager ?
 =========================================
 
 
