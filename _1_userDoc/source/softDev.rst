@@ -548,6 +548,11 @@ Can we work without internet connection or Wifi in station mode ?
  yes in softAP mode Refine softAP mode behavior
  
  Can we work without NTP server ? Yes (it could be temporary down)
+ 
+.. important::
+ 
+    How to display no fatal error ? the only one is NTP error all other error are FATAL
+    We decide to only display on index html page
 
 
 ================================

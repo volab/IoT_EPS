@@ -39,9 +39,8 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
- @li CBIT : file access
- @li CBIT : internet health
- @li write ntpError in json why ?
+ @li PBIT/CBIT : internet health - as a fatal error
+
 
  @li configuration page (see softdev.rst)
  
@@ -138,7 +137,7 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     DSPL( dPrompt + " Build : " + __DATE__ + " @ " + __TIME__);
     
-    sysStatus.fsErr.err( !SPIFFS.begin() ); // to check if it's possible to begin twice the SPIFFS
+    sysStatus.fsErr.err( !SPIFFS.begin() ); 
 
     DSPL( dPrompt + F("File system corectly Open @ setup level") );
     /////////////////////////////////////////////////////////////////////////////
@@ -267,7 +266,7 @@ void setup(){
     
 
 
-    /** @todo test if CNano::initOk = true - if not don't start anything*/
+    /* done test if CNano::initOk = true - if not don't start anything - this is fatal error*/
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CPowerPlug::modeId("MANUEL") );
     plugs[0].setColor( CRGB::Red );
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
@@ -492,7 +491,7 @@ void setup(){
 	}
     
     /////////////////////////////////////////////////////////////////////////////
-    //  Time serveur check                                                     //
+    //  Time server check                                                     //
     /////////////////////////////////////////////////////////////////////////////
     // if ((wifi is on station mode connected))
     if( sysStatus.ntpEnabled){
@@ -507,8 +506,9 @@ void setup(){
                 RTC_DS3231::adjust( NTPTime );
                 DSPL( dPrompt + F("DS3231 set to NTP time due to power lost.") );
                 CRtc::displayTime();
-            }            
-        }
+            }
+            cParam.write2Json( "ntpErr", "OFF" );
+        } else { cParam.write2Json( "ntpErr", "ON" ); }
     }
 
 
@@ -524,6 +524,7 @@ void setup(){
         allLeds.start( cParam.getAllLedsOnTime()*1000 );
     }
 
+    sysStatus.initCBITTimer();
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -556,10 +557,23 @@ void loop(){
     //NTP and RTC test
     if (sysStatus.ntpEnabled){
         rtc.update(); //this check NTP access and update sysStatus
+        if (sysStatus.ntpErr.isErr() ) cParam.write2Json( "ntpErr", "ON" );
     }
 /** @todo check internet connection health */  
-/** @todo check json */
-// if (no internet) server->on("/", HTTP_GET, handleSoftAPIndex );
+
+    if ( sysStatus.isCbitTime() ){
+        //perform others CBIT
+        DSPL(dPrompt + F("It is time to check necessary file accessibility !") );
+        bool fileExist = true;
+        for ( String s : necessaryFileList ){
+            bool b = SPIFFS.exists(s);
+            fileExist &= b;
+            if (!b) DSPL( dPrompt + F("file : ") + s + F(" is not found") );
+        }
+        sysStatus.filesErr.err( !fileExist );
+        
+    }
+
     /////////////////////////////////////////////////////////////////////////////
     //  CBIT : Continus Built In Test End                                      //
     /////////////////////////////////////////////////////////////////////////////

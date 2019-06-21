@@ -14,7 +14,8 @@ general
   allLedsOnTime = -1
   ledsGlobalLuminosity = 5
   powerLedEconomyMode = OFF
-  STAmaxWifiConnectionRetry = 30 
+  STAmaxWifiConnectionRetry = 30
+  ntpError = OFF  
 error
   ntpError = false
 redPlug

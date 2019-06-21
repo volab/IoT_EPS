@@ -75,9 +75,12 @@ class CSysStatus {
         bool wifiErr = false;
         sysError internetErr;
         void display();
+        
+        void initCBITTimer();
+        bool isCbitTime();
        
     private:
-
+        unsigned long _prevMillisCbit;
 };
 
 extern CSysStatus sysStatus;

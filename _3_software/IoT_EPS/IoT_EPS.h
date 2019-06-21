@@ -58,6 +58,7 @@
 #define RTC_ALLOWED_TIME_ERROR 20//seconds
 #define I2C_CBIT_TEST_PERIOD 60 * 1000 //ms it smells millis() ;-)
 #define I2C_RETRIES 5
+#define CBIT_TIME 60000 // period of CBIt in ms
 
 // #define FBTAG_STASSID "default_STA_SSID"
 // #define FBTAG_STAPWD "pwd_STA"

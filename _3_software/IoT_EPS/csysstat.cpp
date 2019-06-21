@@ -59,8 +59,16 @@ void sysError::err( bool errorState ){
     }
 }
 
+void CSysStatus::initCBITTimer(){
+    _prevMillisCbit = millis();
+}
 
 
+bool CSysStatus::isCbitTime(){
+    if ( millis() - _prevMillisCbit < CBIT_TIME ) return false;
+    _prevMillisCbit = millis();
+    return true;
+}
 
 /** 
  @fn void CSysStatus::display()
