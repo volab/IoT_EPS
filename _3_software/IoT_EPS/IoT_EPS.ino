@@ -40,8 +40,6 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   Here I want to trace major features implementations.
  
  @li PBIT/CBIT : internet health - as a fatal error
-
-
  @li configuration page (see softdev.rst)
  
  @li see hardware
@@ -110,7 +108,7 @@ bool restartTempoLed = false;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTPSERVER);
 
-
+Pinger pinger;
 
 void setup(){
     DateTime NTPTime;
@@ -428,6 +426,7 @@ void setup(){
             }
             wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
             // to prepare for loop
+            sysStatus.ntpEnabled = false;
         }
 		MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
 		DSPL( dPrompt + F("Host name that not work with Android is : ") + cParam.getHostName() );
@@ -525,6 +524,13 @@ void setup(){
     }
 
     sysStatus.initCBITTimer();
+
+    // DSPL( dPrompt + "pinging : " + WiFi.dnsIP().toString() );
+    // if(pinger.Ping(WiFi.dnsIP()) == false){
+        // DSPL( dPrompt + "Error during last ping command.");
+    // } else {
+        // DSPL( dPrompt + "internet test target Reachable");
+    // }
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -553,7 +559,7 @@ void loop(){
         } while (cpt < I2C_RETRIES );
         if (cpt != 10) sysStatus.nanoErr.err( true ); 
     }
-    
+    // DSPL( dPrompt + (sysStatus.ntpEnabled?"yes":"no") );
     //NTP and RTC test
     if (sysStatus.ntpEnabled){
         rtc.update(); //this check NTP access and update sysStatus

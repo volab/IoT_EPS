@@ -10,8 +10,9 @@
 
 #ifndef _HEADERNAME_H
 #define _HEADERNAME_H
-#include <Wire.h>
-#include <RTClib.h>
+// #include <Wire.h>
+// #include <RTClib.h>
+#include "IoT_EPS.h"
 
 /**
 * @class CRtc CRtc.h

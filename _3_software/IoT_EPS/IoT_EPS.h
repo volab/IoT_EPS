@@ -23,6 +23,7 @@
 #include <FS.h> //this needs to be first, or it all crashes and burns...
 #include <ESP8266WiFi.h> //https://github.com/esp8266/Arduino
 #include <ESP8266WebServer.h>
+
 //needed for library
 #include <ArduinoJson.h> //https://github.com/bblanchon/ArduinoJson
 #include <Wire.h>
@@ -40,6 +41,9 @@
 #include <NTPClient.h>
 #include <WiFiUdp.h> 
 #define SECPERHOURS (int)3600
+
+// #include <ESP8266Ping.h>
+#include <Pinger.h>
 
 #define CONFIGFILENAME "/config4.json"
 #include "SerialCommand.h"
