@@ -43,7 +43,7 @@
 #define SECPERHOURS (int)3600
 
 // #include <ESP8266Ping.h>
-#include <Pinger.h>
+// #include <Pinger.h>
 
 #define CONFIGFILENAME "/config4.json"
 #include "SerialCommand.h"

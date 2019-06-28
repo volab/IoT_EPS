@@ -57,11 +57,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
 #include "ESP8266FtpServer.h"
 FtpServer ftpSrv;
 
-extern "C"
-{
-  #include <lwip/icmp.h> // needed for icmp packet definitions
-}
-
+#include <ESP8266HTTPClient.h>
 
 
 /** 
@@ -112,7 +108,6 @@ bool restartTempoLed = false;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTPSERVER);
 
-Pinger pinger;
 
 void setup(){
     DateTime NTPTime;
@@ -510,8 +505,8 @@ void setup(){
                 DSPL( dPrompt + F("DS3231 set to NTP time due to power lost.") );
                 CRtc::displayTime();
             }
-            cParam.write2Json( "ntpErr", "OFF" );
-        } else { cParam.write2Json( "ntpErr", "ON" ); }
+            cParam.write2Json( "ntpError", "OFF" );
+        } else { cParam.write2Json( "ntpError", "ON" ); }
     }
 
 
@@ -528,96 +523,39 @@ void setup(){
     }
 
     sysStatus.initCBITTimer();
-    /////////////////////////////////////////////////////////////////////////////
-    //  Pinger test                                                            //
-    ///////////////////////////////////////////////////////////////////////////// 
-  pinger.OnReceive([](const PingerResponse& response)
-  {
-    if (response.ReceivedResponse)
-    {
-      Serial.printf(
-        "Reply from %s: bytes=%d time=%lums TTL=%d\n",
-        response.DestIPAddress.toString().c_str(),
-        response.EchoMessageSize - sizeof(struct icmp_echo_hdr),
-        response.ResponseTime,
-        response.TimeToLive);
-    }
-    else
-    {
-      Serial.printf("Request timed out.\n");
-    }
 
-    // Return true to continue the ping sequence.
-    // If current event returns false, the ping sequence is interrupted.
-    return true;
-  });
+
   
-  pinger.OnEnd([](const PingerResponse& response)
-  {
-    // Evaluate lost packet percentage
-    float loss = 100;
-    if(response.TotalReceivedResponses > 0)
-    {
-      loss = (response.TotalSentRequests - response.TotalReceivedResponses) * 100 / response.TotalSentRequests;
-    }
-    
-    // Print packet trip data
-    Serial.printf(
-      "Ping statistics for %s:\n",
-      response.DestIPAddress.toString().c_str());
-    Serial.printf(
-      "    Packets: Sent = %lu, Received = %lu, Lost = %lu (%.2f%% loss),\n",
-      response.TotalSentRequests,
-      response.TotalReceivedResponses,
-      response.TotalSentRequests - response.TotalReceivedResponses,
-      loss);
 
-    // Print time information
-    if(response.TotalReceivedResponses > 0)
-    {
-      Serial.printf("Approximate round trip times in milli-seconds:\n");
-      Serial.printf(
-        "    Minimum = %lums, Maximum = %lums, Average = %.2fms\n",
-        response.MinResponseTime,
-        response.MaxResponseTime,
-        response.AvgResponseTime);
-    }
-    
-    // Print host data
-    Serial.printf("Destination host data:\n");
-    Serial.printf(
-      "    IP address: %s\n",
-      response.DestIPAddress.toString().c_str());
-    if(response.DestMacAddress != nullptr)
-    {
-      Serial.printf(
-        "    MAC address: " MACSTR "\n",
-        MAC2STR(response.DestMacAddress->addr));
-    }
-    if(response.DestHostname != "")
-    {
-      Serial.printf(
-        "    DNS name: %s\n",
-        response.DestHostname.c_str());
-    }
-
-    return true;
-  });
   
   
     if ( WiFi.getMode() == WIFI_STA && WiFi.status() == WL_CONNECTED ){
-        // DSPL( dPrompt + "pinging : " + WiFi.dnsIP().toString() );
-        DSPL( dPrompt + "pinging : 8.8.8.8" );
-        // if (pinger.Ping(WiFi.dnsIP()) == false){
-            // for test:
-        IPAddress ip;
-        ip.fromString( "8.8.8.8" );
-        if (pinger.Ping( ip ) == false){
-            DSPL( dPrompt + "Error during last ping command.");
+        HTTPClient http;
+
+        DSP("[HTTP] begin...\n");
+        // configure traged server and url
+        //http.begin("https://192.168.1.12/test.html", "7a 9c f4 db 40 d3 62 5a 6e 21 bc 5c cc 66 c8 3e a1 45 59 38"); //HTTPS
+        http.begin("http://www.google.fr/"); //HTTP
+
+        DSP("[HTTP] GET...\n");
+        // start connection and send HTTP header
+        int httpCode = http.GET();
+
+        // httpCode will be negative on error
+        if(httpCode > 0) {
+            // HTTP header has been send and Server response header has been handled
+            DSPL( dPrompt + "[HTTP] GET... code: " + String(httpCode) ) ;
+
+            // file found at server
+            if(httpCode == HTTP_CODE_OK) {
+                String payload = http.getString();
+                DSPL(payload);
+            }
         } else {
-            DSPL( dPrompt + "internet test target Reachable");
-        }    
-  delay(10000);        
+            DSPL(dPrompt + "[HTTP] GET... failed, error: " + http.errorToString(httpCode) );
+        }
+
+        http.end();        
     }
 
 }
@@ -653,6 +591,7 @@ void loop(){
     if (sysStatus.ntpEnabled){
         rtc.update(); //this check NTP access and update sysStatus
         // if (sysStatus.ntpErr.isErr() ) cParam.write2Json( "ntpErr", "ON" );
+        /** @todo ne pas faire une écriture à chaque fois !!!! */
     }
 /** @todo check internet connection health */  
 

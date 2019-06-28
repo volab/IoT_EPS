@@ -1,23 +1,20 @@
 general
-  hostName = PowerStrip01
-  startInAPMode = OFF
-  firstBoot = OFF
   numberOfPlugs = 4
-  rtcValidity = true
-  softAP_IP = 192.168.95.42
-  softAP_port = 80
-  dhcp_mode = ON
-  staIP = 192.168.1.42
-  staGateway = 192.168.1.254
-  macAdd = 11:22:33:44:55:66
-  softAP_macAdd = 11:22:33:44:55:66
   allLedsOnTime = -1
   ledsGlobalLuminosity = 5
   powerLedEconomyMode = OFF
-  STAmaxWifiConnectionRetry = 30
-  ntpError = OFF  
-error
-  ntpError = false
+  firstBoot = OFF
+  hostName = PowerStrip01
+  startInAPMode = OFF
+  softAP_IP = 192.168.95.42
+  softAP_port = 80
+  dhcp_mode = ON
+  staIP = 192.168.1.5
+  staGateway = 192.168.1.254
+  macAdd = 11:22:33:44:55:66
+  softAP_macAdd = 11:22:33:44:55:66
+  STAmaxWifiConnectionRetry = 30  
+  ntpError = OFF
 redPlug
   nickName = Aquarium
   emplacement = salon
