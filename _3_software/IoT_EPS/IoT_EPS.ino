@@ -39,12 +39,11 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
  
- @li PBIT/CBIT : internet health - as a fatal error
  @li configuration page (see softdev.rst)
  
- @li see hardware
+ @li see hardware.rst file
  
- @li power measurment
+ @li power plugs current measurments
  @li manage summer and winter hour change
  @li document FATAL error color (see xlsx dedicate file)
  @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
@@ -461,7 +460,8 @@ void setup(){
         //Note: The above function is disabled as long as the handleNewCred function has
         //not been updated
 		server->on("/list", HTTP_GET, handleFileList);
-		server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
+		// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
+        server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration ); 
 		server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
         server->on("/firstBoot", HTTP_POST, handleFirstBoot);
 		server->on("/edit", HTTP_GET, [](){

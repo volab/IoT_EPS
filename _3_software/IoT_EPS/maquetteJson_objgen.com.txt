@@ -1,4 +1,5 @@
 general
+  emplacement = salon
   numberOfPlugs = 4
   allLedsOnTime = -1
   ledsGlobalLuminosity = 5
@@ -17,7 +18,6 @@ general
   ntpError = OFF
 redPlug
   nickName = Aquarium
-  emplacement = salon
   State = OFF
   Pause = OFF
   Mode = Manuel
@@ -31,7 +31,6 @@ redPlug
   nextTimeToSwitch = 0
 greenPlug
   nickName = Télé
-  emplacement = cuisine
   State = OFF
   Pause = OFF
   Mode = Manuel
@@ -45,7 +44,6 @@ greenPlug
   nextTimeToSwitch = 0
 bluePlug
   nickName = jardin
-  emplacement = plaquard
   State = OFF
   Pause = OFF
   Mode = Manuel
@@ -59,7 +57,6 @@ bluePlug
   nextTimeToSwitch = 0
 yellowPlug
   nickName = liseuse
-  emplacement = chiotte
   State = OFF
   Pause = OFF
   Mode = Manuel

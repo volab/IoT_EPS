@@ -32,6 +32,7 @@ String buildMacAddName( String prefix);
 String extractParamFromHtmlReq( String allRecParam, String param );
 
 
-void handlePlugConfig();
+// void handlePlugConfig();
 void handlePlugOnOff();
+void handleIOTESPConfiguration();
 #endif

@@ -180,15 +180,16 @@ void displayTime(){
  @return no return value and no parameter
 
 Not very usefull for now. Used for test purpose
+29/06/2019 could be removed !
 */
-void handlePlugConfig(){
+// void handlePlugConfig(){
     
-    DEFDPROMPT("Plug config")
-    DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
-    DSPL( dPrompt + " plug = " + server->arg( "plug"));
-    DSPL( dPrompt + " mode = " + server->arg( "mode"));
-    server->send(200, "text/plain", "OK");
-}
+    // DEFDPROMPT("Plug config")
+    // DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
+    // DSPL( dPrompt + " plug = " + server->arg( "plug"));
+    // DSPL( dPrompt + " mode = " + server->arg( "mode"));
+    // server->send(200, "text/plain", "OK");
+// }
 
 /** 
 @fn void handlePlugOnOff()
@@ -372,8 +373,6 @@ void firstBootHtmlForm(){
         //page.replace("__APPASS__"), getAPPass() );
         server->send ( 200, "text/html", page );
     } else DSPL( dPrompt + F("form first boot not found") );
-
-    
 }
 
 /** 
@@ -511,5 +510,33 @@ String extractParamFromHtmlReq( String allRecParam, String param ){
     //DSPL( dPrompt + "fin = " +(String)fin );
     return allRecParam.substring( pos, fin );
     /** @todo remove debug informations*/
+}
+
+/** 
+ @fn void handleIOTESPConfiguration()
+ @brief function that handle configuration.html page returns
+ @return no return value and no parameter
+
+*/
+void handleIOTESPConfiguration(){
+    DEFDPROMPT("handle configuration")
+    if ( !mainPowerSwitchState ){
+        server->send(404, "text/plain", "Page not found");
+        return;
+    }
+    /////////////////////////////////////////////////////////////////////////////
+    //      DISPLAY URI                                                        //
+    /////////////////////////////////////////////////////////////////////////////
+    String uriReceived = server->uri();
+    DSPL( dPrompt + F(" Received uri = ") + uriReceived );
+    DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
+    String allArgs = F(" Received args : ") ;
+    for ( int i = 0; i < server->args() ; i++ ){
+        allArgs += server->argName( i ) + "=" + server->arg( i ) + "/";
+    }
+    DSPL( dPrompt + allArgs);
+    /////////////////////////////////////////////////////////////////////////////
+    restartTempoLed = true;
+    
 }
 
