@@ -531,40 +531,23 @@ void setup(){
 
     sysStatus.initCBITTimer();
 
-
-  
-
-  
-  
     if ( WiFi.getMode() == WIFI_STA && WiFi.status() == WL_CONNECTED ){
         HTTPClient http;
-
-        DSP("[HTTP] begin...\n");
-        // configure traged server and url
+        DSPL( dPrompt + F("[HTTP] begin...") );
+        // configure targed server and url
         //http.begin("https://192.168.1.12/test.html", "7a 9c f4 db 40 d3 62 5a 6e 21 bc 5c cc 66 c8 3e a1 45 59 38"); //HTTPS
-        http.begin("http://www.google.fr/"); //HTTP
+        http.begin( INTERNET_HEALTH_TARGET ); //HTTP
 
-        DSP("[HTTP] GET...\n");
+        DSPL( dPrompt + F("[HTTP] GET... ") + INTERNET_HEALTH_TARGET );
         // start connection and send HTTP header
         int httpCode = http.GET();
-
+        DSPL( dPrompt + "[HTTP] GET... code: " + String(httpCode) ) ;
         // httpCode will be negative on error
-        if(httpCode > 0) {
-            // HTTP header has been send and Server response header has been handled
-            DSPL( dPrompt + "[HTTP] GET... code: " + String(httpCode) ) ;
-
-            // file found at server
-            if(httpCode == HTTP_CODE_OK) {
-                String payload = http.getString();
-                DSPL(payload);
-            }
-        } else {
-            DSPL(dPrompt + "[HTTP] GET... failed, error: " + http.errorToString(httpCode) );
+        if(httpCode < 0) {
+            DSPL(dPrompt + F("[HTTP] GET... failed, error: ") + http.errorToString(httpCode) );
         }
-
         http.end();        
     }
-
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -580,6 +563,10 @@ void loop(){
     //  CBIT : Continus Built In Test                                          //
     /////////////////////////////////////////////////////////////////////////////
     //I2C
+    // 3 CBIT times defined in IoT_ESP.h:
+    //      RTC_UPDATE_PERIOD 15 //every 15mn
+    //      I2C_CBIT_TEST_PERIOD 60 * 1000 //ms it smells millis() ;-)
+    //      CBIT_TIME 60000 // period of CBIt in ms
     if ( millis() - prevMillis > I2C_CBIT_TEST_PERIOD){
         prevMillis = millis();
         int cpt = 1;
@@ -596,11 +583,13 @@ void loop(){
     // DSPL( dPrompt + (sysStatus.ntpEnabled?"yes":"no") );
     //NTP and RTC test
     if (sysStatus.ntpEnabled){
+        bool rtcPreviousErr = sysStatus.ntpErr.isErr();
         rtc.update(); //this check NTP access and update sysStatus
-        // if (sysStatus.ntpErr.isErr() ) cParam.write2Json( "ntpErr", "ON" );
-        /** @todo ne pas faire une écriture à chaque fois !!!! */
+        if ( sysStatus.ntpErr.isErr() != rtcPreviousErr ){
+            cParam.write2Json( "ntpErr", ( sysStatus.ntpErr.isErr()?"ON":"OFF") );
+        } 
     }
-/** @todo check internet connection health */  
+  
 
     if ( sysStatus.isCbitTime() ){
         //perform others CBIT
@@ -613,6 +602,20 @@ void loop(){
         }
         sysStatus.filesErr.err( !fileExist );
         
+        /** @todo check internet connection health */
+        if ( WiFi.getMode() == WIFI_STA && WiFi.status() == WL_CONNECTED ){
+            HTTPClient http;
+            DSPL(dPrompt + F("It is time to check Internet health !") );
+            http.begin( INTERNET_HEALTH_TARGET ); //HTTP
+            // start connection and send HTTP header
+            int httpCode = http.GET();
+            // httpCode will be negative on error
+            if(httpCode < 0) {
+                DSPL(dPrompt + "[HTTP] GET... failed, error: " + http.errorToString(httpCode) );
+                sysStatus.internetErr.err( true );
+            }
+            http.end();
+        }
     }
 
     /////////////////////////////////////////////////////////////////////////////

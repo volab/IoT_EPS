@@ -108,7 +108,12 @@ void CRtc::adjustH( char *c ){
 	}
 }
 
+/** 
+ @fn void CRtc::update()
+ @brief Check if it is time to check clock system versus NTP server and if it is do it
+ @return no return value and no parameter
 
+*/
 void CRtc::update(){
     DEFDPROMPT( "DS3231 update");
     if (millis() - lastMillis < (RTC_UPDATE_PERIOD * 60 * 1000 ) ) return;

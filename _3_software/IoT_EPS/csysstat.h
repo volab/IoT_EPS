@@ -47,6 +47,7 @@ class CSysStatus {
         sysError credFileErr;
         sysError filesErr;
         sysError ntpErr;
+        sysError internetErr;
         /** 
          @fn CSysStatus::CSysStatus()
          @brief CSysSattus constructor...
@@ -63,6 +64,7 @@ class CSysStatus {
             , filesErr( sysError::fatal, CRGB::OrangeRed, CRGB::Black, "Necessary files error" )
             , plugParamErr( sysError::fatal, CRGB::Red, CRGB::Snow, "Plug's file error"  )
             , ntpErr( sysError::low, "NTP error")
+            , internetErr( sysError::fatal, CRGB::RoyalBlue, CRGB::OrangeRed, "Internet access error" )
             {
             
         }
@@ -76,7 +78,7 @@ class CSysStatus {
         
         bool ntpEnabled = false; //set to true when Station mode is ok
         bool wifiErr = false;
-        sysError internetErr;
+        
         void display();
         
         void initCBITTimer();

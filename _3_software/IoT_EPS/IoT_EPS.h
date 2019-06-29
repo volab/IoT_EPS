@@ -17,6 +17,8 @@
 #define DEFAULT_LED_LUMINOSITY 15
 #define FLASH_ERROR_PERIODE 500 //ms
 
+#define INTERNET_HEALTH_TARGET "http://www.google.fr/"
+
 #define NOT_FOUND "nf" //return code for extractParam()
 
 #include <Arduino.h>
