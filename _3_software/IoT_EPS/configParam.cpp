@@ -285,22 +285,26 @@ void ConfigParam::chgWifiPass(  String value, String key ){
     //i add a general level in credentials file ;-)
 }
 
+/** 
+ @fn void ConfigParam::creatDefaultJson()
+ @brief copy defconfig.json to config4.json for repairing purpose
+ @return no return value and no parameter
+
+This special method is designed to try to repair a corrupted config4.json file.
+It could be activate by PB1 @ startup time
+*/
 void ConfigParam::creatDefaultJson(){
     DEFDPROMPT( "creat default config json" );
-    //if exist config4.json delete
-    //copy defConfig.json to config4.json
-    
+   
     if ( SPIFFS.begin() ){
         if ( SPIFFS.exists( DEFCONFIGFILENAME )){
             DSPL( dPrompt + DEFCONFIGFILENAME + F(" exist...") );
             if ( SPIFFS.exists( CONFIGFILENAME ) ){
                 DSPL( dPrompt + F("Deleting existing ") + CONFIGFILENAME );
             }
-            //SPIFFS.copy();
+            //SPIFFS.copy(); // doesn't exit !
             File src = SPIFFS.open( DEFCONFIGFILENAME , "r" );
             File dest = SPIFFS.open( CONFIGFILENAME , "w" );
-            // File dest = SPIFFS.open( "/toto.txt" , "w" );
-            
             for (int i = 0; i < src.size(); i++){
                 uint8_t c = src.read();
                 dest.write(c);
@@ -310,19 +314,6 @@ void ConfigParam::creatDefaultJson(){
             DSPL( dPrompt + "file is copied");
         }
     }
-    
-}
-
-/** 
- @fn bool ConfigParam::_fileCopy( String from, String to)
- @brief to copy a file to another
- @param from full path of the source file
- @param from full path of the destination file 
- @return true if copy was made
-
-*/
-bool ConfigParam::_fileCopy( String from, String to){
-    
     
 }
 

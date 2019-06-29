@@ -70,7 +70,7 @@ class ConfigParam{
         bool _DHCPMode;
         IPAddress _staIP;
         IPAddress _staGateway;
-        bool _fileCopy( String from, String to);
+        // bool _fileCopy( String from, String to);
         
 
 };
