@@ -537,6 +537,10 @@ void handleIOTESPConfiguration(){
     DSPL( dPrompt + allArgs);
     /////////////////////////////////////////////////////////////////////////////
     restartTempoLed = true;
-    
+
+
+    String returnPage = allArgs + "\n" ;
+    server->send(200, "text/plain", returnPage );    
+    // handleFileRead("/");     
 }
 
