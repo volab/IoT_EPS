@@ -267,7 +267,7 @@ void ConfigParam::write2Json( String param, String value, String file ){
 void ConfigParam::chgSSID(  String value, String key ){
     DEFDPROMPT( "write credentials SSID");
     // _write2CredJson( "ssid", value );  
-    write2Json( key, value, "/credentials.json" );   
+    write2Json( key, value, "/credentials.json" );  
 }
 
 /** 
@@ -285,6 +285,46 @@ void ConfigParam::chgWifiPass(  String value, String key ){
     //i add a general level in credentials file ;-)
 }
 
+void ConfigParam::creatDefaultJson(){
+    DEFDPROMPT( "creat default config json" );
+    //if exist config4.json delete
+    //copy defConfig.json to config4.json
+    
+    if ( SPIFFS.begin() ){
+        if ( SPIFFS.exists( DEFCONFIGFILENAME )){
+            DSPL( dPrompt + DEFCONFIGFILENAME + F(" exist...") );
+            if ( SPIFFS.exists( CONFIGFILENAME ) ){
+                DSPL( dPrompt + F("Deleting existing ") + CONFIGFILENAME );
+            }
+            //SPIFFS.copy();
+            File src = SPIFFS.open( DEFCONFIGFILENAME , "r" );
+            File dest = SPIFFS.open( CONFIGFILENAME , "w" );
+            // File dest = SPIFFS.open( "/toto.txt" , "w" );
+            
+            for (int i = 0; i < src.size(); i++){
+                uint8_t c = src.read();
+                dest.write(c);
+            }
+            src.close();
+            dest.close();
+            DSPL( dPrompt + "file is copied");
+        }
+    }
+    
+}
+
+/** 
+ @fn bool ConfigParam::_fileCopy( String from, String to)
+ @brief to copy a file to another
+ @param from full path of the source file
+ @param from full path of the destination file 
+ @return true if copy was made
+
+*/
+bool ConfigParam::_fileCopy( String from, String to){
+    
+    
+}
 
 //I try to merge this function and write2Json but there is one level more in the json file.
 // so i decide to keep the 2 version of the function 

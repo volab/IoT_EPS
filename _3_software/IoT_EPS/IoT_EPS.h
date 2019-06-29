@@ -46,6 +46,7 @@
 // #include <Pinger.h>
 
 #define CONFIGFILENAME "/config4.json"
+#define DEFCONFIGFILENAME "/defConfig.json"
 #include "SerialCommand.h"
 #include "debugSerialPort.h"
 #include "credential.h"
@@ -180,6 +181,7 @@ const String necessaryFileList[] ={
     , "/css/sidebar.css"
     , "/css/style.css"
     // , "/css/bootstrap.min.css"
+    // , "/defConfig.json"
 };
 
 #endif

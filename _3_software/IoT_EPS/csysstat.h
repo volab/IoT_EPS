@@ -23,6 +23,8 @@ class sysError {
         void err( bool errorState );
         bool isErr(){ return _err; }
         String getMsg(){ return _errMsg; }
+        bool _forceSystemStartOnFatalError; /**< @brief for debug purpose only, prevent system
+        to blink big led and stay in this loop indefinitly        */
         
     private:
         bool _err = false;
@@ -30,6 +32,7 @@ class sysError {
         gColor_t _displayColor1 = CRGB::Black;
         gColor_t _displayColor2 = CRGB::Black;
         String _errMsg;
+        
 };
 
 class CSysStatus {

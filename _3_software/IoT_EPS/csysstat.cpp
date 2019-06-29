@@ -27,6 +27,7 @@ sysError::sysError( errGravity_t grav,  gColor_t c1, gColor_t c2, String errMsg)
     _err = false;
     _gravity = grav;
     _errMsg = errMsg;
+    _forceSystemStartOnFatalError = false;
 }
 
 /** 
@@ -43,7 +44,7 @@ void sysError::err( bool errorState ){
     DEFDPROMPT( "System error handler")
     _err = errorState;
     if (_err) DSPL( dPrompt + _errMsg );
-    if ( _gravity == fatal && _err){
+    if ( _gravity == fatal && _err && !_forceSystemStartOnFatalError ){
         for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
         FastLED.show();
         delay(500);

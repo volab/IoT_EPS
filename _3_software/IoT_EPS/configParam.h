@@ -50,6 +50,7 @@ class ConfigParam{
         bool getDHCPMode(){ return _DHCPMode; }
         IPAddress getStaIP(){ return _staIP; }
         IPAddress getStaGatewayIP(){ return _staGateway; }
+        void creatDefaultJson();
     
     private:
         String _wifimode = "softAP" ; //default value
@@ -69,6 +70,7 @@ class ConfigParam{
         bool _DHCPMode;
         IPAddress _staIP;
         IPAddress _staGateway;
+        bool _fileCopy( String from, String to);
         
 
 };

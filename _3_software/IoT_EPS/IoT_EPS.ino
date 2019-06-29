@@ -126,7 +126,14 @@ void setup(){
     // Serial.setDebugOutput(true); //Serial debug of Wifi lib
     DSPL();
     DSPL( dPrompt + F("Sketch start..."));
-    
+    pinMode( BP1, INPUT_PULLUP );
+    //pinMode( BP3, INPUT_PULLUP );
+    if ( !(digitalRead(BP1) ) ){
+        DSPL( dPrompt + F("Special action take place..." ) );
+        // place special actions here
+        // example sysStatus._forceSystemStartOnFatalError = true;
+        cParam.creatDefaultJson();
+    }
     FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
     FastLED.setBrightness( DEFAULT_LED_LUMINOSITY ); //default value for error display
     /////////////////////////////////////////////////////////////////////////////

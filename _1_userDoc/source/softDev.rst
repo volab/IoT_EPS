@@ -261,6 +261,12 @@ should be detected.
 Solution wait for power on in ARDUINO setup function.
 Restart ESP in ARDUINO loop when power is switch to OFF.
 
+Specails push buttons behaviors @stratup
+===========================================
+PB0 : @power on (not by power switch but by wall plug) start in simple manual mode see `WIFI Modes`_
+
+PB1 : in same conditions as above, start specials action only for expert and debug mode 
+
 ============================
 Sofware development choice
 ============================
@@ -288,7 +294,7 @@ No WiFi
 ==========
 Also called simpleManualMode
 
-When power on (by the wall plug not by the power switch) the powerStrip, maintain power 1 (RED) bp...
+When power on (by the wall plug not by the power switch) the powerStrip, maintain Push button plug 1
 
 Power strip start in this mode independently of Json configured mode.
 
@@ -408,6 +414,11 @@ WEB page development
 ===========================
 
 HTML5 et css and bootstrap
+jquery, jquery ui, ajax and popper
+
+bootstrap from its CDN
+https://www.bootstrapcdn.com/
+
 
 html requests
 =====================
