@@ -1,5 +1,5 @@
 general
-  emplacement = salon
+  emplacement = undifined
   numberOfPlugs = 4
   allLedsOnTime = -1
   ledsGlobalLuminosity = 5
@@ -17,7 +17,7 @@ general
   STAmaxWifiConnectionRetry = 30  
   ntpError = OFF
 redPlug
-  nickName = Aquarium
+  nickName = redPlug
   State = OFF
   Pause = OFF
   Mode = Manuel
@@ -27,10 +27,10 @@ redPlug
   dureeOff = 
   Jours[] s = OFF,OFF,OFF,OFF,OFF,OFF,OFF
   clonedPlug =
-  onOffCount = 70
+  onOffCount = 0
   nextTimeToSwitch = 0
 greenPlug
-  nickName = Télé
+  nickName = greenPlug
   State = OFF
   Pause = OFF
   Mode = Manuel
@@ -40,10 +40,10 @@ greenPlug
   dureeOff = 
   Jours[] s = OFF,OFF,OFF,OFF,OFF,OFF,OFF
   clonedPlug =
-  onOffCount = 109
+  onOffCount = 0
   nextTimeToSwitch = 0
 bluePlug
-  nickName = jardin
+  nickName = bluePlug
   State = OFF
   Pause = OFF
   Mode = Manuel
@@ -56,7 +56,7 @@ bluePlug
   onOffCount = 18
   nextTimeToSwitch = 0
 yellowPlug
-  nickName = liseuse
+  nickName = yellowPlug
   State = OFF
   Pause = OFF
   Mode = Manuel
@@ -66,5 +66,5 @@ yellowPlug
   dureeOff = 
   Jours[] s = OFF,OFF,OFF,OFF,OFF,OFF,OFF
   clonedPlug =
-  onOffCount = 9
+  onOffCount = 0
   nextTimeToSwitch = 0

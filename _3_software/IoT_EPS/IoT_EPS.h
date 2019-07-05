@@ -126,7 +126,23 @@
 #define HTMLREQ_FRIDAY "Vendredi"
 #define HTMLREQ_SATURDAY "Samedi"
 
-
+#define HTML_EMPLACEMENT_NAME "emplacement"
+#define HTML_SOFTAPIP_NAME "softAP_IP"
+#define HTML_ALLLEDSONTIME_NAME "allLedsOnTime"
+#define HTML_LEDLUM_NAME "ledsGlobalLuminosity"
+#define HTML_POWERLEDECO_NAME "powerLedEconomyMode"
+#define HTML_SOFTAPPORT_NAME "softAP_port"
+#define HTML_STATIONIP_NAME "staIP"
+#define HTML_HOSTNAME_NAME "hostName"
+#define HTML_STAGATEWAY_NAME "staGateway"
+#define HTML_MAXRETRY_NAME "STAmaxWifiConnectionRetry"
+#define HTML_FIRSTBOOT_NAME "firstBoot"
+#define HTML_REDPLUGNICK_NAME "redPlug_nickName"
+#define HTML_GREENPLUGNICK_NAME "greenPlug_nickName"
+#define HTML_BLUEPLUGNICK_NAME "bluePlug_nickName"
+#define HTML_YELLOWPLUGNICK_NAME "yellowPlug_nickName"
+#define HTML_STARTINAP_NAME "startInAPMode"
+#define HTML_DHCPMODE_NAME "dhcp_mode"
 
 #define TIME_STRING_SEPARATOR ":"
 

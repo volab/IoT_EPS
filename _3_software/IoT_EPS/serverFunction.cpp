@@ -537,7 +537,78 @@ void handleIOTESPConfiguration(){
     DSPL( dPrompt + allArgs);
     /////////////////////////////////////////////////////////////////////////////
     restartTempoLed = true;
-
+    
+    struct configItem {
+        String name;
+        String val;
+    };
+    
+    configItem confParam[] ={
+        { HTML_EMPLACEMENT_NAME, "" },
+        { HTML_ALLLEDSONTIME_NAME, ""},
+        { HTML_LEDLUM_NAME, ""},
+        { HTML_HOSTNAME_NAME, ""},
+        { HTML_SOFTAPIP_NAME, ""},
+        { HTML_SOFTAPPORT_NAME, ""},
+        { HTML_STATIONIP_NAME, ""},
+        { HTML_STAGATEWAY_NAME, ""},
+        { HTML_MAXRETRY_NAME, ""},
+ 
+    };
+    
+    configItem plugsNickNames[] ={
+        { HTML_REDPLUGNICK_NAME, ""},
+        { HTML_GREENPLUGNICK_NAME, ""},
+        { HTML_BLUEPLUGNICK_NAME, ""},
+        { HTML_YELLOWPLUGNICK_NAME, ""},        
+    };    
+    //17 parameters
+    
+    //check box special process
+    configItem checkBoxes[] ={
+        { HTML_POWERLEDECO_NAME, ""},
+        { HTML_FIRSTBOOT_NAME, ""},
+        { HTML_STARTINAP_NAME, ""},
+        { HTML_DHCPMODE_NAME, ""},        
+    };
+    
+    //2 for loop for better debug display ;-)
+    int cpt = 0;
+    for ( configItem i : confParam )
+        confParam[cpt++].val = extractParamFromHtmlReq( allArgs, i.name );   
+    for ( configItem i : confParam ){
+        if ( i.val != "" ){
+            // DSPL( dPrompt + "Write to json for " + i.name + " value : " + i.val );
+            ConfigParam::write2Json( i.name, i.val, CONFIGFILENAME);
+        }
+    }
+    cpt=0;
+    for ( configItem i : checkBoxes){
+        i.val = extractParamFromHtmlReq( allArgs, i.name );
+        checkBoxes[cpt++].val = ( i.val == NOT_FOUND?"OFF":"ON");
+    }
+    for ( configItem i : checkBoxes){
+        // DSPL( dPrompt + "Write to json for " + i.name + " value : " + i.val);
+        ConfigParam::write2Json( i.name, i.val, CONFIGFILENAME);
+    }
+    cpt=0;
+    for ( configItem i : plugsNickNames)
+        plugsNickNames[cpt++].val = extractParamFromHtmlReq( allArgs, i.name );
+    for ( configItem i : plugsNickNames){
+        if ( i.val != "" ){
+            String color = i.name.substring(0, i.name.indexOf('_') );
+            // DSPL(dPrompt + "plug name = " + color );
+            for ( int j = 0; j < 4 ; j++ ){
+                // DSPL( dPrompt + "plugName : " + plugs[j].getPlugName() );
+                if ( plugs[j].getPlugName() == color ){
+                    // DSPL(dPrompt + "Write to json for " + color + " nickname = " + i.val );
+                    plugs[j].writeToJson( "nickname", i.val );
+                }
+            } 
+            
+        }
+       
+    }
 
     String returnPage = allArgs + "\n" ;
     server->send(200, "text/plain", returnPage );    

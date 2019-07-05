@@ -38,8 +38,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  @tableofcontents
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
- 
- @li configuration page (see softdev.rst)
+  
  @li set time html page in AP mode
  
  @li see hardware.rst file
