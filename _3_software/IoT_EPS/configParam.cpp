@@ -113,6 +113,57 @@ bool ConfigParam::readFromJson(){
 }
 
 /** 
+ @fn String ConfigParam::readFromJsonParam( String parameter, String section )
+ @brief a static function to retrieve one parameter from json
+ @param parameter the parameter to retrive
+ @param section the section from the parameter should to be retrived 
+ @return a string tha containe the parameter or empty string if not found
+
+
+*/
+String ConfigParam::readFromJsonParam( String parameter, String section ){
+    DEFDPROMPT("reading one parameter from config")
+    String paramVal = "";
+    // DSPL( dPrompt +F("Mounting FS..."));
+    if (SPIFFS.begin()) {
+        // DSPL(dPrompt + F("File system mounted "));
+        // if (SPIFFS.exists("/config.json")) {
+        if (SPIFFS.exists( CONFIGFILENAME)) {
+            //file exists, reading and loading
+            // DSPL(dPrompt + F("reading config file"));
+            File configFile = SPIFFS.open( CONFIGFILENAME, "r");
+            
+            if (configFile) {
+                // DSPL( F("\tconfig file opened ") );
+                size_t size = configFile.size();
+                // DSPL( dPrompt + "Config file size : " + (String)size ) ;
+                // Allocate a buffer to store contents of the file.
+                std::unique_ptr<char[]> buf(new char[size]);
+
+                configFile.readBytes(buf.get(), size);
+                DynamicJsonBuffer jsonBuffer;
+                JsonObject& json = jsonBuffer.parseObject(buf.get());
+                // json.printTo(DEBUGPORT);
+                if (json.success()) {
+                    DSPL( dPrompt + "Param : " + parameter + " from " + section );
+                    paramVal = json[section][parameter].as<String>();
+                } else {
+                    DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+                }
+                configFile.close();
+            }
+        } else {
+            dPrompt += F("Failed to open ");
+            dPrompt += CONFIGFILENAME;
+            DSPL(dPrompt);
+        }
+    } else { //normaly do not arrive cause there is a file system check before - 18/05/2019
+        DSPL( dPrompt + F("Failed to mount FS"));
+    }
+    return paramVal;
+}
+
+/** 
  @fn void ConfigParam::displayJson()
  @brief A function to display config json file...
  @return no return value and no parameter
@@ -259,9 +310,10 @@ void ConfigParam::write2Json( String param, String value, String file ){
 }
 
 /** 
- @fn void ConfigParam::chgSSID( String value )
+ @fn void ConfigParam::chgSSID( String value, String key  )
  @brief a short static function call in SerialCommand.cpp to change Wifi SSID
  @param value : password as a String
+ @param key : the key with a defult value see in .h file
  @return no return
 */
 void ConfigParam::chgSSID(  String value, String key ){
@@ -271,9 +323,10 @@ void ConfigParam::chgSSID(  String value, String key ){
 }
 
 /** 
- @fn void ConfigParam::chgWifiPass( String value )
+ @fn void ConfigParam::chgWifiPass( String value, String key  )
  @brief a short static function call in SerialCommand.cpp to change Wifi Pass
  @param value : password as a String
+ @param key : the key with a defult value see in .h file
  @return no return
 */
 void ConfigParam::chgWifiPass(  String value, String key ){

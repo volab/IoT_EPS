@@ -12,11 +12,12 @@
 
 
 /** 
- @fn sysError( errGravity_t grav,  gColor_t c1, gColor_t c2)
+ @fn sysError::sysError( errGravity_t grav,  gColor_t c1, gColor_t c2, String errMsg)
  @brief Third constructor
  @param grav gavity error (low med high or fatal)
- @param c1 from FastLED library
- @param c3
+ @param c1 color 1 from FastLED library
+ @param c2 color 2
+ @param errMsg Error message
 
 
 Use this constructor when gravity is fatal

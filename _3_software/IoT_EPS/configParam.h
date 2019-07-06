@@ -51,6 +51,7 @@ class ConfigParam{
         IPAddress getStaIP(){ return _staIP; }
         IPAddress getStaGatewayIP(){ return _staGateway; }
         void creatDefaultJson();
+        static String readFromJsonParam( String parameter, String section );
     
     private:
         String _wifimode = "softAP" ; //default value

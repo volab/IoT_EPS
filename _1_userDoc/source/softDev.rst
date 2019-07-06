@@ -77,6 +77,8 @@ To be added 09/05/2019
  - DHCP_mode : On or OFF                                                                    DONE
  - gateway add                                                                              DONE
 
+ To be added 9/7/2019:
+  - time zone
 
 ====================================
 Remember
@@ -149,6 +151,11 @@ not in AP mode because the embeded version of this `content delivery network (CD
 big >3Mo.
 
 Action name : cfgsend (all in lowercase)
+Action name to get json value updated page : cfgpage
+
+Set time and date parameter names
+=====================================
+setTime, setDate
 
 ====================================
 Plugs modes description

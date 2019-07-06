@@ -14,6 +14,8 @@
 // #define OFFSET_HEURE 1 //Hiver
 #define DEFAULT_PREFIX_NAME "ESP_IOT"
 #define FIRSTBOOTFORMFILENAME "/firstboot.htm"
+#define CONFIGFORMFILENAME "/config_tag.htm"
+/** @todo replace config_tag.htm by the right file name and or the right file */
 #define DEFAULT_LED_LUMINOSITY 15
 #define FLASH_ERROR_PERIODE 500 //ms
 
@@ -143,6 +145,8 @@
 #define HTML_YELLOWPLUGNICK_NAME "yellowPlug_nickName"
 #define HTML_STARTINAP_NAME "startInAPMode"
 #define HTML_DHCPMODE_NAME "dhcp_mode"
+
+#define PALCEHOLDERTAG "pH_"
 
 #define TIME_STRING_SEPARATOR ":"
 

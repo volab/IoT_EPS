@@ -175,23 +175,6 @@ void displayTime(){
 }
 
 /** 
- @fn void handlePlugConfig()
- @brief handle /PlugConfig HTTP_GET action...
- @return no return value and no parameter
-
-Not very usefull for now. Used for test purpose
-29/06/2019 could be removed !
-*/
-// void handlePlugConfig(){
-    
-    // DEFDPROMPT("Plug config")
-    // DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
-    // DSPL( dPrompt + " plug = " + server->arg( "plug"));
-    // DSPL( dPrompt + " mode = " + server->arg( "mode"));
-    // server->send(200, "text/plain", "OK");
-// }
-
-/** 
 @fn void handlePlugOnOff()
 @brief this the handler for html request...
 @return nothing and no parameter
@@ -372,7 +355,10 @@ void firstBootHtmlForm(){
         // page.replace( FBTAG_APSSID , buildMacAddName( "IoT_ESP" ) );
         //page.replace("__APPASS__"), getAPPass() );
         server->send ( 200, "text/html", page );
-    } else DSPL( dPrompt + F("form first boot not found") );
+    } else {
+        DSPL( dPrompt + F("form first boot not found") );
+        server->send(404, "text/plain", "FileNotFound");
+    }
 }
 
 /** 
@@ -476,7 +462,7 @@ void handleFirstBoot(){
 
 /** 
  @fn String buildMacAddName( String prefix)
- @brief _abriefDescription
+ @brief return a string from mac add...
  @param prefix the prefix of the wanted name example IoT_ESP
  @return a tring with the prefix followed by _MMNN
 
@@ -614,4 +600,70 @@ void handleIOTESPConfiguration(){
     server->send(200, "text/plain", returnPage );    
     // handleFileRead("/");     
 }
+
+
+/** 
+ @fn void handelIOTESPConfPage()
+ @brief /cfgpage action handler
+ @return no return value and no parameter
+ 
+Replace the place holder of the conf_tag.htm file by the config.json content
+*/
+void handelIOTESPConfPage(){
+    String confParam[] ={
+          HTML_EMPLACEMENT_NAME
+        , HTML_ALLLEDSONTIME_NAME
+        , HTML_LEDLUM_NAME
+        , HTML_HOSTNAME_NAME
+        , HTML_SOFTAPIP_NAME
+        , HTML_SOFTAPPORT_NAME
+        , HTML_STATIONIP_NAME
+        , HTML_STAGATEWAY_NAME
+        , HTML_MAXRETRY_NAME
+    };
+    String plugNames[] = {
+          HTML_JSON_REDPLUGNAME
+        , HTML_JSON_GREENPLUGNAME
+        , HTML_JSON_BLUEPLUGNAME 
+        , HTML_JSON_YELLOWPLUGNAME
+    };
+    String checkBox[] = {
+          HTML_STARTINAP_NAME
+        , HTML_DHCPMODE_NAME
+        , HTML_FIRSTBOOT_NAME
+        , HTML_POWERLEDECO_NAME     
+    };
+    String phParamTag;
+    String param;
+    DEFDPROMPT("Handle config html form");
+    DSPL( dPrompt );
+    String page;
+    File confFormFile = SPIFFS.open(CONFIGFORMFILENAME, "r");
+    if (confFormFile){
+        page = confFormFile.readString();
+        for (String p : confParam ){
+            phParamTag = PALCEHOLDERTAG+p;
+            param = ConfigParam::readFromJsonParam( p, "general");
+            page.replace( phParamTag , param );          
+        }
+        for (String p : plugNames ){
+            phParamTag = PALCEHOLDERTAG+p;
+            param = ConfigParam::readFromJsonParam( "nickName", p );
+            page.replace( phParamTag , param );          
+        }
+        for (String p : checkBox ){
+            phParamTag = PALCEHOLDERTAG+p;
+            param = ConfigParam::readFromJsonParam( p, "general" );
+            DSPL( dPrompt + "p = " + param );
+            param = (param == "ON"?"checked":"");
+            page.replace( phParamTag , param );          
+        }        
+        server->send ( 200, "text/html", page );
+    } else{
+        DSPL( dPrompt + F("form first boot not found") );
+        server->send(404, "text/plain", "FileNotFound");
+    } 
+}    
+
+
 

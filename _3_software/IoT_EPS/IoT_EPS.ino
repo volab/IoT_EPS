@@ -15,7 +15,7 @@
  - Utilisation de la bibliothèque ArduinoJson version 5.13.2 
  - Utilisation de la bibliothèque Wire version 1.0
  - Utilisation de la bibliothèque RTClib version 1.2.0
- - Utilisation de la bibliothèque ESP8266mDNS prise dans le dossier \2.4.1\libraries\ESP8266mDNS (legacy)
+ - Utilisation de la bibliothèque ESP8266mDNS prise dans le dossier \2.4.1\\libraries\\ESP8266mDNS (legacy)
  - Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library
  - Utilisation de la bibliothèque FastLED version 3.2.1
  - Utilisation de la bibliothèque nanoI2CIOExpLib version 3.1
@@ -31,6 +31,8 @@ In Access point mode default add is 192.168.95.42. Ssid and pass are those store
 
 In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI LED fash shortly in 2s period.
 
+
+ @bug delete file with space
 */
 
 /**
@@ -45,6 +47,8 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  
  @li power plugs current measurments
  @li manage summer and winter hour change
+ @li if i say to you utf-8 ?!
+
  @li document FATAL error color (see xlsx dedicate file)
  @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
  impossible this is the navigator to ask for a page and html refresh param is not a good idea !
@@ -461,7 +465,8 @@ void setup(){
         //not been updated
 		server->on("/list", HTTP_GET, handleFileList);
 		// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
-        server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration ); 
+        server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
+        server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
 		server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
         server->on("/firstBoot", HTTP_POST, handleFirstBoot);
 		server->on("/edit", HTTP_GET, [](){
