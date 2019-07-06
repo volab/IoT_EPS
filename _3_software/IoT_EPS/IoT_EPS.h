@@ -22,6 +22,7 @@
 #define INTERNET_HEALTH_TARGET "http://www.google.fr/"
 
 #define NOT_FOUND "nf" //return code for extractParam()
+#define HTML_ALLARGS_SEPARATOR "|"
 
 #include <Arduino.h>
 #include <FS.h> //this needs to be first, or it all crashes and burns...

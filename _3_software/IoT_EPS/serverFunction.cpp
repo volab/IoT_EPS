@@ -209,7 +209,7 @@ void handlePlugOnOff(){
     DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
     String allArgs = F(" Received args : ") ;
     for ( int i = 0; i < server->args() ; i++ ){
-        allArgs += server->argName( i ) + "=" + server->arg( i ) + "/";
+        allArgs += server->argName( i ) + "=" + server->arg( i ) + HTML_ALLARGS_SEPARATOR;
     }
     DSPL( dPrompt + allArgs);
     /////////////////////////////////////////////////////////////////////////////
@@ -294,7 +294,7 @@ void handleNewCred(){
         DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
     String allArgs = F(" Received args : ") ;
     for ( int i = 0; i < server->args() ; i++ ){
-        allArgs += server->argName( i ) + "=" + server->arg( i ) + "/";
+        allArgs += server->argName( i ) + "=" + server->arg( i ) + HTML_ALLARGS_SEPARATOR;
     }
     DSPL( dPrompt + allArgs);
     String ssid = server->arg( 0 );
@@ -391,7 +391,7 @@ void handleFirstBoot(){
     
     String allArgs = F(" Received args : ") ;
     for ( int i = 0; i < server->args() ; i++ ){
-        allArgs += server->argName( i ) + "=" + server->arg( i ) + "/";
+        allArgs += server->argName( i ) + "=" + server->arg( i ) + HTML_ALLARGS_SEPARATOR;
     }
     DSPL( dPrompt + allArgs );
     String mode = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_MODE );
@@ -492,7 +492,7 @@ String extractParamFromHtmlReq( String allRecParam, String param ){
     //DSPL( dPrompt + "Pos brut = " + (String)pos);
     if ( pos == -1 ) return RETURN_NOT_FOUND_VALUE;
     pos += param.length();
-    int fin = allRecParam.indexOf( "/", pos );
+    int fin = allRecParam.indexOf( HTML_ALLARGS_SEPARATOR, pos );
     //DSPL( dPrompt + "fin = " +(String)fin );
     return allRecParam.substring( pos, fin );
     /** @todo remove debug informations*/
@@ -518,7 +518,7 @@ void handleIOTESPConfiguration(){
     DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
     String allArgs = F(" Received args : ") ;
     for ( int i = 0; i < server->args() ; i++ ){
-        allArgs += server->argName( i ) + "=" + server->arg( i ) + "/";
+        allArgs += server->argName( i ) + "=" + server->arg( i ) + HTML_ALLARGS_SEPARATOR ;
     }
     DSPL( dPrompt + allArgs);
     /////////////////////////////////////////////////////////////////////////////
@@ -595,6 +595,22 @@ void handleIOTESPConfiguration(){
         }
        
     }
+    String date =  extractParamFromHtmlReq( allArgs, "setDate" );
+    String time = extractParamFromHtmlReq( allArgs, "setTime" );
+    DSPL( dPrompt + date +" " + time );
+    if ( date != "" || time != "" ){
+        DateTime now =  RTC_DS3231::now();
+        if ( time == "" ) time = String( now.hour() ) + ":" + String( now.minute() ) 
+                    + ":" + String( now.second() );
+        if ( date == "" ) date = String( now.day() ) + "/" + String( now.month() )
+                    + "/" + String( now.year() );        
+        date = date + " " + time;
+        DSPL( dPrompt + " date/time to set : " + date );
+        char * cstr = new char [date.length()+1];
+        strcpy (cstr, date.c_str());
+        CRtc::adjust( cstr );
+    }
+
 
     String returnPage = allArgs + "\n" ;
     server->send(200, "text/plain", returnPage );    
