@@ -229,6 +229,55 @@ input[type="password"] {
     max-width: 282px;
 }
 
+/* Config */
+
+hr.config{
+    max-width: 70%;
+    margin: 1rem auto;
+}
+.config.form-row {
+    display: block;
+}
+
+.config.configForm{
+    margin-top: 1rem;
+    margin-left: 7rem;
+    overflow: auto;
+}
+
+hr.etoile{
+    display: block;
+	clear: both;
+	height: 0;
+    /* margin: 40px 0 80px; */
+    /* margin-top: 0; */
+    margin: 0.25rem 0.25rem 1.5rem 0.25rem !important;
+	padding: 0;
+	border: 0;
+	font-family: arial;
+	text-align: center;
+	/* font-size: 60px; */
+    line-height: 1;
+    max-width: 70%;
+}
+
+hr.etoile:after{
+    content: "\273D \273D \273D";
+	height: 0;			
+	/* letter-spacing: 1em; */
+	color: #aaa;
+}
+
+.config.chkbx{
+    display: flex;
+    align-items: center;
+}
+
+span.config.chkbx{
+    margin-left: 0.5rem;
+}
+
+
 
 /* Sucharge composant Bootstrap */
 .custom-control-input:checked ~ .custom-control-label::before {

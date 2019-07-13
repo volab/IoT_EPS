@@ -30,6 +30,239 @@
         
     </header>
 
+    <main >
+      <div class="row">
+        <div class="col-3">
+          <!-- Navbar latérale -->
+          <nav id="navbar-example" class="navbar navbar-light">
+              <nav class="nav flex-column">
+                <a class="nav-link" href="#Summary">Résumé</a>
+                <a class="nav-link" href="#emplacement">Emplacement de l'appareil</a>
+                <a class="nav-link" href="#LEDcustomisation">Configuration des LEDs</a>
+                <!-- <nav class="nav flex-column">
+                  <a class="nav-link ml-3 my-1" href="#allLedsOnTime">Durée de fonctionnement des LEDs</a>
+                  <a class="nav-link ml-3 my-1" href="#ledsGlobalLuminosity">Luminosité des LEDs</a>
+                  <a class="nav-link ml-3 my-1" href="#powerLedEconomyMode">Mode économie d'énergie sur la LED d'alimentation</a>
+                </nav> -->
+                <a class="nav-link" href="#network">Configuration du réseau</a>
+                <!-- <nav class="nav flex-column">
+                  <a class="nav-link ml-3 my-1" href="#hostName">Nom de l'hôte</a>
+                  <a class="nav-link ml-3 my-1" href="#start_AP">Démarrage en mode Point d'accès</a>
+                  <nav class="nav flex-column">
+                    <a class="nav-link ml-5 my-1" href="#softAP_IP">IP du mode AP</a>
+                    <a class="nav-link ml-5 my-1" href="#softAP_port">Numéro de port pour le mode AP</a>
+                  </nav>
+                    <a class="nav-link ml-3 my-1" href="#item-3-2">Item 3-2</a>
+                  </nav> -->
+                <a class="nav-link" href="#clockConfiguration">Configuration de l'horloge</a>
+                <a class="nav-link" href="#plugCustomisation">Personalisation des prises</a>
+                <!-- <nav class="nav flex-column">
+                  <a class="nav-link ml-3 my-1" href="#red_nickName">Nom de la prise rouge</a>
+                  <a class="nav-link ml-3 my-1" href="#green_nickName">Nom de la prise verte</a>
+                  <a class="nav-link ml-3 my-1" href="#blue_nickName">Nom de la prise bleue</a>
+                  <a class="nav-link ml-3 my-1" href="#yellow_nickName">Nom de la prise jaune</a>
+                </nav> -->
+                <a class="nav-link" href="#defaultCfg">Reset usine</a>
+              </nav>
+          </nav>
+        </div>
+
+        <div class="col-9">
+          <!-- Corp de la page -->
+          <div data-spy="scroll" data-target="#navbar-example" data-offset="0">
+              <!-- Summary -->
+              <div class="home center_div">
+                <h4 id="#Summary">Résumé de la configuration</h4>
+                <table class="table">
+                    <!-- <thead class="table-dark">
+                        <th scope="col">Prise</th>
+                        <th scope="col">Etat</th>
+                        <th scope="col">Mode</th>
+                        <th scope="col">Détail</th>
+                        <th scope="col">Prochain changement</th>
+                    </thead> -->
+                    <tbody class="cfg tBody">
+                    </tbody>
+
+                  </table>
+              </div> <!-- End Summary -->
+              <hr class="config">
+
+              <!-- Début form -->
+              <form action="/cfgsend" method="post">
+                  <!-- HIDEN -->
+                  <input type="hidden" class="hidden" name="config" value="configForm">
+
+                  <!-- emplacement -->
+                  <div class="config form-row">
+                        <h4 class="col" id="#emplacement">Emplacement de l'appareil</h4>
+                    <div class="config configForm col">
+                      <ul>
+                          <label>
+                              <li>
+                                <span>Définir l'emplacement de la prise :
+                                (Pas d'accent et pas d'espace)</span><br/>
+                                
+                              </li>
+                              <input 
+                                  type="text" 
+                                  name="emplacement" 
+                                  placeholder="pH_emplacement"
+                                  maxlength="50"
+                                  class=""/>
+                          </label>
+                      </ul>
+                    </div>
+                  </div>
+                  <hr class="config">
+
+                  <!-- LEDcustomisation -->
+                  <div class="config form-row">
+                      <h4 class="col" id="#LEDcustomisation">Configuration des LEDs</h4>
+                    <div class="config configForm col">
+                      <ul>
+                        <label>
+                          <li>
+                            <span>Délais avant exctinction des LEDs :<br/>
+                              ("-1 = Toujours Alumées ; "0" = Toujours éteintes; "[de 1 à 30]" = Délais en 
+                              seconde avant etinction des LED)
+                            </span><br/>
+                          </li>
+                            <input 
+                                type="text" 
+                                name="allLedsOnTime" 
+                                placeholder="pH_allLedsOnTime"
+                                class=""/>
+                        </label>
+
+                        <hr class="etoile">
+
+                        <label>
+                          <li>
+                            <span>Réglages de l'intensité lumineuse des LEDs : (de 0 à 255)
+                            </span><br/>
+                          </li>
+                            <input 
+                                type="text" 
+                                name="ledsGlobalLuminosity" 
+                                placeholder="pH_ledsGlobalLuminosity"
+                                class=""/>
+                        </label>
+
+                        <hr class="etoile">
+
+                        <label class="config configLED chkbx">
+                          <li>
+                            <input 
+                                type="checkbox" 
+                                name="powerLedEconomyMode" 
+                                class="config chkbx"
+                                pH_powerLedEconomyMode/>
+                          </li>
+                            <span class="config configLED chkbx">Alumer ou eteindre le témoin de mise sous tension</span>
+                        </label>
+                      </ul>
+                    </div>
+                  </div>
+                  <hr class="config">
+
+                  <!-- network -->
+                  <div class="config form-row">
+                    <h4 class="col" id="#network">Configuration du réseau</h4>
+                    <div class="config configForm col">
+                      <ul>
+                          <label>
+                              <li>
+                                <span>Définir le nom de l'appareil :
+                                (Pas d'accent et pas d'espace)</span><br/>
+                              </li>
+                              <input 
+                                  type="text" 
+                                  name="hostName" 
+                                  placeholder="pH_hostname"
+                                  maxlength="50"
+                                  class=""/>
+                          </label>
+
+                          <hr class="etoile">
+
+                          <label class="config chkbx">
+                            <li>
+                              <input 
+                                  type="checkbox" 
+                                  name="dhcp_mode" 
+                                  class="config chkbx"
+                                  pH_dhcp_mode/>
+                            </li>
+                              <span class="config chkbx">Utiliser le mode DHCP</span>
+                          </label>
+                          
+                          <hr class="etoile">
+
+                          <label>
+                              <li>
+                                <span>Définir l'adresse IP de l'appareil : 
+                                  (Attention, le mask de sous réseau est obligatoirement : 255.255.255.0)
+                                </span><br/>
+                              </li>
+                              <input 
+                                  type="text" 
+                                  name="staIP" 
+                                  placeholder="pH_staIP"
+                                  pattern="^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+                                  class=""/>
+                          </label>
+                          
+                          <hr class="etoile">
+
+                          <label>
+                              <li>
+                                <span>Définir la passerelle IP de l'appareil :</span><br/>
+                              </li>
+                              <input 
+                                  type="text" 
+                                  name="staGateway" 
+                                  placeholder="pH_staGateway"
+                                  pattern="^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+                                  class=""/>
+                          </label>
+                      </ul>
+                    </div>
+                  </div>
+                  <hr class="config">
+
+
+                  <!-- Submit /reset -->
+                  <div class="submitReset">
+                    <input 
+                        type="submit"
+                        class="btn btn-outline-success"/>
+                    <input
+                        type="reset"
+                        class="btn btn-outline-dark" /> 
+                  </div>
+              
+              </form> <!-- End Form -->
+
+              <!-- clockConfiguration -->
+              <div>
+                <h4 id="#clockConfiguration">Configuration de l'horloge</h4>
+              </div>
+              <!-- plugCustomisation -->
+              <div>
+                <h4 id="#plugCustomisation">Personalisation des prises</h4>
+              </div>
+              <!-- defaultCfg -->
+              <div>
+                <h4 id="#defaultCfg">Reset usine</h4>
+              </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Bootstrap JS -->
     <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>

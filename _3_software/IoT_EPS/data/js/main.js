@@ -1,4 +1,6 @@
 $(document).ready( ()=>{
+
+
     // start .ready()
 
     // const log                   = new C_MyLog();
@@ -480,7 +482,10 @@ $(document).ready( ()=>{
  *    - Le mot clef de l'action Interface / serveur : "cfgsend"
  *    - Emplacemet des prises
  *    - Les informations de config4.json sont à traiter.
+ *      N.B :   ne pas renseigner les valeurs par défaut dans le placeholder de chaque Item car cette 
+ *              valeur st remplacer depuis le serveur par le véritable paramètre renseigner dans le JSON
  *      "general": {
+ *          "emplacement": "salon",             --> Défini l'emplacement de la prise (50 char, pas d'accent et pas *                                                  d'espace)
  *          "hostName": "PowerStrip01",         --> Nom de l'EPS
  *          "startInAPMode": "OFF",             --> Pour choisir de démarrer en mode AP en mode réseau
  *                                                  (attaché à un accès wifi)
@@ -498,7 +503,6 @@ $(document).ready( ()=>{
  * 
  *      "redPlug": {
  *          "nickName": "Aquarium",             --> Correspond au nom de l'équipement branché
- *          "emplacement": "salon",             --> Défini l'emplacement de la prise 
  * 
  *      - Les informations de credential.json sont à traiter
  *        "general": {
