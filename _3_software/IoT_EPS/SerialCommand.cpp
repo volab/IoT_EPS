@@ -123,7 +123,6 @@ int eightState;
 String str = "";
 Dir dir;	
 FSInfo filseSystemInfo;
- /** @todo perhaps instanciate other commands to check hardware */
  //ABGKMQUVXYZ
  //bfgkmnqruvxy 
     switch(com[0]){
@@ -296,7 +295,7 @@ FSInfo filseSystemInfo;
         case 'w' : //for WiFi.diagFunction     
             WiFi.printDiag(Serial);
             break;
-/** @todo remove display credential command */            
+/** @todo [NECESSARY] remove display credential command - to be documented for users */            
         case 'z' : //credential.json     
             ConfigParam::displayJson( "/credentials.json");
             break;               

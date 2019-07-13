@@ -14,6 +14,7 @@
 #include "IoT_EPS.h"
 
 extern RTC_DS3231 rtc;
+extern ConfigParam cParam;
 
 //==================================================================================================
 // FSBrowser samples functions integration 
@@ -237,9 +238,13 @@ void handlePlugOnOff(){
         returnVal = "OK";
     }
    
-    String returnPage = allArgs + "\n" + returnVal ;
-    // server->send(200, "text/plain", returnPage );    
-    handleFileRead("/");    
+    // String returnPage = allArgs + "\n" + returnVal ;
+    // server->send(200, "text/plain", returnPage ); 
+    if ( cParam.getWifiMode() == "softAP" )
+        handleSoftAPIndex();
+    else
+        handleFileRead("/");
+    /** DONE see above 13/07/2019 in APmode this return to Station page */
 }
 
 
@@ -250,8 +255,9 @@ void handlePlugOnOff(){
 
 */
 void handleSoftAPIndex(){
+    /*
     String page;
-
+// send the page file directly - see handelFileRead function
     page = "<html><head>";
     // page += "<meta http-equiv='refresh' content='5'/>";
     page += "<title>IoT EPS softAP index page</title>";
@@ -273,8 +279,11 @@ void handleSoftAPIndex(){
     page += "</p></form>";
     page += "</body></html>";
     server->send ( 200, "text/html", page );
-    /** @todo add a link to the page to drive power strip without internet connection */
-    /** @todo add a page to set the DS3231 time without NTP server of course */
+    */
+    handleFileRead( APMODEINDEXPAGENAME );
+    /** DONE add a link to the page to drive power strip without internet connection */
+    /** DONE see config .html page 
+    add a page to set the DS3231 time without NTP server of course */
 }
 
 /** 
@@ -286,7 +295,7 @@ void handleSoftAPIndex(){
  
 */
 void handleNewCred(){
-    //usage /ChangeCred?SSID=xxxx/pass="yyyy" or connect to Stripplug in softAP mode to change
+    //usage /ChangeCred?ssid=xxxx/pass="yyyy" or connect to EPS in softAP mode to change
     // credential.
     DEFDPROMPT( F("handel New Cred") );
     String uriReceived = server->uri();
@@ -297,39 +306,68 @@ void handleNewCred(){
         allArgs += server->argName( i ) + "=" + server->arg( i ) + HTML_ALLARGS_SEPARATOR;
     }
     DSPL( dPrompt + allArgs);
-    String ssid = server->arg( 0 );
-    String pass = server->arg( 1 );
-    DSPL( dPrompt + F("SSID = ") + ssid );
-    DSPL( dPrompt + F("pass = ") + pass );
-    //creat file : credentials.json
-    //ArduinoJson lib with pdf serialization documentation
-    /*
-    {
-    "ssid" : "VoLab",
-    "pass" : "V0L@b42net"
+    String ssid = extractParamFromHtmlReq( allArgs, JSON_SSID_NAME );
+    String pass = extractParamFromHtmlReq( allArgs, JSON_PPASS_NAME );
+    String softAPssid =  extractParamFromHtmlReq( allArgs, JSON_APSSID_NAME );
+    String sofATPpass =  extractParamFromHtmlReq( allArgs, JSON_APPASS_NAME );
+    DSPL( dPrompt + F("new SSID = ") + ssid );
+    DSPL( dPrompt + F("new pass = ") + pass );
+    DSPL( dPrompt + F("Soft AP new ssid = ") + softAPssid );
+    DSPL( dPrompt + F("Soft AP new pass = ") + sofATPpass );
+
+    /** DONE - 13/07/2019 change this function to adapt to new credentials file */
+    //this page is necessary to enter new credential in AP mode
+    // const int capacity = JSON_OBJECT_SIZE(4);
+    // StaticJsonBuffer<capacity> jb;
+    // JsonObject& obj = jb.createObject();
+    // obj["ssid"] = ssid;
+    // obj["pass"] = pass;
+    // // jb.prettyPrintTo(configFile);
+    // obj.prettyPrintTo(Serial);DSPL("");
+    // File credFile = SPIFFS.open( "/credentials.json" , "w");
+    // if (credFile){
+        // DSPL( dPrompt + F("File /credentials.json open for write") );
+        // obj.prettyPrintTo(credFile);
+    // } else {
+        // DSPL( dPrompt + F("File /credentials.json open for write fail !") );
+    // }
+    // credFile.close();
+    // String returnPage = allArgs ;
+    File creFile = SPIFFS.open( CREDENTIALFILENAME , "r");
+    // DSPL( dPrompt + file);
+    if (creFile) {
+        size_t size = creFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+        creFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+            JsonObject& general = json["general"]; // main level
+            // DSPL( dPrompt + " general : " + param + " = " + value);
+            if ( ssid != "" ) general[JSON_SSID_NAME] = ssid; 
+            if ( pass != "" ) general[ JSON_PPASS_NAME ] = pass ;
+            if ( softAPssid != "" ) general[ JSON_APSSID_NAME ] = softAPssid ;
+            if ( sofATPpass != "" ) general[ JSON_APPASS_NAME ] = sofATPpass ;
+            creFile.close();
+            creFile = SPIFFS.open( CREDENTIALFILENAME , "w");
+            json.printTo(creFile);
+            DSPL( dPrompt + F("new credentials written") );
+        } else {
+            DSPL( dPrompt + F("Failed to load json credentials file") );
+            sysStatus.fsErr.err( true );
+        }
+        creFile.close();
     }
-    */
-    /** @todo changenge this function to adapt to new credentials file */
-    const int capacity = JSON_OBJECT_SIZE(4);
-    StaticJsonBuffer<capacity> jb;
-    JsonObject& obj = jb.createObject();
-    obj["ssid"] = ssid;
-    obj["pass"] = pass;
-    // jb.prettyPrintTo(configFile);
-    obj.prettyPrintTo(Serial);DSPL("");
-    File credFile = SPIFFS.open( "/credentials.json" , "w");
-    if (credFile){
-        DSPL( dPrompt + F("File /credentials.json open for write") );
-        obj.prettyPrintTo(credFile);
-    } else {
-        DSPL( dPrompt + F("File /credentials.json open for write fail !") );
-    }
-    credFile.close();
-    String returnPage = allArgs ;
-    server->send(200, "text/plain", returnPage );     
+    if ( cParam.getWifiMode() == "softAP" )
+        handleSoftAPIndex();
+    else
+        handleFileRead("/");
+    /** @todo [NECESSARY] Perhaps send an html page to confir that credentials was written */
+    // server->send(200, "text/plain", returnPage );     
 }
 
-extern ConfigParam cParam;
+
 /** 
  @fn void firstBootHtmlForm()
  @brief Special firsboot page handler...
@@ -338,7 +376,7 @@ extern ConfigParam cParam;
  Firstboot special page provide a way to the user to set SSID and pass for AP or Station mode.
 */
 void firstBootHtmlForm(){
-    /** @todo if (firstBoot == tryStattion ){ add warnig to the page} */ 
+    /** DONE here 13/07/2019 if (firstBoot == tryStattion ){ add warnig to the page} */ 
     DEFDPROMPT("Handle First boot html form");
     DSPL( dPrompt );
     String page;
@@ -374,7 +412,6 @@ void handleFirstBoot(){
     // check parameters
     // if (mode == Station)  set firstBoot to tryStation and restart ESP
     // if (mode == AP) set firstBoot to OFF
-    /** @todo check AP password length more than 8c and less than 63*/
     DEFDPROMPT( "handle First Boot "); 
     //piece of code generate by
     //https://arduinojson.org/v5/assistant/
@@ -402,27 +439,18 @@ void handleFirstBoot(){
     //**********************************************************************************************
         String apSsid = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_APSSID );
         String apPass = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_APPASS );
-        // This erro is handle in the html fom
-        // if ( apPass.length() < 8 || apPass.length() >63
-              // || apSsid.length() == 0 || apSsid.length() > 31){
-                  // /** @todo improme error response from APmode error */
-                // String returnPage = F("Longueur SSID et/ou pass incorrecte, plug reset");
-                // server->send(200, "text/plain", returnPage );
-                // ESP.reset();
-        // }
-        //write to credentials
         DSPL( dPrompt + F("credentials.json file creation.") );
         
         //creat credential.json
         general["softApSsid"] = apSsid;
         general["softApPass"] = apPass;
         root.prettyPrintTo(DEBUGPORT);DSPL("");
-        File credFile = SPIFFS.open( "/credentials.json" , "w");
+        File credFile = SPIFFS.open( CREDENTIALFILENAME , "w");
         if (credFile){
-            DSPL( dPrompt + F("File /credentials.json open for write") );
+            DSPL( dPrompt + F("File ") + CREDENTIALFILENAME + F(" open for write") );
             root.prettyPrintTo(credFile);
         } else {
-            DSPL( dPrompt + F("File /credentials.json open for write fail !") );
+            DSPL( dPrompt + F("File") + CREDENTIALFILENAME + F(" for write fail !") );
         }
         credFile.close();
         //write to config.json
@@ -438,7 +466,7 @@ void handleFirstBoot(){
         String stationSsid = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_STASSID );
         String stationPass = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_STAPASS );
         if ( stationSsid.length() == 0 ){
-            /** @todo manage error */
+            /** Removed manage error about ssid in first boot - normaly done in HTML form*/
         }
         general["ssid"] = stationSsid;
         general["pass"] = stationPass;
@@ -495,7 +523,6 @@ String extractParamFromHtmlReq( String allRecParam, String param ){
     int fin = allRecParam.indexOf( HTML_ALLARGS_SEPARATOR, pos );
     //DSPL( dPrompt + "fin = " +(String)fin );
     return allRecParam.substring( pos, fin );
-    /** @todo remove debug informations*/
 }
 
 /** 
@@ -612,8 +639,12 @@ void handleIOTESPConfiguration(){
     }
 
 
-    String returnPage = allArgs + "\n" ;
-    server->send(200, "text/plain", returnPage );    
+    // String returnPage = allArgs + "\n" ;
+    // server->send(200, "text/plain", returnPage );    
+    if ( cParam.getWifiMode() == "softAP" )
+        handleSoftAPIndex();
+    else
+        handleFileRead("/");
     // handleFileRead("/");     
 }
 
@@ -673,10 +704,11 @@ void handelIOTESPConfPage(){
             DSPL( dPrompt + "p = " + param );
             param = (param == "ON"?"checked":"");
             page.replace( phParamTag , param );          
-        }        
+        }
+        
         server->send ( 200, "text/html", page );
     } else{
-        DSPL( dPrompt + F("form first boot not found") );
+        DSPL( dPrompt + F("form configuration not found") );
         server->send(404, "text/plain", "FileNotFound");
     } 
 }    

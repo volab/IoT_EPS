@@ -20,7 +20,7 @@
 */
 void CSwitchNano::begin( int pin, unsigned long samplePeriod, int mode ){
     _pin = pin;
-    /** @todo test if mode == INPUT_PULLUP or INPUT only not output */
+    /** @todo [OPTION] test if mode == INPUT_PULLUP or INPUT only not output */
     _mode = mode;
     pinMode( pin, _mode );
     _samplePeriod = samplePeriod;

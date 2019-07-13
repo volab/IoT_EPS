@@ -326,7 +326,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     // do not change if all is not valid
     // _mode = modeId( mode );
     // writeToJson( param, mode );
-    /** @todo test all case invalid parameter entered */
+    /** DONE in the html navigator by javascript test all case invalid parameter entered */
     if ( mode == MANUAL_MODE){
         /////////////////////////////////////////////////////////////////////////////
         //    Compute MANUAL MODE                                                  //
@@ -423,12 +423,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
             writeToJson( JSON_PARAMNAME_MODE, mode );            
         } else { //onDuration not valid
             DSPL( dPrompt + "TIMER mode : an invalid parameter was entered, no change made");
-            // writeToJson( JSON_PARAMNAME_ONDURATION, "" );
-            //risk : corrupted parameters for prev mode
-            // writeToJson( JSON_PARAMNAME_MODE, prevMode );
-            // writeToJson( JSON_PARAMNAME_MODE, MANUAL_MODE );
-            // writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
-            // off();
+
         }        
            
     } else if ( mode == CYCLIC_MODE ){
@@ -483,14 +478,6 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
             writeToJson( JSON_PARAMNAME_MODE, mode );            
         } else { //onDuration and/or offDuration not valid
             DSPL( dPrompt + "CYCLIC mode : an invalid parameter was found, no change made");
-            // writeToJson( JSON_PARAMNAME_ONDURATION, "" ); 
-            // writeToJson( JSON_PARAMNAME_OFFDURATION, "" ); 
-            // writeToJson( JSON_PARAMNAME_STARTTIME, "" );
-            //risk : corrupted parameters for prev mode
-            // writeToJson( JSON_PARAMNAME_MODE, prevMode ); 
-            // writeToJson( JSON_PARAMNAME_MODE, MANUAL_MODE );
-            // writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
-            // off();
         } 
     } else if ( mode == HEBDO_MODE ){
         DSPL( dPrompt + F("Hebdo mode actions") );
@@ -609,8 +596,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         }        
         writeDaysToJson();
         writeToJson(  JSON_PARAMNAME_CLONEDPLUG, clonedPlugName );
-    }
-/** @todo complete this function !*/ 
+    } 
 }
 /** 
 @fn String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param )
@@ -671,8 +657,7 @@ void CPowerPlug::writeToJson( String param, String value ){
             // return false;
         }
         configFile.close();
-        // return true;  
-/** @todo perhaps add error handling as in readFromJson()*/        
+        // return true;        
     }    
 }
 
@@ -718,8 +703,7 @@ void CPowerPlug::writeDaysToJson(){
             // return false;
         }
         configFile.close();
-        // return true;  
-/** @todo perhaps add error handling as in readFromJson()*/        
+        // return true;         
     }    
 }
 
@@ -854,18 +838,7 @@ void CPowerPlug::handleBpLongClic(){
     mode = MANUAL_MODE;
     _mode = modeId( mode );
     _daysOnWeek = 0;    
-    /** @todo write a special method to change all aprameter in the json file in one operation
-writeToJson open the file, read the entire file, change one parm, rewrite the file and close it !*/
-
-    // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
-    // writeToJson( JSON_PARAMNAME_ENDTIME, "" );
-    // writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
-    // writeToJson( JSON_PARAMNAME_ONDURATION, "" );
-    // writeToJson( JSON_PARAMNAME_STARTTIME, "" );
-    // writeToJson( JSON_PARAMNAME_CLONEDPLUG, "" );
-    // writeToJson( JSON_PARAMNAME_MODE, mode );
-    // writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
-    
+   
     File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     if (configFile) {
         size_t size = configFile.size();
@@ -901,8 +874,7 @@ writeToJson open the file, read the entire file, change one parm, rewrite the fi
             // return false;
         }
         configFile.close();
-        // return true;  
-/** @todo perhaps add error handling as in readFromJson()*/        
+        // return true;         
     }    
     // writeDaysToJson(); 
     bp.acquit();    
@@ -919,7 +891,6 @@ writeToJson open the file, read the entire file, change one parm, rewrite the fi
  4 time in hebdo mode
  Flash on or flash off regarless of _state attribute
 */
-/** @todo rename handleBpDoubleClic in handelBPclicAndSpecialBP */
 void CPowerPlug::handleBpDoubleClic(){
 
     DEFDPROMPT( "handleBpDoubleClic");

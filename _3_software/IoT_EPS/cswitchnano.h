@@ -23,7 +23,8 @@ class CSwitchNano : public CNanoI2CIOExpander{
         void update();
         void begin( int pin, unsigned long samplePeriod, int mode );
         int getState(){ return _state; }
-        /** @todo add rise() and fall() method if needed */
+        /** @todo [OPTION] add rise() and fall() method if needed. See for integration
+        in CNanoI2CIOExpander*/
         int digitalRead(){ return CNanoI2CIOExpander::digitalRead( _pin ); }
     private:
         int _pin;

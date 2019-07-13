@@ -15,7 +15,8 @@
 #define DEFAULT_PREFIX_NAME "ESP_IOT"
 #define FIRSTBOOTFORMFILENAME "/firstboot.htm"
 #define CONFIGFORMFILENAME "/config_tag.htm"
-/** @todo replace config_tag.htm by the right file name and or the right file */
+#define APMODEINDEXPAGENAME "/apmodeindex.htm"
+/** @todo [NECESSARY] (integration) replace config_tag.htm by the right file name and or the right file */
 #define DEFAULT_LED_LUMINOSITY 15
 #define FLASH_ERROR_PERIODE 500 //ms
 
@@ -35,7 +36,7 @@
 #include <RTClib.h>
 #include <ESP8266mDNS.h>
 #include <Adafruit_MCP23017.h>
-/** @todo try to remove Adafruit_MCP23017.h */
+/** @todo [NECESSARY] try to remove Adafruit_MCP23017.h */
 #include <FastLED.h>
 // #include <Array.h>
 #include <nanoI2CIOExpLib.h>
@@ -52,6 +53,7 @@
 
 #define CONFIGFILENAME "/config4.json"
 #define DEFCONFIGFILENAME "/defConfig.json"
+#define CREDENTIALFILENAME "/credentials.json"
 #include "SerialCommand.h"
 #include "debugSerialPort.h"
 #include "credential.h"
@@ -83,6 +85,11 @@
 #define FB_PARAMNAME_STAPASS "STA_PWD"
 #define FB_PARAMNAME_APSSID "AP_SSID"
 #define FB_PARAMNAME_APPASS "AP_PWD"
+
+#define JSON_SSID_NAME "ssid" //for station mode
+#define JSON_PPASS_NAME "pass"
+#define JSON_APSSID_NAME "softApSsid" //for AP mode
+#define JSON_APPASS_NAME "softApPass"
 
  
 #define DEFAULTIPADD "192.168.95.42"
@@ -194,6 +201,10 @@ const String necessaryFileList[] ={
       "/index.html"
     , "/config4.json"
     , "/firstboot.html"
+    // and why no credentials file ? because on firstboot we creat it
+    // and after ???
+    /** @todo [NECESSARY to check]possible bug if credentials disapear - in case of change cred we check
+if file exist and tag an fsErr if not */
     // , "config.html"
     , "/js/main.js"
     , "/js/plug.js"

@@ -282,7 +282,16 @@ void ConfigParam::displayWifiMode(){
 	
 }
 
-/** @todo doc. void ConfigParam::write2Json( String param, String value ) */
+/** 
+ @fn void ConfigParam::write2Json( String param, String value, String file )
+ @brief write to a json file one parameter only...
+ @param param parameter name (case sensitive)
+ @param value the value of the parameter to be written
+ @param file complete file path (don't forget / in front of it)
+ @return no return value
+
+The file nema parameter has a default valeur (see in configParam.h)
+*/
 void ConfigParam::write2Json( String param, String value, String file ){
     DEFDPROMPT( "write  param to jSon file");
     // File configFile = SPIFFS.open( CONFIGFILENAME , "r");

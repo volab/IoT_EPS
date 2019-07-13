@@ -39,7 +39,7 @@ class ConfigParam{
         int getServerPort(){ return _serverPort; }
         long getAllLedsOnTime(){ return _allLedsOnTime; }
         int getLedsLuminosity(){return _ledsGlobalLuminosity; }
-        /** @todo read _powerLedEconomyMode parameter in the config file...*/
+        /** DONE read _powerLedEconomyMode parameter in the config file...*/
         bool getPowLedEconomyMode(){ return _powerLedEconomyMode; } 
         firstBootVal getFirstBoot(){ return _firstBoot; }
         static void write2Json( String param, String value, String file = CONFIGFILENAME );

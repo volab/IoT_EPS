@@ -41,7 +41,6 @@ When a fatal error is fired...
 */
 extern CRGB colorLeds[];
 void sysError::err( bool errorState ){
-    /** @todo implement err method */
     DEFDPROMPT( "System error handler")
     _err = errorState;
     if (_err) DSPL( dPrompt + _errMsg );

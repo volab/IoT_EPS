@@ -48,7 +48,7 @@ class CPowerPlug : public CNano {
         CPowerPlug(){}
         CPowerPlug( plugColor_t couleur ){ _couleur = couleur;}
         void begin( int pin , int onOffLedPin, int bpPin, int mode = 0 );
-/** @todo rewrite a new begin methode to add plugName and _color*/
+/** @todo [OPTION] rewrite a new begin methode to add plugName and _color*/
         void setColor( plugColor_t color ){ _couleur = color; }
         bool getState(){ return _state; }
         plugColor_t getColor(){ return _couleur; }

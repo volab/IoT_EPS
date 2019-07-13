@@ -13,7 +13,7 @@ bool CNano::_initDone = false;
 CNanoI2CIOExpander CNano::_nano;
 
 void CNano::init(){
-    /** @todo take into account initOk of CNanoI2CIOExpander class */
+    /** @todo [OPTION] take into account initOk of CNanoI2CIOExpander class */
     _initDone = true;
     _nano.begin();
 }

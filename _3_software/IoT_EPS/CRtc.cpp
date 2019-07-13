@@ -134,7 +134,7 @@ void CRtc::update(){
     // if ntp.unix time - rtc unix time < 15s return;
     RTC_DS3231::adjust( NTPTime );
     DSPL( dPrompt + F("DS3231 time updated" ) );
-    /** @todo perhpas save a counter of updates */
+    /** @todo [OPTION] perhpas save a counter of updates */
     //read cpt from eeprom or file
     _updatesCpt++;
     //write cpt to eeprom or file

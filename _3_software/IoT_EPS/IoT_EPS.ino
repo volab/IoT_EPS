@@ -32,7 +32,7 @@ In Access point mode default add is 192.168.95.42. Ssid and pass are those store
 In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI LED fash shortly in 2s period.
 
 
- @bug delete file with space
+ @bug delete file with space in their name !
 */
 
 /**
@@ -41,15 +41,13 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
   
- @li set time html page in all mode
- 
  @li see hardware.rst file
  
  @li power plugs current measurments
  @li manage summer and winter hour change
  @li if i say to you utf-8 ?!
 
- @li document FATAL error color (see xlsx dedicate file)
+ @li document FATAL errors color (see xlsx dedicate file)
  @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
  impossible this is the navigator to ask for a page and html refresh param is not a good idea !
  @li code and todo review : remove all unused commented code (cleanup)
@@ -86,8 +84,8 @@ CPowerPlug *plugs;
 
 // bool errFS = true;
 
-/** @todo see for add colorLEd array in the class CPowerPlug as a static member*/
-/** @todo convert colorLeds array in dynamic version as for plugs array */
+/** @todo [OPTION] see for add colorLEd array in the class CPowerPlug as a static member*/
+/** @todo [NECESSARY for 1 and 2 plug strip] convert colorLeds array in dynamic version as for plugs array */
 CRGB colorLeds[NUM_LEDS]; /**< @brief  not very satisfy for this globale ! It should be in the 
 CpowerPlug class*/
 
@@ -95,6 +93,8 @@ CpowerPlug class*/
 bool simpleManualMode = false;
 
 CFlasherNanoExp wifiLed;
+/** @todo [NECESSARY] check if it is possbile to remove Flasher class (CNanoI2CIOExp used)
+if yes remove Flasher.cpp and .h from source files */
 
 // CSwitchNano mainPowerSiwtch;
 int mainPowerSwitchState;
@@ -187,7 +187,6 @@ void setup(){
     ftpSrv.begin("esp8266","esp8266");
     
 	SerialCommand::init();
-    // extraLed.begin( 9, 100, 500, 4, 5000 );
     /////////////////////////////////////////////////////////////////////////////
     //     Config param check                                                       //
     /////////////////////////////////////////////////////////////////////////////
@@ -279,8 +278,8 @@ void setup(){
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
     if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[0].readFromJson( true ) );
     else  plugs[0].handleBpLongClic(); //change due to clone mode bug
-    /** @todo add pin, pinLed and color to json file*/
-    /** @todo + the number of plug to make this sequence dynamic*/
+    /** @todo [OPTION] add pin, pinLed and color to json file*/
+    /** @todo [NECESSARY for 2 and 1 plugs strip] + the number of plug to make this sequence dynamic*/
     
     plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, BP1, CPowerPlug::modeId("MANUEL") );
     plugs[1].setColor( CRGB::Green );
@@ -320,10 +319,10 @@ void setup(){
     nanoioExp.digitalWrite( MAINPOWLED, 1);
 // with this way of doing it, we loose LED and other stuffs managment    
     // replace by WIFI_OFF no ?
-    /** @todo try WIFI_OFF when power is off */
+    /** @todo try [OPTION] WIFI_OFF when power is off */
     for ( int i = 0; i < NBRPLUGS ; i++ ){
         colorLeds[i] = plugs[i].getColor();
-        /** @todo creat a pointer in CPowerPlug to one position off colorLeds*/
+        /** @todo [OPTION]creat a pointer in CPowerPlug to one position off colorLeds*/
         plugs[i].setMainPow( mainPowerSwitchState );
     }
     FastLED.setBrightness( cParam.getLedsLuminosity() );
@@ -368,7 +367,7 @@ void setup(){
                 IPAddress staGateway = cParam.getStaGatewayIP();
                 IPAddress DNS1;
                 DNS1.fromString( "8.8.8.8");
-                /** @todo chnage DNS as a config param */
+                /** NO we decide to leave in the code as it is. change DNS as a config param */
                 WiFi.config( staIP, staGateway, IPAddress(255, 255, 255, 0), DNS1 );
                 DSPL( dPrompt + F("No DHCP mode, static IP add") );
             } 
@@ -400,7 +399,7 @@ void setup(){
         /////////////////////////////////////////////////////////////////////////////
         //  soft AP mode                                                           //
         /////////////////////////////////////////////////////////////////////////////
-        if ( cParam.getWifiMode() == "softAP" || tryCount == MAX_WIFI_CONNECT_RETRY
+        if ( cParam.getWifiMode() == "softAP" || tryCount == cParam.getSTAMaxRetries()
                 // || !wifiCred.ready ){
                 || sysStatus.credFileErr.isErr() ){
             //WIFI soft Access Point mode
@@ -423,7 +422,9 @@ void setup(){
             IPAddress apIP = cParam.getIPAdd();
             WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
             cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
-            /** @todo review the interest of keeping code below! */
+            /** DONE review the interest of keeping code below! */
+            //As it is only debug informations leave it. When debug define will be turn off
+            //this peace of code should desapear at the coompilation time.
             if ( wifiCred.ready ){
                 DSPL( dPrompt + "Try soft AP with : " + wifiCred.getSoftApSsid() 
                         + " and " + wifiCred.getSoftApPass() );
@@ -437,8 +438,11 @@ void setup(){
             // to prepare for loop
             sysStatus.ntpEnabled = false;
         }
-		MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
 		DSPL( dPrompt + F("Host name that not work with Android is : ") + cParam.getHostName() );
+		// MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
+        /** @todo [OPTION] mDNS.begin issue on github #4417 https://github.com/esp8266/Arduino/issues/4417
+        try : LEAmDNS - Multicast DNS Responder #5442 -for now leav commented*/
+
 	
 	} else {
 		DSPL(  dPrompt + F("Enter in simple manual mode") );
@@ -459,8 +463,8 @@ void setup(){
             server->on("/", HTTP_GET, handleSoftAPIndex );
             DSPL( dPrompt + F("******************reg page") );
         }
-        // server->on("/ChangeCred", HTTP_POST, handleNewCred );
-        /** @todo update handleNewCred to reflect changes in credentials.json */
+        server->on("/ChangeCred", HTTP_POST, handleNewCred );
+        /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
         //Note: The above function is disabled as long as the handleNewCred function has
         //not been updated
 		server->on("/list", HTTP_GET, handleFileList);
@@ -475,7 +479,7 @@ void setup(){
 		server->on("/help", HTTP_GET, [](){
 			if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
 		});
-        /** @todo test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
+        /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
 		server->on("/edit", HTTP_PUT, handleFileCreate);
 		server->on("/edit", HTTP_DELETE, handleFileDelete);
 		//first callback is called after the request has ended with all parsed arguments
@@ -492,9 +496,9 @@ void setup(){
 
 		server->on( "/time", displayTime );
 
-		server->on ( "/inline", []() {
-			server->send ( 200, "text/plain", "this works as well" );
-		} );
+		// server->on ( "/inline", []() {
+			// server->send ( 200, "text/plain", "this works as well" );
+		// } );
 		server->begin();
 		Serial.println ( "HTTP server started" );
 	
@@ -563,7 +567,6 @@ bool cycleState = false;
 void loop(){
     static unsigned long prevMillis = millis();
     DEFDPROMPT("in the loop")
-/** @todo Place continuus builtin tests here */
     /////////////////////////////////////////////////////////////////////////////
     //  CBIT : Continus Built In Test                                          //
     /////////////////////////////////////////////////////////////////////////////
@@ -607,7 +610,6 @@ void loop(){
         }
         sysStatus.filesErr.err( !fileExist );
         
-        /** @todo check internet connection health */
         if ( WiFi.getMode() == WIFI_STA && WiFi.status() == WL_CONNECTED ){
             HTTPClient http;
             DSPL(dPrompt + F("It is time to check Internet health !") );
@@ -714,7 +716,7 @@ void loop(){
     //  main power switch actions                                              //
     /////////////////////////////////////////////////////////////////////////////
 	mainPowerSwitchState = !digitalRead( MAINSWITCHPIN );
-/** @todo recover debounce function */    
+/** @todo [OPTION] recover debounce function */    
     if ( !mainPowerSwitchState) { //main power switch change state
             DSPL( dPrompt + F("main power switched OFF and all plugs are in manual state.") );
             for ( int i = 0; i < NBRPLUGS ; i++ ){

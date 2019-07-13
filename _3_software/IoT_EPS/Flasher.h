@@ -32,9 +32,10 @@ To return to led off and stop flashing you can call i.stop()
 
 i.getChangeStateCpt() can be used to flash a certain number of times
 
- @todo implement begin( ton, toff, repeat, period ) exemple 3 short flash every 3 seconds
- @todo implement the same but when on, exemple 3 short off every 3 seconds
- @todo allways on
+ @todo [OPTION] for other projects that will use this class...
+ implement begin( ton, toff, repeat, period ) exemple 3 short flash every 3 seconds
+ @todo [OPTION] implement the same but when on, exemple 3 short off every 3 seconds
+ @todo [OPTION]allways on
 */
 class Flasher {
     public:
