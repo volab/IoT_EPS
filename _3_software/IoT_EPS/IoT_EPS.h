@@ -35,8 +35,8 @@
 #include <Wire.h>
 #include <RTClib.h>
 #include <ESP8266mDNS.h>
-#include <Adafruit_MCP23017.h>
-/** @todo [NECESSARY] try to remove Adafruit_MCP23017.h */
+// #include <Adafruit_MCP23017.h>
+/** DONE 13/07/2019 [NECESSARY] try to remove Adafruit_MCP23017.h */
 #include <FastLED.h>
 // #include <Array.h>
 #include <nanoI2CIOExpLib.h>
@@ -62,7 +62,7 @@
 #include "serverFunction.h"
 #include "bouton.h"
 #include "cEpsStrTime.h"
-#include "Flasher.h"
+// #include "Flasher.h"
 #include "CRtc.h"
 #include "cswitchnano.h"
 #include "csysstat.h"

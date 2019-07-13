@@ -16,7 +16,6 @@
  - Utilisation de la bibliothèque Wire version 1.0
  - Utilisation de la bibliothèque RTClib version 1.2.0
  - Utilisation de la bibliothèque ESP8266mDNS prise dans le dossier \2.4.1\\libraries\\ESP8266mDNS (legacy)
- - Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library
  - Utilisation de la bibliothèque FastLED version 3.2.1
  - Utilisation de la bibliothèque nanoI2CIOExpLib version 3.1
  - Utilisation de la bibliothèque NTPClient version 3.1.0
@@ -32,7 +31,7 @@ In Access point mode default add is 192.168.95.42. Ssid and pass are those store
 In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI LED fash shortly in 2s period.
 
 
- @bug delete file with space in their name !
+ @bug Serial command < d > delete file with space in their name !
 */
 
 /**
@@ -93,7 +92,7 @@ CpowerPlug class*/
 bool simpleManualMode = false;
 
 CFlasherNanoExp wifiLed;
-/** @todo [NECESSARY] check if it is possbile to remove Flasher class (CNanoI2CIOExp used)
+/** DONE 13/07/2019 [NECESSARY] check if it is possbile to remove Flasher class (CNanoI2CIOExp used)
 if yes remove Flasher.cpp and .h from source files */
 
 // CSwitchNano mainPowerSiwtch;
@@ -319,7 +318,7 @@ void setup(){
     nanoioExp.digitalWrite( MAINPOWLED, 1);
 // with this way of doing it, we loose LED and other stuffs managment    
     // replace by WIFI_OFF no ?
-    /** @todo try [OPTION] WIFI_OFF when power is off */
+    /** @todo [OPTION] try  WIFI_OFF when power is off */
     for ( int i = 0; i < NBRPLUGS ; i++ ){
         colorLeds[i] = plugs[i].getColor();
         /** @todo [OPTION]creat a pointer in CPowerPlug to one position off colorLeds*/
