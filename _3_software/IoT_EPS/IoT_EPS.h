@@ -66,6 +66,7 @@
 #include "CRtc.h"
 #include "cswitchnano.h"
 #include "csysstat.h"
+#include "cattiny_i2C_watchdog.h"
 #define RTC_UPDATE_PERIOD 15 //every 15mn
 #define RTC_ALLOWED_TIME_ERROR 20//seconds
 #define I2C_CBIT_TEST_PERIOD 60 * 1000 //ms it smells millis() ;-)

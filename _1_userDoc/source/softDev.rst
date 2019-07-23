@@ -97,6 +97,14 @@ First boot configuration
  - propose a unic ID for server name to the user
  - explain that it will possible to change after
  
+
+Restaure factory parameters 
+=====================================
+firstBoot after check box in config page.
+
+Restaure defConfig.json
+ 
+ 
 What are hypothesys, when boot for the first time ?
 =====================================================
 Is a config json exist ? What is inside it ? Yes and it containt FirstBoot ON and other stuff.
@@ -272,7 +280,7 @@ Specails push buttons behaviors @stratup
 ===========================================
 PB0 : @power on (not by power switch but by wall plug) start in simple manual mode see `WIFI Modes`_
 
-PB1 : in same conditions as above, start specials action only for expert and debug mode 
+PB1 : in same conditions as above, start specials action only for expert and debug mode (today creat default json) 
 
 ============================
 Sofware development choice

@@ -31,8 +31,9 @@ Avancement
 #. add LDR : removed
 #. add I2C nano expander with analog inputs ok
 
-#. change BP to nano I2C and relay command to ESP directly (to allow turnoff relays in fatal error)
-#. resolv power up problem : implement MAX1232
+#. change BP to nano I2C and relay command to ESP directly (to allow turnoff relays in fatal error) ok
+#. resolv power up problem : implement MAX1232 [ as an option onto the PCB ]
+#. implement an I2C watch dog component [ as an option onto the PCB ]
 #. choix curent sensor: 75%
 #. pcb study
 #. packaging study
@@ -41,6 +42,90 @@ Avancement
 
 
 ####
+
+
+====================
+Watchdog function
+====================
+During multiple tests, i noticed that watch dog functionnality of the ESP8266 may fail to reset 
+the component. But perhaps only when connected to usb port. **So i must made more tests.**
+
+What are others solutions for watchdog
+
+RTC DS3231 has a INT output but we can only set to 1 / second or 1/minutes. And it is a pour
+solution to control this component to use itself !
+
+MAX1232 has a watch dog feature but with a maximum of 1.2s and direct at startup activated.
+It can't be activate after setup for example. And if we use it, we need to drive its ST pin
+but all our output are used !
+
+Use a I2C watchdog component as DS1371. If using this component we need to implement
+a 32kHz oscillator ! `DS1374U-3+`_ (power sup 3V) ou -33+ en 3.3V available on MOUSER site for 3€23
+Don't forget to buy oscillator : `32k quatz chez Mouser`_ 0.68€ !
+
+Warning U denote a uSOP package with à 0.5mm pitch!
+
+Perhaps DS1374 could replace MAX1232 but its VPF level is very low about 2.3V regardless of the
+4.6V of the MAX1232.
+
+`Arduino library for DS1374 here`_
+
+Use the NANOI2CIOExpander it is not implented on the library (perhaps a future function).
+
+a DS1307 or 1302 similar to DS3231 SQW/out only 1Hz
+
+.. _`DS1374U-3+` : https://www.mouser.fr/ProductDetail/Maxim-Integrated/DS1374U-33%2b?qs=sGAEpiMZZMtpeOq%2F1QMb1SSF%252Bt1WeK6PeIGzk2pj%252BtA%3D
+.. _`32k quatz chez Mouser` : https://www.mouser.fr/ProductDetail/Citizen-FineDevice/CFV-20632000AZFB?qs=byeeYqUIh0OaNx0Ju8%2FDbw==&vip=1&gclid=Cj0KCQjwyLDpBRCxARIsAEENsrJb6yYHxWLeDO4R19WO-TyqA6z7VGyO8gui8RFReQgJSRtIWyGPwV0aAsVlEALw_wcB
+.. _`Arduino library for DS1374 here` : https://github.com/SpellFoundry/DS1374RTC
+
+An other idea : use an Attiny85 as an I2C watch dog component. It already exists ! `ATTiny85 I2C watchdog experiment`_
+
+.. _`ATTiny85 I2C watchdog experiment` : https://github.com/letscontrolit/ESPEasySlaves
+
+ATtiny85 watchdog
+=====================
+After some tests, I decided to use it.
+
+I build a ATtiny programmer with a ARDUINO UNO and a `proto shield`_ from Banggood
+
+A little watching on the `Heliox' Youtube video`_ and it was enough to start !
+
+So i decided for this time to stop  MAX1232 integration.
+
+The only chnages that i made in the code of the ATtiny85 watchdog are :
+ - Settings.TimeOut          = 20;
+ - Settings.Sleep            = 20;
+
+ An other change : I was obliged to move files in TinyWireS_Custom directory to one upper level !
+ 
+This design works perfectly ! but what is the user license of this code ? Perhaps GNU Public 2.1
+
+.. figure:: image/attiny_watchDog_integrationPlateform.jpg
+    :width: 400 px
+    :align: center
+    
+    ATtiny85 I2C watchdog hardware test environment
+
+The only missing in this design is an ESP user library. So I write it !    
+
+.. _`proto shield` : https://www.banggood.com/Arduino-Compatible-328-ProtoShield-Prototype-Expansion-Board-p-926451.html?rmmds=search&cur_warehouse=CN
+.. _`Heliox' Youtube video` : https://www.youtube.com/watch?v=S-oBujsoe-Q&t=247s
+
+======================
+MAX1232 integration
+======================
+
+.. figure:: image/MAX1232pinout.png
+    :align: center
+    
+    MAX1232 pinout
+    
+    
+Very simple : connect VCC, GND and RST/ to RST pin of the 8266 !
+
+Add a pullup on RST/. Also pullup TOL pin 3 (tolerance 10%), pin 7 WD input and pin 1 PBRST/
+
+Warning MAW1232 check power supply in 5V+/-5% ie 4.75 to 5.25V
 
 ==================================
 Connect Relay direct to ESP
@@ -119,8 +204,8 @@ I consider to add a MAX1232 on the reset pin or an analog circuit.
 
 I checked IO0 (D3) used to flash the component is connect to BP3
 
-At the begin of the setup I add a delay during this delay i drive the built-in LED for 1s and
-the rest of this application and it solves the problem ! Very strange behavior !
+At the begin of the setup I add a delay during this delay i drive the built-in LED for 1s 
+and it solves the problem ! Very strange behavior !
 
 ==========================
 Real time calendar clock
@@ -159,6 +244,20 @@ ACS712
 
 pb it is not I2C compnent and more we need 4
 
+3 version exist -05 -20 -30 for 5A, 20A, 30A.
+
+On Banggod there are :
+  - `Banggood ACS712 5A version`_
+  - `Banggood ACS712 30A version`_
+  - `20A version on AliExpress`_
+  
+  20A version output a 100mV/A
+
+
+.. _`Banggood ACS712 5A version`: https://www.banggood.com/ACS712TELC-05B-5A-Module-Current-Sensor-Module-For-Arduino-p-74020.html?akmClientCountry=FR&&cur_warehouse=CN
+.. _`Banggood ACS712 30A version` : https://www.banggood.com/1PC-30A-New-Range-Current-Sensor-Module-for-ACS712-p-86583.html?rmmds=search&cur_warehouse=CN
+.. _`20A version on AliExpress` : https://fr.aliexpress.com/item/32315336227.html
+
 ACS764
 ======
 I can't find rail to rail max  voltage
@@ -172,19 +271,21 @@ Internet search
 
 "AC isolated current sensor I2C"
 
-The winer is `Si8901B-GS`_
+The winer (not in 2019 !) is `Si8901B-GS`_
 
 .. _`Si8901B-GS` : https://www.silabs.com/products/isolation/current-sensors/si890x-isolated-adc-ac-mains-monitor
 
 dispo on `Mouser`_ à 3.44€/10pcs
 
+But it requires a 3.3V power supply referenced to Neutral line ! (see fig16 page 24 og its datasheet)
+
 .. _`Mouser` : https://www.mouser.fr/Search/Refine.aspx?Keyword=SI8901 
 
-`Usage example`_
+`Usage example`_ of an HLW8012. Open source example
 
 .. _`Usage example` : http://tinkerman.cat/the-espurna-board-a-smart-wall-switch-with-power-monitoring/#lightbox-gallery-oY6vOUw7/3/
 
- Open source example
+Finaly, now that we have on board NANOI2CIOExpander that provide 6 analog inputs we can use ACS712.
 
 ####
 
@@ -352,7 +453,31 @@ https://www.banggood.com/220V-to-5V-5W-AC-DC-Isolation-Switch-Power-Supply-Modul
 Useful Documentation
 ====================
 
-Exemples 
+Examples 
+
+SONOF POW on `CNX software`_
+
+SONOF POW on `the SONOF site`_
+
+
+`The ESPurna board`_ : very interresting !
+
+`Smart Switch Having 6 Outputs & 5 Inputs`_ : 
+
+`How can I detect a power outage with a microcontroller?`_ 
+
+.. _`The ESPurna board` : https://tinkerman.cat/post/the-espurna-board-a-smart-wall-switch-with-power-monitoring#lightbox-gallery-oY6vOUw7/3/
+
+
+.. _`CNX software` : https://www.cnx-software.com/2017/04/09/espurna-h-is-a-compact-open-source-hardware-board-with-esp8266-wisoc-a-10a-relay-hlw8012-power-monitoring-chip/
+
+.. _`the SONOF site` : https://sonoff.itead.cc/en/products/sonoff/sonoff-pow
+
+.. _`Smart Switch Having 6 Outputs & 5 Inputs` : https://www.hackster.io/ashish_8284/smart-switch-having-6-outputs-5-inputs-91fc29?utm_campaign=new_projects&utm_content=1&utm_medium=email&utm_source=hackster&utm_term=project_name
+
+.. _`How can I detect a power outage with a microcontroller?` : https://electronics.stackexchange.com/questions/17008/how-can-i-detect-a-power-outage-with-a-microcontroller
+
+
 
 =============
 Weblinks
