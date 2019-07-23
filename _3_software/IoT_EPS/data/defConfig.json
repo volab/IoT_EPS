@@ -19,7 +19,7 @@
     "ntpError": "OFF"
   },
   "redPlug": {
-    "nickName": "Aquarium",
+    "nickName": "redPlug",
     "State": "OFF",
     "Pause": "OFF",
     "Mode": "Manuel",
@@ -37,11 +37,11 @@
       "OFF"
     ],
     "clonedPlug": "",
-    "onOffCount": "70",
+    "onOffCount": "0",
     "nextTimeToSwitch": "0"
   },
   "greenPlug": {
-    "nickName": "Télé",
+    "nickName": "greenPlug",
     "State": "OFF",
     "Pause": "OFF",
     "Mode": "Manuel",
@@ -59,11 +59,11 @@
       "OFF"
     ],
     "clonedPlug": "",
-    "onOffCount": "109",
+    "onOffCount": "0",
     "nextTimeToSwitch": "0"
   },
   "bluePlug": {
-    "nickName": "jardin",
+    "nickName": "bluePlug",
     "State": "OFF",
     "Pause": "OFF",
     "Mode": "Manuel",
@@ -81,11 +81,11 @@
       "OFF"
     ],
     "clonedPlug": "",
-    "onOffCount": "18",
+    "onOffCount": "0",
     "nextTimeToSwitch": "0"
   },
   "yellowPlug": {
-    "nickName": "liseuse",
+    "nickName": "yellowPlug",
     "State": "OFF",
     "Pause": "OFF",
     "Mode": "Manuel",
@@ -103,7 +103,7 @@
       "OFF"
     ],
     "clonedPlug": "",
-    "onOffCount": "9",
+    "onOffCount": "0",
     "nextTimeToSwitch": "0"
   }
 }

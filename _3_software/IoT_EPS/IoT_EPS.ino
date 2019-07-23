@@ -40,6 +40,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
   
+ @li restaure defConfig.json whan firstBoot
  @li see hardware.rst file
  
  @li power plugs current measurments
