@@ -141,7 +141,7 @@ uint32_t  CEpsStrTime::computeNextTime( uint8_t CheckedDays ){
     String page = "";
     displayUnixTime( future );
 	if ( _mode == MMMSS || _mode == MMM){
-		future += _seconds; //bug turn around future += _seconds -1;		
+		future += _seconds -1; //bug turn around future += _seconds -1;		
 	} else if ( !CheckedDays ) { //HH:MM mode
 		int h, m;
 		DateTime now = CRtc::now();
