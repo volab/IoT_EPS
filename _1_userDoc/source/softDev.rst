@@ -338,6 +338,12 @@ One way to know it is to use a tool to scan the local network !
 So why do not connect systematically in both mode !!!
 Do it in new dev branch  !!!!!!!!!!!!!!!!!! 10 months of development to arrive at this point !!!!
 
+====================================
+IP address
+====================================
+AP and non DHCP IP address are class C address (subnet mask is 255.255.255.0 hardcoded )
+
+
 ==================
 WIFI LED behavior
 ==================
@@ -686,6 +692,15 @@ bug finded :
 
 improvments:
 - add tips on main page : To refresh this page press F5
+
+===============================
+Usefull Tools
+===============================
+
+On Android : `Network IP Scanner`_ from homework.
+
+
+.. _`Network IP Scanner` : https://play.google.com/store/apps/details?id=com.network.networkip&hl=fr
     
 ===============================
 Usefull Documentation

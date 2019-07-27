@@ -57,7 +57,7 @@ class ConfigParam{
         String _wifimode = "softAP" ; //default value
         String _host= "PowerStrip";
         bool readFromJson();
-        IPAddress _addIP;
+        IPAddress _addIP; /**< brief warning softAP IP */
         int _numberOfPlugs = 4;
         int _serverPort;
         long _allLedsOnTime;

@@ -356,10 +356,13 @@ void setup(){
 		int tryCount = 0;
         DSPL( dPrompt + F("Wifi mode = ") + cParam.getWifiMode() );
 		WiFi.setAutoConnect(false); //to allways control wifi connection
+		// WiFi.setAutoConnect(true); //to allways control wifi connection
 		DSP( dPrompt + F("Mode autoconnect : "));
 		DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
 		DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
         WiFi.persistent(false);
+        // WiFi.persistent(true);
+        WiFi.mode(WIFI_AP_STA);
         /*******************************************************************************************
         
         *******************************************************************************************/
@@ -374,11 +377,60 @@ void setup(){
         }
         DSPL( "." );
         /////////////////////////////////////////////////////////////////////////////
+        //  soft AP mode                                                           //
+        /////////////////////////////////////////////////////////////////////////////
+        // if ( cParam.getWifiMode() == "softAP" || tryCount == cParam.getSTAMaxRetries()
+                // // || !wifiCred.ready ){
+                // || sysStatus.credFileErr.isErr() ){
+        if( 1 ){
+            //WIFI soft Access Point mode
+            //        bool mode(WiFiMode_t);
+            //        WiFiMode_t getMode();
+//cf. https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiGeneric.h
+//https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/generic-class.html
+//https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiType.h
+            displayWifiMode();           
+            // WiFi.begin();
+            // WiFi.disconnect( true ); 
+            // WiFi.softAPdisconnect();            
+            // WiFi.mode(WIFI_AP);
+            
+            displayWifiMode();
+            DSPL( dPrompt + F("Try softAccess") );
+            // wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
+            // wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
+            
+            IPAddress apIP = cParam.getIPAdd();
+            WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
+            // cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
+            /** DONE review the interest of keeping code below! */
+            //As it is only debug informations leave it. When debug define will be turn off
+            //this peace of code should desapear at the coompilation time.
+            if ( wifiCred.ready ){
+                DSPL( dPrompt + "Try soft AP with : " + wifiCred.getSoftApSsid() 
+                        + " and " + wifiCred.getSoftApPass() );
+                DSP( dPrompt + F("softAP : "));
+                DSPL(WiFi.softAP(wifiCred.getSoftApSsid(),
+                    wifiCred.getSoftApPass() )?F("Ready"):F("Failed!"));
+                IPAddress myIP = WiFi.softAPIP();
+                DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
+            }
+            // wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
+            // to prepare for loop
+            // sysStatus.ntpEnabled = false;
+        }
+		DSPL( dPrompt + F("Host name that not work with Android is : ") + cParam.getHostName() );
+		// MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
+        /** @todo [OPTION] mDNS.begin issue on github #4417 https://github.com/esp8266/Arduino/issues/4417
+        try : LEAmDNS - Multicast DNS Responder #5442 -for now leav commented*/
+        
+        /////////////////////////////////////////////////////////////////////////////
         //  Station mode                                                           //
         /////////////////////////////////////////////////////////////////////////////
         if ( cParam.getWifiMode() == "client" && !sysStatus.credFileErr.isErr()
                 || cParam.getWifiMode() == "Station" ){ // Station WIFI mode    
-            WiFi.mode(WIFI_STA);
+            // WiFi.mode(WIFI_STA);
+            // WiFi.mode(WIFI_AP_STA);
             //void config(IPAddress local_ip, IPAddress gateway, IPAddress subnet);
             if ( !cParam.getDHCPMode() ){
                 IPAddress staIP = cParam.getStaIP();
@@ -404,63 +456,25 @@ void setup(){
             }
             wifiLed.stop();
             wifiLed.high();
-            DSP( "\n" + dPrompt + F("\nNumber of Station wifi try : ") + (String)tryCount );
+            DSP( "\n" + dPrompt + F("Number of Station wifi try : ") + (String)tryCount );
             DSPL( ", max was : " + String( cParam.getSTAMaxRetries() ) );
             if ( WiFi.status() == WL_CONNECTED){
                 sysStatus.ntpEnabled = true;
+                String staIP =  WiFi.localIP().toString();
                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
-                    + WiFi.localIP().toString() );
+                    + staIP );
+                    ConfigParam::write2Json( "staIP", staIP );
                 if ( cParam.getFirstBoot() == ConfigParam::TRY ){
                     ConfigParam::write2Json( "firstBoot", "OFF" );
                 }                    
-            } else { WiFi.disconnect(); }
+            } else { 
+                WiFi.disconnect();
+                sysStatus.ntpEnabled = false;
+                wifiLed.low();
         }
-        /////////////////////////////////////////////////////////////////////////////
-        //  soft AP mode                                                           //
-        /////////////////////////////////////////////////////////////////////////////
-        if ( cParam.getWifiMode() == "softAP" || tryCount == cParam.getSTAMaxRetries()
-                // || !wifiCred.ready ){
-                || sysStatus.credFileErr.isErr() ){
-            //WIFI soft Access Point mode
-            //        bool mode(WiFiMode_t);
-            //        WiFiMode_t getMode();
-//cf. https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiGeneric.h
-//https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/generic-class.html
-//https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiType.h
-            displayWifiMode();           
-            WiFi.begin();
-            WiFi.disconnect( true ); 
-            WiFi.softAPdisconnect();            
-            WiFi.mode(WIFI_AP);
             
-            displayWifiMode();
-            DSPL( dPrompt + F("Try softAccess") );
-            wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
-            wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
-            
-            IPAddress apIP = cParam.getIPAdd();
-            WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-            cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
-            /** DONE review the interest of keeping code below! */
-            //As it is only debug informations leave it. When debug define will be turn off
-            //this peace of code should desapear at the coompilation time.
-            if ( wifiCred.ready ){
-                DSPL( dPrompt + "Try soft AP with : " + wifiCred.getSoftApSsid() 
-                        + " and " + wifiCred.getSoftApPass() );
-                DSP( dPrompt + F("softAP : "));
-                DSPL(WiFi.softAP(wifiCred.getSoftApSsid(),
-                    wifiCred.getSoftApPass() )?F("Ready"):F("Failed!"));
-                IPAddress myIP = WiFi.softAPIP();
-                DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
-            }
-            wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
-            // to prepare for loop
-            sysStatus.ntpEnabled = false;
         }
-		DSPL( dPrompt + F("Host name that not work with Android is : ") + cParam.getHostName() );
-		// MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
-        /** @todo [OPTION] mDNS.begin issue on github #4417 https://github.com/esp8266/Arduino/issues/4417
-        try : LEAmDNS - Multicast DNS Responder #5442 -for now leav commented*/
+            
 
 	
 	} else {
@@ -519,7 +533,7 @@ void setup(){
 			// server->send ( 200, "text/plain", "this works as well" );
 		// } );
 		server->begin();
-		Serial.println ( "HTTP server started" );
+		DSPL ( dPrompt + F("HTTP server started" ) );
 	
 	}
     
@@ -559,7 +573,8 @@ void setup(){
 
     sysStatus.initCBITTimer();
 
-    if ( WiFi.getMode() == WIFI_STA && WiFi.status() == WL_CONNECTED ){
+    if ( (WiFi.getMode() == WIFI_STA || WiFi.getMode() == WIFI_AP_STA) 
+            && WiFi.status() == WL_CONNECTED ){
         HTTPClient http;
         DSPL( dPrompt + F("[HTTP] begin...") );
         // configure targed server and url
@@ -614,19 +629,11 @@ void loop(){
         } while (cpt < I2C_RETRIES );
         if (cpt != 10) sysStatus.nanoErr.err( true ); 
     }
-    // DSPL( dPrompt + (sysStatus.ntpEnabled?"yes":"no") );
-    //NTP and RTC test
-    if (sysStatus.ntpEnabled){
-        bool rtcPreviousErr = sysStatus.ntpErr.isErr();
-        rtc.update(); //this check NTP access and update sysStatus
-        if ( sysStatus.ntpErr.isErr() != rtcPreviousErr ){
-            cParam.write2Json( "ntpError", ( sysStatus.ntpErr.isErr()?"ON":"OFF") );
-        } 
-    }
-  
+
 
     if ( sysStatus.isCbitTime() ){
         //perform others CBIT
+        //files acces
         DSPL(dPrompt + F("It is time to check necessary file accessibility !") );
         bool fileExist = true;
         for ( String s : necessaryFileList ){
@@ -635,19 +642,33 @@ void loop(){
             if (!b) DSPL( dPrompt + F("file : ") + s + F(" is not found") );
         }
         sysStatus.filesErr.err( !fileExist );
-        
-        if ( WiFi.getMode() == WIFI_STA && WiFi.status() == WL_CONNECTED ){
-            HTTPClient http;
-            DSPL(dPrompt + F("It is time to check Internet health !") );
-            http.begin( INTERNET_HEALTH_TARGET ); //HTTP
-            // start connection and send HTTP header
-            int httpCode = http.GET();
-            // httpCode will be negative on error
-            if(httpCode < 0) {
-                DSPL(dPrompt + "[HTTP] GET... failed, error: " + http.errorToString(httpCode) );
-                sysStatus.internetErr.err( true );
+
+        //internet access
+        // if ( (WiFi.getMode() == WIFI_STA || WiFi.getMode() == WIFI_AP_STA)
+              // && WiFi.status() == WL_CONNECTED ){
+            // HTTPClient http;
+            // DSPL(dPrompt + F("It is time to check Internet health !") );
+            // http.begin( INTERNET_HEALTH_TARGET ); //HTTP
+            // // start connection and send HTTP header
+            // int httpCode = http.GET();
+            // // httpCode will be negative on error
+            // if(httpCode < 0) {
+                // DSPL(dPrompt + "[HTTP] GET... failed, error: " + http.errorToString(httpCode) );
+                // sysStatus.internetErr.err( true );
+            // }
+            // http.end();
+        // }
+        // DSPL( dPrompt + (sysStatus.ntpEnabled?"yes":"no") );
+        //NTP and RTC test        
+        //ntp serveur
+        if (sysStatus.ntpEnabled){
+            bool rtcPreviousErr = sysStatus.ntpErr.isErr();
+            rtc.update(); //this check NTP access and update sysStatus
+            DSP( dPrompt + F("Check NTP access : " ) );
+            if ( sysStatus.ntpErr.isErr() != rtcPreviousErr ){
+                cParam.write2Json( "ntpError", ( sysStatus.ntpErr.isErr()?"ON":"OFF") );
             }
-            http.end();
+            DSPL( sysStatus.ntpErr.isErr()?"ERROR":"OK" );
         }
     }
 
