@@ -1,6 +1,6 @@
 {
   "general": {
-    "emplacement": "salon",
+    "emplacement": "undefined",
     "numberOfPlugs": "4",
     "allLedsOnTime": "-1",
     "ledsGlobalLuminosity": "5",

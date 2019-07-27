@@ -431,6 +431,10 @@ void handleFirstBoot(){
     // if (mode == AP) set firstBoot to OFF
     DEFDPROMPT( "handle First Boot "); 
     cParam.creatDefaultJson();
+    ConfigParam::write2Json( "firstBoot", "ON" ); //not very usefull
+    //1) when we came from a real firstBoot this value change in this function
+    //2) when we came from config page config handler has previously write this value and it is 
+    //    the next reset who trigger this method and this value change in this method
     //piece of code generate by
     //https://arduinojson.org/v5/assistant/
     const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(4);
@@ -476,6 +480,7 @@ void handleFirstBoot(){
         ConfigParam::write2Json( "startInAPMode", "ON" );
         //Empty STA_SSId and pass
         //AP_SSID and PASS
+        /** @todo [NECESSARY] replace reset by watchdog not refresh 2 times */
         ESP.reset();
     } else { //mode Station
     //**********************************************************************************************
@@ -499,6 +504,7 @@ void handleFirstBoot(){
         credFile.close();
         ConfigParam::write2Json( "startInAPMode", "OFF" );
         ConfigParam::write2Json( "firstBoot", "TRYSTA" );
+        /** @todo [NECESSARY] replace reset by watchdog not refresh */
         ESP.reset();        
     }
     String returnPage = allArgs ;
@@ -731,7 +737,26 @@ void handelIOTESPConfPage(){
         DSPL( dPrompt + F("form configuration not found") );
         server->send(404, "text/plain", "FileNotFound");
     } 
-}    
+}
+
+void handleIndex(){
+    bool requestAP;
+    IPAddress clientIP = server->client().remoteIP();
+    IPAddress modeAPIP = cParam.getIPAdd();   
+    modeAPIP[3] = 0;
+    clientIP[3] = 0;
+    if ( clientIP == modeAPIP ){
+       // DSPL( dPrompt + F("soft AP request") ); 
+       requestAP = true;
+    } else {
+       // DSPL( dPrompt + F("Station network request") ); 
+       requestAP = false;
+    }
+    if ( requestAP )
+        handleSoftAPIndex();
+    else
+        handleFileRead("/");    
+}   
 
 
 

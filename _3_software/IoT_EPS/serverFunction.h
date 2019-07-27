@@ -36,4 +36,5 @@ String extractParamFromHtmlReq( String allRecParam, String param );
 void handlePlugOnOff();
 void handleIOTESPConfiguration();
 void handelIOTESPConfPage();
+void handleIndex();
 #endif

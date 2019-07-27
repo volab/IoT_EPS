@@ -42,6 +42,7 @@ class ConfigParam{
         /** DONE read _powerLedEconomyMode parameter in the config file...*/
         bool getPowLedEconomyMode(){ return _powerLedEconomyMode; } 
         firstBootVal getFirstBoot(){ return _firstBoot; }
+        void setFirstBoot( firstBootVal val ){ _firstBoot = val; }
         static void write2Json( String param, String value, String file = CONFIGFILENAME );
         // static void _write2CredJson( String param, String value );
         unsigned int getSTAMaxRetries(){ return _STAmaxWifiConnectionRetries; }

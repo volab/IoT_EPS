@@ -41,7 +41,6 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   Here I want to trace major features implementations.
   
  @li test restore defConfig.json when firstBoot 
- @li implement STA_AP mode in a new git branch
  @li see hardware.rst file
  
  @li power plugs current measurements
@@ -466,6 +465,7 @@ void setup(){
                     ConfigParam::write2Json( "staIP", staIP );
                 if ( cParam.getFirstBoot() == ConfigParam::TRY ){
                     ConfigParam::write2Json( "firstBoot", "OFF" );
+                    cParam.setFirstBoot( ConfigParam::NO );
                 }                    
             } else { 
                 WiFi.disconnect();
@@ -521,6 +521,7 @@ void setup(){
 
 		//called when the url is not defined here
 		//use it to load content from SPIFFS
+        server->on("/", HTTP_GET, handleIndex );
 		server->onNotFound([](){
             if(!handleFileRead(server->uri()))
                 server->send(404, "text/plain", "FileNotFound");
@@ -644,20 +645,20 @@ void loop(){
         sysStatus.filesErr.err( !fileExist );
 
         //internet access
-        // if ( (WiFi.getMode() == WIFI_STA || WiFi.getMode() == WIFI_AP_STA)
-              // && WiFi.status() == WL_CONNECTED ){
-            // HTTPClient http;
-            // DSPL(dPrompt + F("It is time to check Internet health !") );
-            // http.begin( INTERNET_HEALTH_TARGET ); //HTTP
-            // // start connection and send HTTP header
-            // int httpCode = http.GET();
-            // // httpCode will be negative on error
-            // if(httpCode < 0) {
-                // DSPL(dPrompt + "[HTTP] GET... failed, error: " + http.errorToString(httpCode) );
-                // sysStatus.internetErr.err( true );
-            // }
-            // http.end();
-        // }
+        if ( (WiFi.getMode() == WIFI_STA || WiFi.getMode() == WIFI_AP_STA)
+              && WiFi.status() == WL_CONNECTED ){
+            HTTPClient http;
+            DSPL(dPrompt + F("It is time to check Internet health !") );
+            http.begin( INTERNET_HEALTH_TARGET ); //HTTP
+            // start connection and send HTTP header
+            int httpCode = http.GET();
+            // httpCode will be negative on error
+            if(httpCode < 0) {
+                DSPL(dPrompt + "[HTTP] GET... failed, error: " + http.errorToString(httpCode) );
+                sysStatus.internetErr.err( true );
+            }
+            http.end();
+        }
         // DSPL( dPrompt + (sysStatus.ntpEnabled?"yes":"no") );
         //NTP and RTC test        
         //ntp serveur
