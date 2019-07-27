@@ -198,6 +198,7 @@ extern bool restartTempoLed;
 extern int mainPowerSwitchState;
 void handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
+    bool requestAP;
     if ( !mainPowerSwitchState ){
         server->send(404, "text/plain", "Page not found");
         return;
@@ -207,6 +208,21 @@ void handlePlugOnOff(){
     /////////////////////////////////////////////////////////////////////////////
     String uriReceived = server->uri();
     DSPL( dPrompt + F(" Received uri = ") + uriReceived );
+    IPAddress clientIP = server->client().remoteIP();
+    IPAddress modeAPIP = cParam.getIPAdd();
+    
+    DSPL( dPrompt + F("client IP = ") + clientIP.toString() );
+    DSPL( dPrompt + F("Soft AP IP : ") + modeAPIP.toString()  );
+    modeAPIP[3] = 0;
+    clientIP[3] = 0;
+    DSPL( dPrompt + F("new IP = ") + clientIP.toString() );
+    if ( clientIP == modeAPIP ){
+       DSPL( dPrompt + F("soft AP request") ); 
+       requestAP = true;
+    } else {
+       DSPL( dPrompt + F("Station network request") ); 
+       requestAP = false;
+    } 
     DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
     String allArgs = F(" Received args : ") ;
     for ( int i = 0; i < server->args() ; i++ ){
@@ -240,7 +256,8 @@ void handlePlugOnOff(){
    
     // String returnPage = allArgs + "\n" + returnVal ;
     // server->send(200, "text/plain", returnPage ); 
-    if ( cParam.getWifiMode() == "softAP" )
+    // if ( cParam.getWifiMode() == "softAP" )
+    if ( requestAP )
         handleSoftAPIndex();
     else
         handleFileRead("/");
