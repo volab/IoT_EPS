@@ -739,6 +739,14 @@ void handelIOTESPConfPage(){
     } 
 }
 
+/** 
+ @fn void handleIndex()
+ @brief A new handler for index page to choose different index page between AP and station...
+ @return no return value and no parameter
+
+Now we can be connected in both mode AP and station so it is necessary to separate request from AP 
+and station mode to serve the right page
+*/
 void handleIndex(){
     bool requestAP;
     IPAddress clientIP = server->client().remoteIP();
@@ -746,16 +754,11 @@ void handleIndex(){
     modeAPIP[3] = 0;
     clientIP[3] = 0;
     if ( clientIP == modeAPIP ){
-       // DSPL( dPrompt + F("soft AP request") ); 
-       requestAP = true;
+       handleSoftAPIndex();
     } else {
-       // DSPL( dPrompt + F("Station network request") ); 
-       requestAP = false;
+       handleFileRead("/");
     }
-    if ( requestAP )
-        handleSoftAPIndex();
-    else
-        handleFileRead("/");    
+
 }   
 
 
