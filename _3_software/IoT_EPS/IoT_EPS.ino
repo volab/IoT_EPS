@@ -378,7 +378,8 @@ void setup(){
         /////////////////////////////////////////////////////////////////////////////
         if ( cParam.getWifiMode() == "client" && !sysStatus.credFileErr.isErr()
                 || cParam.getWifiMode() == "Station" ){ // Station WIFI mode    
-            WiFi.mode(WIFI_STA);
+            // WiFi.mode(WIFI_STA);
+            WiFi.mode(WIFI_AP_STA);
             //void config(IPAddress local_ip, IPAddress gateway, IPAddress subnet);
             if ( !cParam.getDHCPMode() ){
                 IPAddress staIP = cParam.getStaIP();
@@ -418,9 +419,10 @@ void setup(){
         /////////////////////////////////////////////////////////////////////////////
         //  soft AP mode                                                           //
         /////////////////////////////////////////////////////////////////////////////
-        if ( cParam.getWifiMode() == "softAP" || tryCount == cParam.getSTAMaxRetries()
-                // || !wifiCred.ready ){
-                || sysStatus.credFileErr.isErr() ){
+        // if ( cParam.getWifiMode() == "softAP" || tryCount == cParam.getSTAMaxRetries()
+                // // || !wifiCred.ready ){
+                // || sysStatus.credFileErr.isErr() ){
+        if( 1 ){
             //WIFI soft Access Point mode
             //        bool mode(WiFiMode_t);
             //        WiFiMode_t getMode();
@@ -428,19 +430,19 @@ void setup(){
 //https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/generic-class.html
 //https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiType.h
             displayWifiMode();           
-            WiFi.begin();
-            WiFi.disconnect( true ); 
-            WiFi.softAPdisconnect();            
-            WiFi.mode(WIFI_AP);
+            // WiFi.begin();
+            // WiFi.disconnect( true ); 
+            // WiFi.softAPdisconnect();            
+            // WiFi.mode(WIFI_AP);
             
             displayWifiMode();
             DSPL( dPrompt + F("Try softAccess") );
-            wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
-            wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
+            // wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
+            // wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
             
             IPAddress apIP = cParam.getIPAdd();
             WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-            cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
+            // cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
             /** DONE review the interest of keeping code below! */
             //As it is only debug informations leave it. When debug define will be turn off
             //this peace of code should desapear at the coompilation time.
@@ -453,9 +455,9 @@ void setup(){
                 IPAddress myIP = WiFi.softAPIP();
                 DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
             }
-            wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
+            // wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
             // to prepare for loop
-            sysStatus.ntpEnabled = false;
+            // sysStatus.ntpEnabled = false;
         }
 		DSPL( dPrompt + F("Host name that not work with Android is : ") + cParam.getHostName() );
 		// MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
