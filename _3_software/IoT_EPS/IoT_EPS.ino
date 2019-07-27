@@ -620,7 +620,7 @@ void loop(){
         bool rtcPreviousErr = sysStatus.ntpErr.isErr();
         rtc.update(); //this check NTP access and update sysStatus
         if ( sysStatus.ntpErr.isErr() != rtcPreviousErr ){
-            cParam.write2Json( "ntpErr", ( sysStatus.ntpErr.isErr()?"ON":"OFF") );
+            cParam.write2Json( "ntpError", ( sysStatus.ntpErr.isErr()?"ON":"OFF") );
         } 
     }
   
