@@ -41,10 +41,8 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   Here I want to trace major features implementations.
   
  @li restore defConfig.json when firstBoot
- @li when config is done return to config page to check parameter
  @li implement STA_AP mode in a new git branch
  @li see hardware.rst file
- @li treat one seconds bug !
  
  @li power plugs current measurements
  @li manage summer and winter hour change

@@ -642,11 +642,12 @@ void handleIOTESPConfiguration(){
     // String returnPage = allArgs + "\n" ;
     // server->send(200, "text/plain", returnPage );
 /** @todo [NECESSARY]return to config page to confirm that values are taken into account */    
-    if ( cParam.getWifiMode() == "softAP" )
-        handleSoftAPIndex();
-    else
-        handleFileRead("/");
-    // handleFileRead("/");     
+    // if ( cParam.getWifiMode() == "softAP" )
+        // handleSoftAPIndex();
+    // else
+        // handleFileRead("/");
+    // handleFileRead("/");
+    handelIOTESPConfPage();    
 }
 
 
