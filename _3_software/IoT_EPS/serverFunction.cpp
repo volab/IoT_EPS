@@ -413,6 +413,7 @@ void handleFirstBoot(){
     // if (mode == Station)  set firstBoot to tryStation and restart ESP
     // if (mode == AP) set firstBoot to OFF
     DEFDPROMPT( "handle First Boot "); 
+    cParam.creatDefaultJson();
     //piece of code generate by
     //https://arduinojson.org/v5/assistant/
     const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(4);
