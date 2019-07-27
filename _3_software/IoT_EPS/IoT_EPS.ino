@@ -41,7 +41,10 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
   Here I want to trace major features implementations.
   
  @li restore defConfig.json when firstBoot
+ @li when config is done return to config page to check parameter
+ @li implement STA_AP mode in a new git branch
  @li see hardware.rst file
+ @li treat one seconds bug !
  
  @li power plugs current measurements
  @li manage summer and winter hour change
@@ -50,7 +53,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  @li document FATAL errors color (see xlsx dedicate file)
  @li regarder pour recharger la page index lors d'un changement d'état par BP(pas forcément an mode AP)
  impossible this is the navigator to ask for a page and html refresh param is not a good idea !
- @li code and todo review : remove all unused commented code (cleanup)
+ @li code, bugs and todo review : remove all unused commented code (cleanup)
 */
 
 
@@ -84,8 +87,6 @@ CPowerPlug *plugs;
 
 // bool errFS = true;
 
-/** @todo [OPTION] see for add colorLEd array in the class CPowerPlug as a static member*/
-/** @todo [NECESSARY for 1 and 2 plug strip] convert colorLeds array in dynamic version as for plugs array */
 CRGB colorLeds[NUM_LEDS]; /**< @brief  not very satisfy for this globale ! It should be in the 
 CpowerPlug class*/
 
@@ -93,7 +94,7 @@ CpowerPlug class*/
 bool simpleManualMode = false;
 
 CFlasherNanoExp wifiLed;
-/** DONE 13/07/2019 [NECESSARY] check if it is possbile to remove Flasher class (CNanoI2CIOExp used)
+/** DONE 13/07/2019 [NECESSARY] check if it is possible to remove Flasher class (CNanoI2CIOExp used)
 if yes remove Flasher.cpp and .h from source files */
 
 // CSwitchNano mainPowerSiwtch;
@@ -111,6 +112,11 @@ bool restartTempoLed = false;
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTPSERVER);
 
+
+
+/** @todo
+ - [OPTION 1] see for add colorLEd array in the class CPowerPlug as a static member
+ - [NECESSARY for 1 and 2 plug strip] convert colorLeds array in dynamic version as for plugs array */
 
 void setup(){
     DateTime NTPTime;
@@ -188,7 +194,7 @@ void setup(){
     
 	SerialCommand::init();
     /////////////////////////////////////////////////////////////////////////////
-    //     Config param check                                                       //
+    //     Config param check                                                  //
     /////////////////////////////////////////////////////////////////////////////
     cParam.begin();
     sysStatus.confFileErr.err( !cParam.ready );
@@ -222,6 +228,18 @@ void setup(){
     } while (cpt < I2C_RETRIES );
     if (cpt != 10) sysStatus.nanoErr.err( true );
     DSPL(dPrompt + F("Nano test ok"));
+    /////////////////////////////////////////////////////////////////////////////
+    // Watchdog check                                                          //
+    ///////////////////////////////////////////////////////////////////////////// 
+    watchdog.begin();
+    DSP( dPrompt + F("watchdog test ") );
+    sysStatus.watchdogErr.err( !watchdog.test() ); 
+    DSPL( "OK");
+    watchdog.setTimeout( cParam.getSTAMaxRetries() );
+    watchdog.setRefreshPeriod( cParam.getSTAMaxRetries()/3 );  
+    DSPL( dPrompt + F("watchdog set to ") + String( cParam.getSTAMaxRetries() ) + F("s.") );
+    
+    
     /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                    //
     /////////////////////////////////////////////////////////////////////////////
@@ -278,8 +296,9 @@ void setup(){
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
     if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[0].readFromJson( true ) );
     else  plugs[0].handleBpLongClic(); //change due to clone mode bug
-    /** @todo [OPTION] add pin, pinLed and color to json file*/
-    /** @todo [NECESSARY for 2 and 1 plugs strip] + the number of plug to make this sequence dynamic*/
+    /** todo : no ! It is not a user config  [OPTION] add pin, pinLed and color to json file*/
+    /** todo : no it should stay  as a #define 
+    [NECESSARY for 2 and 1 plugs strip] + the number of plug to make this sequence dynamic*/
     
     plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, BP1, CPowerPlug::modeId("MANUEL") );
     plugs[1].setColor( CRGB::Green );
@@ -312,6 +331,7 @@ void setup(){
         do {
             mainPowerSwitchState = !digitalRead( MAINSWITCHPIN ); //open circuit = plug OFF
             yield();
+            if ( watchdog.isItTimeTo() ) watchdog.refresh();
         } while( !mainPowerSwitchState );        
     }
     DSPL( dPrompt + "Main power ON"); 
@@ -381,6 +401,7 @@ void setup(){
                 DSP(".");
                 //a normal acces should came in 18 try
                 tryCount++;
+                if ( watchdog.isItTimeTo() ) watchdog.refresh();
                 if (tryCount == cParam.getSTAMaxRetries() ) break;  
             }
             wifiLed.stop();
@@ -557,6 +578,13 @@ void setup(){
         }
         http.end();        
     }
+
+    /////////////////////////////////////////////////////////////////////////////
+    //  Setup watchdog                                                         //
+    /////////////////////////////////////////////////////////////////////////////    
+    watchdog.setTimeout( 10 );
+    watchdog.setRefreshPeriod( 5 );    
+    
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -628,7 +656,18 @@ void loop(){
     /////////////////////////////////////////////////////////////////////////////
     //  CBIT : Continus Built In Test End                                      //
     /////////////////////////////////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////////////////////////////////
+    //  watchdog refresh                                                       //
+    /////////////////////////////////////////////////////////////////////////////
+    if ( watchdog.isItTimeTo() ) {
+        //DSPL( dPrompt + F("TimeToRefresh wd") ) ;
+        watchdog.refresh();
+    }
     
+    /////////////////////////////////////////////////////////////////////////////
+    //  Some little jobs : specialBp, ftp, SerialProcess...                    //
+    /////////////////////////////////////////////////////////////////////////////
     if ( !simpleManualMode ) server->handleClient();
     
     ftpSrv.handleFTP();
@@ -671,7 +710,7 @@ void loop(){
     }
     
     /////////////////////////////////////////////////////////////////////////////
-    //  manage bps                                                            //
+    //  manage bps + plugs time to switch                                      //
     /////////////////////////////////////////////////////////////////////////////     
     if ( mainPowerPrevState == HIGH && cParam.ready ){
         for ( int i = 0; i < NBRPLUGS ; i++ ){
@@ -687,7 +726,7 @@ void loop(){
                     plugs[i].handleBpDoubleClic(); //ie : stop flasher
                 } 
             }
-           if ( plugs[i].bp.clic() ){
+            if ( plugs[i].bp.clic() ){
                 // DSPL( dPrompt + F("I10 state : ") + (specialBp.getState()?"ON":"OFF") );
                 restartTempoLed = true;
                 if ( specialBp.getState() ){ //input pull up so 1 means no action on BP
@@ -727,7 +766,10 @@ void loop(){
             }            
             FastLED.show();
             wifiLed.low();
-            ESP.restart();
+            //watchdog.enableRefresh( false ); //doesn't work crash json file
+            watchdog.setTimeout( 2 );
+            while( 1 )yield(); //another way to stop AtinyWD refresh.
+            //ESP.restart();
     }
 
     yield();

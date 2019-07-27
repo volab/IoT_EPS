@@ -106,42 +106,5 @@ class CPowerPlug : public CNano {
         bool _mainPower;
 };
 
-/*
-  "redPlug": {
-    "State": "ON",
-    "Manuel": {
-        "Status": "OFF"
-    },
-    "Minuterie": {
-      "Status": "ON",
-      "Duree": "60"
-    },
-    "Cyclique": {
-      "Status": "OFF",
-      "hDebut": "",
-      "dureeOn": "",
-      "dureeOff": ""
-    },
-    "Hebdomadaire": {
-      "Status": "OFF",
-      "hDebut": "",
-      "hFin": "",
-      "Jours": {
-        "LU": "",
-        "MA": "",
-        "ME": "",
-        "JE": "",
-        "VE": "",
-        "SA": "",
-        "DI": ""
-      }
-    },
-    "Clone" : {
-        "Status": "OFF",
-        "ClonedPlug" : ""
-    },
-    "OnOffCount" : "0"
-  },*/
-
 
 #endif

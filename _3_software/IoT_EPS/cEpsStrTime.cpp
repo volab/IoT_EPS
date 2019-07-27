@@ -129,6 +129,11 @@ bool CEpsStrTime::checkValidity(){
 @return unix time form
 
 */
+/** @todo [NECESSARY] document checkedDays parameter */
+/**
+ @bug duration takes 1s at each switch time. Cause: delay between detection time 
+ by plug.isItTimeToSwitch and nextTime computation here
+*/
 uint32_t  CEpsStrTime::computeNextTime( uint8_t CheckedDays ){
     String s_daysOfTheWeek[7] = { "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"};
     DEFDPROMPT( "CEpsStrTime::computeNextTime" );
@@ -136,7 +141,7 @@ uint32_t  CEpsStrTime::computeNextTime( uint8_t CheckedDays ){
     String page = "";
     displayUnixTime( future );
 	if ( _mode == MMMSS || _mode == MMM){
-		future += _seconds;		
+		future += _seconds; //bug turn around future += _seconds -1;		
 	} else if ( !CheckedDays ) { //HH:MM mode
 		int h, m;
 		DateTime now = CRtc::now();

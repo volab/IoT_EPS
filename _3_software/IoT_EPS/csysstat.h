@@ -48,6 +48,7 @@ class CSysStatus {
         sysError filesErr;
         sysError ntpErr;
         sysError internetErr;
+        sysError watchdogErr;
         /** 
          @fn CSysStatus::CSysStatus()
          @brief CSysSattus constructor...
@@ -65,6 +66,7 @@ class CSysStatus {
             , plugParamErr( sysError::fatal, CRGB::Red, CRGB::Snow, "Plug's file error"  )
             , ntpErr( sysError::low, "NTP error")
             , internetErr( sysError::fatal, CRGB::RoyalBlue, CRGB::OrangeRed, "Internet access error" )
+            , watchdogErr( sysError::fatal, CRGB::Snow, CRGB::Black, "watchdog error")
             {
             
         }

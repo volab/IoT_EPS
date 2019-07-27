@@ -24,7 +24,7 @@ Our time values are hDebut, hFin, dureeOn, dureeOff...
 
 They can be H:M, H:MM, HH:M, HH:MM, MMM, MM, M, M:S, M:SS, MM:S, MM:SS, MMM:S, MMM:SS
 
-Minutes files in MMM is limited to 300
+Minutes fields in MMM are limited to 300
 */
 class CEpsStrTime //: public String
 {

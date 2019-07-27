@@ -1,6 +1,6 @@
 {
   "general": {
-    "emplacement": "salon",
+    "emplacement": "undifined",
     "numberOfPlugs": "4",
     "allLedsOnTime": "-1",
     "ledsGlobalLuminosity": "5",
@@ -19,7 +19,7 @@
     "ntpError": "OFF"
   },
   "redPlug": {
-    "nickName": "Aquarium",
+    "nickName": "redPlug",
     "State": "OFF",
     "Pause": "OFF",
     "Mode": "Manuel",
@@ -41,7 +41,7 @@
     "nextTimeToSwitch": "0"
   },
   "greenPlug": {
-    "nickName": "Télé",
+    "nickName": "greenPlug",
     "State": "OFF",
     "Pause": "OFF",
     "Mode": "Manuel",
@@ -63,7 +63,7 @@
     "nextTimeToSwitch": "0"
   },
   "bluePlug": {
-    "nickName": "jardin",
+    "nickName": "bluePlug",
     "State": "OFF",
     "Pause": "OFF",
     "Mode": "Manuel",
@@ -85,7 +85,7 @@
     "nextTimeToSwitch": "0"
   },
   "yellowPlug": {
-    "nickName": "liseuse",
+    "nickName": "yellowPlug",
     "State": "OFF",
     "Pause": "OFF",
     "Mode": "Manuel",

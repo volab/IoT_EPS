@@ -108,6 +108,8 @@ This design works perfectly ! but what is the user license of this code ? Perhap
 
 The only missing in this design is an ESP user library. So I write it !    
 
+Power ATtiny with 3.3V and don't forget pullup on D3 and on reset (15k)
+
 .. _`proto shield` : https://www.banggood.com/Arduino-Compatible-328-ProtoShield-Prototype-Expansion-Board-p-926451.html?rmmds=search&cur_warehouse=CN
 .. _`Heliox' Youtube video` : https://www.youtube.com/watch?v=S-oBujsoe-Q&t=247s
 

@@ -363,7 +363,7 @@ void handleNewCred(){
         handleSoftAPIndex();
     else
         handleFileRead("/");
-    /** @todo [NECESSARY] Perhaps send an html page to confir that credentials was written */
+    /** @todo [NECESSARY] Send an html page to confir that credentials was written */
     // server->send(200, "text/plain", returnPage );     
 }
 
@@ -615,7 +615,7 @@ void handleIOTESPConfiguration(){
                 // DSPL( dPrompt + "plugName : " + plugs[j].getPlugName() );
                 if ( plugs[j].getPlugName() == color ){
                     // DSPL(dPrompt + "Write to json for " + color + " nickname = " + i.val );
-                    plugs[j].writeToJson( "nickname", i.val );
+                    plugs[j].writeToJson( "nickName", i.val );
                 }
             } 
             
@@ -640,7 +640,8 @@ void handleIOTESPConfiguration(){
 
 
     // String returnPage = allArgs + "\n" ;
-    // server->send(200, "text/plain", returnPage );    
+    // server->send(200, "text/plain", returnPage );
+/** @todo [NECESSARY]return to config page to confirm that values are taken into account */    
     if ( cParam.getWifiMode() == "softAP" )
         handleSoftAPIndex();
     else

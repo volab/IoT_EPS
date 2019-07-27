@@ -331,6 +331,13 @@ EPS starts in this mode when value of "startInAPMode" parameter is "OFF".
 
 The best functionnal mode ! With full web interface and others functions.
 
+both mode STA and AP
+=======================
+July 2019 : reflexion when we start in DHCP station mode whe don't know IP address of the IoT EPS.
+One way to know it is to use a tool to scan the local network !
+So why do not connect systematically in both mode !!!
+Do it in new dev branch  !!!!!!!!!!!!!!!!!! 10 months of development to arrive at this point !!!!
+
 ==================
 WIFI LED behavior
 ==================
