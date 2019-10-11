@@ -7,11 +7,23 @@ pushd %~dp0
 if "%SPHINXBUILD%" == "" (
     set SPHINXBUILD=python -msphinx
 )
+set DOC_HOME=%cd%
 set SOURCEDIR=source
 set BUILDDIR= ..\..\webDoc
 set SPHINXPROJ=IoT_EPS
+set SOURCE_C_DIR=..\_3_software\IoT_EPS
+
 
 if "%1" == "" goto help
+
+cd %SOURCE_C_DIR%
+REM dir
+doxygen DoxyFile
+cd %DOC_HOME%
+echo %cd%
+REM dir
+
+goto end
 
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (
@@ -67,4 +79,5 @@ if %v_branch% == master (
 )
 
 :end
+
 popd

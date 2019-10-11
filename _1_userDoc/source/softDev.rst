@@ -699,8 +699,11 @@ Usefull Tools
 
 On Android : `Network IP Scanner`_ from homework.
 
+On PC : `Angry IP Scanner`_
+
 
 .. _`Network IP Scanner` : https://play.google.com/store/apps/details?id=com.network.networkip&hl=fr
+.. _`Angry IP Scanner` : https://angryip.org/
     
 ===============================
 Usefull Documentation
