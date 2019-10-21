@@ -5,25 +5,26 @@ pushd %~dp0
 :: Command file for Sphinx documentation
 
 if "%SPHINXBUILD%" == "" (
-    set SPHINXBUILD=python -msphinx
+    REM set SPHINXBUILD=python -msphinx
+    set SPHINXBUILD=sphinx-build
 )
 set DOC_HOME=%cd%
 set SOURCEDIR=source
 set BUILDDIR= ..\..\webDoc
 set SPHINXPROJ=IoT_EPS
-set SOURCE_C_DIR=..\_3_software\IoT_EPS
+REM set SOURCE_C_DIR=..\_3_software\IoT_EPS
 
 
 if "%1" == "" goto help
 
-cd %SOURCE_C_DIR%
-REM dir
-doxygen DoxyFile
-cd %DOC_HOME%
-echo %cd%
-REM dir
+REM cd %SOURCE_C_DIR%
+REM REM dir
+REM doxygen DoxyFile
+REM cd %DOC_HOME%
+REM echo %cd%
+REM REM dir
 
-goto end
+
 
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (

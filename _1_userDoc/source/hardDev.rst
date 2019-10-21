@@ -8,10 +8,7 @@ Document de conception hardware de IOT_ESP
 
 
 .. contents:: Table of Contents
-.. section-numbering::
 
-.. include:: ../../README.rst
-   :encoding: UTF-8
 
 ============
 Avancement
@@ -92,7 +89,7 @@ A little watching on the `Heliox' Youtube video`_ and it was enough to start !
 
 So i decided for this time to stop  MAX1232 integration.
 
-The only chnages that i made in the code of the ATtiny85 watchdog are :
+The only changes that i made in the code of the ATtiny85 watchdog are :
  - Settings.TimeOut          = 20;
  - Settings.Sleep            = 20;
 
@@ -113,9 +110,18 @@ Power ATtiny with 3.3V and don't forget pullup on D3 and on reset (15k)
 .. _`proto shield` : https://www.banggood.com/Arduino-Compatible-328-ProtoShield-Prototype-Expansion-Board-p-926451.html?rmmds=search&cur_warehouse=CN
 .. _`Heliox' Youtube video` : https://www.youtube.com/watch?v=S-oBujsoe-Q&t=247s
 
-======================
-MAX1232 integration
-======================
+ATiny85 watchdog test tips
+============================
+There is a TX debug serial on pin 3  speed is 9600
+
+The name of the project of the Atiny code is ESPEasySlaves.
+
+Only for my eyes the code sits in 0044-Iot_ESP_PPlug\projet\_3_software\etudeDeCode (not pushed in 
+github).
+
+=============================
+MAX1232 integration aborted
+=============================
 
 .. figure:: image/MAX1232pinout.png
     :align: center
@@ -129,11 +135,12 @@ Add a pullup on RST/. Also pullup TOL pin 3 (tolerance 10%), pin 7 WD input and 
 
 Warning MAW1232 check power supply in 5V+/-5% ie 4.75 to 5.25V
 
-==================================
-Connect Relay direct to ESP
-==================================
-Today relays are connected to nano and Push Button are directly connected to ESP8266.
+====================================
+Direct relay connection to ESP pins
+====================================
+On a first stage, relays were connected to nano and Push Button were directly connected to ESP8266.
 The purpose is to connect relays to ESP8266 and push button to nano.
+
 Cause when there is an error on I2C bus relay commands are no accessibles and we can't switch 
 it off with main power switch.
 
@@ -145,9 +152,9 @@ List of change:
  - void CPowerPlug::begin : one line     _nano.pinMode( _pin, OUTPUT ); to normal pinMode 
  - void CPowerPlug::updateOutputs : one line to change
  
-A failure (work branch : relayChange) because ESP8266 pin are others usages that are not compatibles
-with relay command. Specaly D3 and D4 respectively IO-0 and IO-2 that are used during the reset 
-and that changes state. So we leave this work on its branche and return to the previous
+A failure (work branch : relayChange) because some of the ESP8266 pins have others usages that are
+not compatibles with relay command. Specaly D3 and D4 respectively IO-0 and IO-2 that are used 
+during the reset and that changes state. So we leave this work on its branche and return to the previous
 configuration with relay commands connected to the NanoI2CIOExpander.
 
 Others solutions to solve our problem:

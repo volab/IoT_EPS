@@ -9,6 +9,11 @@ Welcome to IoT_EPS's documentation!
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+   :titlesonly:
+   
+   includeMe
+   softDev
+   hardDev
 
 
 

@@ -3,13 +3,9 @@ Document de conception soft de IOT_ESP
 ++++++++++++++++++++++++++++++++++++++++
 
 .. contents:: Table of Contents
-.. section-numbering::
-
-.. include:: ../../README.rst
-   :encoding: UTF-8
 
 
-   
+  
 ==============
 Avancement
 ==============
@@ -293,7 +289,9 @@ Why do not use wifi manager ?
 =========================================
 
 
-
+=========================
+Configuration ARDUINO
+=========================
 
 WEMOS D1 MIN ARDUINO configurattion:
 
@@ -403,7 +401,7 @@ Arduino\Croquis\hardware\esp8266com\esp8266\tools\sdk\include
 page 62/179 pdf ESP8266 Non-OS SDK API Reference 
 3.5.33. wifi_softap_get_config_default
 
-.. code:: cpp
+.. code::
 
     struct softap_config {
         uint8 ssid[32];
@@ -497,7 +495,7 @@ dépendance à la librairie Adafruit_MCP23017.h
 
 Métodes disponibles:
 
-.. code:: cpp
+.. code::
 
     void begin(uint8_t addr);
     void begin(void);
@@ -807,7 +805,11 @@ and `Reliable Startup for I2C Battery Backed RTC`_
 
 .. _`Reliable Startup for I2C Battery Backed RTC` : http://www.forward.com.au/pfod/ArduinoProgramming/I2C_ClearBus/index.html
 
-
+=============================
+Source code documentation
+=============================
+ 
+ `<codeDoc\\html\\index.html>`_
 
 ===========================
 Vocabulary
