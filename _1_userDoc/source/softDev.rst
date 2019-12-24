@@ -3,13 +3,9 @@ Document de conception soft de IOT_ESP
 ++++++++++++++++++++++++++++++++++++++++
 
 .. contents:: Table of Contents
-.. section-numbering::
-
-.. include:: ../../README.rst
-   :encoding: UTF-8
 
 
-   
+  
 ==============
 Avancement
 ==============
@@ -130,8 +126,8 @@ First boot process
 #. if Station is ok firstBoot is ended, set firstBoot param = off
 #. if station ko reload firstboot page with alerte
 
-Behavior when user move EPS from on site to another
-========================================================
+Behavior when user move EPS from one physical site to another
+===============================================================
 It is not a first boot
 
 EPS will search its WiFi station and will not find it so it restart in AP mode then user can acces
@@ -164,6 +160,8 @@ Action name to get json value updated page : cfgpage
 Set time and date parameter names
 =====================================
 setTime, setDate
+
+.. index:: Modes
 
 ====================================
 Plugs modes description
@@ -244,7 +242,7 @@ Start up behavior
 
 Question:what should be the behavior when power is switched to ON.
 
-2 cases are possible when power is On: the button is switche to ON or the system restart after a
+2 cases are possible when power is On: the button is switched to ON or the system restart after a
 genaral power cut
 
 Soit l'interrupteur général est actif (cas de la coupure EDF) et on reprend où on en était.
@@ -276,11 +274,14 @@ should be detected.
 Solution wait for power on in ARDUINO setup function.
 Restart ESP in ARDUINO loop when power is switch to OFF.
 
-Specails push buttons behaviors @stratup
+.. index:: Special push buttons
+
+Special push button behaviors @stratup
 ===========================================
 PB0 : @power on (not by power switch but by wall plug) start in simple manual mode see `WIFI Modes`_
 
-PB1 : in same conditions as above, start specials action only for expert and debug mode (today creat default json) 
+PB1 : in same conditions as above, start specials action only for expert and debug mode
+(today creat default json) with main power switch on on state (to be cecked 21/10/2019) 
 
 ============================
 Sofware development choice
@@ -293,11 +294,17 @@ Why do not use wifi manager ?
 =========================================
 
 
-
+=========================
+Configuration ARDUINO
+=========================
 
 WEMOS D1 MIN ARDUINO configurattion:
 
 .. image:: ./image/wemosD1Mini_configArduino.png
+
+
+.. index:: 
+   single: Wifi modes
 
 ==================
 WIFI Modes
@@ -403,7 +410,7 @@ Arduino\Croquis\hardware\esp8266com\esp8266\tools\sdk\include
 page 62/179 pdf ESP8266 Non-OS SDK API Reference 
 3.5.33. wifi_softap_get_config_default
 
-.. code:: cpp
+.. code::
 
     struct softap_config {
         uint8 ssid[32];
@@ -492,12 +499,14 @@ https://github.com/gmag11/FSBrowser/blob/master/data/edit.html
 IOExpander
 ==============
 
-Au cours de la définition hardware pin, on a décider d'utiliser un IOEpander MPC23017 d'où nouvelle
-dépendance à la librairie Adafruit_MCP23017.h
+The following text is for history only and it is obsolète:
 
-Métodes disponibles:
+When we define hardware pin usage, we decide to use IOEpander MPC23017.
+Due to this choice=, we need to use a new lib Adafruit_MCP23017.h
 
-.. code:: cpp
+Available method:
+
+.. code::
 
     void begin(uint8_t addr);
     void begin(void);
@@ -530,6 +539,10 @@ _initDone et _mpc (mpc étant la ressource commune à toutes les instances de la
     J'ai choisi d'utiliser une broche dédiée pour la LED d'état des plugs.
     On aurait pu utiliser la broche de commande du relais mais au cas où les 2
     seraient inversées l'une par rapport à l'autre, cela apporte plus de liberté.
+
+During development, to get more digital IO and 4 analog input, we decide to add a ARDUINO Nano as 
+an I2C IO expander (see Hardware dev doc)
+
 
     
 ==================================
@@ -699,8 +712,11 @@ Usefull Tools
 
 On Android : `Network IP Scanner`_ from homework.
 
+On PC : `Angry IP Scanner`_
+
 
 .. _`Network IP Scanner` : https://play.google.com/store/apps/details?id=com.network.networkip&hl=fr
+.. _`Angry IP Scanner` : https://angryip.org/
     
 ===============================
 Usefull Documentation
@@ -804,7 +820,11 @@ and `Reliable Startup for I2C Battery Backed RTC`_
 
 .. _`Reliable Startup for I2C Battery Backed RTC` : http://www.forward.com.au/pfod/ArduinoProgramming/I2C_ClearBus/index.html
 
-
+=============================
+Source code documentation
+=============================
+ 
+ `<codeDoc\\html\\index.html>`_
 
 ===========================
 Vocabulary

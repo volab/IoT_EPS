@@ -8,10 +8,7 @@ Document de conception hardware de IOT_ESP
 
 
 .. contents:: Table of Contents
-.. section-numbering::
 
-.. include:: ../../README.rst
-   :encoding: UTF-8
 
 ============
 Avancement
@@ -92,7 +89,7 @@ A little watching on the `Heliox' Youtube video`_ and it was enough to start !
 
 So i decided for this time to stop  MAX1232 integration.
 
-The only chnages that i made in the code of the ATtiny85 watchdog are :
+The only changes that i made in the code of the ATtiny85 watchdog are :
  - Settings.TimeOut          = 20;
  - Settings.Sleep            = 20;
 
@@ -113,9 +110,18 @@ Power ATtiny with 3.3V and don't forget pullup on D3 and on reset (15k)
 .. _`proto shield` : https://www.banggood.com/Arduino-Compatible-328-ProtoShield-Prototype-Expansion-Board-p-926451.html?rmmds=search&cur_warehouse=CN
 .. _`Heliox' Youtube video` : https://www.youtube.com/watch?v=S-oBujsoe-Q&t=247s
 
-======================
-MAX1232 integration
-======================
+ATiny85 watchdog test tips
+============================
+There is a TX debug serial on pin 3  speed is 9600
+
+The name of the project of the Atiny code is ESPEasySlaves.
+
+Only for my eyes the code sits in 0044-Iot_ESP_PPlug\projet\_3_software\etudeDeCode (not pushed in 
+github).
+
+=============================
+MAX1232 integration aborted
+=============================
 
 .. figure:: image/MAX1232pinout.png
     :align: center
@@ -129,11 +135,12 @@ Add a pullup on RST/. Also pullup TOL pin 3 (tolerance 10%), pin 7 WD input and 
 
 Warning MAW1232 check power supply in 5V+/-5% ie 4.75 to 5.25V
 
-==================================
-Connect Relay direct to ESP
-==================================
-Today relays are connected to nano and Push Button are directly connected to ESP8266.
+====================================
+Direct relay connection to ESP pins
+====================================
+On a first stage, relays were connected to nano and Push Button were directly connected to ESP8266.
 The purpose is to connect relays to ESP8266 and push button to nano.
+
 Cause when there is an error on I2C bus relay commands are no accessibles and we can't switch 
 it off with main power switch.
 
@@ -145,9 +152,9 @@ List of change:
  - void CPowerPlug::begin : one line     _nano.pinMode( _pin, OUTPUT ); to normal pinMode 
  - void CPowerPlug::updateOutputs : one line to change
  
-A failure (work branch : relayChange) because ESP8266 pin are others usages that are not compatibles
-with relay command. Specaly D3 and D4 respectively IO-0 and IO-2 that are used during the reset 
-and that changes state. So we leave this work on its branche and return to the previous
+A failure (work branch : relayChange) because some of the ESP8266 pins have others usages that are
+not compatibles with relay command. Specaly D3 and D4 respectively IO-0 and IO-2 that are used 
+during the reset and that changes state. So we leave this work on its branche and return to the previous
 configuration with relay commands connected to the NanoI2CIOExpander.
 
 Others solutions to solve our problem:
@@ -279,7 +286,9 @@ The winer (not in 2019 !) is `Si8901B-GS`_
 
 dispo on `Mouser`_ à 3.44€/10pcs
 
-But it requires a 3.3V power supply referenced to Neutral line ! (see fig16 page 24 og its datasheet)
+.. WARNING::
+
+    It requires a 3.3V power supply referenced to Neutral line ! (see fig16 page 24 og its datasheet)
 
 .. _`Mouser` : https://www.mouser.fr/Search/Refine.aspx?Keyword=SI8901 
 
@@ -288,6 +297,85 @@ But it requires a 3.3V power supply referenced to Neutral line ! (see fig16 page
 .. _`Usage example` : http://tinkerman.cat/the-espurna-board-a-smart-wall-switch-with-power-monitoring/#lightbox-gallery-oY6vOUw7/3/
 
 Finaly, now that we have on board NANOI2CIOExpander that provide 6 analog inputs we can use ACS712.
+
+.. warning::
+
+    For me, most of breakout boards provide on internet have an isolation issue. The ground plane comes very close to AC terminal (less than 1 mm)
+
+.. figure:: image/ACS712wrongModul.jpg
+   :width: 500 px
+   :figwidth: 100%
+   :alt: alternate text
+   :align: center
+   
+   ACS712 wrong breakout board   
+
+
+.. figure:: image/ACS712goodModul.jpg
+   :width: 500 px
+   :figwidth: 100%
+   :alt: alternate text
+   :align: center
+   
+   ACS712 good breakout board    
+
+.. figure:: image/ACS712anotherGoodModulOnly20A.jpg
+   :width: 500 px
+   :figwidth: 100%
+   :alt: alternate text
+   :align: center
+   
+   ACS712 an other good breakout board but only 20A
+   
+   
+
+
+`aliExpress good bb provided in 5A grade`_ or `another one`_
+
+.. _`aliExpress good bb provided in 5A grade` :  https://fr.aliexpress.com/item/4000114853244.html?spm=a2g0o.productlist.0.0.66ea5b1eF7t2X4&algo_pvid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc&algo_expid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc-34&btsid=b1b106c8-8af6-4248-a717-bc9083416f7d&ws_ab_test=searchweb0_0,searchweb201602_1,searchweb201603_52   
+
+
+
+.. _`another one` : https://fr.aliexpress.com/item/32649182582.html?spm=a2g0o.productlist.0.0.66ea5b1eF7t2X4&algo_pvid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc&algo_expid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc-26&btsid=b1b106c8-8af6-4248-a717-bc9083416f7d&ws_ab_test=searchweb0_0,searchweb201602_1,searchweb201603_52   
+   
+New ASC723
+==============
+Replacement part for ACS712 find on the Allegro web site
+
+"The Allegro™ ACS723 current sensor IC is an economical and
+precise solution for AC or DC current sensing in industrial,
+commercial, and communications systems." from datasheet.
+
+But... It is not very widespread. It is available only on SPARKFUN and distribute by MOUSER
+
+`SPARKFUN`_ provide 2 breakoutboard. On one there is a smal AOP for `low current version`_.
+
+`at MOUSER`_
+
+I find an another problème : the price ! Tips : breakout board for ACS712 should be compatible !
+
+The component alone is available `on Radiospares site`_.
+
+But an improuvment is the sensitivity for +/-5A version we pass from 185mV/A for ACS712 to 400mV/A.
+
+An other improvment there is a +/-10A version ACS723LLCTR-10AB-T 5.81€ with VAT.
+
+.. _`SPARKFUN` : https://www.sparkfun.com/products/13679
+
+.. _`low current version` : https://www.sparkfun.com/products/14544
+
+.. _`at MOUSER` : https://www.mouser.fr/ProductDetail/SparkFun/SEN-13679?qs=sGAEpiMZZMth%2FZucVH%252BQV%252BqTLTi3I91PHEyo95sZVRRnBMCmkoQqnQ%3D%3D 
+
+
+.. _`on Radiospares site` : https://fr.rs-online.com/web/p/capteurs-de-courant/8660760/
+
+TMCS1100 from ti
+===================
+
+No breakout board on the net !
+
+ACS70331
+
 
 ####
 
@@ -325,8 +413,10 @@ AC/DC capable de délivrer 3.2W
     
 ####
 
+.. index:: Pining, IO connections
+
 =====================
-Affectation des io
+Affectation des io 
 =====================
 
 .. figure:: image/wemos-d1-mini-pinout_avecI2C.png
@@ -352,17 +442,20 @@ Affectation des io
     D8    CLK WS2801     IO15 - PD10k    
     ===== =============  =====================
 
+.. index:: Nano I2C IO Expander, I2C IO Expender
+
 ===========================
 nanoI2CIOExpander
 ===========================
 To solve digital I/O and analog I decide to use a ARDUINO nano as I2C slave. I belived that someone
 like ADAFRUIT or SPARFUN has build a lib to use an ARDUINO Nano as `I2C I/O expander`_.
 
-That's my great surprise, nobody does it ! So I wrote it and I provide it on HACKSTER IO
-
+At my great surprise, nobody does it ! So I wrote it and I provide it on `HACKSTER IO`_
 
 
 .. _`I2C I/O expander` : https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc
+
+.. _`HACKSTER IO` :  https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc
 
 Nano pining :
 
