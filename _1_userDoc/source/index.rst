@@ -8,7 +8,16 @@ Welcome to IoT_EPS's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Contents
+   :titlesonly:
+   
+   softDev
+   hardDev
+   Bug_ToDoLst
+   assembly
+   userManual
+   interface_Web
+   pitch
 
 
 
@@ -16,5 +25,6 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
+
+

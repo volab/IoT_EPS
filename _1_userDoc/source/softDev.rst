@@ -1,13 +1,20 @@
-++++++++++++++++++++++++++++++++++++++++
-Document de conception soft de IOT_ESP
-++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+IOT Electrical Power Strip Software development documentation
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. contents:: Table of Contents
+    :backlinks: top
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents
+   :titlesonly:
+   
+   curentSensing
 
   
 ==============
-Avancement
+Progression
 ==============
 #. Affichage d'un page html static: ok
 #. Affichage page html fichier SPIFFS : ok
@@ -240,9 +247,9 @@ Factorisation des varibales de mode
 Start up behavior
 =====================================
 
-Question:what should be the behavior when power is switched to ON.
+Question:what should be the behavior when power is switched to ON ?
 
-2 cases are possible when power is On: the button is switched to ON or the system restart after a
+2 cases are possibles when power is On: the button is switched to ON or the system restart after a
 genaral power cut
 
 Soit l'interrupteur général est actif (cas de la coupure EDF) et on reprend où on en était.

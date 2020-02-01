@@ -43,6 +43,7 @@ bool ConfigParam::readFromJson(){
     DEFDPROMPT("reading config param.")
 
     DSPL( dPrompt +F("Mounting FS..."));
+    ///SPIFFS Opning
     if (SPIFFS.begin()) {
         DSPL(dPrompt + F("File system mounted "));
         // if (SPIFFS.exists("/config.json")) {
@@ -57,12 +58,13 @@ bool ConfigParam::readFromJson(){
                 DSPL( dPrompt + "Config file size : " + (String)size ) ;
                 // Allocate a buffer to store contents of the file.
                 std::unique_ptr<char[]> buf(new char[size]);
-
+///Config file read
                 configFile.readBytes(buf.get(), size);
                 DynamicJsonBuffer jsonBuffer;
                 JsonObject& json = jsonBuffer.parseObject(buf.get());
                 // json.printTo(DEBUGPORT);
                 if (json.success()) {
+                    ///Parameters updated with those of the config file read
                     String s_IpAdd = json["general"]["softAP_IP"].as<String>();
                     _addIP.fromString( s_IpAdd );
                     _numberOfPlugs = json["general"]["numberOfPlugs"].as<String>().toInt();
@@ -97,6 +99,7 @@ bool ConfigParam::readFromJson(){
                     
                     return false;
                 }
+                ///Config file closing
                 configFile.close();
                 return true;
             }

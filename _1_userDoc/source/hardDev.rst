@@ -1,6 +1,6 @@
-++++++++++++++++++++++++++++++++++++++++++++++
-Document de conception hardware de IOT_ESP
-++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+IOT Electrical Power Strip Hardware development documentation
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 :Auteur: J.Soranzo
 :Date: Octobre 2018
@@ -8,10 +8,10 @@ Document de conception hardware de IOT_ESP
 
 
 .. contents:: Table of Contents
-
+    :backlinks: top
 
 ============
-Avancement
+Progression
 ============
 #. alimentation ESP/Wemos en 5V ? : ok
 #. horloge temps réelle : ok
@@ -255,7 +255,7 @@ pb it is not I2C compnent and more we need 4
 
 3 version exist -05 -20 -30 for 5A, 20A, 30A.
 
-On Banggod there are :
+On Banggood there are :
   - `Banggood ACS712 5A version`_
   - `Banggood ACS712 30A version`_
   - `20A version on AliExpress`_
@@ -266,6 +266,11 @@ On Banggod there are :
 .. _`Banggood ACS712 5A version`: https://www.banggood.com/ACS712TELC-05B-5A-Module-Current-Sensor-Module-For-Arduino-p-74020.html?akmClientCountry=FR&&cur_warehouse=CN
 .. _`Banggood ACS712 30A version` : https://www.banggood.com/1PC-30A-New-Range-Current-Sensor-Module-for-ACS712-p-86583.html?rmmds=search&cur_warehouse=CN
 .. _`20A version on AliExpress` : https://fr.aliexpress.com/item/32315336227.html
+
+.. NOTE::
+    5A version is  a rail to rail value +/-5A but we need to mesure RMS value 5A/sqr(2) = 3.53A.
+    With a 20A value it means that we have 14.14A with 100mV/A factor it risk to be very low
+    mesurement for small curent values. for exemple: for a 100mA we need to mesure 10mV.
 
 ACS764
 ======
@@ -288,7 +293,7 @@ dispo on `Mouser`_ à 3.44€/10pcs
 
 .. WARNING::
 
-    It requires a 3.3V power supply referenced to Neutral line ! (see fig16 page 24 og its datasheet)
+    It requires a 3.3V power supply referenced to Neutral line ! (see fig16 page 24 in its datasheet)
 
 .. _`Mouser` : https://www.mouser.fr/Search/Refine.aspx?Keyword=SI8901 
 
@@ -308,35 +313,71 @@ Finaly, now that we have on board NANOI2CIOExpander that provide 6 analog inputs
    :alt: alternate text
    :align: center
    
-   ACS712 wrong breakout board   
+   ACS712 wrong breakout board 
 
+Specialy those with mounting holes. Its is mode revelant from back side:
 
-.. figure:: image/ACS712goodModul.jpg
+.. figure:: image/wrongACS712moduleBack.jpg
    :width: 500 px
    :figwidth: 100%
-   :alt: alternate text
+   :alt: ACS712 wrong breakout board back side
    :align: center
    
-   ACS712 good breakout board    
+   ACS712 wrong breakout board back side      
 
 .. figure:: image/ACS712anotherGoodModulOnly20A.jpg
    :width: 500 px
    :figwidth: 100%
-   :alt: alternate text
+   :alt: ACS712 a good breakout board
    :align: center
    
-   ACS712 an other good breakout board but only 20A
+   ACS712 a good breakout board
+     
+.. figure:: image/backSideViewAdeepin.jpg
+   :width: 500 px
+   :figwidth: 100%
+   :alt: ACS712 a good breakout board back
+   :align: center
    
-   
+   ACS712 a good breakout board back
 
+More connector are bigest than on the other modules and they arive not solder. There is 2 big holes 
+on pcb to connect directly large wires for 30A curent. the size oh this holes is about 2.9mm.
 
-`aliExpress good bb provided in 5A grade`_ or `another one`_
+`aliExpress good module provided in 5A grade`_ or `another one`_
 
-.. _`aliExpress good bb provided in 5A grade` :  https://fr.aliexpress.com/item/4000114853244.html?spm=a2g0o.productlist.0.0.66ea5b1eF7t2X4&algo_pvid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc&algo_expid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc-34&btsid=b1b106c8-8af6-4248-a717-bc9083416f7d&ws_ab_test=searchweb0_0,searchweb201602_1,searchweb201603_52   
+.. _`aliExpress good module provided in 5A grade` :  https://fr.aliexpress.com/item/4000114853244.html?spm=a2g0o.productlist.0.0.66ea5b1eF7t2X4&algo_pvid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc&algo_expid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc-34&btsid=b1b106c8-8af6-4248-a717-bc9083416f7d&ws_ab_test=searchweb0_0,searchweb201602_1,searchweb201603_52   
 
 
 
 .. _`another one` : https://fr.aliexpress.com/item/32649182582.html?spm=a2g0o.productlist.0.0.66ea5b1eF7t2X4&algo_pvid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc&algo_expid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc-26&btsid=b1b106c8-8af6-4248-a717-bc9083416f7d&ws_ab_test=searchweb0_0,searchweb201602_1,searchweb201603_52   
+
+First test
+======================================
+With my new received ACS712 5A breakout board, i made a first test with oscilloscope, multimeter
+and a motor as a charge ( with the drill press of the lab).
+
+Multimeter measure 0.793A
+
+   
+.. figure:: image/curentMeasureNoLoad.jpg
+   :figwidth: 100%
+   :alt: Curent measurment without load
+   :align: center
+   
+   Curent measurment without load
+
+
+.. figure:: image/curentMeasureMoto.jpg
+   :figwidth: 100%
+   :alt: Curent measurment with motor
+   
+   Curent measurment with motor
+
+185mV/A we can see that the measurment will be not very precise and very noisy !
+
+For 5A it give 5x185 = 925mV above and under 2.5V
+
    
 New ASC723
 ==============
@@ -358,7 +399,8 @@ The component alone is available `on Radiospares site`_.
 
 But an improuvment is the sensitivity for +/-5A version we pass from 185mV/A for ACS712 to 400mV/A.
 
-An other improvment there is a +/-10A version ACS723LLCTR-10AB-T 5.81€ with VAT.
+An other improvment there is a +/-10A version ACS723LLCTR-10AB-T but it is very expensive 
+5.81€ with VAT regarless of the ASC712.
 
 .. _`SPARKFUN` : https://www.sparkfun.com/products/13679
 
@@ -377,7 +419,42 @@ No breakout board on the net !
 ACS70331
 
 
-####
+Current Sensing Aborted
+======================================
+For now, we abort the idea of sensing the curent in each chanel of the IoT EPS because we can't find
+a goog solution that match the main criteria:
+
+- ability to measure low and high current from 0.01A to 10A True RMS on AC240V suply without neutral
+  reference.
+
+So we decide to go on the rest of the project without this feature but we keep it in mind.
+
+For remembering, current measurment covers 2  needs:
+#. check if the 2 relais on one channel have swtich correctly
+#. provide power consumption to the user
+
+For the first one we can measure voltage with a module like this :
+
+.. image:: image/voltageMesurmentmodule.jpg
+   :width: 400 px
+   :align: center
+   
+See `Module AC on AliExpress`_ with voltage lower transformer
+
+.. _`Module AC on AliExpress` : https://fr.aliexpress.com/item/32816455579.html
+
+This solution is more easy to implement even at the end of the project because voltage measurement 
+are made in parallel and there is only one value to measure prensence of the 240V.
+
+An other way to do ti is to use SFH6206 as on `Electrical Engineering forum`_ but this solution
+requires interrupt pin that we don't have here ! We have only analog pin on the ARDUINO nano !
+
+.. _`Electrical Engineering forum` : https://electronics.stackexchange.com/questions/17008/how-can-i-detect-a-power-outage-with-a-microcontroller
+
+----------------------------------------------------------------------------------------------------
+
+.. index::
+    pair: Hardware; Relay choice
 
 =======================
 Choix du module relais
@@ -411,7 +488,7 @@ la bobine est données pour 70ohm sous 5V soit I environ 75mA * 8 = 571mA
 Nous avons mesuré 156mA pour 2 relais ce qui donnerais 624mA pour les 8 soit un convertisseur 
 AC/DC capable de délivrer 3.2W
     
-####
+----------------------------------------------------------------------------------------------------
 
 .. index:: Pining, IO connections
 
@@ -443,6 +520,25 @@ Affectation des io
     ===== =============  =====================
 
 .. index:: Nano I2C IO Expander, I2C IO Expender
+
+- GPIO16: pin is high at BOOT
+- GPIO0: boot failure if pulled LOW
+- GPIO2: pin is high on BOOT, boot failure if pulled LOW
+- GPIO15: boot failure if pulled HIGH
+- GPIO3: pin is high at BOOT
+- GPIO1: pin is high at BOOT, boot failure if pulled LOW
+- GPIO10: pin is high at BOOT
+- GPIO9: pin is high at BOOT
+
+Source : sur `RandomeredTutorial ESP8266 pinout`_
+
+.. _`RandomeredTutorial ESP8266 pinout` : https://randomnerdtutorials.com/esp8266-pinout-reference-gpios/
+
+----------------------------------------------------------------------------------------------------
+
+.. index::
+    pair: Hardware; IO Expander
+
 
 ===========================
 nanoI2CIOExpander

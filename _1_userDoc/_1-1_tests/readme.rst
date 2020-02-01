@@ -1,1 +1,1 @@
-An Excel fil that list all tests (with thier results) and all error and their handling
+An Excel file that list all tests (with their results) and all error and their handling

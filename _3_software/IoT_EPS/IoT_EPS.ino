@@ -85,7 +85,10 @@ CPowerPlug *plugs;
 // bool errFS = true;
 
 CRGB colorLeds[NUM_LEDS]; /**< @brief  not very satisfy for this globale ! It should be in the 
-CpowerPlug class*/
+CpowerPlug class as a static member*/
+//It is used with FastLED that it should be concidered as a common ressource
+//It is not very important because cpowerplug instance never drive these LED !
+//Yes near 342 lign : colorLeds[i] = plugs[i].getColor();
 
 
 bool simpleManualMode = false;
@@ -287,7 +290,7 @@ void setup(){
     
 
 
-    /* done test if CNano::initOk = true - if not don't start anything - this is fatal error*/
+    /* DONE test if CNano::initOk = true - if not don't start anything - this is fatal error*/
     plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CPowerPlug::modeId("MANUEL") );
     plugs[0].setColor( CRGB::Red );
     plugs[0].setPlugName( HTML_JSON_REDPLUGNAME );
@@ -302,11 +305,13 @@ void setup(){
     plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
     if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[1].readFromJson( true ) );
     else  plugs[1].handleBpLongClic();
+    
     plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, BP2, CPowerPlug::modeId("MANUEL") );
     plugs[2].setColor( CRGB::Blue );
     plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
     if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[2].readFromJson( true ) );
     else  plugs[2].handleBpLongClic();
+    
     // plugs[2].setColor( CRGB::Purple );
     plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, BP3, CPowerPlug::modeId("MANUEL") );
     plugs[3].setColor( CRGB::Yellow );
@@ -471,12 +476,8 @@ void setup(){
                 WiFi.disconnect();
                 sysStatus.ntpEnabled = false;
                 wifiLed.low();
+            }    
         }
-            
-        }
-            
-
-	
 	} else {
 		DSPL(  dPrompt + F("Enter in simple manual mode") );
 		cParam.setWifiMode( "No wifi" );

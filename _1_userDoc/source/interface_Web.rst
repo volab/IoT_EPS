@@ -5,7 +5,7 @@ Interface WEB
 Prestation des différents comportement de l'interface WEB
 
 .. contents:: Table des matières
-.. section-numbering::
+    :backlinks: top
 
 ####
 
@@ -80,6 +80,7 @@ Mode Manuel
 ===========
 
 [TODO] A renseigner [TODO]
+
 Mode Minuterie
 ==============
 
