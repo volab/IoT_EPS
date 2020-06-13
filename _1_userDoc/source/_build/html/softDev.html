@@ -1,0 +1,1010 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>IOT Electrical Power Strip Software development documentation &#8212; Documentation IoT_EPS </title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script type="text/javascript" src="_static/translations.js"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Recherche" href="search.html" />
+    <link rel="next" title="IOT EPS curent Sensing" href="curentSensing.html" />
+    <link rel="prev" title="Welcome to IoT_EPS’s documentation!" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="curentSensing.html" title="IOT EPS curent Sensing"
+             accesskey="N">suivant</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to IoT_EPS’s documentation!"
+             accesskey="P">précédent</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Documentation IoT_EPS </a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="iot-electrical-power-strip-software-development-documentation">
+<h1><a class="toc-backref" href="#table-of-contents">IOT Electrical Power Strip Software development documentation</a><a class="headerlink" href="#iot-electrical-power-strip-software-development-documentation" title="Lien permanent vers ce titre">¶</a></h1>
+<div class="contents topic" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#iot-electrical-power-strip-software-development-documentation" id="id30">IOT Electrical Power Strip Software development documentation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#progression" id="id31">Progression</a></p></li>
+<li><p><a class="reference internal" href="#namming-convention" id="id32">Namming convention</a></p></li>
+<li><p><a class="reference internal" href="#to-be-added-to-config-json-file" id="id33">To be added to config json file</a></p></li>
+<li><p><a class="reference internal" href="#remember" id="id34">Remember</a></p></li>
+<li><p><a class="reference internal" href="#first-boot-configuration" id="id35">First boot configuration</a></p>
+<ul>
+<li><p><a class="reference internal" href="#restaure-factory-parameters" id="id36">Restaure factory parameters</a></p></li>
+<li><p><a class="reference internal" href="#what-are-hypothesys-when-boot-for-the-first-time" id="id37">What are hypothesys, when boot for the first time ?</a></p></li>
+<li><p><a class="reference internal" href="#first-boot-process" id="id38">First boot process</a></p></li>
+<li><p><a class="reference internal" href="#behavior-when-user-move-eps-from-one-physical-site-to-another" id="id39">Behavior when user move EPS from one physical site to another</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#configuration-parameter" id="id40">Configuration parameter</a></p>
+<ul>
+<li><p><a class="reference internal" href="#set-time-and-date-parameter-names" id="id41">Set time and date parameter names</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#plugs-modes-description" id="id42">Plugs modes description</a></p>
+<ul>
+<li><p><a class="reference internal" href="#manuel" id="id43">Manuel</a></p></li>
+<li><p><a class="reference internal" href="#timer-minuteur-mode-cuit-oeuf" id="id44">Timer / minuteur / mode cuit oeuf</a></p></li>
+<li><p><a class="reference internal" href="#periodique-cyclique" id="id45">Périodique/cyclique</a></p></li>
+<li><p><a class="reference internal" href="#hebdomadaire" id="id46">Hebdomadaire</a></p></li>
+<li><p><a class="reference internal" href="#clone" id="id47">Clone</a></p></li>
+<li><p><a class="reference internal" href="#evolutions-possibles" id="id48">Evolutions possibles</a></p></li>
+<li><p><a class="reference internal" href="#factorisation-des-varibales-de-mode" id="id49">Factorisation des varibales de mode</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#start-up-behavior" id="id50">Start up behavior</a></p>
+<ul>
+<li><p><a class="reference internal" href="#special-push-button-behaviors-stratup" id="id51">Special push button behaviors &#64;stratup</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#sofware-development-choice" id="id52">Sofware development choice</a></p>
+<ul>
+<li><p><a class="reference internal" href="#why-do-not-use-wifi-manager" id="id53">Why do not use wifi manager ?</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#configuration-arduino" id="id54">Configuration ARDUINO</a></p></li>
+<li><p><a class="reference internal" href="#wifi-modes" id="id55">WIFI Modes</a></p>
+<ul>
+<li><p><a class="reference internal" href="#no-wifi" id="id56">No WiFi</a></p></li>
+<li><p><a class="reference internal" href="#softap" id="id57">SoftAP</a></p></li>
+<li><p><a class="reference internal" href="#station" id="id58">Station</a></p></li>
+<li><p><a class="reference internal" href="#both-mode-sta-and-ap" id="id59">both mode STA and AP</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#ip-address" id="id60">IP address</a></p></li>
+<li><p><a class="reference internal" href="#wifi-led-behavior" id="id61">WIFI LED behavior</a></p></li>
+<li><p><a class="reference internal" href="#esp8266-and-its-wifi-managment" id="id62">ESP8266 and its wifi managment !</a></p></li>
+<li><p><a class="reference internal" href="#displaying-plugs-mode-only-with-led" id="id63">Displaying plugs mode only with LED</a></p></li>
+<li><p><a class="reference internal" href="#web-page-development" id="id64">WEB page development</a></p>
+<ul>
+<li><p><a class="reference internal" href="#html-requests" id="id65">html requests</a></p></li>
+<li><p><a class="reference internal" href="#ntp-server-name" id="id66">NTP server name</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#serveur-html-esp8266" id="id67">Serveur html ESP8266</a></p>
+<ul>
+<li><p><a class="reference internal" href="#edit-page" id="id68">edit page</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#ioexpander" id="id69">IOExpander</a></p></li>
+<li><p><a class="reference internal" href="#error-handling" id="id70">Error handling</a></p></li>
+<li><p><a class="reference internal" href="#time-managment-strategy" id="id71">Time managment strategy</a></p></li>
+<li><p><a class="reference internal" href="#rtc-ds3231-eeprom-access" id="id72">RTC DS3231 EEPROM access</a></p></li>
+<li><p><a class="reference internal" href="#livetime-of-esp8266-flash-spiffs" id="id73">Livetime of ESP8266 flash SPIFFS</a></p></li>
+<li><p><a class="reference internal" href="#livetime-of-the-relays" id="id74">Livetime of the relays</a></p></li>
+<li><p><a class="reference internal" href="#html-ihm-integration" id="id75">HTML IHM integration</a></p></li>
+<li><p><a class="reference internal" href="#usefull-tools" id="id76">Usefull Tools</a></p></li>
+<li><p><a class="reference internal" href="#usefull-documentation" id="id77">Usefull Documentation</a></p>
+<ul>
+<li><p><a class="reference internal" href="#html-server" id="id78">Html server</a></p></li>
+<li><p><a class="reference internal" href="#fastled" id="id79">fastLed</a></p></li>
+<li><p><a class="reference internal" href="#json-lectures-ecritures" id="id80">json (lectures / écritures)</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#used-library" id="id81">Used library</a></p></li>
+<li><p><a class="reference internal" href="#eccueils-et-autres-difficultes" id="id82">Eccueils et autres difficultés</a></p>
+<ul>
+<li><p><a class="reference internal" href="#limite-des-longueurs-de-nom-de-fichier-spiffs" id="id83">Limite des longueurs de nom de fichier SPIFFS</a></p></li>
+<li><p><a class="reference internal" href="#prise-en-main-de-la-librairie-json" id="id84">Prise en main de la librairie JSON</a></p></li>
+<li><p><a class="reference internal" href="#ds3231-stuck-i2c-bus" id="id85">DS3231 stuck I2C bus</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#source-code-documentation" id="id86">Source code documentation</a></p></li>
+<li><p><a class="reference internal" href="#vocabulary" id="id87">Vocabulary</a></p></li>
+<li><p><a class="reference internal" href="#webography" id="id88">Webography</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="curentSensing.html">IOT EPS curent Sensing</a></li>
+</ul>
+</div>
+<div class="section" id="progression">
+<h2><a class="toc-backref" href="#table-of-contents">Progression</a><a class="headerlink" href="#progression" title="Lien permanent vers ce titre">¶</a></h2>
+<ol class="arabic simple">
+<li><p>Affichage d’un page html static: ok</p></li>
+<li><p>Affichage page html fichier SPIFFS : ok</p></li>
+<li><p>Affichage de l’heure à partir d’une page en dur dans le code : ok</p></li>
+<li><p>Affichage page avec CSS : ok</p></li>
+<li><p>Gestion des mode wifi SoftAP vs client : ok</p></li>
+<li><p>reception d’une action via un bouton :  ok</p></li>
+<li><p>lecture du fichier de configuration : ok</p></li>
+<li><p>intégration MCP23017 : ok</p></li>
+<li><p>lecture du fichier de configuration config3.json : ok</p></li>
+<li><p>gestion bouton poussoir mécanique : ok</p></li>
+<li><p>Ecriture fichier json : ok</p></li>
+<li><p>Traitement de la requete html avec analyze, exécution et écriture json: ok</p></li>
+<li><p>manage wif led : ok</p></li>
+<li><p>integrate nano expander with analog inputs : ok</p></li>
+<li><p>scan I2C response 57 and 58 nano IoExpander !!!! not a bug simply DS3231 board has 2 component
+DS3231 an EEPROM ! OK</p></li>
+<li><p>Time managment strategy : ok</p></li>
+<li><p>review work without rtc component strategy ok</p></li>
+<li><p>review work without NTP access strategy ok</p></li>
+<li><p>define rtc component versus NTP update strategy ok</p></li>
+<li><p>suppress html replies if main power is off ok</p></li>
+<li><p>generate a unic server name  ok</p></li>
+<li><p>Error handling improvment 95% (todo dislay low error with LED ? Wich one : power led ?)</p></li>
+<li><p>configuration page (see softdev.rst)</p></li>
+<li><p>power measurment</p></li>
+<li><p>exhaustive test of hebdo mode : 95%</p></li>
+<li><p>write index special page for softAP Mode with local boostrap or other light js.framework 5%</p></li>
+<li><p>preparer un infographie résumant fonctionnalité et besoin :</p></li>
+<li><p>Write user manual : 1%</p></li>
+<li><p>Write builder manual</p></li>
+</ol>
+<p>Don’t forget the todo list of the doxygen documentation</p>
+</div>
+<div class="section" id="namming-convention">
+<h2><a class="toc-backref" href="#table-of-contents">Namming convention</a><a class="headerlink" href="#namming-convention" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Référence : config4.json</p>
+</div>
+<div class="section" id="to-be-added-to-config-json-file">
+<h2><a class="toc-backref" href="#table-of-contents">To be added to config json file</a><a class="headerlink" href="#to-be-added-to-config-json-file" title="Lien permanent vers ce titre">¶</a></h2>
+<dl>
+<dt>To be added 30/30/2019</dt><dd><ul class="simple">
+<li><p>firstBoot ON/OFF                                                                         DONE</p></li>
+<li><p>Power led behavior versus economy mode (include or exclude) ON/OFF  powerLedEconomyMode  DONE</p></li>
+<li><p>change/separate wifi Station param and soft app                                          DONE</p></li>
+<li><p>add wifiSoftApSsid, wifiSoftApPass SSid are in credentials                               DONE</p></li>
+<li><p>for C code, if wifiSoftApSsid or wifiSoftApPass are empty : creatIt (see &#64;firstBoot)</p></li>
+<li><p>startInApMode : ON/OFF                                                                   DONE</p></li>
+<li><p>remove wifimode                                                                          DONE</p></li>
+<li><p>change IP in softAP_IP and Port in softAP_port                                           DONE</p></li>
+<li><p>change name of the file to config4.json                                                  DONE</p></li>
+</ul>
+</dd>
+<dt>To be added 09/05/2019</dt><dd><ul class="simple">
+<li><p>IP add in soft AP mode to display it (what the utility ? to configure it)                DONE</p></li>
+<li><p>mac add to display it                                                                    DONE</p></li>
+<li><p>add ip in mode Station : to configure it if we are not in DHCP mode                      DONE</p></li>
+<li><p>DHCP_mode : On or OFF                                                                    DONE</p></li>
+<li><p>gateway add                                                                              DONE</p></li>
+</ul>
+<dl class="simple">
+<dt>To be added 9/7/2019:</dt><dd><ul class="simple">
+<li><p>time zone</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</div>
+<div class="section" id="remember">
+<h2><a class="toc-backref" href="#table-of-contents">Remember</a><a class="headerlink" href="#remember" title="Lien permanent vers ce titre">¶</a></h2>
+<ol class="arabic simple">
+<li><p>see javascript http request to perform DELETE: obsolete</p></li>
+</ol>
+</div>
+<div class="section" id="first-boot-configuration">
+<h2><a class="toc-backref" href="#table-of-contents">First boot configuration</a><a class="headerlink" href="#first-boot-configuration" title="Lien permanent vers ce titre">¶</a></h2>
+<dl class="simple">
+<dt>&#64;first boot :</dt><dd><ul class="simple">
+<li><p>mode AP connection and display config page to set SSID password and server name</p></li>
+<li><p>softAP ssid &lt;32</p></li>
+<li><p>WARNING pass in AP mode &gt;8 &lt;63</p></li>
+<li><p>propose a unic ID for server name to the user</p></li>
+<li><p>explain that it will possible to change after</p></li>
+</ul>
+</dd>
+</dl>
+<div class="section" id="restaure-factory-parameters">
+<h3><a class="toc-backref" href="#table-of-contents">Restaure factory parameters</a><a class="headerlink" href="#restaure-factory-parameters" title="Lien permanent vers ce titre">¶</a></h3>
+<p>firstBoot after check box in config page.</p>
+<p>Restaure defConfig.json</p>
+</div>
+<div class="section" id="what-are-hypothesys-when-boot-for-the-first-time">
+<h3><a class="toc-backref" href="#table-of-contents">What are hypothesys, when boot for the first time ?</a><a class="headerlink" href="#what-are-hypothesys-when-boot-for-the-first-time" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Is a config json exist ? What is inside it ? Yes and it containt FirstBoot ON and other stuff.</p>
+<p>Same questions with credentials ? No, we generate it</p>
+<p>We considere that the user upload sketch and data directory.</p>
+<dl class="simple">
+<dt>When consider the first boot is OFF ? When we receive the folowing form</dt><dd><ul class="simple">
+<li><p>station mode or AP choice</p></li>
+<li><p>SSID et pass du mode AP (WARNING provide diff SSID if you own more then one PowerStrip)</p></li>
+<li><p>SSID and pass of station mode [ optionel if user wish stay always in AP mode ]</p></li>
+<li><p>propose default same hostname and default SSID AP build with mac add:
+IOT_EPS_HHHH</p></li>
+</ul>
+</dd>
+</dl>
+</div>
+<div class="section" id="first-boot-process">
+<h3><a class="toc-backref" href="#table-of-contents">First boot process</a><a class="headerlink" href="#first-boot-process" title="Lien permanent vers ce titre">¶</a></h3>
+<ol class="arabic simple">
+<li><p>check firstBoot param in config.json if ON</p></li>
+<li><p>start in AP mode with page firstboot.html (in the code, not a real file) only if main power is on</p></li>
+<li><p>server.on( /firstBoot, firstBootHandler)</p></li>
+<li><p>in firstBootHandler check param, write credential, set firBoot param to « trySation » if needed</p></li>
+<li><p>restart ESP</p></li>
+<li><p>if Station is ok firstBoot is ended, set firstBoot param = off</p></li>
+<li><p>if station ko reload firstboot page with alerte</p></li>
+</ol>
+</div>
+<div class="section" id="behavior-when-user-move-eps-from-one-physical-site-to-another">
+<h3><a class="toc-backref" href="#table-of-contents">Behavior when user move EPS from one physical site to another</a><a class="headerlink" href="#behavior-when-user-move-eps-from-one-physical-site-to-another" title="Lien permanent vers ce titre">¶</a></h3>
+<p>It is not a first boot</p>
+<p>EPS will search its WiFi station and will not find it so it restart in AP mode then user can acces
+to the config special page change SSID and password.</p>
+</div>
+</div>
+<div class="section" id="configuration-parameter">
+<h2><a class="toc-backref" href="#table-of-contents">Configuration parameter</a><a class="headerlink" href="#configuration-parameter" title="Lien permanent vers ce titre">¶</a></h2>
+<blockquote>
+<div><ul class="simple">
+<li><p>add IP of AP mode</p></li>
+<li><p>EPS name (host name)</p></li>
+<li><p>Plugs names</p></li>
+<li><p>Station SSID</p></li>
+<li><p>Sation mode passwd</p></li>
+<li><p>Soft AP SSID and password</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>All json general section parameter without:</dt><dd><ul class="simple">
+<li><p>numberOfPlugs</p></li>
+<li><p>rtcValidity</p></li>
+</ul>
+</dd>
+</dl>
+<p>set time in AP mode and perhaps for station mode summer and winter time.</p>
+<p>As for plugonof, we decide to build one configuration page for station mode and one configuration
+page for AP mode because in station mode we can use CDN( bootstrap and jquery) functionnality but
+not in AP mode because the embeded version of this <a class="reference external" href="https://en.wikipedia.org/wiki/Content_delivery_network">content delivery network (CDN)</a> <a class="footnote-reference brackets" href="#id27" id="id28">14</a> are too
+big &gt;3Mo.</p>
+<p>Action name : cfgsend (all in lowercase)
+Action name to get json value updated page : cfgpage</p>
+<div class="section" id="set-time-and-date-parameter-names">
+<h3><a class="toc-backref" href="#table-of-contents">Set time and date parameter names</a><a class="headerlink" href="#set-time-and-date-parameter-names" title="Lien permanent vers ce titre">¶</a></h3>
+<p>setTime, setDate</p>
+</div>
+</div>
+<div class="section" id="plugs-modes-description">
+<span id="index-0"></span><h2><a class="toc-backref" href="#table-of-contents">Plugs modes description</a><a class="headerlink" href="#plugs-modes-description" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="manuel">
+<h3><a class="toc-backref" href="#table-of-contents">Manuel</a><a class="headerlink" href="#manuel" title="Lien permanent vers ce titre">¶</a></h3>
+<ul class="simple">
+<li><p>appui sur BP ON/OFF</p></li>
+<li><p>durée avant arrêt (durée limité à 300mn): pour s’offrir la possibilité de couper la prise en cas de départ prématurer…</p></li>
+<li><p>ou heure d’arrêt : dans le même état d’esprit mais pour fixer une heure absolue.</p></li>
+</ul>
+</div>
+<div class="section" id="timer-minuteur-mode-cuit-oeuf">
+<h3><a class="toc-backref" href="#table-of-contents">Timer / minuteur / mode cuit oeuf</a><a class="headerlink" href="#timer-minuteur-mode-cuit-oeuf" title="Lien permanent vers ce titre">¶</a></h3>
+<ul class="simple">
+<li><p>1 seul paramètre la durée ON à partir de maintenant (durée limité à 300mn00s)</p></li>
+<li><p>1 appui court lance ou relance la minuterie</p></li>
+<li><p>1 appui sur BP (long) met OFF et repasse en manuelle</p></li>
+<li><p>la minuterie peut être avec des secondes exmple 2mn30s (2:30 dans la requête)</p></li>
+</ul>
+<p>La minuterie est-elle uniquement lancée par BP ? Sinon comment on fait la diff
+If state == On immediat start</p>
+</div>
+<div class="section" id="periodique-cyclique">
+<h3><a class="toc-backref" href="#table-of-contents">Périodique/cyclique</a><a class="headerlink" href="#periodique-cyclique" title="Lien permanent vers ce titre">¶</a></h3>
+<ul class="simple">
+<li><p>duré on</p></li>
+<li><p>durée off</p></li>
+<li><p>avec reprise de On après off indéfiniment jusqu’au repassage en commande manuelle.</p></li>
+<li><p>avec champ heure de début (et “Entrez une heure de début (facultatif)” par défaut)</p></li>
+<li><p>un appui court sur BP met à OFF mais reste en mode cyclique pour le cycle suivant</p></li>
+<li><p>un deuxième appui court reprend le cycle (attention ne met pas forcément à ON)</p></li>
+<li><p>le mode pause de l’interface web effectue les mêmes actions que ci-dessus</p></li>
+<li><p>1 appui sur BP (long) met OFF et repasse en manuelle</p></li>
+</ul>
+</div>
+<div class="section" id="hebdomadaire">
+<h3><a class="toc-backref" href="#table-of-contents">Hebdomadaire</a><a class="headerlink" href="#hebdomadaire" title="Lien permanent vers ce titre">¶</a></h3>
+<ul class="simple">
+<li><p>heure de mise on</p></li>
+<li><p>heure de mise off</p></li>
+<li><p>choix des jours de la semaine</p></li>
+<li><p>un appui court sur BP met à OFF mais reste en mode Hebdomadaire pour le cycle suivant</p></li>
+<li><p>un deuxième appui court reprend le cycle (attention ne met pas forcément à ON)</p></li>
+<li><p>le mode pause de l’interface web effectue les mêmes actions que ci-dessus</p></li>
+<li><p>1 appui sur BP (long) met OFF et repasse en manuelle</p></li>
+</ul>
+</div>
+<div class="section" id="clone">
+<h3><a class="toc-backref" href="#table-of-contents">Clone</a><a class="headerlink" href="#clone" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Clone le fonctionnement d’une des 3 autres prises. Il s’agit d’une copie des paramètres.
+Ce n’est pas un clone dynamique. Ce qui signifie que l’information de la prise source et de
+son état au moment du clonage ne sont pas historisés.</p>
+</div>
+<div class="section" id="evolutions-possibles">
+<h3><a class="toc-backref" href="#table-of-contents">Evolutions possibles</a><a class="headerlink" href="#evolutions-possibles" title="Lien permanent vers ce titre">¶</a></h3>
+<ul class="simple">
+<li><p>un mixte entre cyclique et hebo: clyclique mais seulement pendant un certaines
+période de la journée.</p></li>
+<li><p>Sur le mode hebdo, prévoir la possibilité d’avoir plusieurs plage de fonctionnement par jours
+et différentes chaque jour</p></li>
+<li><p>connexion MQTT, IFTTT, Flic, openHAB</p></li>
+</ul>
+</div>
+<div class="section" id="factorisation-des-varibales-de-mode">
+<h3><a class="toc-backref" href="#table-of-contents">Factorisation des varibales de mode</a><a class="headerlink" href="#factorisation-des-varibales-de-mode" title="Lien permanent vers ce titre">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">redPlug</span>
+  <span class="n">State</span> <span class="o">=</span> <span class="n">ON</span>
+  <span class="n">Mode</span> <span class="o">=</span> <span class="n">Manuel</span> <span class="o">|</span> <span class="n">Minuterie</span> <span class="o">|</span> <span class="n">Cyclique</span> <span class="o">|</span> <span class="n">Hebdomadaire</span> <span class="o">|</span> <span class="n">Clone</span>
+  <span class="n">hDebut</span> <span class="o">=</span>
+  <span class="n">hFin</span> <span class="o">=</span>
+  <span class="n">dureeOn</span> <span class="o">=</span> <span class="mi">60</span> <span class="n">en</span> <span class="n">minutes</span>
+  <span class="n">dureeOff</span> <span class="o">=</span>  <span class="n">en</span> <span class="n">minutes</span>
+  <span class="n">Jours</span><span class="p">[]</span> <span class="n">s</span> <span class="o">=</span> <span class="n">OFF</span><span class="p">,</span><span class="n">OFF</span><span class="p">,</span><span class="n">OFF</span><span class="p">,</span><span class="n">OFF</span><span class="p">,</span><span class="n">OFF</span><span class="p">,</span><span class="n">OFF</span><span class="p">,</span><span class="n">OFF</span>
+  <span class="n">clonedPlug</span> <span class="o">=</span>
+  <span class="n">onOffCount</span> <span class="o">=</span> <span class="mi">10</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="start-up-behavior">
+<h2><a class="toc-backref" href="#table-of-contents">Start up behavior</a><a class="headerlink" href="#start-up-behavior" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Question:what should be the behavior when power is switched to ON ?</p>
+<p>2 cases are possibles when power is On: the button is switched to ON or the system restart after a
+genaral power cut</p>
+<p>Soit l’interrupteur général est actif (cas de la coupure EDF) et on reprend où on en était.</p>
+<p>Soit l’interrupteur général est  inactif et on reprend en mode manuel.</p>
+<p>L’interrupteur général coupe le 220V des prise mais pas de l’ESP8266.</p>
+<p>Bien expliquer les 2 modes de fonctionnement dans l’interface WEB et donner le choix à l’utilisateur.</p>
+<p>Expliquer le coup de la coupure de courant.</p>
+<p>Evol : après coupure EDF : donner le choix à l’utilisateur de configurer le comportement de
+chaque prise.</p>
+<p>Possible behaviors:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>on repart d’où on en était (avec éventuellement alerte instantanée à l’utilisateur)</p></li>
+<li><p>on met tout la prise à OFF en manuel(avec éventuellement alerte instantanée à l’utilisateur)</p></li>
+<li><p>on informe l’utilisateur (canal à définir, MQTT ou autre…) qui décide mais on met en
+pause en attendant</p></li>
+</ol>
+</div></blockquote>
+<p>When main power switch is off : html server post no reply.</p>
+<p>Problem : when in AP mode WiFi start even if main power is OFF and in Station ESP connect to acces
+point. It is not a logicaly expected behavior. When power switch is in OFF position no Wifi activity
+should be detected.</p>
+<p>Solution wait for power on in ARDUINO setup function.
+Restart ESP in ARDUINO loop when power is switch to OFF.</p>
+<div class="section" id="special-push-button-behaviors-stratup">
+<span id="index-1"></span><h3><a class="toc-backref" href="#table-of-contents">Special push button behaviors &#64;stratup</a><a class="headerlink" href="#special-push-button-behaviors-stratup" title="Lien permanent vers ce titre">¶</a></h3>
+<p>PB0 : &#64;power on (not by power switch but by wall plug) start in simple manual mode see <a class="reference internal" href="#wifi-modes">WIFI Modes</a></p>
+<p>PB1 : in same conditions as above, start specials action only for expert and debug mode
+(today creat default json) with main power switch on on state (to be cecked 21/10/2019)</p>
+</div>
+</div>
+<div class="section" id="sofware-development-choice">
+<h2><a class="toc-backref" href="#table-of-contents">Sofware development choice</a><a class="headerlink" href="#sofware-development-choice" title="Lien permanent vers ce titre">¶</a></h2>
+<p>wifi access point</p>
+<p>Les pages html sont dans le file système SPIFFS</p>
+<div class="section" id="why-do-not-use-wifi-manager">
+<h3><a class="toc-backref" href="#table-of-contents">Why do not use wifi manager ?</a><a class="headerlink" href="#why-do-not-use-wifi-manager" title="Lien permanent vers ce titre">¶</a></h3>
+</div>
+</div>
+<div class="section" id="configuration-arduino">
+<h2><a class="toc-backref" href="#table-of-contents">Configuration ARDUINO</a><a class="headerlink" href="#configuration-arduino" title="Lien permanent vers ce titre">¶</a></h2>
+<p>WEMOS D1 MIN ARDUINO configurattion:</p>
+<img alt="_images/wemosD1Mini_configArduino.png" src="_images/wemosD1Mini_configArduino.png" />
+</div>
+<div class="section" id="wifi-modes">
+<span id="index-2"></span><h2><a class="toc-backref" href="#table-of-contents">WIFI Modes</a><a class="headerlink" href="#wifi-modes" title="Lien permanent vers ce titre">¶</a></h2>
+<p>In Json config file, it is configured with: « startInAPMode » value,</p>
+<div class="section" id="no-wifi">
+<h3><a class="toc-backref" href="#table-of-contents">No WiFi</a><a class="headerlink" href="#no-wifi" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Also called simpleManualMode</p>
+<p>When power on (by the wall plug not by the power switch) the powerStrip, maintain Push button plug 1</p>
+<p>Power strip start in this mode independently of Json configured mode.</p>
+<p>4 Big color LED flasf 20 times in purple.</p>
+<p>In this very simple poor mode, powerstrip works only in manual mode with BP actions ON/OFF.</p>
+</div>
+<div class="section" id="softap">
+<h3><a class="toc-backref" href="#table-of-contents">SoftAP</a><a class="headerlink" href="#softap" title="Lien permanent vers ce titre">¶</a></h3>
+<p>EPS starts in this mode when value of « startInAPMode » parameter is « ON ».</p>
+<p>No acces to NTP server but all other functions work.</p>
+<p>After 20 false tries of station mode, power Strip automaticly switch in this mode</p>
+</div>
+<div class="section" id="station">
+<h3><a class="toc-backref" href="#table-of-contents">Station</a><a class="headerlink" href="#station" title="Lien permanent vers ce titre">¶</a></h3>
+<p>EPS starts in this mode when value of « startInAPMode » parameter is « OFF ».</p>
+<p>The best functionnal mode ! With full web interface and others functions.</p>
+</div>
+<div class="section" id="both-mode-sta-and-ap">
+<h3><a class="toc-backref" href="#table-of-contents">both mode STA and AP</a><a class="headerlink" href="#both-mode-sta-and-ap" title="Lien permanent vers ce titre">¶</a></h3>
+<p>July 2019 : reflexion when we start in DHCP station mode whe don’t know IP address of the IoT EPS.
+One way to know it is to use a tool to scan the local network !
+So why do not connect systematically in both mode !!!
+Do it in new dev branch  !!!!!!!!!!!!!!!!!! 10 months of development to arrive at this point !!!!</p>
+</div>
+</div>
+<div class="section" id="ip-address">
+<h2><a class="toc-backref" href="#table-of-contents">IP address</a><a class="headerlink" href="#ip-address" title="Lien permanent vers ce titre">¶</a></h2>
+<p>AP and non DHCP IP address are class C address (subnet mask is 255.255.255.0 hardcoded )</p>
+</div>
+<div class="section" id="wifi-led-behavior">
+<h2><a class="toc-backref" href="#table-of-contents">WIFI LED behavior</a><a class="headerlink" href="#wifi-led-behavior" title="Lien permanent vers ce titre">¶</a></h2>
+<p>In Station mode, fast flashing (20 times 100ms, 100ms) before to try connection
+and after slow flashing while waiting for connection.
+(500ms with a 20 times time out - new in 24/12/2018). If no connection detected afte 20 tries
+Automaticaly switch in SoftAP mode.</p>
+<p>In Access Point LED FLash quickly (20 times 100ms-500ms) and
+led flash slowly (50ms-2s) while waiting for connection.</p>
+<p>Cause WiFi.softAPConfig function is a blocking function. This is wrong :
+test on 24/12/2018 softAP is non blocking !</p>
+<p>So - in summary - if power led is on and WIFI Led flash (50ms-2s) WIFI wait for connection in AP mode.</p>
+<p>It rises a new problem : in this state it is not possible to use plugs even in simple  manual mode
+with push button.</p>
+<p>Possible solution : check push button at startup if a particular combination is pressed,
+plugs do not try to connect to wifi and mork in simple manual mode.
+In Dec 2018, push button
+added pressing plug 0 while power on the strip cause no WIFI mode (color LED FLASH in RED to confirm)
+This is : simpleManualMode (see above). To return to normal mode power off the strip
+(not by the power on/off button but by removing the strip from the wall plug)</p>
+</div>
+<div class="section" id="esp8266-and-its-wifi-managment">
+<h2><a class="toc-backref" href="#table-of-contents">ESP8266 and its wifi managment !</a><a class="headerlink" href="#esp8266-and-its-wifi-managment" title="Lien permanent vers ce titre">¶</a></h2>
+<p>ESP8266 store credentials information in FLASH but how to acces to them ???
+And how to contol them</p>
+<p>Question how to erase wifi flash param ?</p>
+<p>Memory mapping is not provided. Somem peace of informations
+like in SPIFFS des cription that provide the order of memory big blocks but not their respective add</p>
+<p>Second question : how to directly acces to flash memory ?
+Perthaps with SPI lib
+<a class="reference external" href="https://github.com/esp8266/Arduino/blob/master/doc/libraries.rst#spi">https://github.com/esp8266/Arduino/blob/master/doc/libraries.rst#spi</a>
+Reponse :
+ESP.flashRead(…)https://github.com/esp8266/Arduino/blob/master/cores/esp8266/Esp.h
+ESP.flashWrite(..)
+ESP.flashEraseSector(…)
+ESP.eraseConfig() Efface tout à partir du haut de la flash jusqu’en -0x4000 soit 16k
+Fonction non documentée !</p>
+<p>ESP-SDK ? Rien vu qui permet erase</p>
+<p>persistant(false) &lt;=&gt; n’écrit pas en flash mais n’efface pas les info</p>
+<p>Question 3: How to read  flash info  ?
+Reponse : call Espressif SDK functions:
+#include &lt;user_interface.h&gt; in
+ArduinoCroquishardwareesp8266comesp8266toolssdkinclude
+page 62/179 pdf ESP8266 Non-OS SDK API Reference
+3.5.33. wifi_softap_get_config_default</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">struct</span> <span class="n">softap_config</span> <span class="p">{</span>
+    <span class="n">uint8</span> <span class="n">ssid</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+    <span class="n">uint8</span> <span class="n">password</span><span class="p">[</span><span class="mi">64</span><span class="p">];</span>
+    <span class="n">uint8</span> <span class="n">ssid_len</span><span class="p">;</span> <span class="o">//</span> <span class="n">Note</span><span class="p">:</span> <span class="n">Recommend</span> <span class="n">to</span> <span class="nb">set</span> <span class="n">it</span> <span class="n">according</span> <span class="n">to</span> <span class="n">your</span> <span class="n">ssid</span>
+    <span class="n">uint8</span> <span class="n">channel</span><span class="p">;</span>  <span class="o">//</span> <span class="n">Note</span><span class="p">:</span> <span class="n">support</span> <span class="mi">1</span> <span class="o">~</span> <span class="mi">13</span>
+    <span class="n">AUTH_MODE</span> <span class="n">authmode</span><span class="p">;</span>     <span class="o">//</span> <span class="n">Note</span><span class="p">:</span> <span class="n">Don</span><span class="s1">&#39;t support AUTH_WEP in softAP mode.</span>
+    <span class="n">uint8</span> <span class="n">ssid_hidden</span><span class="p">;</span>      <span class="o">//</span> <span class="n">Note</span><span class="p">:</span> <span class="n">default</span> <span class="mi">0</span>
+    <span class="n">uint8</span> <span class="n">max_connection</span><span class="p">;</span>   <span class="o">//</span> <span class="n">Note</span><span class="p">:</span> <span class="n">default</span> <span class="mi">4</span><span class="p">,</span> <span class="nb">max</span> <span class="mi">4</span>
+    <span class="n">uint16</span> <span class="n">beacon_interval</span><span class="p">;</span> <span class="o">//</span> <span class="n">Note</span><span class="p">:</span> <span class="n">support</span> <span class="mi">100</span> <span class="o">~</span> <span class="mi">60000</span> <span class="n">ms</span><span class="p">,</span> <span class="n">default</span> <span class="mi">100</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+<p>ESP12E module Flash size : W25Q32 32Mbits/4Mo 256octets /pages 16384 pages
+Peuvent être effacé ar groupe de 16 ou 128 ou 256 Soit 4(secteurs) ou 32kB ou 64kB</p>
+</div>
+<div class="section" id="displaying-plugs-mode-only-with-led">
+<h2><a class="toc-backref" href="#table-of-contents">Displaying plugs mode only with LED</a><a class="headerlink" href="#displaying-plugs-mode-only-with-led" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Problem : how to displays functionnal mode of a plug without the web interface</p>
+<p>Problem2 : is it really necessary ?</p>
+<dl class="simple">
+<dt>Solution1: Use the little plug red LED. When OFF flash 1 shortly one time for mode 1 manual to five</dt><dd><p>time for mode 5 Clone. When ON invert ton and toff of the flasher</p>
+</dd>
+</dl>
+<p>Solution2: use color LED with flash capability one time for mode manual to 5 times to mode Clone
+with a long periode between group of flash 3 seconds for example.</p>
+<p>Implemented solution : n°1 with the little specialPB pushed in the same time as the plug Push Button</p>
+<p>Advice : retain special BP some seconds before pushing plug’s PB to avoid to swith the plug.</p>
+</div>
+<div class="section" id="web-page-development">
+<h2><a class="toc-backref" href="#table-of-contents">WEB page development</a><a class="headerlink" href="#web-page-development" title="Lien permanent vers ce titre">¶</a></h2>
+<p>HTML5 et css and bootstrap
+jquery, jquery ui, ajax and popper</p>
+<p>bootstrap from its CDN
+<a class="reference external" href="https://www.bootstrapcdn.com/">https://www.bootstrapcdn.com/</a></p>
+<div class="section" id="html-requests">
+<h3><a class="toc-backref" href="#table-of-contents">html requests</a><a class="headerlink" href="#html-requests" title="Lien permanent vers ce titre">¶</a></h3>
+<p>ipaddr/config?plug=redPlug</p>
+<p>/PlugConfig?plug=red&amp;mode=manuel
+/modeManuel?plug=redPlug</p>
+<p>Utilisation de formulaires</p>
+<p>Possible requests:</p>
+<ul class="simple">
+<li><p>Mode=Manuel&amp;State=ON&amp;dureeOff=299 : dureeOff on minutes only</p></li>
+<li><p>Mode=Manuel&amp;State=ON&amp;dureeOff=299:59 : dureeOff on minutes and seconds</p></li>
+<li><p>Mode=Manuel&amp;State=ON&amp;hFin=23:59 : hFin only one format HH:MM</p></li>
+<li><p>Mode=Manuel&amp;State=OFF</p></li>
+<li><p>Mode=Manuel&amp;State=ON</p></li>
+</ul>
+</div>
+<div class="section" id="ntp-server-name">
+<h3><a class="toc-backref" href="#table-of-contents">NTP server name</a><a class="headerlink" href="#ntp-server-name" title="Lien permanent vers ce titre">¶</a></h3>
+<p>The name reside in the IoT_EPS.h file and is not a config param through web config page</p>
+</div>
+</div>
+<div class="section" id="serveur-html-esp8266">
+<h2><a class="toc-backref" href="#table-of-contents">Serveur html ESP8266</a><a class="headerlink" href="#serveur-html-esp8266" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Repris de l’exemple fourni avec l’IDE ARDUINO : ESP8266WebServer/FSBrowser</p>
+<p>Cette exemple apporte un lot de fonction qui gérent l’envoie de fichier css, jpg et autres…</p>
+<div class="section" id="edit-page">
+<h3><a class="toc-backref" href="#table-of-contents">edit page</a><a class="headerlink" href="#edit-page" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Comportement etrange de l’extnsion html</p>
+<p>Le bouton parcourir tronc en htm et le visualisateur ne montre que les fichier htm</p>
+<p>Edit.htm source code ? not provided in the .ino file</p>
+<p>One possible source (but not really the same) :
+<a class="reference external" href="https://github.com/gmag11/FSBrowser/blob/master/data/edit.html">https://github.com/gmag11/FSBrowser/blob/master/data/edit.html</a></p>
+</div>
+</div>
+<div class="section" id="ioexpander">
+<h2><a class="toc-backref" href="#table-of-contents">IOExpander</a><a class="headerlink" href="#ioexpander" title="Lien permanent vers ce titre">¶</a></h2>
+<p>The following text is for history only and it is obsolète:</p>
+<p>When we define hardware pin usage, we decide to use IOEpander MPC23017.
+Due to this choice=, we need to use a new lib Adafruit_MCP23017.h</p>
+<p>Available method:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">void</span> <span class="n">begin</span><span class="p">(</span><span class="n">uint8_t</span> <span class="n">addr</span><span class="p">);</span>
+<span class="n">void</span> <span class="n">begin</span><span class="p">(</span><span class="n">void</span><span class="p">);</span>
+
+<span class="n">void</span> <span class="n">pinMode</span><span class="p">(</span><span class="n">uint8_t</span> <span class="n">p</span><span class="p">,</span> <span class="n">uint8_t</span> <span class="n">d</span><span class="p">);</span> <span class="o">//</span> <span class="mi">0</span><span class="o">&lt;=</span> <span class="n">p</span> <span class="o">&lt;</span> <span class="mi">16</span>
+<span class="n">void</span> <span class="n">digitalWrite</span><span class="p">(</span><span class="n">uint8_t</span> <span class="n">p</span><span class="p">,</span> <span class="n">uint8_t</span> <span class="n">d</span><span class="p">);</span>
+<span class="n">void</span> <span class="n">pullUp</span><span class="p">(</span><span class="n">uint8_t</span> <span class="n">p</span><span class="p">,</span> <span class="n">uint8_t</span> <span class="n">d</span><span class="p">);</span>
+<span class="n">uint8_t</span> <span class="n">digitalRead</span><span class="p">(</span><span class="n">uint8_t</span> <span class="n">p</span><span class="p">);</span>
+
+<span class="n">void</span> <span class="n">writeGPIOAB</span><span class="p">(</span><span class="n">uint16_t</span><span class="p">);</span> <span class="o">/</span><span class="p">:</span> <span class="n">A</span> <span class="n">priori</span> <span class="n">on</span> <span class="n">peut</span> <span class="n">écrire</span> <span class="n">sur</span> <span class="n">un</span>  <span class="n">port</span> <span class="n">en</span> <span class="n">entrée</span> <span class="n">sans</span> <span class="n">risque</span>
+<span class="n">uint16_t</span> <span class="n">readGPIOAB</span><span class="p">();</span>
+<span class="n">uint8_t</span> <span class="n">readGPIO</span><span class="p">(</span><span class="n">uint8_t</span> <span class="n">b</span><span class="p">);</span> <span class="o">//</span> <span class="n">b</span><span class="o">=</span><span class="mi">0</span> <span class="o">=&gt;</span> <span class="n">PORTA</span><span class="p">,</span> <span class="k">else</span> <span class="n">PORTB</span>
+
+<span class="n">void</span> <span class="n">setupInterrupts</span><span class="p">(</span><span class="n">uint8_t</span> <span class="n">mirroring</span><span class="p">,</span> <span class="n">uint8_t</span> <span class="nb">open</span><span class="p">,</span> <span class="n">uint8_t</span> <span class="n">polarity</span><span class="p">);</span>
+<span class="n">void</span> <span class="n">setupInterruptPin</span><span class="p">(</span><span class="n">uint8_t</span> <span class="n">p</span><span class="p">,</span> <span class="n">uint8_t</span> <span class="n">mode</span><span class="p">);</span>
+<span class="n">uint8_t</span> <span class="n">getLastInterruptPin</span><span class="p">();</span>
+<span class="n">uint8_t</span> <span class="n">getLastInterruptPinValue</span><span class="p">();</span>
+</pre></div>
+</div>
+<p>Adresse par défaut: 0x20 (avec les 3 broches d’adresse à 0)</p>
+<p>En premier mouture, essai avec la librairie directement mais en deuxième monte, faire une classe
+qui prennent en charge la gestion du temps (classe Flasher dédiée au MCP)</p>
+<p>Deuxième mouture clréation de la class CPowerPlug avec utilisation de variable static</p>
+<p>_initDone et _mpc (mpc étant la ressource commune à toutes les instances de la classe)</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>J’ai choisi d’utiliser une broche dédiée pour la LED d’état des plugs.
+On aurait pu utiliser la broche de commande du relais mais au cas où les 2
+seraient inversées l’une par rapport à l’autre, cela apporte plus de liberté.</p>
+</div>
+<p>During development, to get more digital IO and 4 analog input, we decide to add a ARDUINO Nano as
+an I2C IO expander (see Hardware dev doc)</p>
+</div>
+<div class="section" id="error-handling">
+<h2><a class="toc-backref" href="#table-of-contents">Error handling</a><a class="headerlink" href="#error-handling" title="Lien permanent vers ce titre">¶</a></h2>
+<p>See dedicated Excel file. All below informations are obsoletes.</p>
+<p>Buildin test error BIT</p>
+<p>PBIT : preliminary BIT</p>
+<ol class="arabic simple">
+<li><p>File system</p></li>
+<li><p>Config param (JSON config file)</p></li>
+<li><p>Credentials file (not in firstboot mode) - check its structure</p></li>
+<li><p>I2C acces</p></li>
+<li><p>rtc</p></li>
+<li><p>only in Station mode and after WIFI connection, check NTP access</p></li>
+</ol>
+<dl class="simple">
+<dt>CBIT<span class="classifier">Continus BIT every loop cycle, check :</span></dt><dd><ul class="simple">
+<li><p>I2C acces (only one retry)</p></li>
+<li><p>RTC access</p></li>
+<li><p>JSON config file</p></li>
+<li><p>File system</p></li>
+<li><p>NTP access</p></li>
+</ul>
+</dd>
+</dl>
+<p>…</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>current monitoring for ON plugs and if it is possible with the choosen sensor when currents will
+be very low</p></li>
+</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>Not in CBIT</dt><dd><ul class="simple">
+<li><p>WIFI state if in Station mode and/or AP mode ???</p></li>
+</ul>
+</dd>
+</dl>
+<p>Because when wifi is down (wifi box shut down for exemple EPS could continue to work)</p>
+<dl class="simple">
+<dt>Can we work without File system or Json error ? No, fatal error =&gt; RED LED FLash</dt><dd><p>The system won’t be started so no special web page index</p>
+</dd>
+</dl>
+<p>Can we work without credential file ? Yes start in AP mode : OK</p>
+<p>Check credentials.json structure</p>
+<p>Can we work without I2C and/or nanoI2CIOExpander ? No, fatal error : OK</p>
+<p>Can we work without RTC ? No, in the first release of IoT_EPS we consider that when one component
+is ko the entire EPS is ko (no degraded mode).</p>
+<p>Perhaps in future version of the EPS, we can imagine that we work without DS3231 and only with
+NTP server and the ARDUINO Time.h. This version of the EPS could only work in Station mode.</p>
+<dl>
+<dt>Can we work without internet connection or Wifi in station mode ?</dt><dd><p>yes in softAP mode Refine softAP mode behavior</p>
+<p>Can we work without NTP server ? Yes (it could be temporary down)</p>
+</dd>
+</dl>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>How to display no fatal error ? the only one is NTP error all other error are FATAL
+We decide to only display on index html page</p>
+</div>
+</div>
+<div class="section" id="time-managment-strategy">
+<h2><a class="toc-backref" href="#table-of-contents">Time managment strategy</a><a class="headerlink" href="#time-managment-strategy" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Normal</p>
+<p>No NTP server (no Wifi)</p>
+<p>First of all, what is the time usage in the EPS ? bool CPowerPlug::isItTimeToSwitch() =&gt;
+CRtc::now().unixtime() &lt;=&gt;  DS3231::now().unixtime()</p>
+<p>if NTP is reachable ie in Station mode and all is ok update DS3231 time every 15mn.
+else do not update ds3231 and work with its time !</p>
+<p>if NTP not reachable or in AP Mode the time can be updated by configuration page.</p>
+<p>NTP server configuration ? not configurable for now only in IoT_EPS.hDebut</p>
+<p>RTC on error strategy, No RTC component</p>
+</div>
+<div class="section" id="rtc-ds3231-eeprom-access">
+<h2><a class="toc-backref" href="#table-of-contents">RTC DS3231 EEPROM access</a><a class="headerlink" href="#rtc-ds3231-eeprom-access" title="Lien permanent vers ce titre">¶</a></h2>
+<p>nano ADD is 58</p>
+<p>I2C add of EEPROM AT24C32 is 57
+Changed to 0x53</p>
+<p>Ok but why access to this EEPROM ?
+Perhaps to store a copy of config3.json</p>
+<p>Live time ? 10^6 write cycle</p>
+<p>8 bytes/page 4ko</p>
+</div>
+<div class="section" id="livetime-of-esp8266-flash-spiffs">
+<h2><a class="toc-backref" href="#table-of-contents">Livetime of ESP8266 flash SPIFFS</a><a class="headerlink" href="#livetime-of-esp8266-flash-spiffs" title="Lien permanent vers ce titre">¶</a></h2>
+<p>hypothesis :
+- 4 plugs that work in clycle mode 1 minutes on and 1 minutes off
+- 4 plugs not synchronyzed
+With this hyp. the 4write/minutes</p>
+<p>WEMOS D1 Flash is Ai ESP12-F module W25Q32 pour 32Mbits soit 4Mo
+100k erase/write cycle</p>
+<p>25k minutes = 416 hours = 17 days</p>
+<p>But it is a very hard hypothesis</p>
+<p>A great question : what is the realistic usage ?</p>
+<ul class="simple">
+<li><p>one On/off cycle by hour on each plug every days only 12 hours by days
+25k hours /12 &lt;=&gt; 2083 days &lt;=&gt; more than 5 years</p></li>
+</ul>
+</div>
+<div class="section" id="livetime-of-the-relays">
+<h2><a class="toc-backref" href="#table-of-contents">Livetime of the relays</a><a class="headerlink" href="#livetime-of-the-relays" title="Lien permanent vers ce titre">¶</a></h2>
+<blockquote>
+<div><p>10^7 time</p>
+</div></blockquote>
+</div>
+<div class="section" id="html-ihm-integration">
+<h2><a class="toc-backref" href="#table-of-contents">HTML IHM integration</a><a class="headerlink" href="#html-ihm-integration" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Start on March 2019</p>
+<p>Used technologies:</p>
+<ul class="simple">
+<li><p>HTML5/css</p></li>
+<li><p>Javascipt</p></li>
+<li><p>JQuery</p></li>
+<li><p>Boostrap</p></li>
+</ul>
+<p>Test list:</p>
+<p>For all plugs</p>
+<ul class="simple">
+<li><p>manual ON/OFF :  OK on RED</p></li>
+<li><p>manual ON with OFF time : ok on RED</p></li>
+<li><p>manual ON with delay : ok on RED 1 minutes</p></li>
+<li><p>timer : RED plug ko, state no transmit: corrected ok</p></li>
+<li><p>timer red switched by bp : OK</p></li>
+<li><p>clone from green cyclic to bleu : ok</p></li>
+</ul>
+<p>… see testAndErrorHandling.xlsx file for the rest of the tests</p>
+<p>bug finded :
+- manual hfin and dureeOff without parameter should be KO
+- manual cleanup buton dont remove hfin and others param
+- no default state in manual mode : corrected
+- minuterie (timer mode) no default value for the ratio immediat start or differed start - corrected
+- bug in ESP source side effect of main power switch  ?</p>
+<p>improvments:
+- add tips on main page : To refresh this page press F5</p>
+</div>
+<div class="section" id="usefull-tools">
+<h2><a class="toc-backref" href="#table-of-contents">Usefull Tools</a><a class="headerlink" href="#usefull-tools" title="Lien permanent vers ce titre">¶</a></h2>
+<p>On Android : <a class="reference external" href="https://play.google.com/store/apps/details?id=com.network.networkip&amp;hl=fr">Network IP Scanner</a> <a class="footnote-reference brackets" href="#id1" id="id2">1</a> from homework.</p>
+<p>On PC : <a class="reference external" href="https://angryip.org/">Angry IP Scanner</a> <a class="footnote-reference brackets" href="#id3" id="id4">2</a></p>
+</div>
+<div class="section" id="usefull-documentation">
+<h2><a class="toc-backref" href="#table-of-contents">Usefull Documentation</a><a class="headerlink" href="#usefull-documentation" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="html-server">
+<h3><a class="toc-backref" href="#table-of-contents">Html server</a><a class="headerlink" href="#html-server" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Exemples ESP html serveurs:</p>
+<p>C:MountWDDonneesOneDriveDonnees008_iao_wrkArduinoCroquisESP01HelloServer</p>
+<p>Documentation <a class="reference external" href="https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/readme.html#class-description">arduino-esp8266</a> <a class="footnote-reference brackets" href="#id5" id="id6">3</a></p>
+<p>Gros gros tuto sur  <a class="reference external" href="https://github.com/projetsdiy/ESP8266-Webserver-Tutorials">Web serveur</a> <a class="footnote-reference brackets" href="#id7" id="id8">4</a></p>
+<p>Demonstrate using an http server and an HTML form to <a class="reference external" href="https://gist.github.com/bbx10/5a2885a700f30af75fc5">control an LED</a> <a class="footnote-reference brackets" href="#id9" id="id10">5</a>. The http server runs on the ESP8266.</p>
+<p>jQery slim : 70ko</p>
+</div>
+<div class="section" id="fastled">
+<h3><a class="toc-backref" href="#table-of-contents">fastLed</a><a class="headerlink" href="#fastled" title="Lien permanent vers ce titre">¶</a></h3>
+<p><a class="reference external" href="https://github.com/FastLED/FastLED">FastLed lib</a> <a class="footnote-reference brackets" href="#id11" id="id12">6</a></p>
+</div>
+<div class="section" id="json-lectures-ecritures">
+<h3><a class="toc-backref" href="#table-of-contents">json (lectures / écritures)</a><a class="headerlink" href="#json-lectures-ecritures" title="Lien permanent vers ce titre">¶</a></h3>
+<p>La librairie utilisée: <a class="reference external" href="https://github.com/bblanchon/ArduinoJson">ArduinoJson</a> <a class="footnote-reference brackets" href="#id13" id="id14">7</a> version 5.13.2</p>
+<p>Assistant plutôt efficace: <a class="reference external" href="https://arduinojson.org/v5/assistant/">ArduinoJson Assistant</a> <a class="footnote-reference brackets" href="#id15" id="id16">8</a></p>
+<p>Json genrator sur <a class="reference external" href="http://www.objgen.com/json">ObjGen.com</a> <a class="footnote-reference brackets" href="#id17" id="id18">9</a></p>
+</div>
+</div>
+<div class="section" id="used-library">
+<h2><a class="toc-backref" href="#table-of-contents">Used library</a><a class="headerlink" href="#used-library" title="Lien permanent vers ce titre">¶</a></h2>
+<p>last update : 02/12/2018</p>
+<p>10 libs:</p>
+<ul class="simple">
+<li><p>Utilisation de la bibliothèque ESP8266WiFi version 1.0</p></li>
+<li><p>Utilisation de la bibliothèque ESP8266WebServer version 1.0</p></li>
+<li><p>Utilisation de la bibliothèque ArduinoJson version 5.13.2</p></li>
+<li><p>Utilisation de la bibliothèque Wire version 1.0</p></li>
+<li><p>Utilisation de la bibliothèque RTClib version 1.2.0</p></li>
+<li><p>Utilisation de la bibliothèque ESP8266mDNS prise</p></li>
+<li><p>Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3</p></li>
+<li><p>Utilisation de la bibliothèque FastLED version 3.2.1</p></li>
+<li><p>Utilisation de la bibliothèque nanoI2CIOExpLib version 3.1</p></li>
+<li><p>Utilisation de la bibliothèque NTPClient version 3.1.0</p></li>
+</ul>
+<p>9 libs are official Arduino libs and one lib is spéciale:</p>
+<p><a class="reference external" href="https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc">nanoI2CIOExpLib</a> <a class="footnote-reference brackets" href="#id19" id="id20">10</a></p>
+</div>
+<div class="section" id="eccueils-et-autres-difficultes">
+<h2><a class="toc-backref" href="#table-of-contents">Eccueils et autres difficultés</a><a class="headerlink" href="#eccueils-et-autres-difficultes" title="Lien permanent vers ce titre">¶</a></h2>
+<div class="section" id="limite-des-longueurs-de-nom-de-fichier-spiffs">
+<h3><a class="toc-backref" href="#table-of-contents">Limite des longueurs de nom de fichier SPIFFS</a><a class="headerlink" href="#limite-des-longueurs-de-nom-de-fichier-spiffs" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Les noms de fichiers dans SPIFFS sont limités par défaut à 32 caractères chemin compris.</p>
+<p>C’est court! voir <a class="reference external" href="https://github.com/igrr/mkspiffs/issues/34">github issue #34 mkspiffs</a> <a class="footnote-reference brackets" href="#id21" id="id22">11</a></p>
+</div>
+<div class="section" id="prise-en-main-de-la-librairie-json">
+<h3><a class="toc-backref" href="#table-of-contents">Prise en main de la librairie JSON</a><a class="headerlink" href="#prise-en-main-de-la-librairie-json" title="Lien permanent vers ce titre">¶</a></h3>
+<p>Nécessite un investissement personnel important.</p>
+</div>
+<div class="section" id="ds3231-stuck-i2c-bus">
+<h3><a class="toc-backref" href="#table-of-contents">DS3231 stuck I2C bus</a><a class="headerlink" href="#ds3231-stuck-i2c-bus" title="Lien permanent vers ce titre">¶</a></h3>
+<p>It is a known problem with DS3231 see <a class="reference external" href="https://github.com/esp8266/Arduino/issues/1025">method for recovering I2C bus #1025</a> <a class="footnote-reference brackets" href="#id23" id="id24">12</a></p>
+<p>and <a class="reference external" href="http://www.forward.com.au/pfod/ArduinoProgramming/I2C_ClearBus/index.html">Reliable Startup for I2C Battery Backed RTC</a> <a class="footnote-reference brackets" href="#id25" id="id26">13</a></p>
+</div>
+</div>
+<div class="section" id="source-code-documentation">
+<h2><a class="toc-backref" href="#table-of-contents">Source code documentation</a><a class="headerlink" href="#source-code-documentation" title="Lien permanent vers ce titre">¶</a></h2>
+<blockquote>
+<div><p><a class="reference external" href="codeDoc\html\index.html">codeDoc\html\index.html</a></p>
+</div></blockquote>
+</div>
+<div class="section" id="vocabulary">
+<h2><a class="toc-backref" href="#table-of-contents">Vocabulary</a><a class="headerlink" href="#vocabulary" title="Lien permanent vers ce titre">¶</a></h2>
+<p>Un réseau de diffusion de contenu (RDC) ou en anglais <a class="reference external" href="https://en.wikipedia.org/wiki/Content_delivery_network">content delivery network (CDN)</a> <a class="footnote-reference brackets" href="#id27" id="id29">14</a></p>
+</div>
+<div class="section" id="webography">
+<h2><a class="toc-backref" href="#table-of-contents">Webography</a><a class="headerlink" href="#webography" title="Lien permanent vers ce titre">¶</a></h2>
+<dl class="footnote brackets">
+<dt class="label" id="id1"><span class="brackets"><a class="fn-backref" href="#id2">1</a></span></dt>
+<dd><p><a class="reference external" href="https://play.google.com/store/apps/details?id=com.network.networkip&amp;hl=fr">https://play.google.com/store/apps/details?id=com.network.networkip&amp;hl=fr</a></p>
+</dd>
+<dt class="label" id="id3"><span class="brackets"><a class="fn-backref" href="#id4">2</a></span></dt>
+<dd><p><a class="reference external" href="https://angryip.org/">https://angryip.org/</a></p>
+</dd>
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id6">3</a></span></dt>
+<dd><p><a class="reference external" href="https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/readme.html#class-description">https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/readme.html#class-description</a></p>
+</dd>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id8">4</a></span></dt>
+<dd><p><a class="reference external" href="https://github.com/projetsdiy/ESP8266-Webserver-Tutorials">https://github.com/projetsdiy/ESP8266-Webserver-Tutorials</a></p>
+</dd>
+<dt class="label" id="id9"><span class="brackets"><a class="fn-backref" href="#id10">5</a></span></dt>
+<dd><p><a class="reference external" href="https://gist.github.com/bbx10/5a2885a700f30af75fc5">https://gist.github.com/bbx10/5a2885a700f30af75fc5</a></p>
+</dd>
+<dt class="label" id="id11"><span class="brackets"><a class="fn-backref" href="#id12">6</a></span></dt>
+<dd><p><a class="reference external" href="https://github.com/FastLED/FastLED">https://github.com/FastLED/FastLED</a></p>
+</dd>
+<dt class="label" id="id13"><span class="brackets"><a class="fn-backref" href="#id14">7</a></span></dt>
+<dd><p><a class="reference external" href="https://github.com/bblanchon/ArduinoJson">https://github.com/bblanchon/ArduinoJson</a></p>
+</dd>
+<dt class="label" id="id15"><span class="brackets"><a class="fn-backref" href="#id16">8</a></span></dt>
+<dd><p><a class="reference external" href="https://arduinojson.org/v5/assistant/">https://arduinojson.org/v5/assistant/</a></p>
+</dd>
+<dt class="label" id="id17"><span class="brackets"><a class="fn-backref" href="#id18">9</a></span></dt>
+<dd><p><a class="reference external" href="http://www.objgen.com/json">http://www.objgen.com/json</a></p>
+</dd>
+<dt class="label" id="id19"><span class="brackets"><a class="fn-backref" href="#id20">10</a></span></dt>
+<dd><p><a class="reference external" href="https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc">https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc</a></p>
+</dd>
+<dt class="label" id="id21"><span class="brackets"><a class="fn-backref" href="#id22">11</a></span></dt>
+<dd><p><a class="reference external" href="https://github.com/igrr/mkspiffs/issues/34">https://github.com/igrr/mkspiffs/issues/34</a></p>
+</dd>
+<dt class="label" id="id23"><span class="brackets"><a class="fn-backref" href="#id24">12</a></span></dt>
+<dd><p><a class="reference external" href="https://github.com/esp8266/Arduino/issues/1025">https://github.com/esp8266/Arduino/issues/1025</a></p>
+</dd>
+<dt class="label" id="id25"><span class="brackets"><a class="fn-backref" href="#id26">13</a></span></dt>
+<dd><p><a class="reference external" href="http://www.forward.com.au/pfod/ArduinoProgramming/I2C_ClearBus/index.html">http://www.forward.com.au/pfod/ArduinoProgramming/I2C_ClearBus/index.html</a></p>
+</dd>
+<dt class="label" id="id27"><span class="brackets">14</span><span class="fn-backref">(<a href="#id28">1</a>,<a href="#id29">2</a>)</span></dt>
+<dd><p><a class="reference external" href="https://en.wikipedia.org/wiki/Content_delivery_network">https://en.wikipedia.org/wiki/Content_delivery_network</a></p>
+</dd>
+</dl>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table des matières</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">IOT Electrical Power Strip Software development documentation</a><ul>
+<li><a class="reference internal" href="#progression">Progression</a></li>
+<li><a class="reference internal" href="#namming-convention">Namming convention</a></li>
+<li><a class="reference internal" href="#to-be-added-to-config-json-file">To be added to config json file</a></li>
+<li><a class="reference internal" href="#remember">Remember</a></li>
+<li><a class="reference internal" href="#first-boot-configuration">First boot configuration</a><ul>
+<li><a class="reference internal" href="#restaure-factory-parameters">Restaure factory parameters</a></li>
+<li><a class="reference internal" href="#what-are-hypothesys-when-boot-for-the-first-time">What are hypothesys, when boot for the first time ?</a></li>
+<li><a class="reference internal" href="#first-boot-process">First boot process</a></li>
+<li><a class="reference internal" href="#behavior-when-user-move-eps-from-one-physical-site-to-another">Behavior when user move EPS from one physical site to another</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration-parameter">Configuration parameter</a><ul>
+<li><a class="reference internal" href="#set-time-and-date-parameter-names">Set time and date parameter names</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#plugs-modes-description">Plugs modes description</a><ul>
+<li><a class="reference internal" href="#manuel">Manuel</a></li>
+<li><a class="reference internal" href="#timer-minuteur-mode-cuit-oeuf">Timer / minuteur / mode cuit oeuf</a></li>
+<li><a class="reference internal" href="#periodique-cyclique">Périodique/cyclique</a></li>
+<li><a class="reference internal" href="#hebdomadaire">Hebdomadaire</a></li>
+<li><a class="reference internal" href="#clone">Clone</a></li>
+<li><a class="reference internal" href="#evolutions-possibles">Evolutions possibles</a></li>
+<li><a class="reference internal" href="#factorisation-des-varibales-de-mode">Factorisation des varibales de mode</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#start-up-behavior">Start up behavior</a><ul>
+<li><a class="reference internal" href="#special-push-button-behaviors-stratup">Special push button behaviors &#64;stratup</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#sofware-development-choice">Sofware development choice</a><ul>
+<li><a class="reference internal" href="#why-do-not-use-wifi-manager">Why do not use wifi manager ?</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#configuration-arduino">Configuration ARDUINO</a></li>
+<li><a class="reference internal" href="#wifi-modes">WIFI Modes</a><ul>
+<li><a class="reference internal" href="#no-wifi">No WiFi</a></li>
+<li><a class="reference internal" href="#softap">SoftAP</a></li>
+<li><a class="reference internal" href="#station">Station</a></li>
+<li><a class="reference internal" href="#both-mode-sta-and-ap">both mode STA and AP</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ip-address">IP address</a></li>
+<li><a class="reference internal" href="#wifi-led-behavior">WIFI LED behavior</a></li>
+<li><a class="reference internal" href="#esp8266-and-its-wifi-managment">ESP8266 and its wifi managment !</a></li>
+<li><a class="reference internal" href="#displaying-plugs-mode-only-with-led">Displaying plugs mode only with LED</a></li>
+<li><a class="reference internal" href="#web-page-development">WEB page development</a><ul>
+<li><a class="reference internal" href="#html-requests">html requests</a></li>
+<li><a class="reference internal" href="#ntp-server-name">NTP server name</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#serveur-html-esp8266">Serveur html ESP8266</a><ul>
+<li><a class="reference internal" href="#edit-page">edit page</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ioexpander">IOExpander</a></li>
+<li><a class="reference internal" href="#error-handling">Error handling</a></li>
+<li><a class="reference internal" href="#time-managment-strategy">Time managment strategy</a></li>
+<li><a class="reference internal" href="#rtc-ds3231-eeprom-access">RTC DS3231 EEPROM access</a></li>
+<li><a class="reference internal" href="#livetime-of-esp8266-flash-spiffs">Livetime of ESP8266 flash SPIFFS</a></li>
+<li><a class="reference internal" href="#livetime-of-the-relays">Livetime of the relays</a></li>
+<li><a class="reference internal" href="#html-ihm-integration">HTML IHM integration</a></li>
+<li><a class="reference internal" href="#usefull-tools">Usefull Tools</a></li>
+<li><a class="reference internal" href="#usefull-documentation">Usefull Documentation</a><ul>
+<li><a class="reference internal" href="#html-server">Html server</a></li>
+<li><a class="reference internal" href="#fastled">fastLed</a></li>
+<li><a class="reference internal" href="#json-lectures-ecritures">json (lectures / écritures)</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#used-library">Used library</a></li>
+<li><a class="reference internal" href="#eccueils-et-autres-difficultes">Eccueils et autres difficultés</a><ul>
+<li><a class="reference internal" href="#limite-des-longueurs-de-nom-de-fichier-spiffs">Limite des longueurs de nom de fichier SPIFFS</a></li>
+<li><a class="reference internal" href="#prise-en-main-de-la-librairie-json">Prise en main de la librairie JSON</a></li>
+<li><a class="reference internal" href="#ds3231-stuck-i2c-bus">DS3231 stuck I2C bus</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#source-code-documentation">Source code documentation</a></li>
+<li><a class="reference internal" href="#vocabulary">Vocabulary</a></li>
+<li><a class="reference internal" href="#webography">Webography</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Sujet précédent</h4>
+  <p class="topless"><a href="index.html"
+                        title="Chapitre précédent">Welcome to IoT_EPS’s documentation!</a></p>
+  <h4>Sujet suivant</h4>
+  <p class="topless"><a href="curentSensing.html"
+                        title="Chapitre suivant">IOT EPS curent Sensing</a></p>
+  <div role="note" aria-label="source link">
+    <h3>Cette page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/softDev.rst.txt"
+            rel="nofollow">Montrer le code source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Recherche rapide</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="Index général"
+             >index</a></li>
+        <li class="right" >
+          <a href="curentSensing.html" title="IOT EPS curent Sensing"
+             >suivant</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Welcome to IoT_EPS’s documentation!"
+             >précédent</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Documentation IoT_EPS </a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Poltergeist42.
+      Créé avec <a href="http://sphinx-doc.org/">Sphinx</a> 2.3.1.
+    </div>
+  </body>
+</html>

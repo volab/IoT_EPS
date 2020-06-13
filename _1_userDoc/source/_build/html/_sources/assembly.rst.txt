@@ -14,17 +14,6 @@ IoT Electrical Power Strip Assembly manual
 First: program ESP8266
 ================================
 Use Arduino IDE
-Install ESP8266 from:
-https://arduino.esp8266.com/stable/package_esp8266com_index.json
-
-.. image:: image/arduino_esptoolsversion.jpg
-   :width: 300 px
-
-You need also esptools to program SPIFFS
-
-.. DANGER::
-    ARDUINO IDE 1.8.12, ESP8266 2.4.7 doesn't work for me when i try to program SPIFFS.
-	Error : esptool not found
 
 ====================================================================================================
 Second Program Arduino nano

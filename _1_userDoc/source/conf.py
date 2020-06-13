@@ -32,7 +32,7 @@ sys.path.insert(0, os.path.abspath("../../"))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
-    'sphinx.ext.githubpages']
+    'sphinx.ext.githubpages', 'sphinx.ext.intersphinx']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -92,10 +92,18 @@ html_theme = 'classic'
 #
 # html_theme_options = {}
 html_theme_options = {
-    #'stickysidebar ': True, # pas supportee par nature
-    'body_max_width' : '70%'
+    # 'stickysidebar ': True, # pas supportee par nature
+    'body_max_width' : '90%'
     
 }
+
+# html_theme = 'cloud'
+# #Options clood theme:
+# html_theme_options = {
+#     'max_width' : '70%',
+#     'borderless_decor' : 'true'
+# }
+
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".

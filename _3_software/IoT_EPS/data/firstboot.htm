@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <!-- Entête de la page -->
+        <meta charset="UTF-8" />
+        
+        <!--Import css-->
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+
+        <link rel="icon" href="volab.ico" />
+
+        <title>Démarrage IoT_EPS</title></head>
+    
+    <body class="bg-lightBlue">
+        <header> <!-- Logo + Titre de la page -->
+            <div class="row">
+                <div class="col s3">
+                        <img class="FB_logo" src="img/logo_alpha.png" alt="logo IoT_EPS"/>
+                </div>
+                <div class="col s9">
+                    <h1 class="header_h1">Démarrage IoT_EPS</h1>
+                </div>
+            </div>
+            
+        </header>
+
+        <main> <!-- corp de la page -->
+            <div class="FB_fieldset_color">
+                <form
+                    action="/firstBoot"
+                    method="post">
+                        <span>
+                            <input type="hidden" class="hidden" name="firstBoot" value="firstBootForm">
+                        </span>
+                        <div class="AP">
+                            <label for="AP_select">
+                                <input
+                                    type="radio"
+                                    name="mode_selector"
+                                    id="AP_select"
+                                    value="AP"
+                                    onclick="checkAP()" >
+                                <span>Point d'accès WIFI (réseau autonome)</span>
+                            </label><br><br>
+                            <span>Saisir le SSID pour le mode Point d'accès</span><br>
+                            <input
+                                type="text"
+                                name="AP_SSID"
+                                id="id_AP_SSID"
+                                value="default_AP_SSID" >
+                            <br>
+                            <span>Saisir le mot de passe du mode Point d'accès
+                                    <br>(Mot de passe par défaut : "123456789")
+                            </span><br>
+                            <input
+                                type="password"
+                                name="AP_PWD"
+                                id="id_AP_PWD"
+                                value="123456789" >
+                            <br><br>***<br><br>
+                        </div>
+                        
+                        
+                        <div class="STA">
+                        <!--FB_WARNING_TAG-->
+                            <label for="STA_select">
+                                <input
+                                    type="radio"
+                                    name="mode_selector"
+                                    id="STA_select"
+                                    value="STA"
+                                    onclick="checkSTA()" >
+                                <span>Joindre un réseau existant</span>
+                            </label><br><br>
+                            <span>Saisir le SSID du réseau à joindre</span><br>
+                            <input 
+                                type="text"
+                                name="STA_SSID"
+                                id="id_STA_SSID"
+                                value=""
+                                placeholder="saisir votre SSID" >
+                            <br>
+                            <span>Saisir le mot de passe du réseau à joindre</span><br>
+                            <input
+                                type="password"
+                                name="STA_PWD"
+                                id="id_STA_PWD"
+                                value=""
+                                placeholder="saisir le mot de passe">
+                            <br><br>***<br><br>
+                        </div>
+                        <div class="submitReset">
+                            <input 
+                                type="submit"
+                                class="submit AP_STA_SUBMIT" >
+                            <input
+                                type="reset"
+                                class="reset AP_STA_SUBMIT" > 
+                        </div>
+                </form>
+            </div>
+        </main>
+
+        <script>
+            function checkAP(){
+                document.getElementById("id_STA_SSID").disabled = true;
+                document.getElementById("id_STA_PWD").disabled = true;
+                document.getElementById("id_AP_SSID").disabled = false;
+                document.getElementById("id_AP_PWD").disabled = false;
+                document.getElementById("AP_select").checked = true
+            }
+
+            function checkSTA(){
+                document.getElementById("id_STA_SSID").disabled = false;
+                document.getElementById("id_STA_PWD").disabled = false;
+                document.getElementById("id_AP_SSID").disabled = true;
+                document.getElementById("id_AP_PWD").disabled = true;
+                document.getElementById("STA_select").checked = true
+            }
+
+            checkAP()
+        </script>
+
+    </body>
+</html>
