@@ -10,9 +10,11 @@ IoT Electrical Power Strip Assembly manual
 .. contents::
     :backlinks: top
 
-================================
+
+====================================================================================================
 First: program ESP8266
-================================
+====================================================================================================
+
 Use Arduino IDE
 Install ESP8266 from:
 https://arduino.esp8266.com/stable/package_esp8266com_index.json
