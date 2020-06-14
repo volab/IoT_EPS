@@ -28,6 +28,7 @@ You need also esptools to program SPIFFS
     ARDUINO IDE 1.8.12, ESP8266 2.4.7 doesn't work for me when i try to program SPIFFS.
 	Error : esptool not found
 
+
 ====================================================================================================
 Second Program Arduino nano
 ====================================================================================================
@@ -67,6 +68,21 @@ Données de mise au point:
 
 - ajouter une diode sur le 5V de l'ESP pour éviter que l'USB ne réalimente la carte?
 - de la même manière l'USB du UNO pourrait réalimenter la carte, ajouter une diode pin 27
+
+Mise au point en juin 2020
+====================================================================================================
+Changement de pc de développement. Probblème avec la branche dev_jojo détecté grâce à gitKraken
+
+Creation de la nouvelle branche devFirmware.
+
+Programmation de l'ESP, sans rien autour. 
+
+Difficultées avec la version des outils ESP8266 pour programmer SPIFFS.
+
+Mais après avoir programmé l'ESP8266, on ne peut pas vérifier correctement le fonctionnement car
+on bloque rapidement sur un Erreur fatale et impossible de diagnostiquer à cause du sabordage.
+
+Création d'un branche dédiée à cette mise au point branch : noSaborde
 
 ================================
 Connect wires to the plugs
