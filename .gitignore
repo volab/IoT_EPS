@@ -1,10 +1,10 @@
 ## [ .gitignore ]
 
-## Liste des fichiers et dossiers à ignorer
+## Liste des fichiers et dossiers ï¿½ ignorer
 
 #.gitignore
 
-# au cas où on décide de supprimer *.json
+# au cas oï¿½ on dï¿½cide de supprimer *.json
 # fichier contenant des credentials 
 credentials.json
 cred*.json
@@ -84,5 +84,6 @@ Thumbs.db
 /_3_software/IoT_EPS/data/Config.htm
 /_1_userDoc/*.lnk
 /_2_modelisation/*.stl
-/_3_software/modelio_wks
 /_3_software/codeIsoleAut2020
+/_3_software/modelio_wks
+/_3_software/copieEcranSortieMonitor
