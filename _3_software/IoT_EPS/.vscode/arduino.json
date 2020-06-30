@@ -1,5 +1,5 @@
 {
-    "sketch": "BareMinimum.ino",
+    "sketch": "IoT_EPS.ino",
     "port": "COM1",
     "board": "arduino:avr:uno"
 }
