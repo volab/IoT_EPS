@@ -556,8 +556,14 @@ an I2C IO expander (see Hardware dev doc)
 Error handling
 ==================================
 
-See dedicated Excel file. All below informations are obsoletes.
+.. figure:: image/ressourcesIot_ESP.svg
+   :alt: IoT_ESP res
+   :align: center
+   
+   IoT_EPS ressources tree
 
+**All below informations are obsoletes.** See dedicated Excel file ``testAndErrorHandling.xlsx`` under
+``_1-1_tests`` subdirectory.
 
 Buildin test error BIT
 
@@ -586,7 +592,7 @@ CBIT : Continus BIT every loop cycle, check :
 Not in CBIT
  - WIFI state if in Station mode and/or AP mode ???
  
-Because when wifi is down (wifi box shut down for exemple EPS could continue to work)
+Because when wifi is down ( if our wifi box shutdown, for example, EPS should continue to work)
 
 Can we work without File system or Json error ? No, fatal error => RED LED FLash 
  The system won't be started so no special web page index

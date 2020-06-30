@@ -163,7 +163,7 @@ void setup(){
         fileExist &= b;
         DSPL( dPrompt + F("file : ") + s + F(" is ") + (b?F("present"):F("not found")) );
     }
-    DSPL( dPrompt + F("Result all files are present : ") + (fileExist?"OK":"ERROR") );
+    DSPL( dPrompt + F("Result all files are present ? ") + (fileExist?"OK":"ERROR") );
     sysStatus.filesErr.err( !fileExist );
 
     // if (SPIFFS.exists("/index.html")) {
