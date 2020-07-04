@@ -7,12 +7,13 @@
 * @brief header file of the class CRtc
 */
 
+#include "IoT_EPS.h"
 
-#ifndef _HEADERNAME_H
-#define _HEADERNAME_H
+#ifndef CRTC_HEADER_H
+#define CRTC_HEADER_H
 // #include <Wire.h>
 // #include <RTClib.h>
-#include "IoT_EPS.h"
+
 
 /**
 * @class CRtc CRtc.h
@@ -24,6 +25,7 @@ class CRtc : public RTC_DS3231
 public:
 	CRtc(){ RTC_DS3231(); }
 	bool begin( void );
+    bool begin( NTPClient *p_tc );
 	static bool initErr; 
 	static void displayTime(); /**< @brief a static function to display time in debug screen*/
 	static void adjust( char *c );
@@ -34,6 +36,7 @@ public:
 private:
     unsigned long lastMillis;
     unsigned long _updatesCpt;
+    static NTPClient *p_timeClient;
 };
 
 

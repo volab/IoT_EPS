@@ -127,7 +127,7 @@ FSInfo filseSystemInfo;
  //bfgkmnqruvxy 
     switch(com[0]){
 		case 'C':   
-			CRtc::displayTime();
+			// CRtc::displayTime();
 			break;
 		case 'E':      // 
 			INTERFACE.print("<iElectrical Power Strip ");
@@ -283,7 +283,7 @@ FSInfo filseSystemInfo;
             if (!errNTPinit) {
                 RTC_DS3231::adjust( NTPTime );
                 INTERFACE.println( "Time set :");
-                CRtc::displayTime();
+                // CRtc::displayTime();
             }
             break;      
         case 't':

@@ -10,12 +10,14 @@
 
 */
 
+#include "IoT_EPS.h"
+
 #ifndef CREDENTIAL_H
 #define CREDENTIAL_H
 
 // #include <Arduino.h>
 // #include <ArduinoJson.h> //https://github.com/bblanchon/ArduinoJson
-#include "IoT_EPS.h"
+
 
 class Credential{
     public:

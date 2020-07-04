@@ -54,6 +54,9 @@ File delete : use seial commande <d _filename>
 
 FTP server dosen't work very well
 
+In csysstat.cpp et csysstat.h files, variable _forceSystemStartOnFatalError allow to desable the
+sabordage behavior.
+
 =========================================
 Obtaine IP addresse of the Power strip 
 =========================================

@@ -72,6 +72,8 @@ function is defined at the end of this file.
 
 There is 2 flashing speeds one for AP mode and one for Station mode
 */
+CSystem sysIoteps;
+
 void wifiLedFlash( int speed, int count ); //defined at eh end of the rpesent file
 
 ConfigParam cParam; /**< @brief to hold the configuration parameters*/
@@ -111,7 +113,7 @@ CTempo allLeds;
 bool restartTempoLed = false;
 
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP, NTPSERVER);
+// NTPClient timeClient(ntpUDP, NTPSERVER);
 
 
 
@@ -120,23 +122,25 @@ NTPClient timeClient(ntpUDP, NTPSERVER);
  - [NECESSARY for 1 and 2 plug strip] convert colorLeds array in dynamic version as for plugs array */
 
 void setup(){
-    DateTime NTPTime;
+    sysIoteps.init();
+    
+    // DateTime NTPTime;
     int timeZone = OFFSET_HEURE; 
     
-    delay(1000);//a try to correct the powerup pb
-    pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite( LED_BUILTIN, LOW ); //warning D4 BP blueu plug
-    delay(1000);
-    digitalWrite( LED_BUILTIN, HIGH ); //warning D4 BP blueu plug
-    pinMode(LED_BUILTIN, INPUT);
+    // delay(1000);//a try to correct the powerup pb
+    // pinMode(LED_BUILTIN, OUTPUT);
+    // digitalWrite( LED_BUILTIN, LOW ); //warning D4 BP blueu plug
+    // delay(1000);
+    // digitalWrite( LED_BUILTIN, HIGH ); //warning D4 BP blueu plug
+    // pinMode(LED_BUILTIN, INPUT);
     
     DEFDPROMPT("setUp") // define dPrompt String
-    DateTime now;
-    DEBUGPORT.begin(DEBUGSPEED);
-    // Serial.setDebugOutput(true); //Serial debug of Wifi lib
-    DSPL();
-    DSPL( dPrompt + F("Sketch start..."));
-    pinMode( BP1, INPUT_PULLUP );
+    // DateTime now;
+    // DEBUGPORT.begin(DEBUGSPEED);
+    // // Serial.setDebugOutput(true); //Serial debug of Wifi lib
+    // DSPL();
+    // DSPL( dPrompt + F("Sketch start..."));
+    // pinMode( BP1, INPUT_PULLUP );
     //pinMode( BP3, INPUT_PULLUP );
     if ( !(digitalRead(BP1) ) ){
         DSPL( dPrompt + F("Special action take place..." ) );
@@ -244,18 +248,18 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                    //
     /////////////////////////////////////////////////////////////////////////////
-    rtc.begin();
-    sysStatus.rtcErr.err( rtc.initErr );
-    if (rtc.lostPower()){
-        DSPL( dPrompt + "une remise a l'heure est necessaire");
-    }
-    now = rtc.now();
-    String message = dPrompt + F("DS3231 Start date : ");
-    message += (String)now.day()+"/"+(String)now.month()+"/";
-    message += (String)now.year()+" ";
-    message += (String)now.hour()+":"+ (String)now.minute()+":";
-    message += (String)now.second();      
-    DSPL( message);
+    // rtc.begin();
+    // sysStatus.rtcErr.err( rtc.initErr );
+    // if (rtc.lostPower()){
+    //     DSPL( dPrompt + "une remise a l'heure est necessaire");
+    // }
+    // now = rtc.now();
+    // String message = dPrompt + F("DS3231 Start date : ");
+    // message += (String)now.day()+"/"+(String)now.month()+"/";
+    // message += (String)now.year()+" ";
+    // message += (String)now.hour()+":"+ (String)now.minute()+":";
+    // message += (String)now.second();      
+    // DSPL( message);
 
     /////////////////////////////////////////////////////////////////////////////
     //     Main power first check                                              //
@@ -544,22 +548,22 @@ void setup(){
     //  Time server check                                                     //
     /////////////////////////////////////////////////////////////////////////////
     // if ((wifi is on station mode connected))
-    if( sysStatus.ntpEnabled){
-        timeClient.begin();
-        // errNTPinit = !timeClient.forceUpdate();
-        sysStatus.ntpErr.err( !timeClient.forceUpdate() ) ;
-        if ( !sysStatus.ntpErr.isErr() ){
-            timeClient.setTimeOffset( timeZone * SECPERHOURS );
-            // setTime(  timeClient.getEpochTime() );
-            NTPTime = DateTime( timeClient.getEpochTime() );
-            if (rtc.lostPower()){
-                RTC_DS3231::adjust( NTPTime );
-                DSPL( dPrompt + F("DS3231 set to NTP time due to power lost.") );
-                CRtc::displayTime();
-            }
-            cParam.write2Json( "ntpError", "OFF" );
-        } else { cParam.write2Json( "ntpError", "ON" ); }
-    }
+    // if( sysStatus.ntpEnabled){
+    //     timeClient.begin();
+    //     // errNTPinit = !timeClient.forceUpdate();
+    //     sysStatus.ntpErr.err( !timeClient.forceUpdate() ) ;
+    //     if ( !sysStatus.ntpErr.isErr() ){
+    //         timeClient.setTimeOffset( timeZone * SECPERHOURS );
+    //         // setTime(  timeClient.getEpochTime() );
+    //         NTPTime = DateTime( timeClient.getEpochTime() );
+    //         if (rtc.lostPower()){
+    //             RTC_DS3231::adjust( NTPTime );
+    //             DSPL( dPrompt + F("DS3231 set to NTP time due to power lost.") );
+    //             CRtc::displayTime();
+    //         }
+    //         cParam.write2Json( "ntpError", "OFF" );
+    //     } else { cParam.write2Json( "ntpError", "ON" ); }
+    // }
 
 
     /////////////////////////////////////////////////////////////////////////////

@@ -52,9 +52,13 @@
 // #include <ESP8266Ping.h>
 // #include <Pinger.h>
 
+
+
 #define CONFIGFILENAME "/config4.json"
 #define DEFCONFIGFILENAME "/defConfig.json"
 #define CREDENTIALFILENAME "/credentials.json"
+
+
 #include "SerialCommand.h"
 #include "debugSerialPort.h"
 #include "credential.h"
@@ -198,6 +202,7 @@
 #define WIFILED_SOFTAP_FLASH 50
 #define WIFILED_SOFTAP_PERIOD 2000
 
+#include "csystem.h"
 
 const String necessaryFileList[] ={
       "/index.html"

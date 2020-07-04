@@ -8,11 +8,14 @@
 */
 
 #include "IoT_EPS.h"
-// #include "CRtc.h"
+#include "CRtc.h"
 // #include "debugSerialPort.h"
 
 bool CRtc::initErr = false;
-extern NTPClient timeClient;
+// extern NTPClient timeClient;
+
+NTPClient *p_timeClient = nullptr;
+
 
 /** 
 @fn bool CRtc::begin( void )
@@ -27,6 +30,11 @@ bool CRtc::begin( void ){
 	return initErr;
 }
 
+bool CRtc::begin( NTPClient *p_tc ){
+    
+    p_timeClient = p_tc;
+    begin();
+}
 
 /** 
  @fn static void displayTime()
@@ -39,7 +47,7 @@ bool CRtc::begin( void ){
  This function could have used CEpsStrTime::displayUnixTime but it creat a depndency between this 2 class
 */
 
-void CRtc::displayTime(){
+void CRtc::displayTime(){ //static !
 	DEFDPROMPT( "DS3231 Time")
     DateTime now = RTC_DS3231::now();
     String sDate = "";
@@ -49,12 +57,12 @@ void CRtc::displayTime(){
 	DSPL( dPrompt + sDate );
     unsigned long RTCTime = RTC_DS3231::now().unixtime();
     DSPL( dPrompt + "unix local time : " + RTCTime );
-    sysStatus.ntpErr.err( !timeClient.forceUpdate() );
+    sysStatus.ntpErr.err( !p_timeClient->forceUpdate() );
     if ( sysStatus.ntpErr.isErr() ) return ;
-    unsigned long NTPTime = timeClient.getEpochTime();
-    DSPL( dPrompt + "NTP time : " + String(timeClient.getEpochTime() ) );
+    unsigned long NTPTime = p_timeClient->getEpochTime();
+    DSPL( dPrompt + "NTP time : " + String(p_timeClient->getEpochTime() ) );
     DSPL( dPrompt + "time error : " + String( abs(NTPTime-RTCTime) ) );
-    // DSPL( dPrompt + "Next time check" + String(millis() - lastMillis ) );
+    DSPL( dPrompt + "Next time check" + String(millis() - lastMillis ) );
 	
 }
 
@@ -101,7 +109,7 @@ void CRtc::adjustH( char *c ){
 		case 3:
 			RTC_DS3231::adjust( DateTime( now.year(), now.month(), now.day(), hh, mm, ss) );
 			DSPL("<O>");
-			displayTime();
+			// displayTime();
 			break;
 		default :
 			DSPL( "<X>");
@@ -124,10 +132,11 @@ void CRtc::update(){
     sDate += (String)now.hour()+":"+(String)now.minute()+":";
     sDate += (String)now.second();
 	DSPL( dPrompt + sDate );
-    sysStatus.ntpErr.err( !timeClient.forceUpdate() );
+    // sysStatus.ntpErr.err( !timeClient.forceUpdate() );
     lastMillis = millis();
     if ( sysStatus.ntpErr.isErr() ) return ;
-    unsigned long NTPTime = timeClient.getEpochTime();
+    unsigned long NTPTime = 0;
+    // unsigned long NTPTime = timeClient.getEpochTime();
     unsigned long RTCTime = RTC_DS3231::now().unixtime();
     DSPL( dPrompt + F("Delta time = ") + String(abs( RTCTime - NTPTime )) );
     if ( abs( RTCTime - NTPTime ) < RTC_ALLOWED_TIME_ERROR ) return;

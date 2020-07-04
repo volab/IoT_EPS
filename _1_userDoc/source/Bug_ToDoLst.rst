@@ -5,7 +5,7 @@ Bug et ToDo-list
 Déscription
 ===========
 
-    Dans se fichier sont renseigner les bugs identifiés et la liste des choses à faire.
+    Dans se fichier sont renseignés les bugs identifiés et la liste des choses à faire.
     
     #. Bugs identifiés
     
@@ -109,6 +109,16 @@ ToDo : online gh-page
     :Traitement:            
 
 ------------------------------------------------------------------------------------------
+
+ToDo-list
+=========
+
+    :Date de saisie:        200703        
+    :Date de traitemant:    
+    :Cible:                 firmware
+    :Status:                open
+    :Problematique:         Créer un fichier de config.h regroupant tous les #define
+    :Traitement:            
 
 ToDo-list
 =========
