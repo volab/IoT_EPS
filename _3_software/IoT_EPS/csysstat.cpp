@@ -28,7 +28,7 @@ sysError::sysError( errGravity_t grav,  gColor_t c1, gColor_t c2, String errMsg)
     _err = false;
     _gravity = grav;
     _errMsg = errMsg;
-    _forceSystemStartOnFatalError = false;
+    _forceSystemStartOnFatalError = true;
 }
 
 /** 

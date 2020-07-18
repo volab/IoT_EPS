@@ -14,7 +14,7 @@
 #define CSYSTEM_H
 
 /**
-* @class  CSystem system.h
+* @class  CSystem csystem.h
 * @brief Classe qui controle l'ensemble du system
 
 Tentative de clarification du code

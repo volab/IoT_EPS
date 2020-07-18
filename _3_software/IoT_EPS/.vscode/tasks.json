@@ -1,0 +1,39 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": [
+                 "echo \"Workspace: \" ${workspaceFolderBasename}" 
+                //," && echo \"File dire name : \" ${fileDirname}"
+                //," && echo \"File base: \"${fileBasename}"
+                //," && echo %cd%"
+                //," && dir"
+                //," && cd ..\\..\\_1_userDoc"
+                //," && dir"
+                ," && cd c:/MountWD/Donnees/ODJ/008_iao_wrk/VoRoboticsAsso/00-AutresProjetsDuLab/0044-Iot_ESP_PPlug/projet/_1_userDoc/"
+                //," && dir"
+                ," && make html"
+                //," && echo %cd%"
+               //," && echo ***FIN**"
+               //," && exit"
+            ],
+            "presentation":{
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "new",
+                "showReuseMessage": false,
+                "clear": false
+            },
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

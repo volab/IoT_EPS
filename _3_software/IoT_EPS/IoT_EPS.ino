@@ -39,7 +39,8 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  @tableofcontents
   doxygen todo list is not enought ! It is a good practice to highlight on certain ligne of code.
   Here I want to trace major features implementations.
-  
+
+ @li rewrite more OO of main code 
  @li test restore defConfig.json when firstBoot 
  @li see hardware.rst file
  
@@ -53,7 +54,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
  @li code, bugs and todo review : remove all unused commented code (cleanup)
 */
 
-//Dev ystem objet juin 2020
+//Dev system objet juin 2020
 
 #include "IoT_EPS.h"
 #include "ESP8266FtpServer.h"
@@ -61,6 +62,8 @@ FtpServer ftpSrv;
 
 #include <ESP8266HTTPClient.h>
 
+
+CSystem sysIoteps;
 
 /** 
 @fn void wifiLedFlash( int speed )
@@ -72,14 +75,14 @@ function is defined at the end of this file.
 
 There is 2 flashing speeds one for AP mode and one for Station mode
 */
-CSystem sysIoteps;
+
 
 void wifiLedFlash( int speed, int count ); //defined at eh end of the rpesent file
 
 ConfigParam cParam; /**< @brief to hold the configuration parameters*/
 Credential wifiCred;
 
-CRtc rtc;
+//CRtc rtc;
 
 ESP8266WebServer *server;
 
@@ -135,13 +138,7 @@ void setup(){
     // pinMode(LED_BUILTIN, INPUT);
     
     DEFDPROMPT("setUp") // define dPrompt String
-    // DateTime now;
-    // DEBUGPORT.begin(DEBUGSPEED);
-    // // Serial.setDebugOutput(true); //Serial debug of Wifi lib
-    // DSPL();
-    // DSPL( dPrompt + F("Sketch start..."));
-    // pinMode( BP1, INPUT_PULLUP );
-    //pinMode( BP3, INPUT_PULLUP );
+
     if ( !(digitalRead(BP1) ) ){
         DSPL( dPrompt + F("Special action take place..." ) );
         // place special actions here
@@ -177,7 +174,7 @@ void setup(){
         // DSPL( dPrompt + F("html index file not found."));
     // }
     // String str = "";
-    // Dir dir = SPIFFS.openDir("/");
+    //   dir = SPIFFS.openDir("/");
     // while (dir.next()) {
         // str += dir.fileName();
         // str += " / ";
@@ -614,6 +611,9 @@ bool cycleState = false;
 
 void loop(){
     static unsigned long prevMillis = millis();
+
+    CRtc rtc;
+
     DEFDPROMPT("in the loop")
     /////////////////////////////////////////////////////////////////////////////
     //  CBIT : Continus Built In Test                                          //

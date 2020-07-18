@@ -11,12 +11,45 @@ IOT Electrical Power Strip Software development documentation
    :titlesonly:
    
    curentSensing
+   variable
 
-  
-==============
-Progression
-==============
-#. Affichage d'un page html static: ok
+=============================
+Source code documentation
+=============================
+
+Source code documentation provide a lot of informations
+ 
+ `<codeDoc\\html\\index.html>`_
+
+====================================================================================================
+Software architecture
+====================================================================================================
+Some words on software architecture.
+
+@13/07/2020
+
+one main ino file with its .h : IoT_EPS
+in the header file we can find includes and confi informations. (to be changed - see project
+todo list)
+
+Usage of global variables and objects.
+
+:ref:`See variables list<refVariableList>`
+
+Usage of one big json file (except for credentials) to store plugs information and 
+application parameters. Not optimal.
+
+Usage of static functions in some object like Crtc.
+
+Usage of a pseudo object in SerialCommand (just a struct)
+
+
+
+
+===========================
+Progress of development
+===========================
+#. Display single static html page: ok
 #. Affichage page html fichier SPIFFS : ok
 #. Affichage de l'heure à partir d'une page en dur dans le code : ok
 #. Affichage page avec CSS : ok
@@ -26,7 +59,7 @@ Progression
 #. intégration MCP23017 : ok
 #. lecture du fichier de configuration config3.json : ok
 #. gestion bouton poussoir mécanique : ok
-#. Ecriture fichier json : ok
+#. Write json file : ok
 #. Traitement de la requete html avec analyze, exécution et écriture json: ok
 #. manage wif led : ok
 #. integrate nano expander with analog inputs : ok
@@ -46,14 +79,18 @@ Progression
 
 #. exhaustive test of hebdo mode : 95%
 #. write index special page for softAP Mode with local boostrap or other light js.framework 5%
-#. preparer un infographie résumant fonctionnalité et besoin : 
+#. prepare an infographie résumant fonctionnalité et besoin : 
 #. Write user manual : 1%
 #. Write builder manual
+#. rewrite main program setup and loop function with more object orieted structure 5%
 
 Don't forget the todo list of the doxygen documentation
 
+.. index::
+    single: Namming
+
 ====================================
-Namming convention
+Naming convention
 ====================================
 
 Référence : config4.json
@@ -89,9 +126,13 @@ Remember
 
 #. see javascript http request to perform DELETE: obsolete
 
+
+.. index::
+    single: First boot
+
 ====================================
 First boot configuration
-==================================== 
+====================================
 
 @first boot :
  - mode AP connection and display config page to set SSID password and server name
@@ -116,10 +157,10 @@ Same questions with credentials ? No, we generate it
 
 We considere that the user upload sketch and data directory.
 
-When consider the first boot is OFF ? When we receive the folowing form
+When consider the first boot is OFF ? When we receive the following form
  - station mode or AP choice
  - SSID et pass du mode AP (WARNING provide diff SSID if you own more then one PowerStrip)
- - SSID and pass of station mode [ optionel if user wish stay always in AP mode ]
+ - SSID and pass of station mode [ optional if user wish stay always in AP mode ]
  - propose default same hostname and default SSID AP build with mac add:
    IOT_EPS_HHHH
 
@@ -131,7 +172,7 @@ First boot process
 #. in firstBootHandler check param, write credential, set firBoot param to "trySation" if needed
 #. restart ESP
 #. if Station is ok firstBoot is ended, set firstBoot param = off
-#. if station ko reload firstboot page with alerte
+#. if station ko reload firstboot page with alert
 
 Behavior when user move EPS from one physical site to another
 ===============================================================
@@ -140,6 +181,9 @@ It is not a first boot
 EPS will search its WiFi station and will not find it so it restart in AP mode then user can acces
 to the config special page change SSID and password.
 
+.. index::
+    single: Configuration
+
 ===================================
 Configuration parameter
 ===================================
@@ -147,7 +191,7 @@ Configuration parameter
  - EPS name (host name)
  - Plugs names
  - Station SSID
- - Sation mode passwd
+ - Station mode passwd
  - Soft AP SSID and password
 
 All json general section parameter without:
@@ -157,7 +201,7 @@ All json general section parameter without:
 set time in AP mode and perhaps for station mode summer and winter time.
 
 As for plugonof, we decide to build one configuration page for station mode and one configuration
-page for AP mode because in station mode we can use CDN( bootstrap and jquery) functionnality but 
+page for AP mode because in station mode we can use CDN( bootstrap and jquery) functionality but 
 not in AP mode because the embeded version of this `content delivery network (CDN)`_ are too 
 big >3Mo.
 
@@ -172,11 +216,11 @@ setTime, setDate
 
 ====================================
 Plugs modes description
-==================================== 
+====================================
 
 Manuel
 ======
-- appui sur BP ON/OFF
+- press on ON/OFF push button
 - durée avant arrêt (durée limité à 300mn): pour s'offrir la possibilité de couper la prise en cas de départ prématurer...
 - ou heure d'arrêt : dans le même état d'esprit mais pour fixer une heure absolue.
 
@@ -242,7 +286,10 @@ Factorisation des varibales de mode
       Jours[] s = OFF,OFF,OFF,OFF,OFF,OFF,OFF
       clonedPlug =
       onOffCount = 10  
-  
+
+.. index::
+    single: Startup
+
 =====================================
 Start up behavior
 =====================================
@@ -295,14 +342,14 @@ Sofware development choice
 ============================
 wifi access point
 
-Les pages html sont dans le file système SPIFFS
+Html pages are in the file system SPIFFS
 
 Why do not use wifi manager ?
 =========================================
 
 
 =========================
-Configuration ARDUINO
+ARDUINO Configuration
 =========================
 
 WEMOS D1 MIN ARDUINO configurattion:
@@ -347,16 +394,18 @@ The best functionnal mode ! With full web interface and others functions.
 
 both mode STA and AP
 =======================
-July 2019 : reflexion when we start in DHCP station mode whe don't know IP address of the IoT EPS.
+July 2019 : reflexion when we start in DHCP station mode we don't know IP address of the IoT EPS.
 One way to know it is to use a tool to scan the local network !
 So why do not connect systematically in both mode !!!
-Do it in new dev branch  !!!!!!!!!!!!!!!!!! 10 months of development to arrive at this point !!!!
+Do it in new dev branch  !!!!!!!!!!!!!!!!!! 10 months of development to achieve this !!!!
 
 ====================================
 IP address
 ====================================
 AP and non DHCP IP address are class C address (subnet mask is 255.255.255.0 hardcoded )
 
+.. index::
+    single: Wifi LEDs
 
 ==================
 WIFI LED behavior
@@ -487,13 +536,13 @@ The name reside in the IoT_EPS.h file and is not a config param through web conf
 ====================
 Serveur html ESP8266
 ====================
-Repris de l'exemple fourni avec l'IDE ARDUINO : ESP8266WebServer/FSBrowser
+Copy from example provided in ARDUINO IDE : ESP8266WebServer/FSBrowser
 
-Cette exemple apporte un lot de fonction qui gérent l'envoie de fichier css, jpg et autres...
+This example provide a lot of functions that managed file sending as css, jpg and so on
 
 edit page
 ==============
-Comportement etrange de l'extnsion html
+Strange behavior with html extension
 
 Le bouton parcourir tronc en htm et le visualisateur ne montre que les fichier htm
 
@@ -550,7 +599,8 @@ _initDone et _mpc (mpc étant la ressource commune à toutes les instances de la
 During development, to get more digital IO and 4 analog input, we decide to add a ARDUINO Nano as 
 an I2C IO expander (see Hardware dev doc)
 
-
+.. index::
+    single: Error handling
     
 ==================================
 Error handling
@@ -620,13 +670,15 @@ Can we work without internet connection or Wifi in station mode ?
     We decide to only display on index html page
 
 
+.. index::
+    single: Time managment
+
+
 ================================
 Time managment strategy
 ================================
 
 Normal
-
-
 
 No NTP server (no Wifi)
 
@@ -658,6 +710,9 @@ Perhaps to store a copy of config3.json
 Live time ? 10^6 write cycle
 
 8 bytes/page 4ko
+
+.. index::
+    single: Lives times
 
 ===================================
 Livetime of ESP8266 flash SPIFFS
@@ -778,6 +833,17 @@ Json genrator sur `ObjGen.com`_
 
 .. _`ObjGen.com` : http://www.objgen.com/json
 
+.. index::
+    single: SPIFFS; Documentation
+
+SPIFFS 
+========================
+
+`Official documentation for SPIFFS on Espressif`_
+
+.. _`Official documentation for SPIFFS on Espressif` : https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/spiffs.html
+
+
 ========================
 Used library
 ========================
@@ -833,11 +899,6 @@ and `Reliable Startup for I2C Battery Backed RTC`_
 
 .. _`Reliable Startup for I2C Battery Backed RTC` : http://www.forward.com.au/pfod/ArduinoProgramming/I2C_ClearBus/index.html
 
-=============================
-Source code documentation
-=============================
- 
- `<codeDoc\\html\\index.html>`_
 
 ===========================
 Vocabulary

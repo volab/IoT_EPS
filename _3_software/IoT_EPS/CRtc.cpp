@@ -14,7 +14,7 @@
 bool CRtc::initErr = false;
 // extern NTPClient timeClient;
 
-NTPClient *p_timeClient = nullptr;
+NTPClient *CRtc::p_timeClient = nullptr;
 
 
 /** 
@@ -57,12 +57,14 @@ void CRtc::displayTime(){ //static !
 	DSPL( dPrompt + sDate );
     unsigned long RTCTime = RTC_DS3231::now().unixtime();
     DSPL( dPrompt + "unix local time : " + RTCTime );
+    // p_timeClient->forceUpdate();
     sysStatus.ntpErr.err( !p_timeClient->forceUpdate() );
     if ( sysStatus.ntpErr.isErr() ) return ;
-    unsigned long NTPTime = p_timeClient->getEpochTime();
-    DSPL( dPrompt + "NTP time : " + String(p_timeClient->getEpochTime() ) );
+    unsigned long NTPTime = 0;
+    // unsigned long NTPTime = p_timeClient->getEpochTime();
+    // DSPL( dPrompt + "NTP time : " + String(p_timeClient->getEpochTime() ) );
     DSPL( dPrompt + "time error : " + String( abs(NTPTime-RTCTime) ) );
-    DSPL( dPrompt + "Next time check" + String(millis() - lastMillis ) );
+    // DSPL( dPrompt + "Next time check" + String(millis() - lastMillis ) );
 	
 }
 

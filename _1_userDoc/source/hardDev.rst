@@ -10,6 +10,13 @@ Hardware development documentation
 .. contents:: Table of Contents
     :backlinks: top
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents
+   :titlesonly:
+
+   mockup
+
 ================================
 Ce qui existe en 2020 !
 ================================    

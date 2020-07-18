@@ -21,7 +21,7 @@
 class ConfigParam{
     public:
 
-    enum firstBootVal { YES, NO, TRY };
+        enum firstBootVal { YES, NO, TRY };
     
         bool ready = false;
         void begin(); //pour le moment

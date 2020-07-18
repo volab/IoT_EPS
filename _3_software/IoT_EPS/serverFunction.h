@@ -15,6 +15,7 @@
 extern ESP8266WebServer *server;
 
 // void handleRoot();
+//pas certain de l'implémentation de cette fonction le 18/07/2020 pas trouvé
 void handleNotFound(); /**< @brief to handle page not found in SPIFFS and with other functions*/
 void displayTime();     /**< @brief A simple page in the c code -for exemple*/
 

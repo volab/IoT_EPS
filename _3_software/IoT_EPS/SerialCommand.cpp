@@ -112,7 +112,7 @@ bool nineState;
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTPSERVER);
-RTC_DS3231 rtc;
+//RTC_DS3231 rtc;
 DateTime NTPTime;
 bool errNTPinit = true;
 int timeZone = OFFSET_HEURE; 
@@ -126,19 +126,19 @@ FSInfo filseSystemInfo;
  //ABGKMQUVXYZ
  //bfgkmnqruvxy 
     switch(com[0]){
-		case 'C':   
-			// CRtc::displayTime();
-			break;
-		case 'E':      // 
-			INTERFACE.print("<iElectrical Power Strip ");
-			// INTERFACE.print(ARDUINO_TYPE);
-			INTERFACE.print(": BUILD ");
-			INTERFACE.print(__DATE__);
-			INTERFACE.print(" ");
-			INTERFACE.print(__TIME__);
-			INTERFACE.println(", COM TYPE : SERIAL >");
-			break;
-		case 'D': // for dir  
+        case 'C':   
+            // CRtc::displayTime();
+            break;
+        case 'E':      // 
+            INTERFACE.print("<iElectrical Power Strip ");
+            // INTERFACE.print(ARDUINO_TYPE);
+            INTERFACE.print(": BUILD ");
+            INTERFACE.print(__DATE__);
+            INTERFACE.print(" ");
+            INTERFACE.print(__TIME__);
+            INTERFACE.println(", COM TYPE : SERIAL >");
+            break;
+        case 'D': // for dir  
             dir = SPIFFS.openDir("/");
             while (dir.next()) {
                 str += dir.fileName();
@@ -154,14 +154,14 @@ FSInfo filseSystemInfo;
             INTERFACE.println( str + F("used bytes : ") + (String)filseSystemInfo.usedBytes );
             INTERFACE.println( str + F("max open files : ") + (String)filseSystemInfo.maxOpenFiles );
             INTERFACE.println( str + F("max path lenght : ") + (String)filseSystemInfo.maxPathLength );			
-			break;            
+            break;            
         case 'F': //Find I2C
             i2c_scan();
             break; 
-		case 'h': 
-		case 'H':
-			displayCommandsList();
-			break;
+        case 'h': 
+        case 'H':
+            displayCommandsList();
+            break;
          case 'I': //I for wifi Id
             n = sscanf( com+1,"%s", v );
             if ( n == 1){
@@ -172,10 +172,10 @@ FSInfo filseSystemInfo;
                 INTERFACE.println("Warning this command riquires only ONE parameter !");
             }
             break;
-		case 'J': //display config.json
-			ConfigParam::displayJson();
-			break;
-		case 'L': //Change AP_SSID
+        case 'J': //display config.json
+            ConfigParam::displayJson();
+            break;
+        case 'L': //Change AP_SSID
             n = sscanf( com+1,"%s", v );
             if ( n == 1){
                 value = String(v);
@@ -184,7 +184,7 @@ FSInfo filseSystemInfo;
             } else {
                 INTERFACE.println("Warning this command riquires only ONE parameter !");
             }			
-			break;            
+            break;            
         case 'N': //nano I2C IO expander test
             nanoI2C.test();
             break;
@@ -206,15 +206,15 @@ FSInfo filseSystemInfo;
         case 'R': //recovery I2C         
             i2c_recovery();
             break;             
-		case 'S':
-			CRtc::adjust( com+1 );
-			break;
-		case 'T':
-			CRtc::adjustH( com+1 );
-			break;
-		case 'W':
-			cParam.displayWifiMode();
-			break;
+        case 'S':
+            CRtc::adjust( com+1 );
+            break;
+        case 'T':
+            CRtc::adjustH( com+1 );
+            break;
+        case 'W':
+            cParam.displayWifiMode();
+            break;
             
         case 'a': //a for address (IP)  
             INTERFACE.print("IP add = ");
@@ -250,9 +250,9 @@ FSInfo filseSystemInfo;
                 INTERFACE.println("Warning this command riquires only ONE parameter !");
             }
             break;
-		case 'j': //display config.json general part
-			ConfigParam::displayJsonGeneral();
-			break;
+        case 'j': //display config.json general part
+            ConfigParam::displayJsonGeneral();
+            break;
         case 'l': //l for wifi softAP_pass
             n = sscanf( com+1,"%s", v );
             if ( n == 1){
@@ -303,24 +303,24 @@ FSInfo filseSystemInfo;
  
             
 /***** PRINT CARRIAGE RETURN IN SERIAL MONITOR WINDOW  ****/       
-		case ' ':     // < >                
-			INTERFACE.println("");
-			break;  
-	} // switch
+        case ' ':     // < >                
+            INTERFACE.println("");
+            break;  
+    } // switch
 }; // SerialCommand::parse
 
 ///////////////////////////////////////////////////////////////////////////////
 
 void SerialCommand::displayCommandsList(){
-	String list = "Serial Command list :\n";
-	list += F("<h> ou <H> display this list\n");
-	list += F("<E> display status\n");
-	list += F("<C> Check DS3231 date\n");
-	list += F("<S JJ/MM/AAAA HH:MM:SS> returns code <O>\n");
+    String list = "Serial Command list :\n";
+    list += F("<h> ou <H> display this list\n");
+    list += F("<E> display status\n");
+    list += F("<C> Check DS3231 date\n");
+    list += F("<S JJ/MM/AAAA HH:MM:SS> returns code <O>\n");
     list += F("<T HH:MM:SS> returns code <O>\n");
     list += F("<s> set DS3231 by NTP server\n");
-	list += F("<J> for display config.json\n");
-	list += F("<W> display WIFI mode\n");
+    list += F("<J> for display config.json\n");
+    list += F("<W> display WIFI mode\n");
     list += F("<P key value> write config parameter in json WARNING\n");
     list += F("<I _newSSID> write SSID in credentials WARNING\n");
     list += F("<i _wifiPass> write password in credentials WARNING\n");
@@ -341,7 +341,7 @@ void SerialCommand::displayCommandsList(){
     list += F("<d _filename> erase a file WARNING\n");
     list += F("<e> display system status\n");
     list += F("<p> display main power state\n");
-	INTERFACE.print( list );
+    INTERFACE.print( list );
 }
 
 void i2c_scan(){
