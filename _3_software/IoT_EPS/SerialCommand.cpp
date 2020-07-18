@@ -112,7 +112,7 @@ bool nineState;
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTPSERVER);
-//RTC_DS3231 rtc;
+
 DateTime NTPTime;
 bool errNTPinit = true;
 int timeZone = OFFSET_HEURE; 
@@ -281,7 +281,7 @@ FSInfo filseSystemInfo;
             // setTime(  timeClient.getEpochTime() );
             NTPTime = DateTime( timeClient.getEpochTime() );
             if (!errNTPinit) {
-                RTC_DS3231::adjust( NTPTime );
+                RTC_DS3231::adjust( NTPTime ); //why suddenly use RTC_DS3231 ? and not CRtc
                 INTERFACE.println( "Time set :");
                 // CRtc::displayTime();
             }

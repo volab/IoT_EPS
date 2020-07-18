@@ -61,9 +61,11 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
 FtpServer ftpSrv;
 
 #include <ESP8266HTTPClient.h>
-
+#include <ESP8266WebServer.h>
 
 CSystem sysIoteps;
+CServerWeb webServeur;
+CRtc rtc;
 
 /** 
 @fn void wifiLedFlash( int speed )
@@ -84,7 +86,7 @@ Credential wifiCred;
 
 //CRtc rtc;
 
-ESP8266WebServer *server;
+// ESP8266WebServer *server;
 
 CPowerPlug *plugs;
 
@@ -127,6 +129,7 @@ WiFiUDP ntpUDP;
 void setup(){
     sysIoteps.init();
     
+    webServeur.init( &rtc, &cParam );
     // DateTime NTPTime;
     int timeZone = OFFSET_HEURE; 
     
@@ -485,61 +488,63 @@ void setup(){
 		cParam.setWifiMode( "No wifi" );
 		simpleManualModeChaser();
 	}
-    
+
     /////////////////////////////////////////////////////////////////////////////
     //  Server configurations                                                  //
     /////////////////////////////////////////////////////////////////////////////
-    server = new ESP8266WebServer( cParam.getServerPort() );
-	if ( !simpleManualMode ){
-        if ( cParam.getFirstBoot() == ConfigParam::YES 
-                || cParam.getFirstBoot() == ConfigParam::TRY ){
-            server->on("/", HTTP_GET, firstBootHtmlForm );
-            DSPL( dPrompt + "First boot procedure");
-        } else if ( cParam.getWifiMode() == "softAP" ) {
-            server->on("/", HTTP_GET, handleSoftAPIndex );
-            DSPL( dPrompt + F("******************reg page") );
-        }
-        server->on("/ChangeCred", HTTP_POST, handleNewCred );
-        /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
-        //Note: The above function is disabled as long as the handleNewCred function has
-        //not been updated
-		server->on("/list", HTTP_GET, handleFileList);
-		// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
-        server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
-        server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
-		server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
-        server->on("/firstBoot", HTTP_POST, handleFirstBoot);
-		server->on("/edit", HTTP_GET, [](){
-			if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
-		});
-		server->on("/help", HTTP_GET, [](){
-			if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
-		});
-        /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
-		server->on("/edit", HTTP_PUT, handleFileCreate);
-		server->on("/edit", HTTP_DELETE, handleFileDelete);
-		//first callback is called after the request has ended with all parsed arguments
-		//second callback handles file uploads at that location
-		server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
+    // server = new ESP8266WebServer( cParam.getServerPort() );
+	// if ( !simpleManualMode ){
+    //     if ( cParam.getFirstBoot() == ConfigParam::YES 
+    //             || cParam.getFirstBoot() == ConfigParam::TRY ){
+    //         server->on("/", HTTP_GET, firstBootHtmlForm );
+    //         DSPL( dPrompt + "First boot procedure");
+    //     } else if ( cParam.getWifiMode() == "softAP" ) {
+    //         server->on("/", HTTP_GET, handleSoftAPIndex );
+    //         DSPL( dPrompt + F("******************reg page") );
+    //     }
+    //     server->on("/ChangeCred", HTTP_POST, handleNewCred );
+    //     /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
+    //     //Note: The above function is disabled as long as the handleNewCred function has
+    //     //not been updated
+	// 	server->on("/list", HTTP_GET, handleFileList);
+	// 	// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
+    //     server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
+    //     server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
+	// 	server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
+    //     server->on("/firstBoot", HTTP_POST, handleFirstBoot);
+	// 	server->on("/edit", HTTP_GET, [](){
+	// 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
+	// 	});
+	// 	server->on("/help", HTTP_GET, [](){
+	// 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
+	// 	});
+    //     /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
+	// 	server->on("/edit", HTTP_PUT, handleFileCreate);
+	// 	server->on("/edit", HTTP_DELETE, handleFileDelete);
+	// 	//first callback is called after the request has ended with all parsed arguments
+	// 	//second callback handles file uploads at that location
+	// 	server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
 
-		//called when the url is not defined here
-		//use it to load content from SPIFFS
-        server->on("/", HTTP_GET, handleIndex );
-		server->onNotFound([](){
-            if(!handleFileRead(server->uri()))
-                server->send(404, "text/plain", "FileNotFound");
-		}
-        );    
+	// 	//called when the url is not defined here
+	// 	//use it to load content from SPIFFS
+    //     server->on("/", HTTP_GET, handleIndex );
+	// 	server->onNotFound([](){
+    //         if(!handleFileRead(server->uri()))
+    //             server->send(404, "text/plain", "FileNotFound");
+	// 	}
+    //     );    
 
-		server->on( "/time", displayTime );
+	// 	// server->on( "/time", displayTime );
+	// 	//server->on( "/time", std::bind(webServeur.displayTime) );
+	// 	server->on( "/time", std::bind(&CServerWeb::displayTime,this) );
 
-		// server->on ( "/inline", []() {
-			// server->send ( 200, "text/plain", "this works as well" );
-		// } );
-		server->begin();
-		DSPL ( dPrompt + F("HTTP server started" ) );
+	// 	// server->on ( "/inline", []() {
+	// 		// server->send ( 200, "text/plain", "this works as well" );
+	// 	// } );
+	// 	server->begin();
+	// 	DSPL ( dPrompt + F("HTTP server started" ) );
 	
-	}
+	//}
     
     /////////////////////////////////////////////////////////////////////////////
     //  Time server check                                                     //
@@ -694,7 +699,7 @@ void loop(){
     /////////////////////////////////////////////////////////////////////////////
     //  Some little jobs : specialBp, ftp, SerialProcess...                    //
     /////////////////////////////////////////////////////////////////////////////
-    if ( !simpleManualMode ) server->handleClient();
+    //if ( !simpleManualMode ) server->handleClient();
     
     ftpSrv.handleFTP();
     specialBp.update();

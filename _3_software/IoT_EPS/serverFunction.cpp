@@ -13,8 +13,11 @@
 
 #include "IoT_EPS.h"
 
-extern RTC_DS3231 rtc;
+// extern RTC_DS3231 rtc; //where is it creat warning it is not CRtc instance
+// RTC_DS3231 rtc; //where is it creat warning it is not CRtc instance
 extern ConfigParam cParam;
+
+
 
 //==================================================================================================
 // FSBrowser samples functions integration 
@@ -159,7 +162,8 @@ This is the handler of the /time action (see the setup function of IoT_ESP.ino)
 void displayTime(){
     String page;
     DateTime now;
-    now = rtc.now();
+    // now = rtc.now();
+    now = RTC_DS3231::now();
     page = "<html><head>";
     page += "<meta http-equiv='refresh' content='5'/>";
     page += "<title>IoT EPS display Time</title>";

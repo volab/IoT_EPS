@@ -10,7 +10,9 @@
 #include "cpowerplug.h"
 #include "debugSerialPort.h"
 
-extern RTC_DS3231 rtc;
+// extern RTC_DS3231 rtc;
+
+
 
 const String CPowerPlug::modes[5] = { MANUAL_MODE, TIMER_MODE, CYCLIC_MODE, HEBDO_MODE, CLONE_MODE };
 

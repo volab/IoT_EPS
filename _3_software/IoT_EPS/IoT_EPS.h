@@ -64,6 +64,7 @@
 #include "credential.h"
 #define MAX_WIFI_CONNECT_RETRY 30 /**< @brief In Station mode number of try before to switch to access point connection*/
 #include "configParam.h"
+#include "CServerWeb.h"
 #include "serverFunction.h"
 #include "bouton.h"
 #include "cEpsStrTime.h"
