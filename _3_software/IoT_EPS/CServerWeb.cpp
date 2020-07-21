@@ -1,5 +1,9 @@
 #include "IoT_EPS.h"
 
+
+//A global variable need by ESP8266WebServer
+// ESP8266WebServer *Server; //a pointeur that allow change the port dynamicly
+
 CServerWeb::CServerWeb(/* args */)
 {
 }
@@ -12,7 +16,8 @@ void CServerWeb::init( CRtc * prtc, ConfigParam *pcParam ){
     //big warning if _rtc is initialised with a local variable !!!!
     _pRtc = prtc;
     _pcParam = pcParam;
-    _pServer->on( "/time", std::bind(&CServerWeb::displayTime, this) );
+    // _pServer->on( "/time", std::bind(&CServerWeb::displayTime, this) );
+    //Server->on( "/time", std::bind(&CServerWeb::displayTime, this) );
 }
 
 
@@ -36,6 +41,6 @@ void CServerWeb::displayTime(){
     page += (String)now.hour()+":"+(String)now.minute()+":";
     page += (String)now.second();
     page += "</p></body></html>";
-    _pServer->send ( 200, "text/html", page );
+    //_pServer->send ( 200, "text/html", page );
     
 }

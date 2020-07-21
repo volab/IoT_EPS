@@ -752,6 +752,8 @@ Now we can be connected in both mode AP and station so it is necessary to separa
 and station mode to serve the right page
 */
 void handleIndex(){
+    DEFDPROMPT("handleIndex");
+    DSPL( dPrompt );
     bool requestAP;
     IPAddress clientIP = server->client().remoteIP();
     IPAddress modeAPIP = cParam.getIPAdd();   

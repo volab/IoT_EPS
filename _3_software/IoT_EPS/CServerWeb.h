@@ -12,7 +12,7 @@ class CServerWeb{
 private:
     /* data */
     CRtc *_pRtc = nullptr;
-    ESP8266WebServer *_pServer;
+    //ESP8266WebServer *_pServer;
     ConfigParam *_pcParam = nullptr;
 public:
     CServerWeb(/* args */);

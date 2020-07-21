@@ -413,7 +413,7 @@ WIFI LED behavior
 In Station mode, fast flashing (20 times 100ms, 100ms) before to try connection
 and after slow flashing while waiting for connection.
 (500ms with a 20 times time out - new in 24/12/2018). If no connection detected afte 20 tries
-Automaticaly switch in SoftAP mode.
+Automatically switch in SoftAP mode.
 
 In Access Point LED FLash quickly (20 times 100ms-500ms) and 
 led flash slowly (50ms-2s) while waiting for connection.
@@ -427,7 +427,7 @@ It rises a new problem : in this state it is not possible to use plugs even in s
 with push button. 
 
 Possible solution : check push button at startup if a particular combination is pressed,
-plugs do not try to connect to wifi and mork in simple manual mode.
+plugs do not try to connect to wifi and work in simple manual mode.
 In Dec 2018, push button
 added pressing plug 0 while power on the strip cause no WIFI mode (color LED FLASH in RED to confirm)
 This is : simpleManualMode (see above). To return to normal mode power off the strip 
@@ -436,35 +436,41 @@ This is : simpleManualMode (see above). To return to normal mode power off the s
 ===========================================
 ESP8266 and its wifi managment !
 ===========================================
-ESP8266 store credentials information in FLASH but how to acces to them ???
-And how to contol them
+ESP8266 store credentials information in FLASH but how to access to them ???
+And how to control them
 
 Question how to erase wifi flash param ?
 
-Memory mapping is not provided. Somem peace of informations
-like in SPIFFS des cription that provide the order of memory big blocks but not their respective add
+Memory mapping is not provided. Some peace of informations
+like in SPIFFS description that provide the order of memory big blocks but not their respective add
 
-Second question : how to directly acces to flash memory ?
-Perthaps with SPI lib
+Second question : how to directly access to flash memory ?
+
+Perhaps with SPI lib 
+
 https://github.com/esp8266/Arduino/blob/master/doc/libraries.rst#spi
-Reponse :
-ESP.flashRead(...)https://github.com/esp8266/Arduino/blob/master/cores/esp8266/Esp.h
-ESP.flashWrite(..)
-ESP.flashEraseSector(...)
-ESP.eraseConfig() Efface tout à partir du haut de la flash jusqu'en -0x4000 soit 16k
-Fonction non documentée !
+
+Answer :
+
+- ESP.flashRead(...)https://github.com/esp8266/Arduino/blob/master/cores/esp8266/Esp.h
+- ESP.flashWrite(..)
+- ESP.flashEraseSector(...)
+- ESP.eraseConfig() Erase all from start of the flash till -0x4000 about 16k
+- no-documented function !
 
 
-ESP-SDK ? Rien vu qui permet erase
+ESP-SDK ? nothing fond about erase
 
-persistant(false) <=> n'écrit pas en flash mais n'efface pas les info
+persistant(false) <=> do not write in flash but do not clear informations
 
 Question 3: How to read  flash info  ?
-Reponse : call Espressif SDK functions:
-#include <user_interface.h> in
-Arduino\Croquis\hardware\esp8266com\esp8266\tools\sdk\include
-page 62/179 pdf ESP8266 Non-OS SDK API Reference 
-3.5.33. wifi_softap_get_config_default
+
+Answer : call Espressif SDK functions::
+
+    #include <user_interface.h> in
+    Arduino\Croquis\hardware\esp8266com\esp8266\tools\sdk\include
+    page 62/179 pdf ESP8266 Non-OS SDK API Reference 
+    3.5.33. wifi_softap_get_config_default
 
 .. code::
 
@@ -480,13 +486,56 @@ page 62/179 pdf ESP8266 Non-OS SDK API Reference
     };
 
 ESP12E module Flash size : W25Q32 32Mbits/4Mo 256octets /pages 16384 pages
-Peuvent être effacé ar groupe de 16 ou 128 ou 256 Soit 4(secteurs) ou 32kB ou 64kB
+
+Could be erase by 16 ou 128 ou 256 -4(sectors)- or 32kB or even 64kB groups.
+
+====================================================================================================
+ESP8266Webserver
+====================================================================================================
+Documentation very hard to find
+
+`In github readme`_
+
+.. _`In github readme` : https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer
+
+Don't forget to `check the provided examples`_
+
+.. _`check the provided examples` : https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer/examples
+
+`ESP8266Webserver Doxygen documentation`_  do not wast your time !
+
+.. _`ESP8266Webserver Doxygen documentation` : https://links2004.github.io/Arduino/d3/d58/class_e_s_p8266_web_server.html
+
+We can `find this on Arduino`_  forum::
+
+    As for the ESP8266WiFi documentation, it is here::
+    The on() function is actually part of the ESP8266WebServer library. Most of the library 
+    documentation for the ESP8266 core for Arduino is found here:
+    https://arduino-esp8266.readthedocs.io/en/latest/index.html
+    but for some reason the ESP8266WebServer library documentation is missing from those pages. 
+    You can find it here:
+    https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WebServer/README.rst
+
+    https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/readme.html
+    Generally the ESP8266 libraries attempt to follow the API of the standard Arduino libraries 
+    and only document the differences. You may find it useful to refer to the Arduino WiFi library 
+    reference pages in addition to the ESP8266WiFi documentation:
+    https://www.arduino.cc/en/Reference/WiFi
+
+
+.. _`find this on Arduino` : https://forum.arduino.cc/index.php?topic=588866.0
+
+
+`Arduino ESP8266 example readthedoc`_
+
+.. _`Arduino ESP8266 example readthedoc` : https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/server-examples.html
+
 
 ====================================
 Displaying plugs mode only with LED
 ====================================
 
-Problem : how to displays functionnal mode of a plug without the web interface
+Problem : how to displays functional mode of a plug without the web interface
 
 Problem2 : is it really necessary ?
 
@@ -494,7 +543,7 @@ Solution1: Use the little plug red LED. When OFF flash 1 shortly one time for mo
  time for mode 5 Clone. When ON invert ton and toff of the flasher
 
 Solution2: use color LED with flash capability one time for mode manual to 5 times to mode Clone
-with a long periode between group of flash 3 seconds for example.
+with a long time between group of flash 3 seconds for example.
 
 Implemented solution : n°1 with the little specialPB pushed in the same time as the plug Push Button
 

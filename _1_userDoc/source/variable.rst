@@ -13,7 +13,7 @@ Importants variables
 .. _refVariableList:
 
 ====================================================================================================
-List before OOnew more orientation in 2020 Jully
+List before OOnew more orientation refactoring in 2020 Jully
 ====================================================================================================
 Global main variables:
 
@@ -34,11 +34,15 @@ Global main variables:
 - bool 	restartTempoLed = false
 - WiFiUDP 	ntpUDP
 - bool 	cycleState = false
+- WiFi : global and auto-instanciation
+- SPIFFS : global and auto-instanciation 
 
 Not directly listed in autogenerate doxygen documentation:
 
-- dPrompt
-- sysStatus
+- dPrompt : is a macro not a variable
+- sysStatus : global and auto-instanciation
+- FastLED  : global and auto-instanciation
+
 
 dprompt
 ====================================================================================================
