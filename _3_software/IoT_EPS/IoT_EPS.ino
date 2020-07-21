@@ -72,7 +72,7 @@ FtpServer ftpSrv;
 #include <ESP8266WebServer.h>
 
 CSystem sysIoteps;
-CServerWeb webServeur;
+//CServerWeb webServeur;
 CRtc rtc;
 
 /** 
@@ -501,6 +501,7 @@ void setup(){
     //  Server configurations                                                  //
     /////////////////////////////////////////////////////////////////////////////
     server = new ESP8266WebServer( cParam.getServerPort() );
+    DSPL( dPrompt + "Server port : " + (String)cParam.getServerPort() );
 	if ( !simpleManualMode ){
         if ( cParam.getFirstBoot() == ConfigParam::YES 
                 || cParam.getFirstBoot() == ConfigParam::TRY ){

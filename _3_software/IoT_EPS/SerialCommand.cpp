@@ -127,6 +127,7 @@ FSInfo filseSystemInfo;
  //bfgkmnqruvxy 
     switch(com[0]){
         case 'C':   
+            INTERFACE.println("display time : Crtc disable for now");
             // CRtc::displayTime();
             break;
         case 'E':      // 
