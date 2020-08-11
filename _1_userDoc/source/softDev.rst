@@ -530,6 +530,13 @@ We can `find this on Arduino`_  forum::
 
 .. _`Arduino ESP8266 example readthedoc` : https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/server-examples.html
 
+Bind to a method 
+====================================
+
+`Explication sur Stackoverflow`_
+
+.. _`Explication sur Stackoverflow` : https://stackoverflow.com/questions/32900314/esp8266webserver-setting-a-value-inside-a-class
+
 
 ====================================
 Displaying plugs mode only with LED

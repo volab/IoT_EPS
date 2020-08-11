@@ -1,7 +1,10 @@
+
+#include "IoT_EPS.h"
+
 #ifndef _CPOWERPLUG_H
 #define _CPOWERPLUG_H
 
-#include "IoT_EPS.h"
+
 
  /**
 * @def RETURN_NOT_FOUND_VALUE

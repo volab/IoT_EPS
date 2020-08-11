@@ -64,9 +64,12 @@
 #include "credential.h"
 #define MAX_WIFI_CONNECT_RETRY 30 /**< @brief In Station mode number of try before to switch to access point connection*/
 #include "configParam.h"
-#include "CServerWeb.h"
-#include "serverFunction.h"
 #include "bouton.h"
+#include "cnano.h"
+#include "CPowerPlug.h"
+#include "CServerWeb.h"
+//#include "serverFunction.h"
+
 #include "cEpsStrTime.h"
 // #include "Flasher.h"
 #include "CRtc.h"
@@ -108,8 +111,8 @@
 
 
 // #include "Cmcp.h"
-#include "cnano.h"
-#include "CPowerPlug.h"
+
+
 #include "tempo.h"
 
 #define HTML_JSON_REDPLUGNAME "redPlug"

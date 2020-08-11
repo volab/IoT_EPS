@@ -73,6 +73,9 @@ FtpServer ftpSrv;
 
 CSystem sysIoteps;
 CServerWeb webServeur;
+//ESP8266WebServer *server; //used by webserver but impossible to declare as a local member !
+//ESP8266 crash
+//Ben non ça crash plus le 11/08/2020 !!!
 CRtc rtc;
 
 /** 
@@ -94,7 +97,7 @@ Credential wifiCred;
 
 //CRtc rtc;
 
-ESP8266WebServer *server;
+
 
 CPowerPlug *plugs;
 
@@ -137,7 +140,7 @@ WiFiUDP ntpUDP;
 void setup(){
     sysIoteps.init();
     
-    webServeur.init( &rtc, &cParam );
+    
     // DateTime NTPTime;
     int timeZone = OFFSET_HEURE; 
     
@@ -275,7 +278,8 @@ void setup(){
     pinMode( MAINSWITCHPIN, INPUT_PULLUP);
     nanoioExp.digitalWrite( MAINPOWLED, 0);
     nanoioExp.pinMode( MAINPOWLED, OUTPUT ); 
-    mainPowerSwitchState = !digitalRead( MAINSWITCHPIN ); //open circuit = plug OFF    
+    mainPowerSwitchState = !digitalRead( MAINSWITCHPIN ); //open circuit = plug OFF
+    webServeur.setMPSstVar( mainPowerSwitchState );    
     
     nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
     DSPL( dPrompt + "Main power state : " +  ( mainPowerSwitchState?"ON":"OFF") );
@@ -336,6 +340,8 @@ void setup(){
     /* done : document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
 
+    
+
     /////////////////////////////////////////////////////////////////////////////
     //     Main power wait ON (the purpose is to maintain Wifi off)            //
     ///////////////////////////////////////////////////////////////////////////// 
@@ -345,6 +351,7 @@ void setup(){
         FastLED.show();
         do {
             mainPowerSwitchState = !digitalRead( MAINSWITCHPIN ); //open circuit = plug OFF
+            webServeur.setMPSstVar( mainPowerSwitchState );
             yield();
             if ( watchdog.isItTimeTo() ) watchdog.refresh();
         } while( !mainPowerSwitchState );        
@@ -500,60 +507,8 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     //  Server configurations                                                  //
     /////////////////////////////////////////////////////////////////////////////
-    // server = new ESP8266WebServer( cParam.getServerPort() );
-    // DSPL( dPrompt + "Server port : " + (String)cParam.getServerPort() );
-	// if ( !simpleManualMode ){
-    //     if ( cParam.getFirstBoot() == ConfigParam::YES 
-    //             || cParam.getFirstBoot() == ConfigParam::TRY ){
-    //         server->on("/", HTTP_GET, firstBootHtmlForm );
-    //         DSPL( dPrompt + "First boot procedure");
-    //     } else if ( cParam.getWifiMode() == "softAP" ) {
-    //         server->on("/", HTTP_GET, handleSoftAPIndex );
-    //         DSPL( dPrompt + F("******************reg page") );
-    //     }
-    //     server->on("/ChangeCred", HTTP_POST, handleNewCred );
-    //     /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
-    //     //Note: The above function is disabled as long as the handleNewCred function has
-    //     //not been updated
-	// 	server->on("/list", HTTP_GET, handleFileList);
-	// 	// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
-    //     server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
-    //     server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
-	// 	server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
-    //     server->on("/firstBoot", HTTP_POST, handleFirstBoot);
-	// 	server->on("/edit", HTTP_GET, [](){
-	// 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
-	// 	});
-	// 	server->on("/help", HTTP_GET, [](){
-	// 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
-	// 	});
-    //     /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
-	// 	server->on("/edit", HTTP_PUT, handleFileCreate);
-	// 	server->on("/edit", HTTP_DELETE, handleFileDelete);
-	// 	//first callback is called after the request has ended with all parsed arguments
-	// 	//second callback handles file uploads at that location
-	// 	server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
-
-	// 	//called when the url is not defined here
-	// 	//use it to load content from SPIFFS
-    //     server->on("/", HTTP_GET, handleIndex );
-	// 	server->onNotFound([](){
-    //         if(!handleFileRead(server->uri()))
-    //             server->send(404, "text/plain", "FileNotFound");
-	// 	}
-    //     );    
-
-		// server->on( "/time", displayTime );
-	// 	//server->on( "/time", std::bind(webServeur.displayTime) );
-	// 	//server->on( "/time", std::bind(&CServerWeb::displayTime,this) );
-
-	// 	// server->on ( "/inline", []() {
-	// 		// server->send ( 200, "text/plain", "this works as well" );
-	// 	// } );
-		// server->begin();
-		// DSPL ( dPrompt + F("HTTP server started" ) );
-	
-	// }
+//Replaced by webserver class August 2020
+    webServeur.init( &rtc, &cParam, plugs, &restartTempoLed );
     
     /////////////////////////////////////////////////////////////////////////////
     //  Time server check                                                     //
@@ -740,7 +695,7 @@ void loop(){
             allLeds.stop();
             if ( cParam.getPowLedEconomyMode() ) nanoioExp.digitalWrite( MAINPOWLED, LOW );
         }
-        if ( restartTempoLed ){
+        if ( restartTempoLed ){ //on an event do not switch off Leds
             for ( int i = 0; i < 4 ; i++ ){
                 colorLeds[i] = plugs[i].getColor();
                 plugs[i].manageLeds( true );
@@ -802,6 +757,7 @@ void loop(){
     //  main power switch actions                                              //
     /////////////////////////////////////////////////////////////////////////////
 	mainPowerSwitchState = !digitalRead( MAINSWITCHPIN );
+    webServeur.setMPSstVar( mainPowerSwitchState );
 /** @todo [OPTION] recover debounce function */    
     if ( !mainPowerSwitchState) { //main power switch change state
             DSPL( dPrompt + F("main power switched OFF and all plugs are in manual state.") );

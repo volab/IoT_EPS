@@ -320,7 +320,8 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     DSPL( dPrompt + allRecParam);
     DSPL( dPrompt + F("Traitements pour : ") + _plugName );
     param = JSON_PARAMNAME_MODE;
-    mode = extractParamFromHtmlReq( allRecParam, param );
+    //mode = extractParamFromHtmlReq( allRecParam, param );
+    mode = CServerWeb::extractParamFromHtmlReq( allRecParam, param );
     DSPL( dPrompt + "Mode = " + mode );
     
 
@@ -338,7 +339,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         //State
         if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
         param = JSON_PARAMNAME_STATE;
-        state = extractParamFromHtmlReq( allRecParam, param );
+        state = CServerWeb::extractParamFromHtmlReq( allRecParam, param );
         DSPL( dPrompt + _plugName + F(" : extracted state = ") + state);
         if (state != NOT_FOUND ){
             if (state == "ON") {
@@ -349,7 +350,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 param = JSON_PARAMNAME_OFFDURATION;
                 CEpsStrTime dureeOff;
                 dureeOff.setMode( CEpsStrTime::MMMSS );
-                dureeOff = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
+                dureeOff = (CEpsStrTime)CServerWeb::extractParamFromHtmlReq( allRecParam, param );
                 _nextTimeToSwitch = 0;
                 DSPL( dPrompt + "dureeOff validity : " + \
                     (dureeOff.isValid?"valid":"invalid") );
@@ -363,10 +364,10 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 //    Compute MANUAL MODE  : hFin                                          //
                 /////////////////////////////////////////////////////////////////////////////
                 param = JSON_PARAMNAME_ENDTIME;
-                // String hFin = extractParamFromHtmlReq( allRecParam, param );    
+                // String hFin = CServerWeb::extractParamFromHtmlReq( allRecParam, param );    
                 CEpsStrTime hFin;
                 // hFin.setMode( CEpsStrTime::HHMM );
-                hFin = CEpsStrTime(extractParamFromHtmlReq( allRecParam, param ),\
+                hFin = CEpsStrTime(CServerWeb::extractParamFromHtmlReq( allRecParam, param ),\
                     CEpsStrTime::HHMM );
                 DSPL( dPrompt + "hFin validity : " + (hFin.isValid?"valid":"invalid") );
                 if ( hFin.isValid && !dureeOff.isValid ){
@@ -400,7 +401,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
         param = JSON_PARAMNAME_ONDURATION;
         CEpsStrTime dureeOn;
-        dureeOn = (CEpsStrTime)extractParamFromHtmlReq( allRecParam, param );
+        dureeOn = (CEpsStrTime)CServerWeb::extractParamFromHtmlReq( allRecParam, param );
         _nextTimeToSwitch = 0; 
         DSPL( dPrompt + "dureeOn validity : " + \
             (dureeOn.isValid?"valid":"invalid") );     
@@ -410,7 +411,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
             writeToJson( param, dureeOn.getStringVal() );
             _nextTimeToSwitch = dureeOn.computeNextTime();
             // param = JSON_PARAMNAME_STATE;
-            state = extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STATE );
+            state = CServerWeb::extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STATE );
             DSPL( dPrompt + _plugName + F(" : extracted state = ") + state);
             if (state != NOT_FOUND ){
                 if (state == "ON") {
@@ -434,7 +435,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         /////////////////////////////////////////////////////////////////////////////
         DSPL( dPrompt + F("Cyclic mode actions") ); 
         if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
-        String pauseRequested = extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_PAUSE );
+        String pauseRequested = CServerWeb::extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_PAUSE );
         if ( pauseRequested == "ON" ){
             if (_state) {
                 off();
@@ -451,17 +452,17 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
             return;
         }
         CEpsStrTime dureeOn;
-        dureeOn = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_ONDURATION ), \
+        dureeOn = CEpsStrTime(CServerWeb::extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_ONDURATION ), \
             CEpsStrTime::MMM );
         DSPL(dPrompt + "extracted duree on : " + dureeOn.getStringVal() );
         CEpsStrTime dureeOff;
-        dureeOff = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_OFFDURATION ), \
+        dureeOff = CEpsStrTime(CServerWeb::extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_OFFDURATION ), \
             CEpsStrTime::MMM ); 
         DSPL(dPrompt + "extracted duree off : " + dureeOff.getStringVal() );
         //cyclic mode parameters
         //dureeOn//dureeOff//[hDebut]
         CEpsStrTime hDebut;
-        hDebut = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STARTTIME ), \
+        hDebut = CEpsStrTime(CServerWeb::extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STARTTIME ), \
             CEpsStrTime::HHMM );
         if ( dureeOn.isValid && dureeOff.isValid ){
             if ( hDebut.isValid ){
@@ -488,7 +489,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         /////////////////////////////////////////////////////////////////////////////
         //hebdo mode parameters
         //hdebut hFin
-        String pauseRequested = extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_PAUSE );
+        String pauseRequested = CServerWeb::extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_PAUSE );
         if ( pauseRequested == "ON" ){
             if (_state) {
                 off();
@@ -505,9 +506,9 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
             return;
         }        
         CEpsStrTime hDebut, hFin;
-        hDebut = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STARTTIME ),\
+        hDebut = CEpsStrTime(CServerWeb::extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STARTTIME ),\
             CEpsStrTime::HHMM );
-         hFin = CEpsStrTime(extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_ENDTIME ),\
+         hFin = CEpsStrTime(CServerWeb::extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_ENDTIME ),\
             CEpsStrTime::HHMM );   
         if (hDebut.isValid && hFin.isValid ){
             String daysParam[7];
@@ -520,7 +521,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
             daysParam[6] = HTMLREQ_SATURDAY;
             uint8_t newDayOfWeek = 0;
             for ( int i = 0; i < 7 ; i++ ){
-                if ( extractParamFromHtmlReq( allRecParam, daysParam[i] ) != NOT_FOUND )
+                if ( CServerWeb::extractParamFromHtmlReq( allRecParam, daysParam[i] ) != NOT_FOUND )
                     bitSet ( newDayOfWeek, i );
             }
             //if all is valid
@@ -568,7 +569,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         //    Compute CLONE MODE                                                  //
         /////////////////////////////////////////////////////////////////////////////        
         CPowerPlug clonedPlug;
-        String clonedPlugName = extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_CLONEDPLUG );
+        String clonedPlugName = CServerWeb::extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_CLONEDPLUG );
         DSPL( dPrompt + "cloned plug find name =  " + clonedPlugName );
         clonedPlug.setPlugName( clonedPlugName );
         // parameters to be cloned : state, pause, mode, hdeb, hfin, don, doff
