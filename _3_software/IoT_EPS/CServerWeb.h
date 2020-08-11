@@ -19,6 +19,7 @@ public:
     ~CServerWeb();
     void init( CRtc * rtc, ConfigParam *cparam );
     void displayTime();
+    void serviceClient();
 
 };
 

@@ -2,7 +2,7 @@
 
 
 //A global variable need by ESP8266WebServer
-// ESP8266WebServer *Server; //a pointeur that allow change the port dynamicly
+extern ESP8266WebServer *server; //a pointeur that allow change the port dynamicly
 
 CServerWeb::CServerWeb(/* args */)
 {
@@ -16,8 +16,17 @@ void CServerWeb::init( CRtc * prtc, ConfigParam *pcParam ){
     //big warning if _rtc is initialised with a local variable !!!!
     _pRtc = prtc;
     _pcParam = pcParam;
+    server = new ESP8266WebServer( 80 );
+    // server = new ESP8266WebServer( pcParam->getServerPort() );
     // _pServer->on( "/time", std::bind(&CServerWeb::displayTime, this) );
-    //Server->on( "/time", std::bind(&CServerWeb::displayTime, this) );
+    server->on( "/time", std::bind(&CServerWeb::displayTime, this) );
+    server->begin();
+}
+
+void CServerWeb::serviceClient(){
+    DEFDPROMPT("ServiceWeb");
+    // DSPL( dPrompt );
+    server->handleClient();
 }
 
 
@@ -41,6 +50,8 @@ void CServerWeb::displayTime(){
     page += (String)now.hour()+":"+(String)now.minute()+":";
     page += (String)now.second();
     page += "</p></body></html>";
-    //_pServer->send ( 200, "text/html", page );
+
+    server->send ( 200, "text/html", page );
+
     
 }

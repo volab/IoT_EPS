@@ -72,7 +72,7 @@ FtpServer ftpSrv;
 #include <ESP8266WebServer.h>
 
 CSystem sysIoteps;
-//CServerWeb webServeur;
+CServerWeb webServeur;
 CRtc rtc;
 
 /** 
@@ -137,7 +137,7 @@ WiFiUDP ntpUDP;
 void setup(){
     sysIoteps.init();
     
-    //webServeur.init( &rtc, &cParam );
+    webServeur.init( &rtc, &cParam );
     // DateTime NTPTime;
     int timeZone = OFFSET_HEURE; 
     
@@ -500,60 +500,60 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     //  Server configurations                                                  //
     /////////////////////////////////////////////////////////////////////////////
-    server = new ESP8266WebServer( cParam.getServerPort() );
-    DSPL( dPrompt + "Server port : " + (String)cParam.getServerPort() );
-	if ( !simpleManualMode ){
-        if ( cParam.getFirstBoot() == ConfigParam::YES 
-                || cParam.getFirstBoot() == ConfigParam::TRY ){
-            server->on("/", HTTP_GET, firstBootHtmlForm );
-            DSPL( dPrompt + "First boot procedure");
-        } else if ( cParam.getWifiMode() == "softAP" ) {
-            server->on("/", HTTP_GET, handleSoftAPIndex );
-            DSPL( dPrompt + F("******************reg page") );
-        }
-        server->on("/ChangeCred", HTTP_POST, handleNewCred );
-        /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
-        //Note: The above function is disabled as long as the handleNewCred function has
-        //not been updated
-		server->on("/list", HTTP_GET, handleFileList);
-		// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
-        server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
-        server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
-		server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
-        server->on("/firstBoot", HTTP_POST, handleFirstBoot);
-		server->on("/edit", HTTP_GET, [](){
-			if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
-		});
-		server->on("/help", HTTP_GET, [](){
-			if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
-		});
-        /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
-		server->on("/edit", HTTP_PUT, handleFileCreate);
-		server->on("/edit", HTTP_DELETE, handleFileDelete);
-		//first callback is called after the request has ended with all parsed arguments
-		//second callback handles file uploads at that location
-		server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
+    // server = new ESP8266WebServer( cParam.getServerPort() );
+    // DSPL( dPrompt + "Server port : " + (String)cParam.getServerPort() );
+	// if ( !simpleManualMode ){
+    //     if ( cParam.getFirstBoot() == ConfigParam::YES 
+    //             || cParam.getFirstBoot() == ConfigParam::TRY ){
+    //         server->on("/", HTTP_GET, firstBootHtmlForm );
+    //         DSPL( dPrompt + "First boot procedure");
+    //     } else if ( cParam.getWifiMode() == "softAP" ) {
+    //         server->on("/", HTTP_GET, handleSoftAPIndex );
+    //         DSPL( dPrompt + F("******************reg page") );
+    //     }
+    //     server->on("/ChangeCred", HTTP_POST, handleNewCred );
+    //     /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
+    //     //Note: The above function is disabled as long as the handleNewCred function has
+    //     //not been updated
+	// 	server->on("/list", HTTP_GET, handleFileList);
+	// 	// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
+    //     server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
+    //     server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
+	// 	server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
+    //     server->on("/firstBoot", HTTP_POST, handleFirstBoot);
+	// 	server->on("/edit", HTTP_GET, [](){
+	// 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
+	// 	});
+	// 	server->on("/help", HTTP_GET, [](){
+	// 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
+	// 	});
+    //     /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
+	// 	server->on("/edit", HTTP_PUT, handleFileCreate);
+	// 	server->on("/edit", HTTP_DELETE, handleFileDelete);
+	// 	//first callback is called after the request has ended with all parsed arguments
+	// 	//second callback handles file uploads at that location
+	// 	server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
 
-		//called when the url is not defined here
-		//use it to load content from SPIFFS
-        server->on("/", HTTP_GET, handleIndex );
-		server->onNotFound([](){
-            if(!handleFileRead(server->uri()))
-                server->send(404, "text/plain", "FileNotFound");
-		}
-        );    
+	// 	//called when the url is not defined here
+	// 	//use it to load content from SPIFFS
+    //     server->on("/", HTTP_GET, handleIndex );
+	// 	server->onNotFound([](){
+    //         if(!handleFileRead(server->uri()))
+    //             server->send(404, "text/plain", "FileNotFound");
+	// 	}
+    //     );    
 
-		server->on( "/time", displayTime );
-		//server->on( "/time", std::bind(webServeur.displayTime) );
-		//server->on( "/time", std::bind(&CServerWeb::displayTime,this) );
+		// server->on( "/time", displayTime );
+	// 	//server->on( "/time", std::bind(webServeur.displayTime) );
+	// 	//server->on( "/time", std::bind(&CServerWeb::displayTime,this) );
 
-		// server->on ( "/inline", []() {
-			// server->send ( 200, "text/plain", "this works as well" );
-		// } );
-		server->begin();
-		DSPL ( dPrompt + F("HTTP server started" ) );
+	// 	// server->on ( "/inline", []() {
+	// 		// server->send ( 200, "text/plain", "this works as well" );
+	// 	// } );
+		// server->begin();
+		// DSPL ( dPrompt + F("HTTP server started" ) );
 	
-	}
+	// }
     
     /////////////////////////////////////////////////////////////////////////////
     //  Time server check                                                     //
@@ -615,7 +615,13 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////    
     watchdog.setTimeout( 10 );
     watchdog.setRefreshPeriod( 5 );    
-    
+    DSPL( dPrompt + "Loop start");
+    // for(;;){
+    //     if ( watchdog.isItTimeTo() ) {
+    //         DSPL( dPrompt + F("TimeToRefresh wd") ) ;
+    //         watchdog.refresh();
+    //     }
+    // }
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -708,7 +714,8 @@ void loop(){
     /////////////////////////////////////////////////////////////////////////////
     //  Some little jobs : specialBp, ftp, SerialProcess...                    //
     /////////////////////////////////////////////////////////////////////////////
-    //if ( !simpleManualMode ) server->handleClient();
+    if ( !simpleManualMode ) webServeur.serviceClient();
+    // if ( !simpleManualMode ) server->handleClient();
     
     ftpSrv.handleFTP();
     specialBp.update();
