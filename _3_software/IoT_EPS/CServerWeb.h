@@ -1,4 +1,11 @@
-
+/**
+ @file CServerWeb.h
+ @author J.SORANZO / VoLAB
+ @date 15/08/2020
+ @copyright 2020 CC0
+ @version git versionning
+ @brief heardr file of the class CServerWeb web of the project IoT_EPS
+*/
 #include "IoT_EPS.h"
 #include "CRtc.h"
 //#include "cpowerplug.h"
@@ -21,6 +28,8 @@ private:
     bool handleFileRead(String path);
     String getContentType(String filename);
     void handleSoftAPIndex();
+    void notFoundHandler();
+    void handleFileList();
 
 public:
     CServerWeb(/* args */);
@@ -32,7 +41,7 @@ public:
     void serviceClient();
     void handlePlugOnOff();
     static String extractParamFromHtmlReq( String allRecParam, String param );
-    //static and public for CpowerPlug usage
+    //static and public for CPowerPlug usage
 
 };
 

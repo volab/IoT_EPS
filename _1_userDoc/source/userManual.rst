@@ -7,6 +7,13 @@ IoT_EPS User Manual
 :Societe: VoLAB
 :Entity: VoRoBoTics
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents
+   :titlesonly:
+   
+   userManualAnex.rst
+
 .. contents::
     :backlinks: top
 
@@ -27,7 +34,7 @@ WIFI connections
 **Station mode** : is available after first configuration and credential settings. In this mode, 
 human interface is mode responsive due to boostrap CDN usage.
 
-In staion mode user can address all ist iot plug from its internet browser of its Mac, PC 
+In station mode user can address all ist iot plug from its internet browser of its Mac, PC 
 or Android device.
 
 

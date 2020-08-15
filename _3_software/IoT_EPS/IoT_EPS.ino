@@ -378,10 +378,11 @@ void setup(){
 	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
 	if ( !simpleManualMode ){
 		int tryCount = 0;
-        DSPL( dPrompt + F("Wifi mode = ") + cParam.getWifiMode() );
+        DSPL( dPrompt + F("Wifi mode in json = ") + cParam.getWifiMode() );
+        DSPL( dPrompt + F("try to set autoconnect to off"));
 		WiFi.setAutoConnect(false); //to allways control wifi connection
 		// WiFi.setAutoConnect(true); //to allways control wifi connection
-		DSP( dPrompt + F("Mode autoconnect : "));
+		DSP( dPrompt + F("Mode autoconnect read from ESP : "));
 		DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
 		DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
         WiFi.persistent(false);
@@ -393,9 +394,9 @@ void setup(){
         DSPL( dPrompt + F("Wifi def mode in FLASH : ") + String(wifi_get_opmode_default	() ) );
         softap_config	config;
         wifi_softap_get_config_default(&config);
-        DSPL( dPrompt + "Wifi default soft AP param:" );
-        DSPL( dPrompt + "SSID len : " + config.ssid_len );
-        DSP( dPrompt + F("Stored SSID :") );
+        DSPL( dPrompt + "Stored Wifi default soft AP param : " );
+        DSPL( dPrompt + F("    SSID len : ") + config.ssid_len );
+        DSP( dPrompt + F("    Stored SSID :") );
         for ( int i = 0; i < config.ssid_len ; i++ ){
             DSP( char(config.ssid[i]) );
         }

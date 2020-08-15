@@ -1,4 +1,13 @@
+/**
+ @file CServerWeb.cpp
+ @author J.SORANZO
+ @date 15/08/2020
+ @copyright 2020 CC0
+ @version git versioning
+ @brief Implementation file of CServerWeb class
+*/
 #include "CServerWeb.h"
+
 
 
 //A global variable need by ESP8266WebServer
@@ -12,6 +21,13 @@ CServerWeb::~CServerWeb()
 {
 }
 
+
+/**
+@fn CServerWeb::init()
+@brief Iot_EPS web server initialisation method
+@param prtc a class RTC pointer
+@return no return value
+*/
 void CServerWeb::init( CRtc * prtc, ConfigParam *pcParam, CPowerPlug *pPlugs
                         , bool *restartTempoLed ){
     //big warning if _rtc is initialised with a local variable !!!!
@@ -20,16 +36,34 @@ void CServerWeb::init( CRtc * prtc, ConfigParam *pcParam, CPowerPlug *pPlugs
     _pPlugs = pPlugs;
     mainPowerSwitchState = 0;
     _pRestartTempoLed = restartTempoLed;
-    server = new ESP8266WebServer( 80 );
+    // server = new ESP8266WebServer( 80 );
+    server = new ESP8266WebServer( _pcParam->getServerPort() );
+
 
     server->on( "/time", std::bind(&CServerWeb::displayTime, this) );
-    // server->on ( "/inline", []() {
-	// 		server->send ( 200, "text/plain", "this works as well" );
-	// 	}, );
-    server->on("/plugonoff", HTTP_POST, std::bind(&CServerWeb::handlePlugOnOff, this) ); 
+    server->on("/list", HTTP_GET, std::bind(&CServerWeb::handleFileList, this) );
+    server->on("/plugonoff", HTTP_POST,std::bind(&CServerWeb::handlePlugOnOff, this) ); 
+    server->onNotFound( std::bind(&CServerWeb::notFoundHandler, this) );
     server->begin();
 }
 
+/**
+@fn CServerWeb::notFoundHandler()
+@brief Web server page not found handler function
+@return no param and return value
+*/
+void CServerWeb::notFoundHandler(){
+    if(!handleFileRead(server->uri()))
+        server->send(404, "text/plain", "IoTEPS : FileNotFound");   
+}
+
+/**
+@fn CServerWeb::serviceClient()
+@brief Web server client handle
+@return not param and no return value
+
+Just a wrapper on the official method to be called from main program
+*/
 void CServerWeb::serviceClient(){
     DEFDPROMPT("ServiceWeb");
     // DSPL( dPrompt );
@@ -63,6 +97,23 @@ void CServerWeb::displayTime(){
     
 }
 
+/**
+@fn CServerWeb::handlePlugOnOff()
+@brief IoT_EPS web server handel plug on or off actions...
+@return not param and no return value
+
+This method handel request that come from client web browser in the form:
+192.168.1.42/plugonoff?COLOR=redPlug&Mode=Manuel&State=ON
+
+Possible requests:
+
+- Mode=Manuel&State=ON&dureeOff=299 : dureeOff on minutes only
+- Mode=Manuel&State=ON&dureeOff=299:59 : dureeOff on minutes and seconds
+- Mode=Manuel&State=ON&hFin=23:59 : hFin only one format HH:MM
+- Mode=Manuel&State=OFF
+- Mode=Manuel&State=ON
+
+*/
 void CServerWeb::handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
     bool requestAP;
@@ -187,6 +238,13 @@ void CServerWeb::handlePlugOnOff(){
 	
 	// }
 
+/**
+@fn CServerWeb::handleFileRead(String path)
+@brief IoT_EPS a web server private method to handle file read request from others methods
+@param path a string that represent the path of the file to bo served
+@return
+
+*/
 bool CServerWeb::handleFileRead(String path){
   DEBUGPORT.println("handleFileRead: " + path);
   
@@ -207,6 +265,16 @@ bool CServerWeb::handleFileRead(String path){
   return false;
 }
 
+
+/**
+@fn String CServerWeb::getContentType(String filename)
+@brief IoT_EPS a private methode of the webserver to determin the html content type
+@param filename the name of the fiel with its extension to determine 
+@return the content type as a string
+
+Supported extension : .htm, .html, .css, .js, .png, .gif, .jpg, .ico, .xml, .pdf, .zip, .gz, .json
+
+*/
 String CServerWeb::getContentType(String filename){
   if(server->hasArg("download")) return "application/octet-stream";
   else if(filename.endsWith(".htm")) return "text/html";
@@ -225,7 +293,10 @@ String CServerWeb::getContentType(String filename){
   return "text/plain";
 }
 
-
+/**
+@fn void CServerWeb::handleSoftAPIndex()
+@brief IoT_EPS Web server method to handle soft app index.html page
+*/
 void CServerWeb::handleSoftAPIndex(){
  
     handleFileRead( APMODEINDEXPAGENAME );
@@ -250,4 +321,37 @@ String CServerWeb::extractParamFromHtmlReq( String allRecParam, String param ){
     int fin = allRecParam.indexOf( HTML_ALLARGS_SEPARATOR, pos );
     //DSPL( dPrompt + "fin = " +(String)fin );
     return allRecParam.substring( pos, fin );
+}
+
+/**
+@fn void CServerWeb::handleFileList()
+@brief IoT_EPS web server method to handle /list?dir html reques
+@return not param and no return value
+
+This function is provided by core spiffs example
+*/
+void CServerWeb::handleFileList() {
+    //usage exemple ipaddr/list?dir=/
+  if(!server->hasArg("dir")) {server->send(500, "text/plain", "BAD ARGS"); return;}
+  
+  String path = server->arg("dir");
+  DEBUGPORT.println("handleFileList: " + path);
+  Dir dir = SPIFFS.openDir(path);
+  path = String();
+
+  String output = "[";
+  while(dir.next()){
+    File entry = dir.openFile("r");
+    if (output != "[") output += ",\n";
+    bool isDir = false;
+    output += "{\"type\":\"";
+    output += (isDir)?"dir":"file";
+    output += "\",\"name\":\"";
+    output += String(entry.name()).substring(1);
+    output += "\"}";
+    entry.close();
+  }
+  
+  output += "]";
+  server->send(200, "text/json", output);
 }

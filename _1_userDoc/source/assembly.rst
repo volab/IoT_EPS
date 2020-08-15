@@ -10,9 +10,28 @@ IoT Electrical Power Strip Assembly manual
 .. contents::
     :backlinks: top
 
+====================================================================================================
+Prepare your credentials file
+====================================================================================================
+You need to create a  credential.json file in the directory data of the Arduino project.
+
+as this::
+
+    {
+        "general": {
+            "ssid" : "yourWifiSsid",
+            "pass" : "yourWifiPass",
+            "softApSsid" : "IoT_ESP_mcmc",
+            "softApPass" : "123456789"
+        }
+    }
+
+SoftAp parameters are for connections in AP mode.
+SoftAp password need to have at least 8c
+
 
 ====================================================================================================
-First: program ESP8266
+Program ESP8266
 ====================================================================================================
 
 Use Arduino IDE
@@ -30,12 +49,12 @@ You need also esptools to program SPIFFS
 
 
 ====================================================================================================
-Second Program Arduino nano
+Program Arduino nano
 ====================================================================================================
-
+With nanoI2CIOExpander project
 
 ====================================================================================================
-Third : program Atiny85 watchdog
+Program Atiny85 watchdog
 ====================================================================================================
 
 ================================

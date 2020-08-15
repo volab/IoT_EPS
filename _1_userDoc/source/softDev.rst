@@ -24,15 +24,16 @@ Source code documentation provide a lot of informations
 ====================================================================================================
 Software architecture
 ====================================================================================================
-Some words on software architecture.
+Some words on software architecture @13/07/2020
 
-@13/07/2020
+Major points
+====================================================================================================
 
 one main ino file with its .h : IoT_EPS
-in the header file we can find includes and confi informations. (to be changed - see project
+in the header file we can find includes and config informations. (to be changed - see project
 todo list)
 
-Usage of global variables and objects.
+A lot of usage of global variables and objects (not very optimal).
 
 :ref:`See variables list<refVariableList>`
 
@@ -43,7 +44,20 @@ Usage of static functions in some object like Crtc.
 
 Usage of a pseudo object in SerialCommand (just a struct)
 
+The embedded html server is based on ESP8266webserver class 
 
+file system globale SPIFFS is based on ESP8266 core
+
+Operations
+====================================================================================================
+An array of 4 plugs object manage the behavior of the plug. Events from wifi trigs 
+web server functions. The main part of the jobs is to write data in the json file that it is resend
+to the user's navigator.
+
+Timing are managed by CRtc a derived class from rtc from RTClib.
+
+The wifi : after a long expectation where I navigate between station mode or softAP mode. Finally,
+i activate the 2 mode simultaneously.
 
 
 ===========================
@@ -573,9 +587,10 @@ html requests
 ipaddr/config?plug=redPlug
 
 /PlugConfig?plug=red&mode=manuel
+
 /modeManuel?plug=redPlug
 
-Utilisation de formulaires
+192.168.1.42/plugonoff?COLOR=redPlug&Mode=Manuel&State=ON
 
 Possible requests:
 
@@ -585,7 +600,7 @@ Possible requests:
 - Mode=Manuel&State=OFF
 - Mode=Manuel&State=ON
 
-NTP server name
+N1TP server name
 =================
 The name reside in the IoT_EPS.h file and is not a config param through web config page
 
