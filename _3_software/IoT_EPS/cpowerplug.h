@@ -1,4 +1,11 @@
-
+/**
+ @file cpowerplug.h
+ @author J.SORANZO
+ @date 15/08/2020
+ @copyright 2020 CC0
+ @version git versionning
+ @brief CPowerPlug class header file.
+*/
 #include "IoT_EPS.h"
 
 #ifndef _CPOWERPLUG_H

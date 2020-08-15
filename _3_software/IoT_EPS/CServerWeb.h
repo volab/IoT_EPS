@@ -14,7 +14,11 @@
 #define CWEBSERVEUR_H
 
 
-
+/**
+ * @brief cserverWeb class
+ * 
+ * 
+ */
 class CServerWeb{
 
 private:
@@ -30,6 +34,7 @@ private:
     void handleSoftAPIndex();
     void notFoundHandler();
     void handleFileList();
+    void handleHelp();
 
 public:
     CServerWeb(/* args */);

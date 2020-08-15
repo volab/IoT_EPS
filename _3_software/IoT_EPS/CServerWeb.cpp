@@ -39,11 +39,18 @@ void CServerWeb::init( CRtc * prtc, ConfigParam *pcParam, CPowerPlug *pPlugs
     // server = new ESP8266WebServer( 80 );
     server = new ESP8266WebServer( _pcParam->getServerPort() );
 
-
+    //Register handlers in the web server
     server->on( "/time", std::bind(&CServerWeb::displayTime, this) );
     server->on("/list", HTTP_GET, std::bind(&CServerWeb::handleFileList, this) );
     server->on("/plugonoff", HTTP_POST,std::bind(&CServerWeb::handlePlugOnOff, this) ); 
     server->onNotFound( std::bind(&CServerWeb::notFoundHandler, this) );
+    // server->on("/help", HTTP_GET, [](){
+	// // 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
+	// // 	});
+    server->on("/help", HTTP_GET, std::bind(&CServerWeb::handleHelp, this) );
+	// 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
+	// 	});
+
     server->begin();
 }
 
@@ -200,11 +207,11 @@ void CServerWeb::handlePlugOnOff(){
     //     /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
     //     //Note: The above function is disabled as long as the handleNewCred function has
     //     //not been updated
-	// 	server->on("/list", HTTP_GET, handleFileList);
+	// 	                                        server->on("/list", HTTP_GET, handleFileList);
 	// 	// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
     //     server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
     //     server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
-	// 	server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
+	// 	                                        server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
     //     server->on("/firstBoot", HTTP_POST, handleFirstBoot);
 	// 	server->on("/edit", HTTP_GET, [](){
 	// 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
@@ -239,10 +246,10 @@ void CServerWeb::handlePlugOnOff(){
 	// }
 
 /**
-@fn CServerWeb::handleFileRead(String path)
-@brief IoT_EPS a web server private method to handle file read request from others methods
-@param path a string that represent the path of the file to bo served
-@return
+ @fn CServerWeb::handleFileRead(String path)
+ @brief IoT_EPS a web server private method to handle file read request from others methods
+ @param path a string that represent the path of the file to bo served
+ @return
 
 */
 bool CServerWeb::handleFileRead(String path){
@@ -267,10 +274,10 @@ bool CServerWeb::handleFileRead(String path){
 
 
 /**
-@fn String CServerWeb::getContentType(String filename)
-@brief IoT_EPS a private methode of the webserver to determin the html content type
-@param filename the name of the fiel with its extension to determine 
-@return the content type as a string
+ @fn String CServerWeb::getContentType(String filename)
+ @brief IoT_EPS a private methode of the webserver to determin the html content type
+ @param filename the name of the fiel with its extension to determine 
+ @return the content type as a string
 
 Supported extension : .htm, .html, .css, .js, .png, .gif, .jpg, .ico, .xml, .pdf, .zip, .gz, .json
 
@@ -294,8 +301,8 @@ String CServerWeb::getContentType(String filename){
 }
 
 /**
-@fn void CServerWeb::handleSoftAPIndex()
-@brief IoT_EPS Web server method to handle soft app index.html page
+ @fn void CServerWeb::handleSoftAPIndex()
+ @brief IoT_EPS Web server method to handle soft app index.html page
 */
 void CServerWeb::handleSoftAPIndex(){
  
@@ -354,4 +361,13 @@ void CServerWeb::handleFileList() {
   
   output += "]";
   server->send(200, "text/json", output);
+}
+
+
+/**
+ * @brief 
+ * 
+ */
+void CServerWeb::handleHelp(){
+    if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
 }
