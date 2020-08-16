@@ -35,6 +35,7 @@ private:
     void notFoundHandler();
     void handleFileList();
     void handleHelp();
+    void handleEdit();
 
 public:
     CServerWeb(/* args */);

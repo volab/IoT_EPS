@@ -336,23 +336,23 @@ Possible behaviors:
 When main power switch is off : html server post no reply.
 
 Problem : when in AP mode WiFi start even if main power is OFF and in Station ESP connect to acces
-point. It is not a logicaly expected behavior. When power switch is in OFF position no Wifi activity
-should be detected.
+point. It is not a logically expected behavior. When power switch is in OFF position no Wifi 
+activity should be detected.
 
 Solution wait for power on in ARDUINO setup function.
 Restart ESP in ARDUINO loop when power is switch to OFF.
 
 .. index:: Special push buttons
 
-Special push button behaviors @stratup
+Special push button behaviors @startup
 ===========================================
 PB0 : @power on (not by power switch but by wall plug) start in simple manual mode see `WIFI Modes`_
 
 PB1 : in same conditions as above, start specials action only for expert and debug mode
-(today creat default json) with main power switch on on state (to be cecked 21/10/2019) 
+(today create default json) with main power switch on on state (to be checked 21/10/2019) 
 
 ============================
-Sofware development choice
+Software development choice
 ============================
 wifi access point
 

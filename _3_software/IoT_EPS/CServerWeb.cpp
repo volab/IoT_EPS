@@ -44,13 +44,9 @@ void CServerWeb::init( CRtc * prtc, ConfigParam *pcParam, CPowerPlug *pPlugs
     server->on("/list", HTTP_GET, std::bind(&CServerWeb::handleFileList, this) );
     server->on("/plugonoff", HTTP_POST,std::bind(&CServerWeb::handlePlugOnOff, this) ); 
     server->onNotFound( std::bind(&CServerWeb::notFoundHandler, this) );
-    // server->on("/help", HTTP_GET, [](){
-	// // 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
-	// // 	});
     server->on("/help", HTTP_GET, std::bind(&CServerWeb::handleHelp, this) );
-	// 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
-	// 	});
-
+    server->on("/edit", HTTP_GET, std::bind(&CServerWeb::handleEdit, this) );
+	// 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
     server->begin();
 }
 
@@ -216,8 +212,8 @@ void CServerWeb::handlePlugOnOff(){
 	// 	server->on("/edit", HTTP_GET, [](){
 	// 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
 	// 	});
-	// 	server->on("/help", HTTP_GET, [](){
-	// 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
+                                                // 	server->on("/help", HTTP_GET, [](){
+                                                // 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
 	// 	});
     //     /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
 	// 	server->on("/edit", HTTP_PUT, handleFileCreate);
@@ -365,9 +361,17 @@ void CServerWeb::handleFileList() {
 
 
 /**
- * @brief 
+ * @brief Juste to send help.html file
  * 
  */
 void CServerWeb::handleHelp(){
     if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
+}
+
+/**
+ * @brief Handler that open edit.htm
+ * 
+ */
+void CServerWeb::handleEdit(){
+    if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
 }
