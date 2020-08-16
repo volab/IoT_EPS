@@ -40,15 +40,65 @@ void CServerWeb::init( CRtc * prtc, ConfigParam *pcParam, CPowerPlug *pPlugs
     server = new ESP8266WebServer( _pcParam->getServerPort() );
 
     //Register handlers in the web server
+
+    /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
     server->on( "/time", std::bind(&CServerWeb::displayTime, this) );
     server->on("/list", HTTP_GET, std::bind(&CServerWeb::handleFileList, this) );
     server->on("/plugonoff", HTTP_POST,std::bind(&CServerWeb::handlePlugOnOff, this) ); 
     server->onNotFound( std::bind(&CServerWeb::notFoundHandler, this) );
     server->on("/help", HTTP_GET, std::bind(&CServerWeb::handleHelp, this) );
     server->on("/edit", HTTP_GET, std::bind(&CServerWeb::handleEdit, this) );
-	// 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
+    server->on("/edit", HTTP_PUT, std::bind(&CServerWeb::handleFileCreate, this) );
+
+
     server->begin();
 }
+
+//The work:
+
+	// if ( !simpleManualMode ){
+    //     if ( cParam.getFirstBoot() == ConfigParam::YES 
+    //             || cParam.getFirstBoot() == ConfigParam::TRY ){
+    //         server->on("/", HTTP_GET, firstBootHtmlForm );
+    //         DSPL( dPrompt + "First boot procedure");
+    //     } else if ( cParam.getWifiMode() == "softAP" ) {
+    //         server->on("/", HTTP_GET, handleSoftAPIndex );
+    //         DSPL( dPrompt + F("******************reg page") );
+    //     }
+    //     server->on("/ChangeCred", HTTP_POST, handleNewCred );
+    //     /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
+    //     //Note: The above function is disabled as long as the handleNewCred function has
+    //     //not been updated
+	// 	                                        server->on("/list", HTTP_GET, handleFileList);
+	// 	// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
+    //     server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
+    //     server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
+	// 	                                        server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
+    //     server->on("/firstBoot", HTTP_POST, handleFirstBoot);
+                                                // 	server->on("/edit", HTTP_GET, [](){
+                                                // 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
+                                                // 	});
+                                                // 	server->on("/help", HTTP_GET, [](){
+                                                // 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
+                                            	// 	});
+
+	// 	server->on("/edit", HTTP_PUT, handleFileCreate);
+	// 	server->on("/edit", HTTP_DELETE, handleFileDelete);
+	// 	//first callback is called after the request has ended with all parsed arguments
+	// 	//second callback handles file uploads at that location
+	// 	server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
+
+	// 	//called when the url is not defined here
+	// 	//use it to load content from SPIFFS
+    //     server->on("/", HTTP_GET, handleIndex );
+	// 	server->onNotFound([](){
+    //         if(!handleFileRead(server->uri()))
+    //             server->send(404, "text/plain", "FileNotFound");
+	// 	}
+    //     );    
+
+
+
 
 /**
 @fn CServerWeb::notFoundHandler()
@@ -186,50 +236,6 @@ void CServerWeb::handlePlugOnOff(){
     
 }
 
-
-//The work:
-   // server = new ESP8266WebServer( cParam.getServerPort() );
-    // DSPL( dPrompt + "Server port : " + (String)cParam.getServerPort() );
-	// if ( !simpleManualMode ){
-    //     if ( cParam.getFirstBoot() == ConfigParam::YES 
-    //             || cParam.getFirstBoot() == ConfigParam::TRY ){
-    //         server->on("/", HTTP_GET, firstBootHtmlForm );
-    //         DSPL( dPrompt + "First boot procedure");
-    //     } else if ( cParam.getWifiMode() == "softAP" ) {
-    //         server->on("/", HTTP_GET, handleSoftAPIndex );
-    //         DSPL( dPrompt + F("******************reg page") );
-    //     }
-    //     server->on("/ChangeCred", HTTP_POST, handleNewCred );
-    //     /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
-    //     //Note: The above function is disabled as long as the handleNewCred function has
-    //     //not been updated
-	// 	                                        server->on("/list", HTTP_GET, handleFileList);
-	// 	// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
-    //     server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
-    //     server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
-	// 	                                        server->on("/plugonoff", HTTP_POST, handlePlugOnOff ); 
-    //     server->on("/firstBoot", HTTP_POST, handleFirstBoot);
-	// 	server->on("/edit", HTTP_GET, [](){
-	// 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
-	// 	});
-                                                // 	server->on("/help", HTTP_GET, [](){
-                                                // 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
-	// 	});
-    //     /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
-	// 	server->on("/edit", HTTP_PUT, handleFileCreate);
-	// 	server->on("/edit", HTTP_DELETE, handleFileDelete);
-	// 	//first callback is called after the request has ended with all parsed arguments
-	// 	//second callback handles file uploads at that location
-	// 	server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
-
-	// 	//called when the url is not defined here
-	// 	//use it to load content from SPIFFS
-    //     server->on("/", HTTP_GET, handleIndex );
-	// 	server->onNotFound([](){
-    //         if(!handleFileRead(server->uri()))
-    //             server->send(404, "text/plain", "FileNotFound");
-	// 	}
-    //     );    
 
 
 
@@ -373,5 +379,27 @@ void CServerWeb::handleHelp(){
  * 
  */
 void CServerWeb::handleEdit(){
+    DEFDPROMPT("Handle edit");
+    DSPL( dPrompt );
     if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
+}
+
+void CServerWeb::handleFileCreate(){
+    DEFDPROMPT("Handle file creat");
+    DSPL( dPrompt );
+    if(server->args() == 0)
+        return server->send(500, "text/plain", "BAD ARGS");
+    String path = server->arg(0);
+    DEBUGPORT.println("handleFileCreate: " + path);
+    if(path == "/")
+        return server->send(500, "text/plain", "BAD PATH");
+    if(SPIFFS.exists(path))
+        return server->send(500, "text/plain", "FILE EXISTS");
+    File file = SPIFFS.open(path, "w");
+    if(file)
+        file.close();
+    else
+        return server->send(500, "text/plain", "CREATE FAILED");
+    server->send(200, "text/plain", "");
+    path = String();
 }

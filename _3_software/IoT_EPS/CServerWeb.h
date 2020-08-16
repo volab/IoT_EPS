@@ -36,6 +36,7 @@ private:
     void handleFileList();
     void handleHelp();
     void handleEdit();
+    void handleFileCreate();
 
 public:
     CServerWeb(/* args */);
