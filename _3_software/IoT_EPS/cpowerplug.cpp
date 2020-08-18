@@ -750,7 +750,7 @@ void CPowerPlug::switchAtTime(){
         }
         _nextTimeToSwitch = duree.computeNextTime();
         // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
-    }else if ( sMode == HEBDO_MODE ){
+    } else if ( sMode == HEBDO_MODE ){
         DSP( dPrompt + F("Hebdo mise") );
         CEpsStrTime nextHour;
         if (_state){

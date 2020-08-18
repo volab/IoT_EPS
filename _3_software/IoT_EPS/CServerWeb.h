@@ -37,9 +37,14 @@ private:
     void handleHelp();
     void handleEdit();
     void handleFileCreate();
+    void htmlOkResponse();
+    File _fsUploadFile; // cette variable doit être globale
+    //la fonction l'utilise plusieurs fois - ie lors de plusieurs appels pour 1 fichier
+    //eventuellement pourrait être static    
+    void handleFileUpload();
+    void handleFileDelete();
 
-public:
-    CServerWeb(/* args */);
+        public : CServerWeb(/* args */);
     ~CServerWeb();
     void init( CRtc * rtc, ConfigParam *cparam, CPowerPlug *plugs
                 , bool *restartTempoLed );
