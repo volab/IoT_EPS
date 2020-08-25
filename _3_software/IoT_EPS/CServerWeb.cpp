@@ -39,19 +39,22 @@ void CServerWeb::init(CRtc *prtc, ConfigParam *pcParam, CPowerPlug *pPlugs, bool
     //Register handlers in the web server
 
     /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
+    server->on("/", HTTP_GET, std::bind(&CServerWeb::handleIndex, this) );
     server->on("/time", std::bind(&CServerWeb::displayTime, this));
     server->on("/list", HTTP_GET, std::bind(&CServerWeb::handleFileList, this));
     server->on("/plugonoff", HTTP_POST, std::bind(&CServerWeb::handlePlugOnOff, this));
-    server->onNotFound(std::bind(&CServerWeb::notFoundHandler, this));
     server->on("/help", HTTP_GET, std::bind(&CServerWeb::handleHelp, this));
-
     server->on("/edit", HTTP_GET, std::bind(&CServerWeb::handleEdit, this));
     server->on("/edit", HTTP_PUT, std::bind(&CServerWeb::handleFileCreate, this));
+
     //first callback is called after the request has ended with all parsed arguments
     //second callback handles file uploads at that location
     server->on("/edit", HTTP_POST, std::bind(&CServerWeb::htmlOkResponse, this)
                                  , std::bind(&CServerWeb::handleFileUpload, this));
+
     server->on("/edit", HTTP_DELETE, std::bind(&CServerWeb::handleFileDelete, this) );
+
+    server->onNotFound(std::bind(&CServerWeb::notFoundHandler, this));
     server->begin();
 }
 
@@ -84,7 +87,7 @@ void CServerWeb::init(CRtc *prtc, ConfigParam *pcParam, CPowerPlug *pPlugs, bool
                                 // 	});
 
                                 // 	server->on("/edit", HTTP_PUT, handleFileCreate);
-// 	server->on("/edit", HTTP_DELETE, handleFileDelete);
+                                // 	server->on("/edit", HTTP_DELETE, handleFileDelete);
                                 // 	//first callback is called after the request has ended with all parsed arguments
                                 // 	//second callback handles file uploads at that location
                                 // 	server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
@@ -455,4 +458,31 @@ void CServerWeb::handleFileDelete(){
     SPIFFS.remove(path);
     server->send(200, "text/plain", "");
     path = String();
+}
+
+/** 
+ @fn void CServerWeb::handleIndex()
+ @brief A new handler for index page to choose different index page between AP and station...
+ @return no return value and no parameter
+
+Now we can be connected in both mode AP and station so it is necessary to separate request from AP 
+and station mode to serve the right page
+*/
+void CServerWeb::handleIndex()
+{
+    DEFDPROMPT("handleIndex");
+    // DSPL(dPrompt);
+    // bool requestAP;
+    IPAddress clientIP = server->client().remoteIP();
+    IPAddress modeAPIP = _pcParam->getIPAdd();
+    modeAPIP[3] = 0;
+    clientIP[3] = 0;
+    if (clientIP == modeAPIP){
+        DSPL(dPrompt + F("Mode AP index page") );
+        handleSoftAPIndex();
+    } else {
+        DSPL(dPrompt + F("Mode Station index page") );
+        handleFileRead("/");
+
+    }
 }

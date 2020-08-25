@@ -43,6 +43,7 @@ private:
     //eventuellement pourrait être static    
     void handleFileUpload();
     void handleFileDelete();
+    void handleIndex();
 
         public : CServerWeb(/* args */);
     ~CServerWeb();
