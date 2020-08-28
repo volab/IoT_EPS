@@ -44,6 +44,8 @@ private:
     void handleFileUpload();
     void handleFileDelete();
     void handleIndex();
+    void handelIOTESPConfPage();
+    void handleIOTESPConfiguration();
 
         public : CServerWeb(/* args */);
     ~CServerWeb();

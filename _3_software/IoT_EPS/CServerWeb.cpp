@@ -11,6 +11,8 @@
 //A global variable need by ESP8266WebServer
 //extern ESP8266WebServer *server; //a pointeur that allow change the port dynamicly
 
+//Warning global : SPIFFS used !!
+
 CServerWeb::CServerWeb(/* args */)
 {
 }
@@ -25,8 +27,7 @@ CServerWeb::~CServerWeb()
 @param prtc a class RTC pointer
 @return no return value
 */
-void CServerWeb::init(CRtc *prtc, ConfigParam *pcParam, CPowerPlug *pPlugs, bool *restartTempoLed)
-{
+void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs, bool* restartTempoLed){
     //big warning if _rtc is initialised with a local variable !!!!
     _pRtc = prtc;
     _pcParam = pcParam;
@@ -39,7 +40,7 @@ void CServerWeb::init(CRtc *prtc, ConfigParam *pcParam, CPowerPlug *pPlugs, bool
     //Register handlers in the web server
 
     /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
-    server->on("/", HTTP_GET, std::bind(&CServerWeb::handleIndex, this) );
+    server->on("/", HTTP_GET, std::bind(&CServerWeb::handleIndex, this));
     server->on("/time", std::bind(&CServerWeb::displayTime, this));
     server->on("/list", HTTP_GET, std::bind(&CServerWeb::handleFileList, this));
     server->on("/plugonoff", HTTP_POST, std::bind(&CServerWeb::handlePlugOnOff, this));
@@ -49,11 +50,11 @@ void CServerWeb::init(CRtc *prtc, ConfigParam *pcParam, CPowerPlug *pPlugs, bool
 
     //first callback is called after the request has ended with all parsed arguments
     //second callback handles file uploads at that location
-    server->on("/edit", HTTP_POST, std::bind(&CServerWeb::htmlOkResponse, this)
-                                 , std::bind(&CServerWeb::handleFileUpload, this));
+    server->on("/edit", HTTP_POST, std::bind(&CServerWeb::htmlOkResponse, this), std::bind(&CServerWeb::handleFileUpload, this));
 
-    server->on("/edit", HTTP_DELETE, std::bind(&CServerWeb::handleFileDelete, this) );
-
+    server->on("/edit", HTTP_DELETE, std::bind(&CServerWeb::handleFileDelete, this));
+    server->on("/cfgpage", HTTP_GET, std::bind(&CServerWeb::handelIOTESPConfPage, this));
+    server->on("/cfgsend", HTTP_POST, std::bind(&CServerWeb::handleIOTESPConfiguration, this));
     server->onNotFound(std::bind(&CServerWeb::notFoundHandler, this));
     server->begin();
 }
@@ -73,33 +74,44 @@ void CServerWeb::init(CRtc *prtc, ConfigParam *pcParam, CPowerPlug *pPlugs, bool
 //     /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
 //     //Note: The above function is disabled as long as the handleNewCred function has
 //     //not been updated
-// 	                                        server->on("/list", HTTP_GET, handleFileList);
+
 // 	// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
-//     server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
-//     server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
-// 	                                        server->on("/plugonoff", HTTP_POST, handlePlugOnOff );
+
 //     server->on("/firstBoot", HTTP_POST, handleFirstBoot);
-                                // 	server->on("/edit", HTTP_GET, [](){
-                                // 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
-                                // 	});
-                                // 	server->on("/help", HTTP_GET, [](){
-                                // 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
-                                // 	});
 
-                                // 	server->on("/edit", HTTP_PUT, handleFileCreate);
-                                // 	server->on("/edit", HTTP_DELETE, handleFileDelete);
-                                // 	//first callback is called after the request has ended with all parsed arguments
-                                // 	//second callback handles file uploads at that location
-                                // 	server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
 
+
+
+
+
+// 	}
+//     );
+
+//Fait
+//                                          server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
+//                                          server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
+// 	                                        server->on("/plugonoff", HTTP_POST, handlePlugOnOff );
 // 	//called when the url is not defined here
 // 	//use it to load content from SPIFFS
 //     server->on("/", HTTP_GET, handleIndex );
-                            // 	server->onNotFound([](){
-                            //         if(!handleFileRead(server->uri()))
-                            //             server->send(404, "text/plain", "FileNotFound");
-                            // 	}
-//     );
+// 	server->onNotFound([](){
+//         if(!handleFileRead(server->uri()))
+//             server->send(404, "text/plain", "FileNotFound");
+// 	server->on("/edit", HTTP_PUT, handleFileCreate);
+// 	server->on("/edit", HTTP_DELETE, handleFileDelete);
+// 	//first callback is called after the request has ended with all parsed arguments
+// 	//second callback handles file uploads at that location
+// 	server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
+// 	server->on("/help", HTTP_GET, [](){
+// 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
+// 	});
+// 	                                        server->on("/edit", HTTP_GET, [](){
+// 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
+// 	});
+// 	                                        server->on("/list", HTTP_GET, handleFileList);
+
+
+
 
 /**
 @fn CServerWeb::notFoundHandler()
@@ -173,7 +185,7 @@ Possible requests:
 void CServerWeb::handlePlugOnOff(){
     DEFDPROMPT("Plug on/off")
     bool requestAP;
-    if (!mainPowerSwitchState){
+    if (!mainPowerSwitchState) {
         server->send(404, "text/plain", "Page not found");
         return;
     }
@@ -190,7 +202,7 @@ void CServerWeb::handlePlugOnOff(){
     modeAPIP[3] = 0;
     clientIP[3] = 0;
     DSPL(dPrompt + F("new IP = ") + clientIP.toString());
-    if (clientIP == modeAPIP){
+    if (clientIP == modeAPIP) {
         DSPL(dPrompt + F("soft AP request"));
         requestAP = true;
     } else {
@@ -199,10 +211,11 @@ void CServerWeb::handlePlugOnOff(){
     }
     DSPL(dPrompt + " nbr de parametres : " + (String)server->args());
     String allArgs = F(" Received args : ");
-    for (int i = 0; i < server->args(); i++){
+    for (int i = 0; i < server->args(); i++) {
         allArgs += server->argName(i) + "=" + server->arg(i) + HTML_ALLARGS_SEPARATOR;
     }
     DSPL(dPrompt + allArgs);
+
     /////////////////////////////////////////////////////////////////////////////
     *_pRestartTempoLed = true;
     String plugColor = server->arg("COLOR");
@@ -215,13 +228,13 @@ void CServerWeb::handlePlugOnOff(){
     DSPL(dPrompt + " Mode = " + mode);
     int i;
 
-    for (i = 0; i < 4; i++){
+    for (i = 0; i < 4; i++) {
         //DSPL( dPrompt + "plugName : " + plugs[i].getPlugName() );
         if (_pPlugs[i].getPlugName() == plugColor)
             break;
     }
     String returnVal;
-    if (i == 4){
+    if (i == 4) {
         returnVal = " couleur invalide";
         DSPL(dPrompt + returnVal);
     } else {
@@ -262,7 +275,7 @@ bool CServerWeb::handleFileRead(String path){
         path += "index.html";
     String contentType = getContentType(path);
     String pathWithGz = path + ".gz";
-    if (SPIFFS.exists(pathWithGz) || SPIFFS.exists(path)){
+    if (SPIFFS.exists(pathWithGz) || SPIFFS.exists(path)) {
         if (SPIFFS.exists(pathWithGz))
             path += ".gz";
         File file = SPIFFS.open(path, "r");
@@ -354,7 +367,7 @@ This function is provided by core spiffs example
 */
 void CServerWeb::handleFileList(){
     //usage exemple ipaddr/list?dir=/
-    if (!server->hasArg("dir")){
+    if (!server->hasArg("dir")) {
         server->send(500, "text/plain", "BAD ARGS");
         return;
     }
@@ -365,7 +378,7 @@ void CServerWeb::handleFileList(){
     path = String();
 
     String output = "[";
-    while (dir.next()){
+    while (dir.next()) {
         File entry = dir.openFile("r");
         if (output != "[")
             output += ",\n";
@@ -425,8 +438,8 @@ void CServerWeb::handleFileCreate(){
 void CServerWeb::handleFileUpload(){
     if (server->uri() != "/edit")
         return;
-    HTTPUpload &upload = server->upload();
-    if (upload.status == UPLOAD_FILE_START){
+    HTTPUpload& upload = server->upload();
+    if (upload.status == UPLOAD_FILE_START) {
         String filename = upload.filename;
         if (!filename.startsWith("/"))
             filename = "/" + filename;
@@ -434,11 +447,11 @@ void CServerWeb::handleFileUpload(){
         DEBUGPORT.println(filename);
         _fsUploadFile = SPIFFS.open(filename, "w");
         filename = String();
-    } else if (upload.status == UPLOAD_FILE_WRITE){
+    } else if (upload.status == UPLOAD_FILE_WRITE) {
         //DEBUGPORT.print("handleFileUpload Data: "); DEBUGPORT.println(upload.currentSize);
         if (_fsUploadFile)
             _fsUploadFile.write(upload.buf, upload.currentSize);
-    } else if (upload.status == UPLOAD_FILE_END){
+    } else if (upload.status == UPLOAD_FILE_END) {
         if (_fsUploadFile)
             _fsUploadFile.close();
         DEBUGPORT.print("handleFileUpload Size: ");
@@ -468,8 +481,7 @@ void CServerWeb::handleFileDelete(){
 Now we can be connected in both mode AP and station so it is necessary to separate request from AP 
 and station mode to serve the right page
 */
-void CServerWeb::handleIndex()
-{
+void CServerWeb::handleIndex(){
     DEFDPROMPT("handleIndex");
     // DSPL(dPrompt);
     // bool requestAP;
@@ -477,12 +489,192 @@ void CServerWeb::handleIndex()
     IPAddress modeAPIP = _pcParam->getIPAdd();
     modeAPIP[3] = 0;
     clientIP[3] = 0;
-    if (clientIP == modeAPIP){
-        DSPL(dPrompt + F("Mode AP index page") );
+    if (clientIP == modeAPIP) {
+        DSPL(dPrompt + F("Mode AP index page"));
         handleSoftAPIndex();
     } else {
-        DSPL(dPrompt + F("Mode Station index page") );
+        DSPL(dPrompt + F("Mode Station index page"));
         handleFileRead("/");
-
     }
+}
+
+/** 
+ @fn void CServerWeb::handelIOTESPConfPage()
+ @brief /cfgpage action handler
+ @return no return value and no parameter
+ 
+Replace the place holder of the conf_tag.htm file by the config.json content
+This handler is trigerred by apmodeindex.htm from simple href link
+There is 2 step in this process display the conf page and compute the conf data.
+This is the purpose of the next method : CServerWeb::handleIOTESPConfiguration to compute the data
+*/
+void CServerWeb::handelIOTESPConfPage(){
+    String confParam[] = {
+          HTML_EMPLACEMENT_NAME
+        , HTML_ALLLEDSONTIME_NAME
+        , HTML_LEDLUM_NAME, HTML_HOSTNAME_NAME
+        , HTML_SOFTAPIP_NAME, HTML_SOFTAPPORT_NAME
+        , HTML_STATIONIP_NAME, HTML_STAGATEWAY_NAME
+        , HTML_MAXRETRY_NAME
+    };
+    String plugNames[] = {
+          HTML_JSON_REDPLUGNAME
+        , HTML_JSON_GREENPLUGNAME
+        , HTML_JSON_BLUEPLUGNAME
+        , HTML_JSON_YELLOWPLUGNAME
+    };
+    String checkBox[] = {
+          HTML_STARTINAP_NAME
+        , HTML_DHCPMODE_NAME
+        , HTML_FIRSTBOOT_NAME
+        , HTML_POWERLEDECO_NAME
+    };
+    String phParamTag;
+    String param;
+    DEFDPROMPT("Handle config html form");
+    DSPL(dPrompt);
+    String page;
+    File confFormFile = SPIFFS.open(CONFIGFORMFILENAME, "r");
+    if (confFormFile) {
+        page = confFormFile.readString();
+        for (String p : confParam) {
+            phParamTag = PALCEHOLDERTAG + p;
+            param = ConfigParam::readFromJsonParam(p, "general");
+            page.replace(phParamTag, param);
+        }
+        for (String p : plugNames) {
+            phParamTag = PALCEHOLDERTAG + p;
+            param = ConfigParam::readFromJsonParam("nickName", p);
+            page.replace(phParamTag, param);
+        }
+        for (String p : checkBox) {
+            phParamTag = PALCEHOLDERTAG + p;
+            param = ConfigParam::readFromJsonParam(p, "general");
+            DSPL(dPrompt + "p = " + param);
+            param = (param == "ON" ? "checked" : "");
+            page.replace(phParamTag, param);
+        }
+
+        server->send(200, "text/html", page);
+    } else {
+        DSPL(dPrompt + F("form configuration not found"));
+        server->send(404, "text/plain", "FileNotFound");
+    }
+}
+
+void CServerWeb::handleIOTESPConfiguration(){
+    DEFDPROMPT("handle configuration")
+    if (!mainPowerSwitchState) {
+        server->send(404, "text/plain", "Page not found");
+        return;
+    }
+    /////////////////////////////////////////////////////////////////////////////
+    //      DISPLAY URI                                                        //
+    /////////////////////////////////////////////////////////////////////////////
+    String uriReceived = server->uri();
+    DSPL(dPrompt + F(" Received uri = ") + uriReceived);
+    DSPL(dPrompt + " nbr de parametres : " + (String)server->args());
+    String allArgs = F(" Received args : ");
+    for (int i = 0; i < server->args(); i++) {
+        allArgs += server->argName(i) + "=" + server->arg(i) + HTML_ALLARGS_SEPARATOR;
+    }
+    DSPL(dPrompt + allArgs);
+    /////////////////////////////////////////////////////////////////////////////
+    *_pRestartTempoLed = true;
+
+    struct configItem {
+        String name;
+        String val;
+    };
+
+    configItem confParam[] = {
+        { HTML_EMPLACEMENT_NAME, "" },
+        { HTML_ALLLEDSONTIME_NAME, "" },
+        { HTML_LEDLUM_NAME, "" },
+        { HTML_HOSTNAME_NAME, "" },
+        { HTML_SOFTAPIP_NAME, "" },
+        { HTML_SOFTAPPORT_NAME, "" },
+        { HTML_STATIONIP_NAME, "" },
+        { HTML_STAGATEWAY_NAME, "" },
+        { HTML_MAXRETRY_NAME, "" },
+
+    };
+
+    configItem plugsNickNames[] = {
+        { HTML_REDPLUGNICK_NAME, "" },
+        { HTML_GREENPLUGNICK_NAME, "" },
+        { HTML_BLUEPLUGNICK_NAME, "" },
+        { HTML_YELLOWPLUGNICK_NAME, "" },
+    };
+    //17 parameters
+
+    //check box special process
+    configItem checkBoxes[] = {
+        { HTML_POWERLEDECO_NAME, "" },
+        { HTML_FIRSTBOOT_NAME, "" },
+        { HTML_STARTINAP_NAME, "" },
+        { HTML_DHCPMODE_NAME, "" },
+    };
+
+    //2 for loop for better debug display ;-)
+    int cpt = 0;
+    for (configItem i : confParam)
+        confParam[cpt++].val = extractParamFromHtmlReq(allArgs, i.name);
+    for (configItem i : confParam) {
+        if (i.val != "") {
+            // DSPL( dPrompt + "Write to json for " + i.name + " value : " + i.val );
+            ConfigParam::write2Json(i.name, i.val, CONFIGFILENAME);
+        }
+    }
+    cpt = 0;
+    for (configItem i : checkBoxes) {
+        i.val = extractParamFromHtmlReq(allArgs, i.name);
+        checkBoxes[cpt++].val = (i.val == NOT_FOUND ? "OFF" : "ON");
+    }
+    for (configItem i : checkBoxes) {
+        // DSPL( dPrompt + "Write to json for " + i.name + " value : " + i.val);
+        ConfigParam::write2Json(i.name, i.val, CONFIGFILENAME);
+    }
+    cpt = 0;
+    for (configItem i : plugsNickNames)
+        plugsNickNames[cpt++].val = extractParamFromHtmlReq(allArgs, i.name);
+    for (configItem i : plugsNickNames) {
+        if (i.val != "") {
+            String color = i.name.substring(0, i.name.indexOf('_'));
+            // DSPL(dPrompt + "plug name = " + color );
+            for (int j = 0; j < 4; j++) {
+                // DSPL( dPrompt + "plugName : " + plugs[j].getPlugName() );
+                if (_pPlugs[j].getPlugName() == color) {
+                    // DSPL(dPrompt + "Write to json for " + color + " nickname = " + i.val );
+                    _pPlugs[j].writeToJson("nickName", i.val);
+                }
+            }
+        }
+    }
+    String date = extractParamFromHtmlReq(allArgs, "setDate");
+    String time = extractParamFromHtmlReq(allArgs, "setTime");
+    DSPL(dPrompt + date + " " + time);
+    if (date != "" || time != "") {
+        DateTime now = RTC_DS3231::now();
+        if (time == "")
+            time = String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
+        if (date == "")
+            date = String(now.day()) + "/" + String(now.month()) + "/" + String(now.year());
+        date = date + " " + time;
+        DSPL(dPrompt + " date/time to set : " + date);
+        char* cstr = new char[date.length() + 1];
+        strcpy(cstr, date.c_str());
+        // CRtc::adjust(cstr);
+        _pRtc->adjust(cstr);
+    }
+
+    // String returnPage = allArgs + "\n" ;
+    // server->send(200, "text/plain", returnPage );
+    /** @todo [NECESSARY]return to config page to confirm that values are taken into account */
+    // if ( cParam.getWifiMode() == "softAP" )
+    // handleSoftAPIndex();
+    // else
+    // handleFileRead("/");
+    // handleFileRead("/");
+    handelIOTESPConfPage();
 }

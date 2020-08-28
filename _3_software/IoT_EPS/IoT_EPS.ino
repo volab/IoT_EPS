@@ -444,7 +444,7 @@ void setup(){
             // to prepare for loop
             // sysStatus.ntpEnabled = false;
         }
-		DSPL( dPrompt + F("Host name that not work with Android is : ") + cParam.getHostName() );
+		DSPL( dPrompt + F("Host name which does not work with Android is : ") + cParam.getHostName() );
 		// MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
         /** @todo [OPTION] mDNS.begin issue on github #4417 https://github.com/esp8266/Arduino/issues/4417
         try : LEAmDNS - Multicast DNS Responder #5442 -for now leav commented*/
@@ -572,12 +572,6 @@ void setup(){
     watchdog.setTimeout( 10 );
     watchdog.setRefreshPeriod( 5 );    
     DSPL( dPrompt + "Loop start");
-    // for(;;){
-    //     if ( watchdog.isItTimeTo() ) {
-    //         DSPL( dPrompt + F("TimeToRefresh wd") ) ;
-    //         watchdog.refresh();
-    //     }
-    // }
 }
 
 /////////////////////////////////////////////////////////////////////////////
