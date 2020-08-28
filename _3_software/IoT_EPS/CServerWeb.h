@@ -46,6 +46,7 @@ private:
     void handleIndex();
     void handelIOTESPConfPage();
     void handleIOTESPConfiguration();
+    void handleNewCred();
 
         public : CServerWeb(/* args */);
     ~CServerWeb();

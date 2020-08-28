@@ -55,11 +55,12 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs, bool
     server->on("/edit", HTTP_DELETE, std::bind(&CServerWeb::handleFileDelete, this));
     server->on("/cfgpage", HTTP_GET, std::bind(&CServerWeb::handelIOTESPConfPage, this));
     server->on("/cfgsend", HTTP_POST, std::bind(&CServerWeb::handleIOTESPConfiguration, this));
+    server->on("/ChangeCred", HTTP_GET, std::bind(&CServerWeb::handleNewCred, this) );
     server->onNotFound(std::bind(&CServerWeb::notFoundHandler, this));
     server->begin();
 }
 
-//The work:
+//The work
 
 // if ( !simpleManualMode ){
 //     if ( cParam.getFirstBoot() == ConfigParam::YES
@@ -70,23 +71,11 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs, bool
 //         server->on("/", HTTP_GET, handleSoftAPIndex );
 //         DSPL( dPrompt + F("******************reg page") );
 //     }
-//     server->on("/ChangeCred", HTTP_POST, handleNewCred );
-//     /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
-//     //Note: The above function is disabled as long as the handleNewCred function has
-//     //not been updated
-
-// 	// server->on("/PlugConfig", HTTP_GET, handlePlugConfig );
-
 //     server->on("/firstBoot", HTTP_POST, handleFirstBoot);
 
 
 
-
-
-
-// 	}
-//     );
-
+// 	// server->on("/PlugConfig", HTTP_GET, handlePlugConfig ); pas implementé dans le fichier d'origine
 //Fait
 //                                          server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
 //                                          server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
@@ -109,7 +98,11 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs, bool
 // 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
 // 	});
 // 	                                        server->on("/list", HTTP_GET, handleFileList);
+//     server->on("/ChangeCred", HTTP_POST, handleNewCred );
+//     /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
 
+//     //Note: The above function is disabled as long as the handleNewCred function has
+//     //not been updated
 
 
 
@@ -677,4 +670,87 @@ void CServerWeb::handleIOTESPConfiguration(){
     // handleFileRead("/");
     // handleFileRead("/");
     handelIOTESPConfPage();
+}
+
+
+
+/** 
+ @fn void CServerWeb::handleNewCred()
+ @brief fun tha handle new credential in response to handleSoftAPIndex...
+ @return no return value and no parameter
+
+ This function write credentials.json file in the SPIFFS with received SSID and password.
+ 
+*/
+void CServerWeb::handleNewCred(){
+    //usage /ChangeCred?ssid=xxxx/pass="yyyy" or connect to EPS in softAP mode to change
+    // credential.
+    DEFDPROMPT( F("handel New Cred") );
+    String uriReceived = server->uri();
+    DSPL( dPrompt + F(" Received uri = ") + uriReceived );
+        DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
+    String allArgs = F(" Received args : ") ;
+    for ( int i = 0; i < server->args() ; i++ ){
+        allArgs += server->argName( i ) + "=" + server->arg( i ) + HTML_ALLARGS_SEPARATOR;
+    }
+    DSPL( dPrompt + allArgs);
+    String ssid = extractParamFromHtmlReq( allArgs, JSON_SSID_NAME );
+    String pass = extractParamFromHtmlReq( allArgs, JSON_PPASS_NAME );
+    String softAPssid =  extractParamFromHtmlReq( allArgs, JSON_APSSID_NAME );
+    String sofATPpass =  extractParamFromHtmlReq( allArgs, JSON_APPASS_NAME );
+    DSPL( dPrompt + F("new SSID = ") + ssid );
+    DSPL( dPrompt + F("new pass = ") + pass );
+    DSPL( dPrompt + F("Soft AP new ssid = ") + softAPssid );
+    DSPL( dPrompt + F("Soft AP new pass = ") + sofATPpass );
+
+    /** DONE - 13/07/2019 change this function to adapt to new credentials file */
+    //this page is necessary to enter new credential in AP mode
+    // const int capacity = JSON_OBJECT_SIZE(4);
+    // StaticJsonBuffer<capacity> jb;
+    // JsonObject& obj = jb.createObject();
+    // obj["ssid"] = ssid;
+    // obj["pass"] = pass;
+    // // jb.prettyPrintTo(configFile);
+    // obj.prettyPrintTo(Serial);DSPL("");
+    // File credFile = SPIFFS.open( "/credentials.json" , "w");
+    // if (credFile){
+        // DSPL( dPrompt + F("File /credentials.json open for write") );
+        // obj.prettyPrintTo(credFile);
+    // } else {
+        // DSPL( dPrompt + F("File /credentials.json open for write fail !") );
+    // }
+    // credFile.close();
+    // String returnPage = allArgs ;
+    File creFile = SPIFFS.open( CREDENTIALFILENAME , "r");
+    // DSPL( dPrompt + file);
+    if (creFile) {
+        size_t size = creFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+        creFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+            JsonObject& general = json["general"]; // main level
+            // DSPL( dPrompt + " general : " + param + " = " + value);
+            if ( ssid != "" & ssid != NOT_FOUND ) general[JSON_SSID_NAME] = ssid; 
+            if ( pass != "" & pass != NOT_FOUND) general[ JSON_PPASS_NAME ] = pass ;
+            if ( softAPssid != "" & softAPssid != NOT_FOUND ) general[ JSON_APSSID_NAME ] = softAPssid ;
+            if ( sofATPpass != "" & sofATPpass != NOT_FOUND ) general[ JSON_APPASS_NAME ] = sofATPpass ;
+            creFile.close();
+            creFile = SPIFFS.open( CREDENTIALFILENAME , "w");
+            json.printTo(creFile);
+            DSPL( dPrompt + F("new credentials written") );
+        } else {
+            DSPL( dPrompt + F("Failed to load json credentials file") );
+            sysStatus.fsErr.err( true );
+        }
+        creFile.close();
+    }
+    if ( _pcParam->getWifiMode() == "softAP" )
+        handleSoftAPIndex();
+    else
+        handleFileRead("/");
+    /** @todo [NECESSARY] Send an html page to confir that credentials was written */
+    // server->send(200, "text/plain", returnPage );     
 }

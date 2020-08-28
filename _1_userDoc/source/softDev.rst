@@ -581,24 +581,35 @@ bootstrap from its CDN
 https://www.bootstrapcdn.com/
 
 
+.. index::
+    single: Html Request
+
 html requests
 =====================
 
-ipaddr/config?plug=redPlug
+ipaddr/plugonoff?plug=redPlug...
 
-/PlugConfig?plug=red&mode=manuel
-
-/modeManuel?plug=redPlug
 
 192.168.1.42/plugonoff?COLOR=redPlug&Mode=Manuel&State=ON
 
-Possible requests:
+Possible plugonoff requests:
 
 - Mode=Manuel&State=ON&dureeOff=299 : dureeOff on minutes only
 - Mode=Manuel&State=ON&dureeOff=299:59 : dureeOff on minutes and seconds
 - Mode=Manuel&State=ON&hFin=23:59 : hFin only one format HH:MM
 - Mode=Manuel&State=OFF
 - Mode=Manuel&State=ON
+
+Other request:
+
+- /time
+- /list
+- /edit
+- /cfgpage
+- /cfgsen?lots of parameter...
+- /ChangeCred?ssid=xxxx&pass=yyyy&softApSsid=ssidOfSoftApMode&softApPass=123456789
+
+
 
 N1TP server name
 =================
