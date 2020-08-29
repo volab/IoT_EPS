@@ -4,7 +4,7 @@
  @date 15/08/2020
  @copyright 2020 CC0
  @version git versionning
- @brief heardr file of the class CServerWeb web of the project IoT_EPS
+ @brief hearder file of the class CServerWeb web of the project IoT_EPS
 */
 #include "IoT_EPS.h"
 #include "CRtc.h"

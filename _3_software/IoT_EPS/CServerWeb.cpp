@@ -8,9 +8,6 @@
 */
 #include "CServerWeb.h"
 
-//A global variable need by ESP8266WebServer
-//extern ESP8266WebServer *server; //a pointeur that allow change the port dynamicly
-
 //Warning global : SPIFFS used !!
 
 CServerWeb::CServerWeb(/* args */)
@@ -38,12 +35,12 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs
     mainPowerSwitchState = 0;
     _pRestartTempoLed = restartTempoLed;
     _pWifiConnection = pWifiCon;
-    // server = new ESP8266WebServer( 80 );
     server = new ESP8266WebServer(_pcParam->getServerPort());
 
     //Register handlers in the web server
 
     /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
+    //Register pages for first boot and Acces Point mode
     if ( _pcParam->getFirstBoot() == ConfigParam::YES
             || _pcParam->getFirstBoot() == ConfigParam::TRY ){
         server->on("/", HTTP_GET, std::bind(&CServerWeb::firstBootHtmlForm, this) );
@@ -71,59 +68,11 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs
     server->on("/cfgsend", HTTP_POST, std::bind(&CServerWeb::handleIOTESPConfiguration, this));
     server->on("/ChangeCred", HTTP_GET, std::bind(&CServerWeb::handleNewCred, this) );
     server->onNotFound(std::bind(&CServerWeb::notFoundHandler, this));
-    //Register pages for first boot and Acces Point mode
-
     server->on("/firstBoot", HTTP_POST, std::bind(&CServerWeb::handleFirstBoot, this) );
-
 
     server->begin();
 }
 
-//The work
-
-// if ( !simpleManualMode ){
-//     if ( cParam.getFirstBoot() == ConfigParam::YES
-//             || cParam.getFirstBoot() == ConfigParam::TRY ){
-//         server->on("/", HTTP_GET, firstBootHtmlForm );
-//         DSPL( dPrompt + "First boot procedure");
-//     } else if ( cParam.getWifiMode() == "softAP" ) {
-//         server->on("/", HTTP_GET, handleSoftAPIndex );
-//         DSPL( dPrompt + F("******************reg page") );
-//     }
-//     server->on("/firstBoot", HTTP_POST, handleFirstBoot);
-
-
-
-// 	// server->on("/PlugConfig", HTTP_GET, handlePlugConfig ); pas implementé dans le fichier d'origine
-
-
-//Fait
-//                                          server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
-//                                          server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
-// 	                                        server->on("/plugonoff", HTTP_POST, handlePlugOnOff );
-// 	//called when the url is not defined here
-// 	//use it to load content from SPIFFS
-//     server->on("/", HTTP_GET, handleIndex );
-// 	server->onNotFound([](){
-//         if(!handleFileRead(server->uri()))
-//             server->send(404, "text/plain", "FileNotFound");
-// 	server->on("/edit", HTTP_PUT, handleFileCreate);
-// 	server->on("/edit", HTTP_DELETE, handleFileDelete);
-// 	//first callback is called after the request has ended with all parsed arguments
-// 	//second callback handles file uploads at that location
-// 	server->on("/edit", HTTP_POST, [](){ server->send(200, "text/plain", ""); }, handleFileUpload);
-// 	server->on("/help", HTTP_GET, [](){
-// 		if(!handleFileRead("/help.htm")) server->send(404, "text/plain", "FileNotFound");
-// 	});
-// 	                                        server->on("/edit", HTTP_GET, [](){
-// 		if(!handleFileRead("/edit.htm")) server->send(404, "text/plain", "FileNotFound");
-// 	});
-// 	                                        server->on("/list", HTTP_GET, handleFileList);
-//     server->on("/ChangeCred", HTTP_POST, handleNewCred );
-//     /** DONE 13/07/2019 update handleNewCred to reflect changes in credentials.json */
-
-//     //Note: The above function is disabled as long as the handleNewCred function has
-//     //not been updated
 
 
 
@@ -256,23 +205,12 @@ void CServerWeb::handlePlugOnOff(){
         returnVal = "OK";
     }
 
-    // String returnPage = allArgs + "\n" + returnVal ;
-    // server->send(200, "text/plain", returnPage );
-    // if ( cParam.getWifiMode() == "softAP" )
     if (requestAP)
         handleSoftAPIndex();
     else
         handleFileRead("/");
     /** DONE see above 13/07/2019 in APmode this return to Station page */
 }
-
-// 	// server->on ( "/inline", []() {
-// 		// server->send ( 200, "text/plain", "this works as well" );
-// 	// } );
-
-// DSPL ( dPrompt + F("HTTP server started" ) );
-
-// }
 
 /**
  @fn CServerWeb::handleFileRead(String path)
@@ -373,11 +311,11 @@ String CServerWeb::extractParamFromHtmlReq(String allRecParam, String param){
 }
 
 /**
-@fn void CServerWeb::handleFileList()
-@brief IoT_EPS web server method to handle /list?dir html reques
-@return not param and no return value
-
-This function is provided by core spiffs example
+ @fn void CServerWeb::handleFileList()
+ @brief IoT_EPS web server method to handle /list?dir html reques
+ @return not param and no return value
+ 
+ This function is provided by core spiffs example
 */
 void CServerWeb::handleFileList(){
     //usage exemple ipaddr/list?dir=/
@@ -682,14 +620,7 @@ void CServerWeb::handleIOTESPConfiguration(){
         _pRtc->adjust(cstr);
     }
 
-    // String returnPage = allArgs + "\n" ;
-    // server->send(200, "text/plain", returnPage );
     /** @todo [NECESSARY]return to config page to confirm that values are taken into account */
-    // if ( cParam.getWifiMode() == "softAP" )
-    // handleSoftAPIndex();
-    // else
-    // handleFileRead("/");
-    // handleFileRead("/");
     handelIOTESPConfPage();
 }
 
@@ -725,23 +656,7 @@ void CServerWeb::handleNewCred(){
     DSPL( dPrompt + F("Soft AP new pass = ") + sofATPpass );
 
     /** DONE - 13/07/2019 change this function to adapt to new credentials file */
-    //this page is necessary to enter new credential in AP mode
-    // const int capacity = JSON_OBJECT_SIZE(4);
-    // StaticJsonBuffer<capacity> jb;
-    // JsonObject& obj = jb.createObject();
-    // obj["ssid"] = ssid;
-    // obj["pass"] = pass;
-    // // jb.prettyPrintTo(configFile);
-    // obj.prettyPrintTo(Serial);DSPL("");
-    // File credFile = SPIFFS.open( "/credentials.json" , "w");
-    // if (credFile){
-        // DSPL( dPrompt + F("File /credentials.json open for write") );
-        // obj.prettyPrintTo(credFile);
-    // } else {
-        // DSPL( dPrompt + F("File /credentials.json open for write fail !") );
-    // }
-    // credFile.close();
-    // String returnPage = allArgs ;
+
     File creFile = SPIFFS.open( CREDENTIALFILENAME , "r");
     // DSPL( dPrompt + file);
     if (creFile) {
