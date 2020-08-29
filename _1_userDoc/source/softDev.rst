@@ -163,15 +163,16 @@ firstBoot after check box in config page.
 Restaure defConfig.json
  
  
-What are hypothesys, when boot for the first time ?
+What are hypothesis, when boot for the first time ?
 =====================================================
-Is a config json exist ? What is inside it ? Yes and it containt FirstBoot ON and other stuff.
+Is a config json exist ? What is inside it ? Yes and it contain FirstBoot ON and other stuff.
 
 Same questions with credentials ? No, we generate it
 
-We considere that the user upload sketch and data directory.
+We consider that the user upload sketch and data directory.
 
-When consider the first boot is OFF ? When we receive the following form
+When consider the first boot is OFF (end of first boot procedure) ? 
+When we receive the following form
  - station mode or AP choice
  - SSID et pass du mode AP (WARNING provide diff SSID if you own more then one PowerStrip)
  - SSID and pass of station mode [ optional if user wish stay always in AP mode ]
@@ -181,9 +182,10 @@ When consider the first boot is OFF ? When we receive the following form
 First boot process
 =========================
 #. check firstBoot param in config.json if ON
-#. start in AP mode with page firstboot.html (in the code, not a real file) only if main power is on
-#. server.on( /firstBoot, firstBootHandler)
-#. in firstBootHandler check param, write credential, set firBoot param to "trySation" if needed
+#. start in AP mode with page firstboot.html only if main power is on
+#. if firstboot param is ON or TRY, we start the server with a special index page (firstboot.htm)
+#. server.on( /firstBoot, firstBootHandler) - who send /firstboot
+#. in firstBootHandler check param, write credential, set firstBoot param to "trySation" if needed
 #. restart ESP
 #. if Station is ok firstBoot is ended, set firstBoot param = off
 #. if station ko reload firstboot page with alert

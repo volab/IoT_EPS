@@ -115,8 +115,40 @@ Serial monitor output example
     <Volab write  param to jSon file > /config4.json
     <Volab write  param to jSon file >  general : staIP = 192.168.1.22
 
+====================================================================================================
+Serial command help
+====================================================================================================
+.. code::
 
-
+    Serial Command list :
+    <h> ou <H> display this list
+    <E> display status
+    <C> Check DS3231 date
+    <S JJ/MM/AAAA HH:MM:SS> returns code <O>
+    <T HH:MM:SS> returns code <O>
+    <s> set DS3231 by NTP server
+    <J> for display config.json
+    <W> display WIFI mode
+    <P key value> write config parameter in json WARNING
+    <I _newSSID> write SSID in credentials WARNING
+    <i _wifiPass> write password in credentials WARNING
+    <t various_param> for code test
+    <N> nano IO expander test
+    <O> nano out test HIGH
+    <o> nano out test low
+    <F> Find I2C device I2C scan
+    <R> I2C recovery
+    <c> I2C crash
+    <a> for Ip address
+    <w> for WiFi.printDig function
+    <z> display credetial file
+    <L> _newSoftAP_SSID> write SoftAP SSID in credentials WARNING
+    <l> _wifiPass> write soft AP password in credentials WARNING
+    <D> SPIFFS dir
+    <j> display general part of config json file
+    <d _filename> erase a file WARNING
+    <e> display system status
+    <p> display main power state
 
 ====================================================================================================
 Weblinks

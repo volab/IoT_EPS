@@ -27,19 +27,31 @@ CServerWeb::~CServerWeb()
 @param prtc a class RTC pointer
 @return no return value
 */
-void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs, bool* restartTempoLed){
+void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs
+        , bool* restartTempoLed, ESP8266WiFiClass *pWifiCon){
     //big warning if _rtc is initialised with a local variable !!!!
+    DEFDPROMPT( "WEbServer init")
+    
     _pRtc = prtc;
     _pcParam = pcParam;
     _pPlugs = pPlugs;
     mainPowerSwitchState = 0;
     _pRestartTempoLed = restartTempoLed;
+    _pWifiConnection = pWifiCon;
     // server = new ESP8266WebServer( 80 );
     server = new ESP8266WebServer(_pcParam->getServerPort());
 
     //Register handlers in the web server
 
     /** @todo [OPTION] test FSBBrowserNG from https://github.com/gmag11/FSBrowserNG */
+    if ( _pcParam->getFirstBoot() == ConfigParam::YES
+            || _pcParam->getFirstBoot() == ConfigParam::TRY ){
+        server->on("/", HTTP_GET, std::bind(&CServerWeb::firstBootHtmlForm, this) );
+        DSPL( dPrompt + "First boot procedure");
+    } else if ( _pcParam->getWifiMode() == "softAP" ) {
+        server->on("/", HTTP_GET, std::bind(&CServerWeb::handleSoftAPIndex, this) );
+        DSPL( dPrompt + F("******************reg page") );
+    }
     server->on("/", HTTP_GET, std::bind(&CServerWeb::handleIndex, this));
     server->on("/time", std::bind(&CServerWeb::displayTime, this));
     server->on("/list", HTTP_GET, std::bind(&CServerWeb::handleFileList, this));
@@ -48,15 +60,22 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs, bool
     server->on("/edit", HTTP_GET, std::bind(&CServerWeb::handleEdit, this));
     server->on("/edit", HTTP_PUT, std::bind(&CServerWeb::handleFileCreate, this));
 
+    //server.on with 4 parameters - 2 callbacks
     //first callback is called after the request has ended with all parsed arguments
     //second callback handles file uploads at that location
-    server->on("/edit", HTTP_POST, std::bind(&CServerWeb::htmlOkResponse, this), std::bind(&CServerWeb::handleFileUpload, this));
+    server->on("/edit", HTTP_POST, std::bind(&CServerWeb::htmlOkResponse, this)
+                                 , std::bind(&CServerWeb::handleFileUpload, this));
 
     server->on("/edit", HTTP_DELETE, std::bind(&CServerWeb::handleFileDelete, this));
     server->on("/cfgpage", HTTP_GET, std::bind(&CServerWeb::handelIOTESPConfPage, this));
     server->on("/cfgsend", HTTP_POST, std::bind(&CServerWeb::handleIOTESPConfiguration, this));
     server->on("/ChangeCred", HTTP_GET, std::bind(&CServerWeb::handleNewCred, this) );
     server->onNotFound(std::bind(&CServerWeb::notFoundHandler, this));
+    //Register pages for first boot and Acces Point mode
+
+    server->on("/firstBoot", HTTP_POST, std::bind(&CServerWeb::handleFirstBoot, this) );
+
+
     server->begin();
 }
 
@@ -76,6 +95,8 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs, bool
 
 
 // 	// server->on("/PlugConfig", HTTP_GET, handlePlugConfig ); pas implementé dans le fichier d'origine
+
+
 //Fait
 //                                          server->on("/cfgsend", HTTP_POST, handleIOTESPConfiguration );
 //                                          server->on("/cfgpage", HTTP_GET, handelIOTESPConfPage );
@@ -753,4 +774,148 @@ void CServerWeb::handleNewCred(){
         handleFileRead("/");
     /** @todo [NECESSARY] Send an html page to confir that credentials was written */
     // server->send(200, "text/plain", returnPage );     
+}
+
+/** 
+ @fn void CServerWeb::firstBootHtmlForm()
+ @brief Special firsboot page handler...
+ @return no return value and no parameter
+ 
+ Firstboot special page provide a way to the user to set SSID and pass for AP or Station mode.
+*/
+void CServerWeb::firstBootHtmlForm(){
+    /** DONE here 13/07/2019 if (firstBoot == tryStattion ){ add warning to the page} */ 
+    DEFDPROMPT("Handle First boot html form");
+    DSPL( dPrompt );
+    String page;
+    File firstBFormFile = SPIFFS.open(FIRSTBOOTFORMFILENAME, "r");
+    if (firstBFormFile){
+        page = firstBFormFile.readString();
+        if (_pcParam->getFirstBoot() == ConfigParam::TRY ){
+            page.replace( FBTAG_WARNIG_STAACCES_IMPOSSIBLE ,
+                FB_WARNING_STAACCES_IMPOSSIBLE_MESS );
+                DSPL(dPrompt + F("Warning HTML insertion !") );
+                page.replace( FBTAG_APSSID , buildMacAddName( "IoT_ESP_2" ) );
+        // }
+        } else page.replace( FBTAG_APSSID , buildMacAddName( "IoT_ESP" ) );
+        // page.replace( FBTAG_APSSID , buildMacAddName( "IoT_ESP" ) );
+        //page.replace("__APPASS__"), getAPPass() );
+        server->send ( 200, "text/html", page );
+    } else {
+        DSPL( dPrompt + F("form first boot not found") );
+        server->send(404, "text/plain", "FileNotFound");
+    }
+}
+
+/** 
+ @fn void CServerWeb::handleFirstBoot()
+ @brief Special firsboot reponse handler...
+ @return no return value and no parameter
+ 
+ Firstboot special page provide a way to the user to set SSID and pass for AP or Station mode.
+ 
+ Here we process the answer of the user to write credential file and switch to normal mode.
+*/
+void CServerWeb::handleFirstBoot(){
+    // check parameters
+    // if (mode == Station)  set firstBoot to tryStation and restart ESP
+    // if (mode == AP) set firstBoot to OFF
+    DEFDPROMPT( "handle First Boot "); 
+    _pcParam->creatDefaultJson();
+    ConfigParam::write2Json( "firstBoot", "ON" ); //not very usefull
+    //1) when we came from a real firstBoot this value change in this function
+    //2) when we came from config page config handler has previously write this value and it is 
+    //    the next reset who trigger this method and this value change in this method
+    //piece of code generate by
+    //https://arduinojson.org/v5/assistant/
+    const size_t capacity = JSON_OBJECT_SIZE(1) + JSON_OBJECT_SIZE(4);
+    DynamicJsonBuffer jsonBuffer(capacity);
+    JsonObject& root = jsonBuffer.createObject();
+    JsonObject& general = root.createNestedObject("general");
+    general["ssid"] = "yourSSID";
+    general["pass"] = "yourPass";
+    general["softApSsid"] = buildMacAddName( "IoT_ESP" );
+    general["softApPass"] = "123456789";
+    // root.prettyPrintTo(DEBUGPORT);DSPL("");
+       
+    
+    String allArgs = F(" Received args : ") ;
+    for ( int i = 0; i < server->args() ; i++ ){
+        allArgs += server->argName( i ) + "=" + server->arg( i ) + HTML_ALLARGS_SEPARATOR;
+    }
+    DSPL( dPrompt + allArgs );
+    String mode = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_MODE );
+    
+    if (mode == FB_PARAMVAL_MODEAP){
+    //**********************************************************************************************
+    //   Access Point Mode
+    //**********************************************************************************************
+        String apSsid = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_APSSID );
+        String apPass = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_APPASS );
+        DSPL( dPrompt + F("credentials.json file creation.") );
+        
+        //creat credential.json
+        general["softApSsid"] = apSsid;
+        general["softApPass"] = apPass;
+        root.prettyPrintTo(DEBUGPORT);DSPL("");
+        File credFile = SPIFFS.open( CREDENTIALFILENAME , "w");
+        if (credFile){
+            DSPL( dPrompt + F("File ") + CREDENTIALFILENAME + F(" open for write") );
+            root.prettyPrintTo(credFile);
+        } else {
+            DSPL( dPrompt + F("File") + CREDENTIALFILENAME + F(" for write fail !") );
+        }
+        credFile.close();
+        //write to config.json
+        ConfigParam::write2Json( "firstBoot", "OFF" );
+        ConfigParam::write2Json( "startInAPMode", "ON" );
+        //Empty STA_SSId and pass
+        //AP_SSID and PASS
+        /** @todo [NECESSARY] replace reset by watchdog not refresh 2 times */
+        ESP.reset();
+    } else { //mode Station
+    //**********************************************************************************************
+    //   Station Mode
+    //**********************************************************************************************
+        String stationSsid = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_STASSID );
+        String stationPass = extractParamFromHtmlReq( allArgs, FB_PARAMNAME_STAPASS );
+        if ( stationSsid.length() == 0 ){
+            /** Removed manage error about ssid in first boot - normaly done in HTML form*/
+        }
+        general["ssid"] = stationSsid;
+        general["pass"] = stationPass;
+        root.prettyPrintTo(DEBUGPORT);DSPL("");
+        File credFile = SPIFFS.open( "/credentials.json" , "w");
+        if (credFile){
+            DSPL( dPrompt + F("File /credentials.json open for write") );
+            root.prettyPrintTo(credFile);
+        } else {
+            DSPL( dPrompt + F("File /credentials.json open for write fail !") );
+        }
+        credFile.close();
+        ConfigParam::write2Json( "startInAPMode", "OFF" );
+        ConfigParam::write2Json( "firstBoot", "TRYSTA" );
+        /** @todo [NECESSARY] replace reset by watchdog not refresh */
+        ESP.reset();        
+    }
+    String returnPage = allArgs ;
+    server->send(200, "text/plain", returnPage ); 
+}
+
+/** 
+ @fn String buildMacAddName( String prefix)
+ @brief return a string from mac add...
+ @param prefix the prefix of the wanted name example IoT_ESP
+ @return a tring with the prefix followed by _MMNN
+
+ Build a string by concatenate prefix provided with the 2 last octets of the mac address.
+*/
+String CServerWeb::buildMacAddName( String prefix){
+    uint8_t mac[6];
+    char macStr[18] = { 0 };
+    // WiFi.macAddress( mac );
+    _pWifiConnection->macAddress( mac );
+    sprintf(macStr, "_%02X%02X", mac[4], mac[5]);
+    return prefix+String(macStr);
+    
 }

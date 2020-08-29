@@ -165,10 +165,9 @@ void setup(){
     //     file system check                                                   //
     /////////////////////////////////////////////////////////////////////////////
     DSPL( dPrompt + " Build : " + __DATE__ + " @ " + __TIME__);
-    
     sysStatus.fsErr.err( !SPIFFS.begin() ); 
-
     DSPL( dPrompt + F("File system corectly Open @ setup level") );
+
     /////////////////////////////////////////////////////////////////////////////
     //  Start of the check necessary files  presence                           //
     /////////////////////////////////////////////////////////////////////////////
@@ -354,6 +353,7 @@ void setup(){
             webServeur.setMPSstVar( mainPowerSwitchState );
             yield();
             if ( watchdog.isItTimeTo() ) watchdog.refresh();
+            DSPL("Wait main power");
         } while( !mainPowerSwitchState );        
     }
     DSPL( dPrompt + "Main power ON"); 
@@ -509,7 +509,10 @@ void setup(){
     //  Server configurations                                                  //
     /////////////////////////////////////////////////////////////////////////////
 //Replaced by webserver class August 2020
-    webServeur.init( &rtc, &cParam, plugs, &restartTempoLed );
+    if ( !simpleManualMode ){
+        webServeur.init( &rtc, &cParam, plugs, &restartTempoLed, &WiFi );
+    }
+    
     
     /////////////////////////////////////////////////////////////////////////////
     //  Time server check                                                     //

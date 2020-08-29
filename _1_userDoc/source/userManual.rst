@@ -64,6 +64,18 @@ FTP server dosen't work very well
 In csysstat.cpp et csysstat.h files, variable _forceSystemStartOnFatalError allow to desable the
 sabordage behavior.
 
+Special html pages
+================================
+.. code::
+
+    /time
+
+    /edit to see and edit files in the SPIFFS (SPI Flash File System) of the ESP8266
+
+    /list (just list files in json form) same as <D> serial command
+    
+
+
 =========================================
 Obtaine IP addresse of the Power strip 
 =========================================
