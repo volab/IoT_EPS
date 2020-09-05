@@ -57,7 +57,7 @@ to the user's navigator.
 Timing are managed by CRtc a derived class from rtc from RTClib.
 
 The wifi : after a long expectation where I navigate between station mode or softAP mode. Finally,
-i activate the 2 mode simultaneously.
+i activate the 2 modes simultaneously.
 
 
 ===========================
@@ -96,7 +96,8 @@ Progress of development
 #. prepare an infographie résumant fonctionnalité et besoin : 
 #. Write user manual : 1%
 #. Write builder manual
-#. rewrite main program setup and loop function with more object orieted structure 5%
+#. rewrite main program setup and loop function with more object oriented structure 15%
+#. add OLED display managment in accordance of its hardware implementation of course
 
 Don't forget the todo list of the doxygen documentation
 
@@ -172,7 +173,8 @@ Same questions with credentials ? No, we generate it
 We consider that the user upload sketch and data directory.
 
 When consider the first boot is OFF (end of first boot procedure) ? 
-When we receive the following form
+When we receive the following form:
+
  - station mode or AP choice
  - SSID et pass du mode AP (WARNING provide diff SSID if you own more then one PowerStrip)
  - SSID and pass of station mode [ optional if user wish stay always in AP mode ]
@@ -189,6 +191,9 @@ First boot process
 #. restart ESP
 #. if Station is ok firstBoot is ended, set firstBoot param = off
 #. if station ko reload firstboot page with alert
+
+/fisrtboot page is send by firstboot.html page witch is register in place off index.html normale
+page when we received /
 
 Behavior when user move EPS from one physical site to another
 ===============================================================
