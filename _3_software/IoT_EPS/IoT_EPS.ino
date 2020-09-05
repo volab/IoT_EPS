@@ -166,7 +166,7 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     DSPL( dPrompt + " Build : " + __DATE__ + " @ " + __TIME__);
     sysStatus.fsErr.err( !SPIFFS.begin() ); 
-    DSPL( dPrompt + F("File system corectly Open @ setup level") );
+    DSPL( dPrompt + F("File system correctly Open @ setup level") );
 
     /////////////////////////////////////////////////////////////////////////////
     //  Start of the check necessary files  presence                           //

@@ -69,6 +69,7 @@
 #include "CPowerPlug.h"
 #include "CServerWeb.h"
 //#include "serverFunction.h"
+#include "CWifiLink.h"
 
 #include "cEpsStrTime.h"
 // #include "Flasher.h"
