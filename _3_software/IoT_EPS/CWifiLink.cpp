@@ -10,3 +10,7 @@
 
 #include "CWifiLink.h"
 
+void CWifiLink::begin( ESP8266WiFiClass * pWiFi ){
+    _pWiFi = pWiFi;
+    _wifiCred.begin( );
+}

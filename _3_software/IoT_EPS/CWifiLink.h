@@ -16,11 +16,12 @@ class CWifiLink{
     public:
         CWifiLink();
         ~CWifiLink();
-        void begin();
+        void begin( ESP8266WiFiClass * pWiFi);
 
 
     private:
-
+        Credential _wifiCred;
+        ESP8266WiFiClass *_pWiFi;
 
 
 };

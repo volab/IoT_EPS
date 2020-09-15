@@ -66,11 +66,9 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
 
 #include "IoT_EPS.h"
 #include "ESP8266FtpServer.h"
-FtpServer ftpSrv;
-
 #include <ESP8266HTTPClient.h>
 #include <ESP8266WebServer.h>
-
+FtpServer ftpSrv;
 CSystem sysIoteps;
 CServerWeb webServeur;
 //ESP8266WebServer *server; //used by webserver but impossible to declare as a local member !
@@ -88,20 +86,11 @@ function is defined at the end of this file.
 
 There is 2 flashing speeds one for AP mode and one for Station mode
 */
-
-
-void wifiLedFlash( int speed, int count ); //defined at eh end of the rpesent file
+void wifiLedFlash( int speed, int count ); //defined at eh end of the represent file
 
 ConfigParam cParam; /**< @brief to hold the configuration parameters*/
 Credential wifiCred;
-
-//CRtc rtc;
-
-
-
 CPowerPlug *plugs;
-
-// bool errFS = true;
 
 CRGB colorLeds[NUM_LEDS]; /**< @brief  not very satisfy for this globale ! It should be in the 
 CpowerPlug class as a static member*/
@@ -119,18 +108,14 @@ if yes remove Flasher.cpp and .h from source files */
 // CSwitchNano mainPowerSiwtch;
 int mainPowerSwitchState;
 int mainPowerPrevState = 0;
+
 CSwitchNano specialBp;
-
 CNanoI2CIOExpander nanoioExp; //just for main pow led
-
-// CFlasherNanoExp extraLed;
 
 CTempo allLeds;
 bool restartTempoLed = false;
 
 WiFiUDP ntpUDP;
-// NTPClient timeClient(ntpUDP, NTPSERVER);
-
 
 
 /** @todo
@@ -139,8 +124,7 @@ WiFiUDP ntpUDP;
 
 void setup(){
     sysIoteps.init();
-    
-    
+     
     // DateTime NTPTime;
     int timeZone = OFFSET_HEURE; 
     
@@ -373,6 +357,7 @@ void setup(){
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
+    
     wifiCred.begin();
     sysStatus.credFileErr.err( !wifiCred.ready );
 	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );

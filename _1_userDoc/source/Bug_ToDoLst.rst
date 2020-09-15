@@ -32,6 +32,19 @@ Model Type
     :Problematique:         Déscriptif de la problématique
     :Traitement:            Déscriptif du traitement de la probélmatique
 
+----------------------------------------------------------------------------------------------------
+
+Todo : Complete the CSystem class
+==========================================
+
+    :Date de saisie:        11/09/2020
+    :Date de traitemant:    
+    :Cible:                 [software]
+    :Status:                [no started]
+    :Problematique:         Add all system servitude in this class
+    :Traitement:            Move code froom .ino to this code
+
+
 ------------------------------------------------------------------------------------------
 
 Bug identifiés

@@ -84,12 +84,12 @@ Progress of development
 #. review work without NTP access strategy ok
 #. define rtc component versus NTP update strategy ok
 #. suppress html replies if main power is off ok
-#. generate a unic server name  ok
+#. generate a unique server name  ok
 
-#. Error handling improvment 95% (todo dislay low error with LED ? Wich one : power led ?)
+#. Error handling improvement 95% (todo display low error with LED ? Which one : power led ?)
 #. configuration page (see softdev.rst)
 
-#. power measurment
+#. power measurement
 
 #. exhaustive test of hebdo mode : 95%
 #. write index special page for softAP Mode with local boostrap or other light js.framework 5%
@@ -101,8 +101,17 @@ Progress of development
 
 Don't forget the todo list of the doxygen documentation
 
+====================================================================================================
+More object oriented rewriting (August 2020)
+====================================================================================================
+
+see in :ref:`variable list<refVariableList>`
+
+
+
+
 .. index::
-    single: Namming
+    single: Naming
 
 ====================================
 Naming convention

@@ -19,7 +19,7 @@ Global main variables:
 
 - FtpServer 	ftpSrv :only 2 instances in .ino
 - ConfigParam 	cParam  to hold the configuration parameters More...
-- Credential 	wifiCred
+- Credential 	wifiCred : 7 occurences
 - CRtc 	rtc
 - ESP8266WebServer * 	server
 - CPowerPlug * 	plugs
@@ -46,7 +46,7 @@ Not directly listed in autogenerate doxygen documentation:
 
 dprompt
 ====================================================================================================
-dprompt is very usefull to display message prompt in debug serial monitor.
+dprompt is very useful to display message prompt in debug serial monitor.
 It is declared in macro DEFDPROMPT(X) in debugSerialPort.h file
 
 It is a local variable in the bloc where DEFDPROMTP is used
@@ -75,6 +75,65 @@ cParam
 - serverFunction.cpp loT_EPS 6
 
 This instance hold all configuration parameters
+
+FastLED
+====================================================================================================
+.. image:: image/FastLEDVariable.jpg 
+   :width: 600 px
+
+11 occurrences in .ino file. 8 of .show method calls  and 3 .show() calls in cSysStat all in
+err() method to display error
+
+This class and moreover this `library from Daniel Garcia`_ manage the 4 color LEDs strip and
+colorLeds array holds 4 CRGB objets to represent the LEDs. This arrays is passed to FastLEd object
+as an argument.
+
+FastLED is an auto-created object directly in the library .cpp file.
+
+In my project, it is used to display colors of the LEDs and error message by CSysStatus
+
+.. _`library from Daniel Garcia` : http://fastled.io/
+
+====================================================================================================
+OO rewritting progress (last update 15/09/2020)
+====================================================================================================
+- CServerWeb written to hold all web server features ok
+- CWifiLink just to hold wifi initialisation : 1%
+
+====================================================================================================
+After OOnew orientation
+====================================================================================================
+
+CSystem class
+====================================================================================================
+sysIoteps of **CSystem** class. This class surround all system servitudes.
+
+Is it possible and/or necessary to hold:
+
+- FtpServer ftpSrv;
+- CSystem sysIoteps;
+- CServerWeb webServeur;
+- CRtc rtc;
+
+- void wifiLedFlash( int speed, int count ); //defined at eh end of the represent file
+
+- ConfigParam cParam;
+- Credential wifiCred;
+- CPowerPlug \*plugs;
+
+- CRGB colorLeds[NUM_LEDS];
+
+- bool simpleManualMode = false;
+- CFlasherNanoExp wifiLed;
+- int mainPowerSwitchState;
+- int mainPowerPrevState = 0;
+- CSwitchNano specialBp;
+- CNanoI2CIOExpander nanoioExp; //just for main pow led
+- CTempo allLeds;
+- bool restartTempoLed = false;
+- WiFiUDP ntpUDP;
+
+in this class. It is a deal between effort and improvement result
 
 ====================================================================================================
 Weblinks
