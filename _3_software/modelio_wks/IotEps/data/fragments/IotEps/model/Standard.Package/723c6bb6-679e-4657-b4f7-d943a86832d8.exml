@@ -1,0 +1,144 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="Diagrams" version="4">
+  <OBJECT>
+    <ID name="Diagrams" mc="Standard.Package" uid="723c6bb6-679e-4657-b4f7-d943a86832d8"/>
+    <PID name="ioteps" mc="Standard.Package" uid="306d768a-923e-4061-a198-c05275f352db"/>
+    <ATTRIBUTES>
+      <ATT name="IsInstantiable">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[Diagrams]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="OwnedBehavior">
+        <COMPID name="Interaction" mc="Standard.Interaction" uid="5a4a1969-3ed3-49e4-8767-3f7a03ea16e4"/>
+      </COMP>
+      <COMP relation="Declared">
+        <OBJECT>
+          <ID name="*server" mc="Standard.Instance" uid="8661863d-2ccf-4a53-8067-74fd1b10246a"/>
+          <ATTRIBUTES>
+            <ATT name="IsConstant">false</ATT>
+            <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="Value"></ATT>
+            <ATT name="Name"><![CDATA[*server]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Base">
+              <ID name="ESP8266WebServer" mc="Standard.Class" uid="3b26483f-e27f-4a6d-b33b-fd72d5b34af0"/>
+            </LINK>
+            <COMP relation="Descriptor">
+              <OBJECT>
+                <ID name="" mc="Infrastructure.Note" uid="291cf619-a269-41a3-9577-e689b76e7af6"/>
+                <ATTRIBUTES>
+                  <ATT name="Content"><![CDATA[79 ref
+> loT_EPS.ino loT_EPS 25
+> serverFunction.cpp loT_EPS 53
+> serverFunction.h loT_EPS 1]]></ATT>
+                  <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Model">
+                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="colorLeds[4]" mc="Standard.Instance" uid="d1355a08-a7d6-4c0a-bf53-76e5384c9e19"/>
+          <ATTRIBUTES>
+            <ATT name="IsConstant">false</ATT>
+            <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="Value"></ATT>
+            <ATT name="Name"><![CDATA[colorLeds[4]]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Base">
+              <ID name="CRGB" mc="Standard.Class" uid="63d8d4d3-fa9c-401d-953f-d3c57242ad55"/>
+            </LINK>
+            <COMP relation="Descriptor">
+              <OBJECT>
+                <ID name="" mc="Infrastructure.Note" uid="752e5857-1ba7-4ad9-a7b4-a3fc01ef98b8"/>
+                <ATTRIBUTES>
+                  <ATT name="Content"><![CDATA[11 ref dans .ino
+
+]]></ATT>
+                  <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Model">
+                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+        <OBJECT>
+          <ID name="FastLED" mc="Standard.Instance" uid="4f3142dd-7b6c-45cd-a011-c7334dcfae1c"/>
+          <ATTRIBUTES>
+            <ATT name="IsConstant">false</ATT>
+            <ATT name="MultiplicityMin"><![CDATA[1]]></ATT>
+            <ATT name="MultiplicityMax"><![CDATA[1]]></ATT>
+            <ATT name="Value"></ATT>
+            <ATT name="Name"><![CDATA[FastLED]]></ATT>
+            <ATT name="status">1970354901745664</ATT>
+          </ATTRIBUTES>
+          <DEPENDENCIES>
+            <LINK relation="Base">
+              <ID name="CFastLED" mc="Standard.Class" uid="31081555-0ede-4211-bd68-8b67a053ee40"/>
+            </LINK>
+            <COMP relation="Descriptor">
+              <OBJECT>
+                <ID name="" mc="Infrastructure.Note" uid="c32170a6-dab0-48ff-a194-46ee52db1589"/>
+                <ATTRIBUTES>
+                  <ATT name="Content"><![CDATA[FastLED : autoinstancié dans  Arduino\Croquis\libraries\FastLED\FastLED.cpp
+21 ref 
+> FastLED.cpp 2
+> FastLED.h 1
+> power_mgt.cpp 4
+> loT_EPS.ino loT_EPS 11
+> csysstat.cpp loT_EPS 3]]></ATT>
+                  <ATT name="MimeType"><![CDATA[text/plain]]></ATT>
+                  <ATT name="Name"></ATT>
+                  <ATT name="status">1970354901745664</ATT>
+                </ATTRIBUTES>
+                <DEPENDENCIES>
+                  <LINK relation="Model">
+                    <FOREIGNID name="description" mc="Infrastructure.NoteType" uid="00000000-0000-3e81-0000-000000000000"/>
+                  </LINK>
+                </DEPENDENCIES>
+              </OBJECT>
+            </COMP>
+          </DEPENDENCIES>
+        </OBJECT>
+      </COMP>
+      <COMP relation="OwnedElement">
+        <COMPID name="utilisateur standard" mc="Standard.Actor" uid="65ccd342-973e-44e2-93ed-a80bfadd532d"/>
+        <COMPID name="allume/eteindrer une des 4 prises par PB" mc="Standard.UseCase" uid="cac9a2f7-9218-477f-bb34-0bf326de9000"/>
+        <COMPID name="Choisir une prise" mc="Standard.UseCase" uid="170c7dec-fb79-4296-92b1-0ef4e982517b"/>
+        <COMPID name="Choisir un mode parmis les 4" mc="Standard.UseCase" uid="f1ed8668-d4ef-4910-acca-e3bbee06eec7"/>
+        <COMPID name="Clone a plug" mc="Standard.UseCase" uid="d2b54ce9-445a-4bfd-a2ed-8d08cb475e72"/>
+        <COMPID name="Actor" mc="Standard.Actor" uid="4c1470e7-9cc9-413f-89b6-f6e5a27a2383"/>
+      </COMP>
+      <COMP relation="Product">
+        <COMPID name="Serial class diagram" mc="Standard.ClassDiagram" uid="fc07998c-47bb-4707-b0a4-af0b712417f6"/>
+        <COMPID name="ioteps Object diagram" mc="Standard.ObjectDiagram" uid="c975a7ac-9ac4-491f-845f-0dfe62209489"/>
+        <COMPID name="Diagrams Use Case diagram" mc="Standard.UseCaseDiagram" uid="cfbea2ac-8159-4fcd-a54f-76c4b41eec2d"/>
+        <COMPID name="system" mc="Standard.ClassDiagram" uid="7b89c0cb-c21b-47c4-a8b8-7dbb539f5ff3"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>

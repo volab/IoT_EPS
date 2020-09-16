@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<!--GENERATED FILE, PLEASE DO NOT EDIT!!!--><EXT object="ArduinoLib" version="4">
+  <OBJECT>
+    <ID name="ArduinoLib" mc="Standard.Package" uid="34420560-4ecc-49d9-a4dc-ecee69c0eb4e"/>
+    <PID name="IotEps" mc="Standard.Project" uid="07bde97f-6c16-49ba-a00c-d2f8136e121b"/>
+    <ATTRIBUTES>
+      <ATT name="IsInstantiable">false</ATT>
+      <ATT name="IsAbstract">false</ATT>
+      <ATT name="IsLeaf">false</ATT>
+      <ATT name="IsRoot">false</ATT>
+      <ATT name="Visibility">Public</ATT>
+      <ATT name="Name"><![CDATA[ArduinoLib]]></ATT>
+      <ATT name="status">1970354901745664</ATT>
+    </ATTRIBUTES>
+    <DEPENDENCIES>
+      <COMP relation="OwnedElement">
+        <COMPID name="NTPClient" mc="Standard.Class" uid="6d24f767-a6d2-482a-acd9-39779d075d37"/>
+        <COMPID name="FS" mc="Standard.Class" uid="417adb7e-1363-42cc-9c1f-01d2032711d6"/>
+        <COMPID name="WiFiClass" mc="Standard.Class" uid="1fb1f5a2-1736-4720-a052-10a2555c70db"/>
+        <COMPID name="ESP8266WebServer" mc="Standard.Class" uid="3b26483f-e27f-4a6d-b33b-fd72d5b34af0"/>
+        <COMPID name="Dir" mc="Standard.Class" uid="86075f3d-b591-4eb8-ac48-6b7f599e2df5"/>
+        <COMPID name="CFastLED" mc="Standard.Class" uid="31081555-0ede-4211-bd68-8b67a053ee40"/>
+        <COMPID name="FILE" mc="Standard.Class" uid="f3fd8288-8c94-4414-8fe9-aa4662f376aa"/>
+      </COMP>
+    </DEPENDENCIES>
+  </OBJECT>
+</EXT>
