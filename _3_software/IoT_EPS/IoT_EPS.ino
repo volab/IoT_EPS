@@ -72,9 +72,7 @@ FtpServer ftpSrv;
 CSystem sysIoteps;
 CServerWeb webServeur;
 CWifiLink wifilnk;
-//ESP8266WebServer *server; //used by webserver but impossible to declare as a local member !
-//ESP8266 crash
-//Ben non ça crash plus le 11/08/2020 !!!
+
 CRtc rtc;
 
 /** 
@@ -87,7 +85,7 @@ function is defined at the end of this file.
 
 There is 2 flashing speeds one for AP mode and one for Station mode
 */
-void wifiLedFlash( int speed, int count ); //defined at the end of the represent file
+//void wifiLedFlash( int speed, int count ); //defined at the end of the represent file
 
 ConfigParam cParam; /**< @brief to hold the configuration parameters*/
 Credential wifiCred;
@@ -358,142 +356,143 @@ void setup(){
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
-    wifilnk.begin( WiFi, simpleManualMode);
+    
+    wifilnk.begin( WiFi, simpleManualMode, &cParam, &sysStatus, &wifiLed);
 
 
 
 
-    wifiCred.begin();
-    sysStatus.credFileErr.err( !wifiCred.ready );
-	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
-	if ( !simpleManualMode ){
-		int tryCount = 0;
-        DSPL( dPrompt + F("Wifi mode in json = ") + cParam.getWifiMode() );
-        DSPL( dPrompt + F("try to set autoconnect to off"));
-		WiFi.setAutoConnect(false); //to allways control wifi connection
-		// WiFi.setAutoConnect(true); //to allways control wifi connection
-		DSP( dPrompt + F("Mode autoconnect read from ESP : "));
-		DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
-		DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
-        WiFi.persistent(false);
-        // WiFi.persistent(true);
-        WiFi.mode(WIFI_AP_STA);
-        /*******************************************************************************************
+//     wifiCred.begin();
+//     sysStatus.credFileErr.err( !wifiCred.ready );
+// 	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
+// 	if ( !simpleManualMode ){
+// 		int tryCount = 0;
+//         DSPL( dPrompt + F("Wifi mode in json = ") + cParam.getWifiMode() );
+//         DSPL( dPrompt + F("try to set autoconnect to off"));
+// 		WiFi.setAutoConnect(false); //to allways control wifi connection
+// 		// WiFi.setAutoConnect(true); //to allways control wifi connection
+// 		DSP( dPrompt + F("Mode autoconnect read from ESP : "));
+// 		DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
+// 		DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
+//         WiFi.persistent(false);
+//         // WiFi.persistent(true);
+//         WiFi.mode(WIFI_AP_STA);
+//         /*******************************************************************************************
         
-        *******************************************************************************************/
-        DSPL( dPrompt + F("Wifi def mode in FLASH : ") + String(wifi_get_opmode_default	() ) );
-        softap_config	config;
-        wifi_softap_get_config_default(&config);
-        DSPL( dPrompt + "Stored Wifi default soft AP param : " );
-        DSPL( dPrompt + F("    SSID len : ") + config.ssid_len );
-        DSP( dPrompt + F("    Stored SSID :") );
-        for ( int i = 0; i < config.ssid_len ; i++ ){
-            DSP( char(config.ssid[i]) );
-        }
-        DSPL( "." );
-        /////////////////////////////////////////////////////////////////////////////
-        //  soft AP mode                                                           //
-        /////////////////////////////////////////////////////////////////////////////
-        // if ( cParam.getWifiMode() == "softAP" || tryCount == cParam.getSTAMaxRetries()
-                // // || !wifiCred.ready ){
-                // || sysStatus.credFileErr.isErr() ){
-        if( 1 ){
-            //WIFI soft Access Point mode
-            //        bool mode(WiFiMode_t);
-            //        WiFiMode_t getMode();
-//cf. https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiGeneric.h
-//https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/generic-class.html
-//https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiType.h
-            displayWifiMode();           
-            // WiFi.begin();
-            // WiFi.disconnect( true ); 
-            // WiFi.softAPdisconnect();            
-            // WiFi.mode(WIFI_AP);
+//         *******************************************************************************************/
+//         DSPL( dPrompt + F("Wifi def mode in FLASH : ") + String(wifi_get_opmode_default	() ) );
+//         softap_config	config;
+//         wifi_softap_get_config_default(&config);
+//         DSPL( dPrompt + "Stored Wifi default soft AP param : " );
+//         DSPL( dPrompt + F("    SSID len : ") + config.ssid_len );
+//         DSP( dPrompt + F("    Stored SSID :") );
+//         for ( int i = 0; i < config.ssid_len ; i++ ){
+//             DSP( char(config.ssid[i]) );
+//         }
+//         DSPL( "." );
+//         /////////////////////////////////////////////////////////////////////////////
+//         //  soft AP mode                                                           //
+//         /////////////////////////////////////////////////////////////////////////////
+//         // if ( cParam.getWifiMode() == "softAP" || tryCount == cParam.getSTAMaxRetries()
+//                 // // || !wifiCred.ready ){
+//                 // || sysStatus.credFileErr.isErr() ){
+//         if( 1 ){
+//             //WIFI soft Access Point mode
+//             //        bool mode(WiFiMode_t);
+//             //        WiFiMode_t getMode();
+// //cf. https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiGeneric.h
+// //https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/generic-class.html
+// //https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiType.h
+//             displayWifiMode();           
+//             // WiFi.begin();
+//             // WiFi.disconnect( true ); 
+//             // WiFi.softAPdisconnect();            
+//             // WiFi.mode(WIFI_AP);
             
-            displayWifiMode();
-            DSPL( dPrompt + F("Try softAccess") );
-            // wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
-            // wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
+//             displayWifiMode();
+//             DSPL( dPrompt + F("Try softAccess") );
+//             // wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
+//             // wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
             
-            IPAddress apIP = cParam.getIPAdd();
-            WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-            // cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
-            /** DONE review the interest of keeping code below! */
-            //As it is only debug informations leave it. When debug define will be turn off
-            //this peace of code should desapear at the coompilation time.
-            if ( wifiCred.ready ){
-                DSPL( dPrompt + "Try soft AP with : " + wifiCred.getSoftApSsid() 
-                        + " and " + wifiCred.getSoftApPass() );
-                DSP( dPrompt + F("softAP : "));
-                DSPL(WiFi.softAP(wifiCred.getSoftApSsid(),
-                    wifiCred.getSoftApPass() )?F("Ready"):F("Failed!"));
-                IPAddress myIP = WiFi.softAPIP();
-                DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
-            }
-            // wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
-            // to prepare for loop
-            // sysStatus.ntpEnabled = false;
-        }
-		DSPL( dPrompt + F("Host name which does not work with Android is : ") + cParam.getHostName() );
-		// MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
-        /** @todo [OPTION] mDNS.begin issue on github #4417 https://github.com/esp8266/Arduino/issues/4417
-        try : LEAmDNS - Multicast DNS Responder #5442 -for now leav commented*/
+//             IPAddress apIP = cParam.getIPAdd();
+//             WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
+//             // cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
+//             /** DONE review the interest of keeping code below! */
+//             //As it is only debug informations leave it. When debug define will be turn off
+//             //this peace of code should desapear at the coompilation time.
+//             if ( wifiCred.ready ){
+//                 DSPL( dPrompt + "Try soft AP with : " + wifiCred.getSoftApSsid() 
+//                         + " and " + wifiCred.getSoftApPass() );
+//                 DSP( dPrompt + F("softAP : "));
+//                 DSPL(WiFi.softAP(wifiCred.getSoftApSsid(),
+//                     wifiCred.getSoftApPass() )?F("Ready"):F("Failed!"));
+//                 IPAddress myIP = WiFi.softAPIP();
+//                 DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
+//             }
+//             // wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
+//             // to prepare for loop
+//             // sysStatus.ntpEnabled = false;
+//         }
+// 		DSPL( dPrompt + F("Host name which does not work with Android is : ") + cParam.getHostName() );
+// 		// MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
+//         /** @todo [OPTION] mDNS.begin issue on github #4417 https://github.com/esp8266/Arduino/issues/4417
+//         try : LEAmDNS - Multicast DNS Responder #5442 -for now leav commented*/
         
-        /////////////////////////////////////////////////////////////////////////////
-        //  Station mode                                                           //
-        /////////////////////////////////////////////////////////////////////////////
-        if ( cParam.getWifiMode() == "client" && !sysStatus.credFileErr.isErr()
-                || cParam.getWifiMode() == "Station" ){ // Station WIFI mode    
-            // WiFi.mode(WIFI_STA);
-            // WiFi.mode(WIFI_AP_STA);
-            //void config(IPAddress local_ip, IPAddress gateway, IPAddress subnet);
-            if ( !cParam.getDHCPMode() ){
-                IPAddress staIP = cParam.getStaIP();
-                IPAddress staGateway = cParam.getStaGatewayIP();
-                IPAddress DNS1;
-                DNS1.fromString( "8.8.8.8");
-                /** NO we decide to leave in the code as it is. change DNS as a config param */
-                WiFi.config( staIP, staGateway, IPAddress(255, 255, 255, 0), DNS1 );
-                DSPL( dPrompt + F("No DHCP mode, static IP add") );
-            } 
-            WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
-            DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
-            wifiLedFlash( wifiLed, WIFILED_FLASH_COUNT );
-            wifiLed.begin( WIFILED, WIFILED_FLASH_SLOW, WIFILED_FLASH_SLOW );
-            while (WiFi.status() != WL_CONNECTED) {
-                delay(500);
-                wifiLed.update();
-                DSP(".");
-                //a normal acces should came in 18 try
-                tryCount++;
-                if ( watchdog.isItTimeTo() ) watchdog.refresh();
-                if (tryCount == cParam.getSTAMaxRetries() ) break;  
-            }
-            wifiLed.stop();
-            wifiLed.high();
-            DSP( "\n" + dPrompt + F("Number of Station wifi try : ") + (String)tryCount );
-            DSPL( ", max was : " + String( cParam.getSTAMaxRetries() ) );
-            if ( WiFi.status() == WL_CONNECTED){
-                sysStatus.ntpEnabled = true;
-                String staIP =  WiFi.localIP().toString();
-                DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
-                    + staIP );
-                    ConfigParam::write2Json( "staIP", staIP );
-                if ( cParam.getFirstBoot() == ConfigParam::TRY ){
-                    ConfigParam::write2Json( "firstBoot", "OFF" );
-                    cParam.setFirstBoot( ConfigParam::NO );
-                }                    
-            } else { 
-                WiFi.disconnect();
-                sysStatus.ntpEnabled = false;
-                wifiLed.low();
-            }    
-        }
-	} else {
-		DSPL(  dPrompt + F("Enter in simple manual mode") );
-		cParam.setWifiMode( "No wifi" );
-		simpleManualModeChaser();
-	}
+//         /////////////////////////////////////////////////////////////////////////////
+//         //  Station mode                                                           //
+//         /////////////////////////////////////////////////////////////////////////////
+//         if ( cParam.getWifiMode() == "client" && !sysStatus.credFileErr.isErr()
+//                 || cParam.getWifiMode() == "Station" ){ // Station WIFI mode    
+//             // WiFi.mode(WIFI_STA);
+//             // WiFi.mode(WIFI_AP_STA);
+//             //void config(IPAddress local_ip, IPAddress gateway, IPAddress subnet);
+//             if ( !cParam.getDHCPMode() ){
+//                 IPAddress staIP = cParam.getStaIP();
+//                 IPAddress staGateway = cParam.getStaGatewayIP();
+//                 IPAddress DNS1;
+//                 DNS1.fromString( "8.8.8.8");
+//                 /** NO we decide to leave in the code as it is. change DNS as a config param */
+//                 WiFi.config( staIP, staGateway, IPAddress(255, 255, 255, 0), DNS1 );
+//                 DSPL( dPrompt + F("No DHCP mode, static IP add") );
+//             } 
+//             WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
+//             DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
+//             wifiLedFlash( wifiLed, WIFILED_FLASH_COUNT );
+//             wifiLed.begin( WIFILED, WIFILED_FLASH_SLOW, WIFILED_FLASH_SLOW );
+//             while (WiFi.status() != WL_CONNECTED) {
+//                 delay(500);
+//                 wifiLed.update();
+//                 DSP(".");
+//                 //a normal acces should came in 18 try
+//                 tryCount++;
+//                 if ( watchdog.isItTimeTo() ) watchdog.refresh();
+//                 if (tryCount == cParam.getSTAMaxRetries() ) break;  
+//             }
+//             wifiLed.stop();
+//             wifiLed.high();
+//             DSP( "\n" + dPrompt + F("Number of Station wifi try : ") + (String)tryCount );
+//             DSPL( ", max was : " + String( cParam.getSTAMaxRetries() ) );
+//             if ( WiFi.status() == WL_CONNECTED){
+//                 sysStatus.ntpEnabled = true;
+//                 String staIP =  WiFi.localIP().toString();
+//                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
+//                     + staIP );
+//                     ConfigParam::write2Json( "staIP", staIP );
+//                 if ( cParam.getFirstBoot() == ConfigParam::TRY ){
+//                     ConfigParam::write2Json( "firstBoot", "OFF" );
+//                     cParam.setFirstBoot( ConfigParam::NO );
+//                 }                    
+//             } else { 
+//                 WiFi.disconnect();
+//                 sysStatus.ntpEnabled = false;
+//                 wifiLed.low();
+//             }    
+//         }
+// 	} else {
+// 		DSPL(  dPrompt + F("Enter in simple manual mode") );
+// 		cParam.setWifiMode( "No wifi" );
+// 		simpleManualModeChaser();
+// 	}
 
     /////////////////////////////////////////////////////////////////////////////
     //  Server configurations                                                  //
@@ -774,14 +773,14 @@ void loop(){
 //  Simple local functions                                                 //
 /////////////////////////////////////////////////////////////////////////////
 
-void wifiLedFlash( CFlasherNanoExp led, int count ){
+// void wifiLedFlash( CFlasherNanoExp led, int count ){
     
-	while ( led.getChangeStateCpt() < count ){
-		led.update();
-		yield();
-	}
-    led.stop();
-}
+// 	while ( led.getChangeStateCpt() < count ){
+// 		led.update();
+// 		yield();
+// 	}
+//     led.stop();
+// }
 
 /** 
  @fn void simpleManualModeChaser()
@@ -809,17 +808,17 @@ void simpleManualModeChaser(){
 }
 
 
-void displayWifiMode(){
-    DEFDPROMPT("WiFi mode")
-    DSP( dPrompt ) ;
-    String s_wifiMode;
-    //WIFI_OFF = 0, WIFI_STA = 1, WIFI_AP = 2, WIFI_AP_STA = 3
-    switch ( WiFi.getMode() ){
-        case 0: s_wifiMode = F("WIFI_OFF"); break;
-        case 1: s_wifiMode = F("WIFI_STA"); break;
-        case 2: s_wifiMode = F("WIFI_AP"); break;
-        case 3: s_wifiMode = F("WIFI_STA and AP"); break;
-        default : s_wifiMode = F("???");
-    }
-    DSPL( s_wifiMode );
-}
+// void displayWifiMode(){
+//     DEFDPROMPT("WiFi mode")
+//     DSP( dPrompt ) ;
+//     String s_wifiMode;
+//     //WIFI_OFF = 0, WIFI_STA = 1, WIFI_AP = 2, WIFI_AP_STA = 3
+//     switch ( WiFi.getMode() ){
+//         case 0: s_wifiMode = F("WIFI_OFF"); break;
+//         case 1: s_wifiMode = F("WIFI_STA"); break;
+//         case 2: s_wifiMode = F("WIFI_AP"); break;
+//         case 3: s_wifiMode = F("WIFI_STA and AP"); break;
+//         default : s_wifiMode = F("???");
+//     }
+//     DSPL( s_wifiMode );
+// }

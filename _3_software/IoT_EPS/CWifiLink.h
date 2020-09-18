@@ -16,7 +16,8 @@ class CWifiLink{
     public:
         CWifiLink();
         ~CWifiLink();
-        void begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode );
+        void begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
+                    , ConfigParam *cparam, CSysStatus *pcSysStatus, CFlasherNanoExp *pwifiled );
         // void begin( ESP8266WiFiClass * pWiFi, ESP8266WiFiClass &wifiRef);
 
 
@@ -24,8 +25,11 @@ class CWifiLink{
         Credential _wifiCred;
         // ESP8266WiFiClass *_pWiFi;
         ESP8266WiFiClass _wifiRef;
-        
-
+        ConfigParam *_cParam;
+        void _displayWifiMode();
+        CSysStatus *_pcSysStatus;
+        CFlasherNanoExp *_pwifiled;
+        void _wifiLedFlash( CFlasherNanoExp *pled, int count );
 
 };
 

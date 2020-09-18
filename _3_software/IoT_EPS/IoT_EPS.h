@@ -69,13 +69,14 @@
 #include "CPowerPlug.h"
 #include "CServerWeb.h"
 //#include "serverFunction.h"
+#include "csysstat.h"
 #include "CWifiLink.h"
 
 #include "cEpsStrTime.h"
 // #include "Flasher.h"
 #include "CRtc.h"
 #include "cswitchnano.h"
-#include "csysstat.h"
+
 #include "cattiny_i2C_watchdog.h"
 #define RTC_UPDATE_PERIOD 15 //every 15mn
 #define RTC_ALLOWED_TIME_ERROR 20//seconds

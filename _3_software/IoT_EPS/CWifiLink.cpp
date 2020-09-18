@@ -11,18 +11,22 @@
 #include "CWifiLink.h"
 
 // void CWifiLink::begin( ESP8266WiFiClass * pWiFi, ESP8266WiFiClass &wifiRef ){
-void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode ){
+void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
+                        ,ConfigParam *pcparam, CSysStatus *pcSysStatus, CFlasherNanoExp *pwifiled ){
     // _pWiFi = pWiFi;
     _wifiRef = wifiRef;
     _wifiCred.begin( );
+    _cParam = pcparam;
+    _pcSysStatus = pcSysStatus;
+    _pwifiled = pwifiled;
     DEFDPROMPT("setUp, Wifilink begin");
 
 
-    sysStatus.credFileErr.err( !_wifiCred.ready );
-	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
+    _pcSysStatus->credFileErr.err( !_wifiCred.ready );
+	_pwifiled->begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
 	if ( !simpleManualMode ){
 		int tryCount = 0;
-        DSPL( dPrompt + F("Wifi mode in json = ") + cParam.getWifiMode() );
+        DSPL( dPrompt + F("Wifi mode in json = ") + _cParam->getWifiMode() );
         DSPL( dPrompt + F("try to set autoconnect to off"));
 		_wifiRef.setAutoConnect(false); //to allways control wifi connection
 		// WiFi.setAutoConnect(true); //to allways control wifi connection
@@ -50,10 +54,10 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode ){
             //displayWifiMode();           
 
             
-            displayWifiMode();
+            _displayWifiMode();
             DSPL( dPrompt + F("Try softAccess") );
             
-            IPAddress apIP = cParam.getIPAdd();
+            IPAddress apIP = _cParam->getIPAdd();
             _wifiRef.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
             // cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
             /** DONE review the interest of keeping code below! */
@@ -69,7 +73,7 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode ){
                 DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
             }
         }
-		DSPL( dPrompt + F("Host name which does not work with Android is : ") + cParam.getHostName() );
+		DSPL( dPrompt + F("Host name which does not work with Android is : ") + _cParam->getHostName() );
 		// MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
         /** @todo [OPTION] mDNS.begin issue on github #4417 https://github.com/esp8266/Arduino/issues/4417
         try : LEAmDNS - Multicast DNS Responder #5442 -for now leav commented*/
@@ -77,12 +81,12 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode ){
         /////////////////////////////////////////////////////////////////////////////
         //  Station mode                                                           //
         /////////////////////////////////////////////////////////////////////////////
-        if ( cParam.getWifiMode() == "client" && !sysStatus.credFileErr.isErr()
-                || cParam.getWifiMode() == "Station" ){ // Station WIFI mode    
+        if ( _cParam->getWifiMode() == "client" && !_pcSysStatus->credFileErr.isErr()
+                || _cParam->getWifiMode() == "Station" ){ // Station WIFI mode    
 
-            if ( !cParam.getDHCPMode() ){
-                IPAddress staIP = cParam.getStaIP();
-                IPAddress staGateway = cParam.getStaGatewayIP();
+            if ( !_cParam->getDHCPMode() ){
+                IPAddress staIP = _cParam->getStaIP();
+                IPAddress staGateway = _cParam->getStaGatewayIP();
                 IPAddress DNS1;
                 DNS1.fromString( "8.8.8.8");
                 /** NO we decide to leave in the code as it is. change DNS as a config param */
@@ -91,42 +95,68 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode ){
             } 
             _wifiRef.begin( _wifiCred.getSsid(), _wifiCred.getPass() );
             DSPL(  dPrompt + F("Try to join : ") + _wifiCred.getSsid() );
-            wifiLedFlash( wifiLed, WIFILED_FLASH_COUNT );
-            wifiLed.begin( WIFILED, WIFILED_FLASH_SLOW, WIFILED_FLASH_SLOW );
+            _wifiLedFlash( _pwifiled, WIFILED_FLASH_COUNT );
+            _pwifiled->begin( WIFILED, WIFILED_FLASH_SLOW, WIFILED_FLASH_SLOW );
             while (_wifiRef.status() != WL_CONNECTED) {
                 delay(500);
-                wifiLed.update();
+                _pwifiled->update();
                 DSP(".");
                 //a normal acces should came in 18 try
                 tryCount++;
                 if ( watchdog.isItTimeTo() ) watchdog.refresh();
-                if (tryCount == cParam.getSTAMaxRetries() ) break;  
+                if (tryCount == _cParam->getSTAMaxRetries() ) break;  
             }
-            wifiLed.stop();
-            wifiLed.high();
+            _pwifiled->stop();
+            _pwifiled->high();
             DSP( "\n" + dPrompt + F("Number of Station wifi try : ") + (String)tryCount );
-            DSPL( ", max was : " + String( cParam.getSTAMaxRetries() ) );
+            DSPL( ", max was : " + String( _cParam->getSTAMaxRetries() ) );
             if ( _wifiRef.status() == WL_CONNECTED){
-                sysStatus.ntpEnabled = true;
+                _pcSysStatus->ntpEnabled = true;
                 String staIP =  WiFi.localIP().toString();
                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
                     + staIP );
                     ConfigParam::write2Json( "staIP", staIP );
-                if ( cParam.getFirstBoot() == ConfigParam::TRY ){
+                if ( _cParam->getFirstBoot() == ConfigParam::TRY ){
                     ConfigParam::write2Json( "firstBoot", "OFF" );
-                    cParam.setFirstBoot( ConfigParam::NO );
+                    _cParam->setFirstBoot( ConfigParam::NO );
                 }                    
             } else { 
                 _wifiRef.disconnect();
-                sysStatus.ntpEnabled = false;
-                wifiLed.low();
+                _pcSysStatus->ntpEnabled = false;
+                _pwifiled->low();
             }    
         }
 	} else {
 		DSPL(  dPrompt + F("Enter in simple manual mode") );
-		cParam.setWifiMode( "No wifi" );
+		_cParam->setWifiMode( "No wifi" );
 		simpleManualModeChaser();
     }
 
 }
 
+
+
+void CWifiLink::_displayWifiMode(){
+    DEFDPROMPT("WiFi mode")
+    DSP( dPrompt ) ;
+    String s_wifiMode;
+    //WIFI_OFF = 0, WIFI_STA = 1, WIFI_AP = 2, WIFI_AP_STA = 3
+    switch ( _wifiRef.getMode() ){
+        case 0: s_wifiMode = F("WIFI_OFF"); break;
+        case 1: s_wifiMode = F("WIFI_STA"); break;
+        case 2: s_wifiMode = F("WIFI_AP"); break;
+        case 3: s_wifiMode = F("WIFI_STA and AP"); break;
+        default : s_wifiMode = F("???");
+    }
+    DSPL( s_wifiMode );
+}
+
+
+void CWifiLink::_wifiLedFlash( CFlasherNanoExp *pled, int count ){
+    
+	while ( pled->getChangeStateCpt() < count ){
+		pled->update();
+		yield();
+	}
+    pled->stop();
+}
