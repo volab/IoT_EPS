@@ -75,18 +75,6 @@ CWifiLink wifilnk;
 
 CRtc rtc;
 
-/** 
-@fn void wifiLedFlash( int speed )
-@brief a simple function to flash wifi led n times before connection
-@param flashing speed
-@return nothing
-
-function is defined at the end of this file.
-
-There is 2 flashing speeds one for AP mode and one for Station mode
-*/
-//void wifiLedFlash( int speed, int count ); //defined at the end of the represent file
-
 ConfigParam cParam; /**< @brief to hold the configuration parameters*/
 Credential wifiCred;
 CPowerPlug *plugs;
@@ -95,7 +83,7 @@ CRGB colorLeds[NUM_LEDS]; /**< @brief  not very satisfy for this globale ! It sh
 CpowerPlug class as a static member*/
 //It is used with FastLED that it should be concidered as a common ressource
 //It is not very important because cpowerplug instance never drive these LED !
-//Yes near 342 lign : colorLeds[i] = plugs[i].getColor();
+//Yes near 342 line : colorLeds[i] = plugs[i].getColor();
 
 
 bool simpleManualMode = false;
@@ -104,7 +92,7 @@ CFlasherNanoExp wifiLed;
 /** DONE 13/07/2019 [NECESSARY] check if it is possible to remove Flasher class (CNanoI2CIOExp used)
 if yes remove Flasher.cpp and .h from source files */
 
-// CSwitchNano mainPowerSiwtch;
+
 int mainPowerSwitchState;
 int mainPowerPrevState = 0;
 
@@ -163,30 +151,6 @@ void setup(){
     }
     DSPL( dPrompt + F("Result all files are present ? ") + (fileExist?"OK":"ERROR") );
     sysStatus.filesErr.err( !fileExist );
-
-    // if (SPIFFS.exists("/index.html")) {
-        // DSPL( dPrompt + F("html index file found."));
-    // } else {
-        // DSPL( dPrompt + F("html index file not found."));
-    // }
-    // String str = "";
-    //   dir = SPIFFS.openDir("/");
-    // while (dir.next()) {
-        // str += dir.fileName();
-        // str += " / ";
-        // str += dir.fileSize();
-        // str += "\r\n";
-    // }
-    // Serial.print(str);
-    // FSInfo filseSystemInfo;/**< @brief file system information to display it*/
-    // SPIFFS.info( filseSystemInfo ); 
-    
-    // DSPL( dPrompt + F("SPIFFS total bytes : ") + (String)filseSystemInfo.totalBytes );
-    // DSPL( dPrompt + F("SPIFFS used bytes : ") + (String)filseSystemInfo.usedBytes );
-    // DSPL( dPrompt + F("SPIFFS max open files : ") + (String)filseSystemInfo.maxOpenFiles );
-    // DSPL( dPrompt + F("SPIFFS max path lenght : ") + (String)filseSystemInfo.maxPathLength );
-    
-    ////////////////////////////////////////////////////////////////////////////////////////////////
     
     ftpSrv.begin("esp8266","esp8266");
     
@@ -236,23 +200,6 @@ void setup(){
     watchdog.setTimeout( cParam.getSTAMaxRetries() );
     watchdog.setRefreshPeriod( cParam.getSTAMaxRetries()/3 );  
     DSPL( dPrompt + F("watchdog set to ") + String( cParam.getSTAMaxRetries() ) + F("s.") );
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    //     rtc DS3231 start                                                    //
-    /////////////////////////////////////////////////////////////////////////////
-    // rtc.begin();
-    // sysStatus.rtcErr.err( rtc.initErr );
-    // if (rtc.lostPower()){
-    //     DSPL( dPrompt + "une remise a l'heure est necessaire");
-    // }
-    // now = rtc.now();
-    // String message = dPrompt + F("DS3231 Start date : ");
-    // message += (String)now.day()+"/"+(String)now.month()+"/";
-    // message += (String)now.year()+" ";
-    // message += (String)now.hour()+":"+ (String)now.minute()+":";
-    // message += (String)now.second();      
-    // DSPL( message);
 
     /////////////////////////////////////////////////////////////////////////////
     //     Main power first check                                              //
@@ -360,140 +307,6 @@ void setup(){
     wifilnk.begin( WiFi, simpleManualMode, &cParam, &sysStatus, &wifiLed);
 
 
-
-
-//     wifiCred.begin();
-//     sysStatus.credFileErr.err( !wifiCred.ready );
-// 	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );
-// 	if ( !simpleManualMode ){
-// 		int tryCount = 0;
-//         DSPL( dPrompt + F("Wifi mode in json = ") + cParam.getWifiMode() );
-//         DSPL( dPrompt + F("try to set autoconnect to off"));
-// 		WiFi.setAutoConnect(false); //to allways control wifi connection
-// 		// WiFi.setAutoConnect(true); //to allways control wifi connection
-// 		DSP( dPrompt + F("Mode autoconnect read from ESP : "));
-// 		DSPL( WiFi.getAutoConnect()?"enabled":"disabled");
-// 		DSPL( dPrompt + F("Wifi is connected ? ") +  String(WiFi.isConnected()?"Yes":"No") );
-//         WiFi.persistent(false);
-//         // WiFi.persistent(true);
-//         WiFi.mode(WIFI_AP_STA);
-//         /*******************************************************************************************
-        
-//         *******************************************************************************************/
-//         DSPL( dPrompt + F("Wifi def mode in FLASH : ") + String(wifi_get_opmode_default	() ) );
-//         softap_config	config;
-//         wifi_softap_get_config_default(&config);
-//         DSPL( dPrompt + "Stored Wifi default soft AP param : " );
-//         DSPL( dPrompt + F("    SSID len : ") + config.ssid_len );
-//         DSP( dPrompt + F("    Stored SSID :") );
-//         for ( int i = 0; i < config.ssid_len ; i++ ){
-//             DSP( char(config.ssid[i]) );
-//         }
-//         DSPL( "." );
-//         /////////////////////////////////////////////////////////////////////////////
-//         //  soft AP mode                                                           //
-//         /////////////////////////////////////////////////////////////////////////////
-//         // if ( cParam.getWifiMode() == "softAP" || tryCount == cParam.getSTAMaxRetries()
-//                 // // || !wifiCred.ready ){
-//                 // || sysStatus.credFileErr.isErr() ){
-//         if( 1 ){
-//             //WIFI soft Access Point mode
-//             //        bool mode(WiFiMode_t);
-//             //        WiFiMode_t getMode();
-// //cf. https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiGeneric.h
-// //https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/generic-class.html
-// //https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiType.h
-//             displayWifiMode();           
-//             // WiFi.begin();
-//             // WiFi.disconnect( true ); 
-//             // WiFi.softAPdisconnect();            
-//             // WiFi.mode(WIFI_AP);
-            
-//             displayWifiMode();
-//             DSPL( dPrompt + F("Try softAccess") );
-//             // wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
-//             // wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
-            
-//             IPAddress apIP = cParam.getIPAdd();
-//             WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-//             // cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
-//             /** DONE review the interest of keeping code below! */
-//             //As it is only debug informations leave it. When debug define will be turn off
-//             //this peace of code should desapear at the coompilation time.
-//             if ( wifiCred.ready ){
-//                 DSPL( dPrompt + "Try soft AP with : " + wifiCred.getSoftApSsid() 
-//                         + " and " + wifiCred.getSoftApPass() );
-//                 DSP( dPrompt + F("softAP : "));
-//                 DSPL(WiFi.softAP(wifiCred.getSoftApSsid(),
-//                     wifiCred.getSoftApPass() )?F("Ready"):F("Failed!"));
-//                 IPAddress myIP = WiFi.softAPIP();
-//                 DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
-//             }
-//             // wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
-//             // to prepare for loop
-//             // sysStatus.ntpEnabled = false;
-//         }
-// 		DSPL( dPrompt + F("Host name which does not work with Android is : ") + cParam.getHostName() );
-// 		// MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
-//         /** @todo [OPTION] mDNS.begin issue on github #4417 https://github.com/esp8266/Arduino/issues/4417
-//         try : LEAmDNS - Multicast DNS Responder #5442 -for now leav commented*/
-        
-//         /////////////////////////////////////////////////////////////////////////////
-//         //  Station mode                                                           //
-//         /////////////////////////////////////////////////////////////////////////////
-//         if ( cParam.getWifiMode() == "client" && !sysStatus.credFileErr.isErr()
-//                 || cParam.getWifiMode() == "Station" ){ // Station WIFI mode    
-//             // WiFi.mode(WIFI_STA);
-//             // WiFi.mode(WIFI_AP_STA);
-//             //void config(IPAddress local_ip, IPAddress gateway, IPAddress subnet);
-//             if ( !cParam.getDHCPMode() ){
-//                 IPAddress staIP = cParam.getStaIP();
-//                 IPAddress staGateway = cParam.getStaGatewayIP();
-//                 IPAddress DNS1;
-//                 DNS1.fromString( "8.8.8.8");
-//                 /** NO we decide to leave in the code as it is. change DNS as a config param */
-//                 WiFi.config( staIP, staGateway, IPAddress(255, 255, 255, 0), DNS1 );
-//                 DSPL( dPrompt + F("No DHCP mode, static IP add") );
-//             } 
-//             WiFi.begin( wifiCred.getSsid(), wifiCred.getPass() );
-//             DSPL(  dPrompt + F("Try to join : ") + wifiCred.getSsid() );
-//             wifiLedFlash( wifiLed, WIFILED_FLASH_COUNT );
-//             wifiLed.begin( WIFILED, WIFILED_FLASH_SLOW, WIFILED_FLASH_SLOW );
-//             while (WiFi.status() != WL_CONNECTED) {
-//                 delay(500);
-//                 wifiLed.update();
-//                 DSP(".");
-//                 //a normal acces should came in 18 try
-//                 tryCount++;
-//                 if ( watchdog.isItTimeTo() ) watchdog.refresh();
-//                 if (tryCount == cParam.getSTAMaxRetries() ) break;  
-//             }
-//             wifiLed.stop();
-//             wifiLed.high();
-//             DSP( "\n" + dPrompt + F("Number of Station wifi try : ") + (String)tryCount );
-//             DSPL( ", max was : " + String( cParam.getSTAMaxRetries() ) );
-//             if ( WiFi.status() == WL_CONNECTED){
-//                 sysStatus.ntpEnabled = true;
-//                 String staIP =  WiFi.localIP().toString();
-//                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
-//                     + staIP );
-//                     ConfigParam::write2Json( "staIP", staIP );
-//                 if ( cParam.getFirstBoot() == ConfigParam::TRY ){
-//                     ConfigParam::write2Json( "firstBoot", "OFF" );
-//                     cParam.setFirstBoot( ConfigParam::NO );
-//                 }                    
-//             } else { 
-//                 WiFi.disconnect();
-//                 sysStatus.ntpEnabled = false;
-//                 wifiLed.low();
-//             }    
-//         }
-// 	} else {
-// 		DSPL(  dPrompt + F("Enter in simple manual mode") );
-// 		cParam.setWifiMode( "No wifi" );
-// 		simpleManualModeChaser();
-// 	}
-
     /////////////////////////////////////////////////////////////////////////////
     //  Server configurations                                                  //
     /////////////////////////////////////////////////////////////////////////////
@@ -502,29 +315,6 @@ void setup(){
         webServeur.init( &rtc, &cParam, plugs, &restartTempoLed, &WiFi );
     }
     
-    
-    /////////////////////////////////////////////////////////////////////////////
-    //  Time server check                                                     //
-    /////////////////////////////////////////////////////////////////////////////
-    // if ((wifi is on station mode connected))
-    // if( sysStatus.ntpEnabled){
-    //     timeClient.begin();
-    //     // errNTPinit = !timeClient.forceUpdate();
-    //     sysStatus.ntpErr.err( !timeClient.forceUpdate() ) ;
-    //     if ( !sysStatus.ntpErr.isErr() ){
-    //         timeClient.setTimeOffset( timeZone * SECPERHOURS );
-    //         // setTime(  timeClient.getEpochTime() );
-    //         NTPTime = DateTime( timeClient.getEpochTime() );
-    //         if (rtc.lostPower()){
-    //             RTC_DS3231::adjust( NTPTime );
-    //             DSPL( dPrompt + F("DS3231 set to NTP time due to power lost.") );
-    //             CRtc::displayTime();
-    //         }
-    //         cParam.write2Json( "ntpError", "OFF" );
-    //     } else { cParam.write2Json( "ntpError", "ON" ); }
-    // }
-
-
     /////////////////////////////////////////////////////////////////////////////
     //  Setup last operations                                                  //
     /////////////////////////////////////////////////////////////////////////////    
@@ -543,8 +333,6 @@ void setup(){
             && WiFi.status() == WL_CONNECTED ){
         HTTPClient http;
         DSPL( dPrompt + F("[HTTP] begin...") );
-        // configure targed server and url
-        //http.begin("https://192.168.1.12/test.html", "7a 9c f4 db 40 d3 62 5a 6e 21 bc 5c cc 66 c8 3e a1 45 59 38"); //HTTPS
         http.begin( INTERNET_HEALTH_TARGET ); //HTTP
 
         DSPL( dPrompt + F("[HTTP] GET... ") + INTERNET_HEALTH_TARGET );
@@ -630,9 +418,7 @@ void loop(){
             }
             http.end();
         }
-        // DSPL( dPrompt + (sysStatus.ntpEnabled?"yes":"no") );
-        //NTP and RTC test        
-        //ntp serveur
+
         if (sysStatus.ntpEnabled){
             bool rtcPreviousErr = sysStatus.ntpErr.isErr();
             rtc.update(); //this check NTP access and update sysStatus
@@ -773,15 +559,6 @@ void loop(){
 //  Simple local functions                                                 //
 /////////////////////////////////////////////////////////////////////////////
 
-// void wifiLedFlash( CFlasherNanoExp led, int count ){
-    
-// 	while ( led.getChangeStateCpt() < count ){
-// 		led.update();
-// 		yield();
-// 	}
-//     led.stop();
-// }
-
 /** 
  @fn void simpleManualModeChaser()
  @brief Flash 4 colored LEDs in PURPLE 200ms/200ms 20 times and restaure colors to indicate
@@ -806,19 +583,3 @@ void simpleManualModeChaser(){
 	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = plugs[i].getColor();    
 	FastLED.show();
 }
-
-
-// void displayWifiMode(){
-//     DEFDPROMPT("WiFi mode")
-//     DSP( dPrompt ) ;
-//     String s_wifiMode;
-//     //WIFI_OFF = 0, WIFI_STA = 1, WIFI_AP = 2, WIFI_AP_STA = 3
-//     switch ( WiFi.getMode() ){
-//         case 0: s_wifiMode = F("WIFI_OFF"); break;
-//         case 1: s_wifiMode = F("WIFI_STA"); break;
-//         case 2: s_wifiMode = F("WIFI_AP"); break;
-//         case 3: s_wifiMode = F("WIFI_STA and AP"); break;
-//         default : s_wifiMode = F("???");
-//     }
-//     DSPL( s_wifiMode );
-// }
