@@ -30,7 +30,6 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode ){
 		DSPL( _wifiRef.getAutoConnect()?"enabled":"disabled");
 		DSPL( dPrompt + F("Wifi is connected ? ") +  String(_wifiRef.isConnected()?"Yes":"No") );
         _wifiRef.persistent(false);
-        // WiFi.persistent(true);
         _wifiRef.mode(WIFI_AP_STA);
         /*******************************************************************************************
         
@@ -45,29 +44,14 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode ){
             DSP( char(config.ssid[i]) );
         }
         DSPL( "." );
-        /////////////////////////////////////////////////////////////////////////////
-        //  soft AP mode                                                           //
-        /////////////////////////////////////////////////////////////////////////////
-        // if ( cParam.getWifiMode() == "softAP" || tryCount == cParam.getSTAMaxRetries()
-                // // || !_wifiCredready ){
-                // || sysStatus.credFileErr.isErr() ){
+
         if( 1 ){
-            //WIFI soft Access Point mode
-            //        bool mode(WiFiMode_t);
-            //        WiFiMode_t getMode();
-//cf. https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiGeneric.h
-//https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/generic-class.html
-//https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WiFi/src/ESP8266WiFiType.h
-            displayWifiMode();           
-            // WiFi.begin();
-            // WiFi.disconnect( true ); 
-            // WiFi.softAPdisconnect();            
-            // WiFi.mode(WIFI_AP);
+
+            //displayWifiMode();           
+
             
             displayWifiMode();
             DSPL( dPrompt + F("Try softAccess") );
-            // wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_SLOW );
-            // wifiLedFlash( wifiLed , WIFILED_FLASH_COUNT );
             
             IPAddress apIP = cParam.getIPAdd();
             _wifiRef.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
@@ -84,9 +68,6 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode ){
                 IPAddress myIP = _wifiRef.softAPIP();
                 DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
             }
-            // wifiLed.begin( WIFILED, WIFILED_SOFTAP_FLASH, WIFILED_SOFTAP_PERIOD );
-            // to prepare for loop
-            // sysStatus.ntpEnabled = false;
         }
 		DSPL( dPrompt + F("Host name which does not work with Android is : ") + cParam.getHostName() );
 		// MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
@@ -98,9 +79,7 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode ){
         /////////////////////////////////////////////////////////////////////////////
         if ( cParam.getWifiMode() == "client" && !sysStatus.credFileErr.isErr()
                 || cParam.getWifiMode() == "Station" ){ // Station WIFI mode    
-            // WiFi.mode(WIFI_STA);
-            // WiFi.mode(WIFI_AP_STA);
-            //void config(IPAddress local_ip, IPAddress gateway, IPAddress subnet);
+
             if ( !cParam.getDHCPMode() ){
                 IPAddress staIP = cParam.getStaIP();
                 IPAddress staGateway = cParam.getStaGatewayIP();
