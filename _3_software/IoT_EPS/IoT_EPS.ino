@@ -71,6 +71,7 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
 FtpServer ftpSrv;
 CSystem sysIoteps;
 CServerWeb webServeur;
+CWifiLink wifilnk;
 //ESP8266WebServer *server; //used by webserver but impossible to declare as a local member !
 //ESP8266 crash
 //Ben non ça crash plus le 11/08/2020 !!!
@@ -86,7 +87,7 @@ function is defined at the end of this file.
 
 There is 2 flashing speeds one for AP mode and one for Station mode
 */
-void wifiLedFlash( int speed, int count ); //defined at eh end of the represent file
+void wifiLedFlash( int speed, int count ); //defined at the end of the represent file
 
 ConfigParam cParam; /**< @brief to hold the configuration parameters*/
 Credential wifiCred;
@@ -357,7 +358,11 @@ void setup(){
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
-    
+    wifilnk.begin( WiFi, simpleManualMode);
+
+
+
+
     wifiCred.begin();
     sysStatus.credFileErr.err( !wifiCred.ready );
 	wifiLed.begin( WIFILED, WIFILED_FLASH_FAST, WIFILED_FLASH_FAST );

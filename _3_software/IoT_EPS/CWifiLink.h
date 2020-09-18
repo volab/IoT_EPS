@@ -16,7 +16,7 @@ class CWifiLink{
     public:
         CWifiLink();
         ~CWifiLink();
-        void begin( ESP8266WiFiClass &wifiRef);
+        void begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode );
         // void begin( ESP8266WiFiClass * pWiFi, ESP8266WiFiClass &wifiRef);
 
 
@@ -24,6 +24,7 @@ class CWifiLink{
         Credential _wifiCred;
         // ESP8266WiFiClass *_pWiFi;
         ESP8266WiFiClass _wifiRef;
+        
 
 
 };
