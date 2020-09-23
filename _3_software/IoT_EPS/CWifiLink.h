@@ -14,8 +14,8 @@
 
 class CWifiLink{
     public:
-        CWifiLink();
-        ~CWifiLink();
+        // CWifiLink();
+        // ~CWifiLink();
         void begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
                     , ConfigParam *cparam, CSysStatus *pcSysStatus, CFlasherNanoExp *pwifiled
                     , CFastLED *pFastLed, CRGB *pcolorLeds, CPowerPlug *plugs );

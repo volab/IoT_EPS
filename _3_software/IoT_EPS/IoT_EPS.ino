@@ -304,7 +304,7 @@ void setup(){
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
     
-    wifilnk.begin( WiFi, simpleManualMode, &cParam, &sysStatus, &wifiLed
+    wifilnk.begin( WiFi, simpleManualMode, &cParam, &sysStatus, &wifiLed,
                     &FastLED, colorLeds, plugs );
 
 
