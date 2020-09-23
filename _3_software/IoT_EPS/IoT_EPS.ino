@@ -304,7 +304,8 @@ void setup(){
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
     
-    wifilnk.begin( WiFi, simpleManualMode, &cParam, &sysStatus, &wifiLed);
+    wifilnk.begin( WiFi, simpleManualMode, &cParam, &sysStatus, &wifiLed
+                    &FastLED, colorLeds, plugs );
 
 
     /////////////////////////////////////////////////////////////////////////////
@@ -565,21 +566,21 @@ void loop(){
  Simple Manual mode activation
  @return no return value and no parameter
 */
-void simpleManualModeChaser(){
-	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
-	FastLED.show();
-	delay(500);
+// void simpleManualModeChaser(){
+// 	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+// 	FastLED.show();
+// 	delay(500);
 	
-	for (int i=0; i < 20; i++){
-		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
-		FastLED.show();
-		delay(200);	
-		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Purple;
-		FastLED.show();
-		delay(200);				
-	}
+// 	for (int i=0; i < 20; i++){
+// 		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+// 		FastLED.show();
+// 		delay(200);	
+// 		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Purple;
+// 		FastLED.show();
+// 		delay(200);				
+// 	}
 	
-	//restaure Color Leds state
-	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = plugs[i].getColor();    
-	FastLED.show();
-}
+// 	//restaure Color Leds state
+// 	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = plugs[i].getColor();    
+// 	FastLED.show();
+// }

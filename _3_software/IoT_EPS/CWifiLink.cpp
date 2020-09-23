@@ -12,13 +12,17 @@
 
 // void CWifiLink::begin( ESP8266WiFiClass * pWiFi, ESP8266WiFiClass &wifiRef ){
 void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
-                        ,ConfigParam *pcparam, CSysStatus *pcSysStatus, CFlasherNanoExp *pwifiled ){
+                        ,ConfigParam *pcparam, CSysStatus *pcSysStatus, CFlasherNanoExp *pwifiled
+                        , CFastLED *pFastLed, CRGB *pcolorLeds, CPowerPlug *plugs ){
     // _pWiFi = pWiFi;
     _wifiRef = wifiRef;
     _wifiCred.begin( );
     _cParam = pcparam;
     _pcSysStatus = pcSysStatus;
     _pwifiled = pwifiled;
+    _pFastLed = pFastLed;
+    _pcolorLeds = pcolorLeds;
+    _plugs = plugs;
     DEFDPROMPT("setUp, Wifilink begin");
 
 
@@ -129,7 +133,7 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
 	} else {
 		DSPL(  dPrompt + F("Enter in simple manual mode") );
 		_cParam->setWifiMode( "No wifi" );
-		simpleManualModeChaser();
+		_simpleManualModeChaser();
     }
 
 }
@@ -159,4 +163,29 @@ void CWifiLink::_wifiLedFlash( CFlasherNanoExp *pled, int count ){
 		yield();
 	}
     pled->stop();
+}
+
+/** 
+ @fn void simpleManualModeChaser()
+ @brief Flash 4 colored LEDs in PURPLE 200ms/200ms 20 times and restaure colors to indicate
+ Simple Manual mode activation
+ @return no return value and no parameter
+*/
+void CWifiLink::_simpleManualModeChaser(){
+	for ( int i = 0; i < NBRPLUGS ; i++ ) _pcolorLeds[i] = CRGB::Black;
+	_pFastLed->show();
+	delay(500);
+	
+	for (int i=0; i < 20; i++){
+		for ( int i = 0; i < NBRPLUGS ; i++ ) _pcolorLeds[i] = CRGB::Black;
+		_pFastLed->show();
+		delay(200);	
+		for ( int i = 0; i < NBRPLUGS ; i++ ) _pcolorLeds[i] = CRGB::Purple;
+		_pFastLed->show();
+		delay(200);				
+	}
+	
+	//restaure Color Leds state
+	for ( int i = 0; i < NBRPLUGS ; i++ ) _pcolorLeds[i] = _plugs[i].getColor();    
+	_pFastLed->show();
 }
