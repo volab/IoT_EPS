@@ -110,7 +110,15 @@ WiFiUDP ntpUDP;
  - [NECESSARY for 1 and 2 plug strip] convert colorLeds array in dynamic version as for plugs array */
 
 void setup(){
-    sysIoteps.init();
+    DEBUGPORT.begin(DEBUGSPEED);
+    DEFDPROMPT("setUp") // define dPrompt String
+
+    String message = dPrompt;
+    message += "Addr of sysStatus au debut  0x";
+    message += String( (unsigned long)(&sysStatus) , HEX );
+    DSPL( message );
+
+    sysIoteps.init( ntpUDP, &sysStatus );
      
     // DateTime NTPTime;
     int timeZone = OFFSET_HEURE; 
@@ -122,7 +130,7 @@ void setup(){
     // digitalWrite( LED_BUILTIN, HIGH ); //warning D4 BP blueu plug
     // pinMode(LED_BUILTIN, INPUT);
     
-    DEFDPROMPT("setUp") // define dPrompt String
+
 
     if ( !(digitalRead(BP1) ) ){
         DSPL( dPrompt + F("Special action take place..." ) );
@@ -307,7 +315,7 @@ void setup(){
     wifilnk.begin( WiFi, simpleManualMode, &cParam, &sysStatus, &wifiLed,
                     &FastLED, colorLeds, plugs );
 
-
+    DSPL( dPrompt + "NTP enable ? " + String(sysStatus.ntpEnabled?"TRUE":"FALSE") );
     /////////////////////////////////////////////////////////////////////////////
     //  Server configurations                                                  //
     /////////////////////////////////////////////////////////////////////////////
@@ -316,6 +324,12 @@ void setup(){
         webServeur.init( &rtc, &cParam, plugs, &restartTempoLed, &WiFi );
     }
     
+    /////////////////////////////////////////////////////////////////////////////
+    //  Time server check                                                     //
+    /////////////////////////////////////////////////////////////////////////////
+    sysIoteps.timeServerCheck();
+
+
     /////////////////////////////////////////////////////////////////////////////
     //  Setup last operations                                                  //
     /////////////////////////////////////////////////////////////////////////////    
@@ -422,7 +436,7 @@ void loop(){
 
         if (sysStatus.ntpEnabled){
             bool rtcPreviousErr = sysStatus.ntpErr.isErr();
-            rtc.update(); //this check NTP access and update sysStatus
+            rtc.update(); //this check NTP access and update sysStatus - not @23/09/2020
             DSP( dPrompt + F("Check NTP access : " ) );
             if ( sysStatus.ntpErr.isErr() != rtcPreviousErr ){
                 cParam.write2Json( "ntpError", ( sysStatus.ntpErr.isErr()?"ON":"OFF") );

@@ -116,6 +116,7 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
             DSPL( ", max was : " + String( _cParam->getSTAMaxRetries() ) );
             if ( _wifiRef.status() == WL_CONNECTED){
                 _pcSysStatus->ntpEnabled = true;
+                DSPL( dPrompt + "NTP enabled");
                 String staIP =  WiFi.localIP().toString();
                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
                     + staIP );

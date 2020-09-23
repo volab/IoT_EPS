@@ -9,10 +9,18 @@
 
 #include "csystem.h"
 
-void CSystem::init(){
-    DateTime NTPTime;
-    int timeZone = OFFSET_HEURE; 
+void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat ){
+
+    DEFDPROMPT( "CSystem::init" )
+    //DEFDPROMPT("setUp") // define dPrompt String
+    // String message = dPrompt;
+    String message;
+    // message += "Addr of systat transmis  0x";
+    // message += String( (unsigned long)(&sysStat) , HEX );
+    // DSPL( message );
     
+     
+    _psysStat = psysStat;
     delay(1000);//a try to correct the powerup pb
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite( LED_BUILTIN, LOW ); //warning D4 BP blueu plug
@@ -20,9 +28,9 @@ void CSystem::init(){
     digitalWrite( LED_BUILTIN, HIGH ); //warning D4 BP blueu plug
     pinMode(LED_BUILTIN, INPUT);
     
-    DEFDPROMPT("setUp") // define dPrompt String
+    
     DateTime now;
-    DEBUGPORT.begin(DEBUGSPEED);
+    //DEBUGPORT.begin(DEBUGSPEED);
     // Serial.setDebugOutput(true); //Serial debug of Wifi lib
     DSPL();
     DSPL( dPrompt + F("Sketch start..."));
@@ -32,38 +40,73 @@ void CSystem::init(){
     /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                    //
     /////////////////////////////////////////////////////////////////////////////
-    _rtc.begin();
-    _sysStat.rtcErr.err( _rtc.initErr );
+
+    _pTimeclient = new NTPClient(ntpUDP, NTPSERVER);
+    _rtc.begin( _pTimeclient );
+    // _rtc.begin( );
+    _psysStat->rtcErr.err( _rtc.initErr );
     if (_rtc.lostPower()){
         DSPL( dPrompt + "une remise a l'heure est necessaire");
     }
     now = _rtc.now();
-    String message = dPrompt + F("DS3231 Start date : ");
+    message = dPrompt + F("DS3231 Start date : ");
     message += (String)now.day()+"/"+(String)now.month()+"/";
     message += (String)now.year()+" ";
     message += (String)now.hour()+":"+ (String)now.minute()+":";
     message += (String)now.second();      
     DSPL( message);
 
-     _timeClient= new NTPClient(_ntpUDP, NTPSERVER);
-    /////////////////////////////////////////////////////////////////////////////
+     
+        
+}
+
+void CSystem::timeServerCheck(){
+/////////////////////////////////////////////////////////////////////////////
     //  Time server check                                                     //
     /////////////////////////////////////////////////////////////////////////////
     // if ((wifi is on station mode connected))
-    if( _sysStat.ntpEnabled){
-        _timeClient->begin();
+    int timeZone = OFFSET_HEURE;
+    DateTime NTPTime;
+    DEFDPROMPT( "CSystem::timeServerCheck" )
+
+    // String message = dPrompt;
+    // message += "Addr of systat globally  0x";
+    // message += String( (unsigned long)(&sysStatus) , HEX );
+    // DSPL( message );
+    // message = dPrompt;
+    // message += "Addr of systat locally 0x";
+    // message += String( (unsigned long)(&_sysStat) , HEX );
+    // DSPL( message );
+
+    // DSPL( dPrompt + "NTP enable ? globally " + String(sysStatus.ntpEnabled?"TRUE":"FALSE") );
+    // DSPL( dPrompt + "NTP enable ? locally  " + String(_sysStat.ntpEnabled?"TRUE":"FALSE") );
+    // CSysStatus *psysStat = &sysStatus;
+    // Serial.print("sysStatus add : 0x");
+    // Serial.println( (unsigned long)(psysStat), HEX );
+
+    if( _psysStat->ntpEnabled){
+        DSPL(dPrompt + "check started");
+        _pTimeclient->begin();
         // errNTPinit = !timeClient.forceUpdate();
-        _sysStat.ntpErr.err( !_timeClient->forceUpdate() ) ;
-        if ( !_sysStat.ntpErr.isErr() ){
-            _timeClient->setTimeOffset( timeZone * SECPERHOURS );
+        _psysStat->ntpErr.err( !_pTimeclient->forceUpdate() ) ;
+        if ( !_psysStat->ntpErr.isErr() ){
+            _pTimeclient->setTimeOffset( timeZone * SECPERHOURS );
             // setTime(  timeClient.getEpochTime() );
-            NTPTime = DateTime( _timeClient->getEpochTime() );
+            NTPTime = DateTime( _pTimeclient->getEpochTime() );
+            String sDate = "";
+            sDate += (String)NTPTime.day() +"/"+(String)NTPTime.month()+"/"+(String)NTPTime.year()+" ";
+            sDate += (String)NTPTime.hour()+":"+(String)NTPTime.minute()+":";
+            sDate += (String)NTPTime.second();
+            DSPL( dPrompt + "NTP Time : " + sDate );
+            
             if (_rtc.lostPower()){
                 RTC_DS3231::adjust( NTPTime );
                 DSPL( dPrompt + F("DS3231 set to NTP time due to power lost.") );
                 // CRtc::displayTime();
             }
             _cParam.write2Json( "ntpError", "OFF" );
-        } else { _cParam.write2Json( "ntpError", "ON" ); }
-    }        
+        } else { 
+            DSPL( dPrompt +"NTP ERROR");
+            _cParam.write2Json( "ntpError", "ON" ); }
+    }    
 }

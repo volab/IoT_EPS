@@ -627,7 +627,7 @@ Other request:
 
 
 
-N1TP server name
+NTP server name
 =================
 The name reside in the IoT_EPS.h file and is not a config param through web config page
 
@@ -788,7 +788,7 @@ else do not update ds3231 and work with its time !
 
 if NTP not reachable or in AP Mode the time can be updated by configuration page.
 
-NTP server configuration ? not configurable for now only in IoT_EPS.hDebut
+NTP server configuration ? not configurable for now only in IoT_EPS.h
 
 RTC on error strategy, No RTC component
 

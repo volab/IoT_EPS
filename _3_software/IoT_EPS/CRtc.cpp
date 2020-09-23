@@ -57,8 +57,12 @@ void CRtc::displayTime(){ //static !
 	DSPL( dPrompt + sDate );
     unsigned long RTCTime = RTC_DS3231::now().unixtime();
     DSPL( dPrompt + "unix local time : " + RTCTime );
-    // p_timeClient->forceUpdate();
-    sysStatus.ntpErr.err( !p_timeClient->forceUpdate() );
+    if ( p_timeClient != nullptr ){
+        sysStatus.ntpErr.err( !p_timeClient->forceUpdate() );
+    } else {
+        DSPL( "pointeur p_timeClient non initialisé ");
+    }
+    
     if ( sysStatus.ntpErr.isErr() ) return ;
     unsigned long NTPTime = 0;
     // unsigned long NTPTime = p_timeClient->getEpochTime();
