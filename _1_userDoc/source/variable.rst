@@ -36,6 +36,7 @@ Global main variables:
 - bool 	cycleState = false
 - WiFi : global and auto-instanciation
 - SPIFFS : global and auto-instanciation 
+- watchdog : global and auto-instanciation 
 
 Not directly listed in autogenerate doxygen documentation:
 
@@ -108,16 +109,16 @@ After OOnew orientation
 
 CSystem class
 ====================================================================================================
-sysIoteps of **CSystem** class. This class surround all system servitudes.
+sysIoteps of **CSystem** class. This class should surround all system servitudes.
 
-Is it possible and/or necessary to hold:
+Is it possible and/or necessary to hold in this class the following features:
 
 - FtpServer ftpSrv;
 - CSystem sysIoteps;
 - CServerWeb webServeur;
 - CRtc rtc;
 
-- void wifiLedFlash( int speed, int count ); //defined at eh end of the represent file
+- void wifiLedFlash( int speed, int count ); //defined at the end of the present file
 
 - ConfigParam cParam;
 - Credential wifiCred;
@@ -135,7 +136,25 @@ Is it possible and/or necessary to hold:
 - bool restartTempoLed = false;
 - WiFiUDP ntpUDP;
 
-in this class. It is a deal between effort and improvement result
+It is a deal between effort and improvement result the improvement doesn't reside in the variables
+only but in the piece of code that it can simplify
+
+CRtc and its usage
+====================================================================================================
+it is used by::
+
+   into .ino file rtc global instance
+      only for webServer init
+            2 usages
+               CServerWeb::displayTime()
+               CServerWeb::handleIOTESPConfiguration()
+      no begin and it works !!
+   ino loop() rtc new instance in the loop
+      pas de begin et ça marche
+   CSystem class a _rtc member
+      should be a pointer on the global variable => used on 5 lignes only
+
+
 
 ====================================================================================================
 Weblinks

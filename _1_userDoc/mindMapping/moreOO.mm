@@ -2,8 +2,8 @@
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
 <node TEXT="more OO" FOLDED="false" ID="ID_180563910" CREATED="1600199457979" MODIFIED="1600288551846" STYLE="oval">
 <font SIZE="18"/>
-<hook NAME="MapStyle" zoom="2.197">
-    <properties show_icon_for_attributes="true" fit_to_viewport="false" show_note_icons="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff"/>
+<hook NAME="MapStyle" zoom="1.65">
+    <properties fit_to_viewport="false" show_icon_for_attributes="true" show_note_icons="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt">
@@ -63,8 +63,8 @@
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="3" RULE="ON_BRANCH_CREATION"/>
-<node TEXT="CWifiLink" POSITION="right" ID="ID_29959505" CREATED="1600199552535" MODIFIED="1600879765013">
+<hook NAME="AutomaticEdgeColor" COUNTER="4" RULE="ON_BRANCH_CREATION"/>
+<node TEXT="CWifiLink" POSITION="right" ID="ID_29959505" CREATED="1600199552535" MODIFIED="1601067242633">
 <icon BUILTIN="button_ok"/>
 <edge STYLE="bezier" COLOR="#6666ff" WIDTH="1" DASH="SOLID"/>
 <node TEXT="but" ID="ID_797550368" CREATED="1600203162931" MODIFIED="1600203167667">
@@ -193,7 +193,7 @@
 <node TEXT="begin permet de changer de fréquence de clignotement" ID="ID_334744811" CREATED="1600463827027" MODIFIED="1600463842123"/>
 <node TEXT="Passage d&apos;un pointeur sur la variable globale" ID="ID_1023745352" CREATED="1600464453884" MODIFIED="1600464472115"/>
 </node>
-<node TEXT="sysStatus" FOLDED="true" ID="ID_145136455" CREATED="1600200706220" MODIFIED="1600463217813">
+<node TEXT="sysStatus" FOLDED="true" ID="ID_145136455" CREATED="1600200706220" MODIFIED="1601067242632">
 <icon BUILTIN="button_ok"/>
 <node TEXT="Proposition" ID="ID_85209387" CREATED="1600288751688" MODIFIED="1600288756605">
 <node TEXT="CSysStatus *_pSysStat" ID="ID_1198327924" CREATED="1600205350212" MODIFIED="1600205370108"/>
@@ -203,23 +203,8 @@
 <node TEXT="cParam" FOLDED="true" ID="ID_1986553309" CREATED="1600201537237" MODIFIED="1600461513111">
 <icon BUILTIN="button_ok"/>
 <node TEXT="Dans CServerWeb" ID="ID_119966235" CREATED="1600205167613" MODIFIED="1600205180066">
-<node ID="ID_1625443615" CREATED="1600205161683" MODIFIED="1600205161683"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <div style="color: #ffffff; background-color: #002451; font-family: Consolas, Courier New, monospace; font-weight: normal; font-size: 14px; line-height: 19px; white-space: pre">
-      <div>
-        <span style="color: #ffeead"><font color="#ffeead">ConfigParam</font></span><span style="color: #ffffff"><font color="#ffffff">&nbsp;</font></span><span style="color: #99ffff"><font color="#99ffff">*</font></span><span style="color: #ff9da4"><font color="#ff9da4">_pcParam</font></span><span style="color: #ffffff"><font color="#ffffff">&nbsp;</font></span><span style="color: #99ffff"><font color="#99ffff">=</font></span><span style="color: #ffffff"><font color="#ffffff">&nbsp;</font></span><span style="color: #ffc58f"><font color="#ffc58f">nullptr</font></span><span style="color: #ffffff"><font color="#ffffff">;</font></span>
-      </div>
-    </div>
-  </body>
-</html>
-</richcontent>
-</node>
 <node TEXT="    void init( CRtc * rtc, ConfigParam *cparam, CPowerPlug *plugs&#xa;                , bool *restartTempoLed, ESP8266WiFiClass *pWifiCon );" ID="ID_564490902" CREATED="1600205215773" MODIFIED="1600205259523" MAX_WIDTH="11.1 cm" MIN_WIDTH="11.1 cm"/>
+<node TEXT="ConfigParam *_pcParam = nullptr;" ID="ID_1499483427" CREATED="1601073208152" MODIFIED="1601073208152"/>
 </node>
 </node>
 <node TEXT="simpleManualMode" FOLDED="true" ID="ID_483212954" CREATED="1600287343267" MODIFIED="1600290970284">
@@ -274,22 +259,32 @@
 <node TEXT="Mettre des const sur les trucs qui ne doivent pas être modifiés" ID="ID_1879955673" CREATED="1600462152784" MODIFIED="1600462173620"/>
 </node>
 </node>
-<node TEXT="bug DS3231" POSITION="right" ID="ID_257861246" CREATED="1600288556613" MODIFIED="1600880199736">
+<node TEXT="bug DS3231" FOLDED="true" POSITION="right" ID="ID_257861246" CREATED="1600288556613" MODIFIED="1601069905170">
+<icon BUILTIN="button_ok"/>
 <edge COLOR="#0000ff"/>
 <node TEXT="découverte ?" ID="ID_1311426145" CREATED="1600880199762" MODIFIED="1600880206975"/>
-<node TEXT="bug hardware semble-t-il" ID="ID_1218040700" CREATED="1600880207747" MODIFIED="1600880221565"/>
-<node TEXT="L&apos;heure affichée est délirante" ID="ID_1380216903" CREATED="1600880448434" MODIFIED="1600880594209"/>
-<node TEXT="Attention des chose concernant CRtc et l&apos;intance rt ont été déplacé vers la classe CSystem" ID="ID_1106068649" CREATED="1600880462172" MODIFIED="1600880586475"/>
-<node TEXT="La commande de debug &lt;C&gt; fait partir en WD" FOLDED="true" ID="ID_969561540" CREATED="1600880598952" MODIFIED="1600880628916">
+<node TEXT="bug hardware semble-t-il" ID="ID_1218040700" CREATED="1600880207747" MODIFIED="1601066960650">
+<icon BUILTIN="button_cancel"/>
+</node>
+<node TEXT="L&apos;heure affichée est délirante" ID="ID_1380216903" CREATED="1600880448434" MODIFIED="1601066968362">
+<icon BUILTIN="button_ok"/>
+</node>
+<node TEXT="Attention des chose concernant CRtc et l&apos;intance rt ont été déplacé vers la classe CSystem" ID="ID_1106068649" CREATED="1600880462172" MODIFIED="1601066979298">
+<icon BUILTIN="button_ok"/>
+</node>
+<node TEXT="La commande de debug &lt;C&gt; fait partir en WD" FOLDED="true" ID="ID_969561540" CREATED="1600880598952" MODIFIED="1601067020709">
+<icon BUILTIN="button_ok"/>
 <node TEXT="Elle utilise displayTime()" ID="ID_708625923" CREATED="1600880630970" MODIFIED="1600880643501"/>
 <node TEXT="Attention, il y a 2 instance de begin" ID="ID_919420653" CREATED="1600880644545" MODIFIED="1600880659838">
 <node TEXT="une sans le pointeur pNtp" ID="ID_821000656" CREATED="1600880661029" MODIFIED="1600880674644"/>
 <node TEXT="une avec" ID="ID_1351845985" CREATED="1600880676292" MODIFIED="1600880679355"/>
-<node TEXT="displayTimeutilise ce pointeur sans vérifier son init !" ID="ID_1229143359" CREATED="1600880679798" MODIFIED="1600880708053"/>
+<node TEXT="displayTime utilise ce pointeur sans vérifier son init !" ID="ID_1229143359" CREATED="1600880679798" MODIFIED="1601067010662" BACKGROUND_COLOR="#ffff33"/>
 </node>
 </node>
 <node TEXT="La commande &lt;s&gt; fonctionne correctement, ce qui met hors de cause le composant." ID="ID_130256845" CREATED="1600881079153" MODIFIED="1600881108596">
-<node TEXT="piste soft classe CSystem" ID="ID_1885309327" CREATED="1600881111318" MODIFIED="1600881124389"/>
+<node TEXT="piste soft classe CSystem" ID="ID_1885309327" CREATED="1600881111318" MODIFIED="1601067078246">
+<icon BUILTIN="button_ok"/>
+</node>
 </node>
 <node TEXT="Le code autour de CRtc, DS3231... n&apos;est pas claire" ID="ID_966103089" CREATED="1600881189918" MODIFIED="1600881215858">
 <node TEXT="méthode static" ID="ID_1964989469" CREATED="1600881215865" MODIFIED="1600881235987"/>
@@ -297,31 +292,61 @@
 <node TEXT="SerialCommand.cpp &lt;s&gt;" ID="ID_1561886331" CREATED="1600881365253" MODIFIED="1600881381711"/>
 </node>
 </node>
-<node TEXT="pb timeClient et pasr extension pTimeClient instance de NTPClient pas initialisé" ID="ID_666294817" CREATED="1600886565199" MODIFIED="1600886926000">
+<node TEXT="pb timeClient et par extension pTimeClient instance de NTPClient pas initialisé" ID="ID_666294817" CREATED="1600886565199" MODIFIED="1601067264253">
 <node TEXT="son initi dépend d&apos;une condition sur _sysStat.ntpEnabled" ID="ID_1404125533" CREATED="1600886927794" MODIFIED="1600886963913"/>
 <node TEXT="mais _sysStat.ntpEnabled n&apos;est mis à enable que plus tard par le nouvel objet" ID="ID_1480091118" CREATED="1600886964835" MODIFIED="1600887015873"/>
-<node ID="ID_626439830" CREATED="1600887023367" MODIFIED="1600887023367"><richcontent TYPE="NODE">
-
-<html>
-  <head>
-    
-  </head>
-  <body>
-    <div style="color: #ffffff; background-color: #002451; font-family: Consolas, Courier New, monospace; font-weight: normal; font-size: 14px; line-height: 19px; white-space: pre">
-      <div>
-        <span style="color: #7285b7"><font color="#7285b7">//&nbsp;if&nbsp;((wifi&nbsp;is&nbsp;on&nbsp;station&nbsp;mode&nbsp;connected))</font></span>
-      </div>
-    </div>
-  </body>
-</html>
-
-</richcontent>
-</node>
+<node TEXT="// if ((wifi is on station mode connected))" ID="ID_923932245" CREATED="1601072807163" MODIFIED="1601072812168"/>
 <node TEXT="La portion de code time server check se trouvait à l&apos;origine bien après l&apos;initialisation du wifi" ID="ID_238167312" CREATED="1600887068888" MODIFIED="1600887099986"/>
+<node TEXT="Création d&apos;une nouvelle méthode void CSystem::timeServerCheck()" ID="ID_615742355" CREATED="1601067117587" MODIFIED="1601067226441" MAX_WIDTH="10.799999999999999 cm" MIN_WIDTH="10.799999999999999 cm"/>
 </node>
 </node>
-<node TEXT="" POSITION="right" ID="ID_1233704241" CREATED="1600288559852" MODIFIED="1600288559853">
-<edge COLOR="#00ff00"/>
+<node TEXT="CSystem class" POSITION="right" ID="ID_832846836" CREATED="1601070236532" MODIFIED="1601070249741">
+<edge COLOR="#ff00ff"/>
+<node TEXT="the deal" ID="ID_259722028" CREATED="1601070252924" MODIFIED="1601070257448">
+<node TEXT="watchdog" ID="ID_74646402" CREATED="1601070519517" MODIFIED="1601070528142">
+<node TEXT="globale et auto instance" ID="ID_463241027" CREATED="1601070649404" MODIFIED="1601070658300">
+<node TEXT="cattiny_i2C_watchdog.h" ID="ID_1093998050" CREATED="1601070734434" MODIFIED="1601070771965"/>
+</node>
+<node TEXT="instances" FOLDED="true" ID="ID_810896217" CREATED="1601070532783" MODIFIED="1601070537325">
+<node TEXT="12x" ID="ID_1635955041" CREATED="1601070829639" MODIFIED="1601070834917">
+<node TEXT="Watchdog check in setup" ID="ID_607246022" CREATED="1601070863677" MODIFIED="1601070876082">
+<node TEXT=".begin()" ID="ID_961810068" CREATED="1601070836706" MODIFIED="1601070861985"/>
+<node TEXT=".test" ID="ID_358728198" CREATED="1601070887611" MODIFIED="1601070896539"/>
+<node TEXT=".settimeout" ID="ID_92705833" CREATED="1601070897882" MODIFIED="1601070916282">
+<node TEXT="wifimaxretry" ID="ID_186918871" CREATED="1601071356757" MODIFIED="1601071363674"/>
+</node>
+<node TEXT=".setRefreshPeriod" ID="ID_1797117661" CREATED="1601070917375" MODIFIED="1601070926019"/>
+</node>
+<node TEXT="wait mainpower switch" ID="ID_481744489" CREATED="1601070949706" MODIFIED="1601070960412">
+<node TEXT=".isittime &amp; refresh sur la même ligne" ID="ID_1313401685" CREATED="1601070962965" MODIFIED="1601070983808"/>
+</node>
+<node TEXT="fin du setup" ID="ID_210199529" CREATED="1601071013878" MODIFIED="1601071021551">
+<node TEXT="setTimeout" ID="ID_558685369" CREATED="1601071021558" MODIFIED="1601071027633"/>
+<node TEXT="setRefreshPeriod" ID="ID_1055929801" CREATED="1601071028762" MODIFIED="1601071039519"/>
+</node>
+<node TEXT="in the loop watchdog refresh" ID="ID_1479715074" CREATED="1601071061887" MODIFIED="1601071075702">
+<node TEXT=".isittime" ID="ID_685923987" CREATED="1601070962965" MODIFIED="1601071105893"/>
+<node TEXT="refresh liés" ID="ID_185977311" CREATED="1601071089729" MODIFIED="1601071099383"/>
+</node>
+<node TEXT="A la fin du loop" ID="ID_1010797183" CREATED="1601071158460" MODIFIED="1601071164796">
+<node TEXT="une ligne commentée" ID="ID_481362633" CREATED="1601071166127" MODIFIED="1601071176439"/>
+<node TEXT="setTimeout(2)" ID="ID_555185048" CREATED="1601071177266" MODIFIED="1601071193858"/>
+</node>
+</node>
+</node>
+<node TEXT="gain faible" ID="ID_1477154539" CREATED="1601071394633" MODIFIED="1601071464894" BACKGROUND_COLOR="#ff9933"/>
+</node>
+<node TEXT="ftpServer" FOLDED="true" ID="ID_274748021" CREATED="1601071432919" MODIFIED="1601071438095">
+<node TEXT="2 instances" ID="ID_818701055" CREATED="1601071438097" MODIFIED="1601071443850"/>
+<node TEXT="gain faible" ID="ID_120711314" CREATED="1601071394633" MODIFIED="1601071464894" BACKGROUND_COLOR="#ff9933"/>
+</node>
+<node TEXT="configParam" ID="ID_111608862" CREATED="1601071507204" MODIFIED="1601071512869"/>
+<node TEXT="Suppression des ligens de code entre" ID="ID_762607578" CREATED="1601072269633" MODIFIED="1601072281443">
+<node TEXT="file system check" ID="ID_1121116727" CREATED="1601072282265" MODIFIED="1601072286725"/>
+<node TEXT="Watchdog check" ID="ID_869677771" CREATED="1601072315882" MODIFIED="1601072319419"/>
+<node TEXT="Dans un premier temps" ID="ID_1989452332" CREATED="1601072322438" MODIFIED="1601072335325"/>
+</node>
+</node>
 </node>
 </node>
 </map>

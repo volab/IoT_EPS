@@ -113,25 +113,10 @@ void setup(){
     DEBUGPORT.begin(DEBUGSPEED);
     DEFDPROMPT("setUp") // define dPrompt String
 
-    String message = dPrompt;
-    message += "Addr of sysStatus au debut  0x";
-    message += String( (unsigned long)(&sysStatus) , HEX );
-    DSPL( message );
+    int timeZone = OFFSET_HEURE;
 
     sysIoteps.init( ntpUDP, &sysStatus );
-     
-    // DateTime NTPTime;
-    int timeZone = OFFSET_HEURE; 
-    
-    // delay(1000);//a try to correct the powerup pb
-    // pinMode(LED_BUILTIN, OUTPUT);
-    // digitalWrite( LED_BUILTIN, LOW ); //warning D4 BP blueu plug
-    // delay(1000);
-    // digitalWrite( LED_BUILTIN, HIGH ); //warning D4 BP blueu plug
-    // pinMode(LED_BUILTIN, INPUT);
-    
-
-
+      
     if ( !(digitalRead(BP1) ) ){
         DSPL( dPrompt + F("Special action take place..." ) );
         // place special actions here

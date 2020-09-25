@@ -32,7 +32,7 @@ bool CRtc::begin( void ){
 
 bool CRtc::begin( NTPClient *p_tc ){
     
-    p_timeClient = p_tc;
+    p_timeClient = p_tc; //only used by displayTime and update methods
     begin();
 }
 

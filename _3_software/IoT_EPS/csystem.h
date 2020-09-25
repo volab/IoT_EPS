@@ -31,8 +31,8 @@ class CSystem
 		CRtc _rtc;
 		ESP8266WebServer *_pServer;
 		CSysStatus *_psysStat;
-		// WiFiUDP _ntpUDP;
-		// NTPClient _pTimeclient(_ntpUDP, NTPSERVER);
+
+
 };
 
 #endif

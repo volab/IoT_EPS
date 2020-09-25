@@ -9,29 +9,34 @@
 
 #include "csystem.h"
 
+
+/**
+ @fn void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat )
+ @brief IoT_EPS system init method
+ @param ntpUDP just for NTPClient init, this parameter is not kept
+ @param psysStat a pointer on global variable sysStatus
+ @return no return val
+
+Start RTc DS3231 and nothing else @25/09/2020
+*/
 void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat ){
 
     DEFDPROMPT( "CSystem::init" )
-    //DEFDPROMPT("setUp") // define dPrompt String
-    // String message = dPrompt;
+
     String message;
-    // message += "Addr of systat transmis  0x";
-    // message += String( (unsigned long)(&sysStat) , HEX );
-    // DSPL( message );
-    
-     
+
     _psysStat = psysStat;
+ 
     delay(1000);//a try to correct the powerup pb
     pinMode(LED_BUILTIN, OUTPUT);
-    digitalWrite( LED_BUILTIN, LOW ); //warning D4 BP blueu plug
+    digitalWrite( LED_BUILTIN, LOW ); //warning D4 BP bleue plug
     delay(1000);
-    digitalWrite( LED_BUILTIN, HIGH ); //warning D4 BP blueu plug
+    digitalWrite( LED_BUILTIN, HIGH ); //warning D4 BP bleue plug
     pinMode(LED_BUILTIN, INPUT);
     
     
     DateTime now;
-    //DEBUGPORT.begin(DEBUGSPEED);
-    // Serial.setDebugOutput(true); //Serial debug of Wifi lib
+
     DSPL();
     DSPL( dPrompt + F("Sketch start..."));
     pinMode( BP1, INPUT_PULLUP );
@@ -43,7 +48,6 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat ){
 
     _pTimeclient = new NTPClient(ntpUDP, NTPSERVER);
     _rtc.begin( _pTimeclient );
-    // _rtc.begin( );
     _psysStat->rtcErr.err( _rtc.initErr );
     if (_rtc.lostPower()){
         DSPL( dPrompt + "une remise a l'heure est necessaire");
@@ -60,6 +64,14 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat ){
         
 }
 
+
+/**
+ @fn void CSystem::timeServerCheck()
+ @brief IoT_EPS Check time server access
+ @return not param and no return value
+
+Need to be called after Wifi init cause _psysStat->ntpEnabled set by Wifi link
+*/
 void CSystem::timeServerCheck(){
 /////////////////////////////////////////////////////////////////////////////
     //  Time server check                                                     //
@@ -87,7 +99,7 @@ void CSystem::timeServerCheck(){
     if( _psysStat->ntpEnabled){
         DSPL(dPrompt + "check started");
         _pTimeclient->begin();
-        // errNTPinit = !timeClient.forceUpdate();
+
         _psysStat->ntpErr.err( !_pTimeclient->forceUpdate() ) ;
         if ( !_psysStat->ntpErr.isErr() ){
             _pTimeclient->setTimeOffset( timeZone * SECPERHOURS );
