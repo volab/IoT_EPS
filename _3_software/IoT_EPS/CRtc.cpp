@@ -12,7 +12,7 @@
 // #include "debugSerialPort.h"
 
 bool CRtc::initErr = false;
-// extern NTPClient timeClient;
+
 
 NTPClient *CRtc::p_timeClient = nullptr;
 
@@ -60,15 +60,16 @@ void CRtc::displayTime(){ //static !
     if ( p_timeClient != nullptr ){
         sysStatus.ntpErr.err( !p_timeClient->forceUpdate() );
     } else {
-        DSPL( "pointeur p_timeClient non initialisé ");
+        DSPL( dPrompt + "pointeur p_timeClient non initialisé ");
+        return;
     }
     
     if ( sysStatus.ntpErr.isErr() ) return ;
-    unsigned long NTPTime = 0;
-    // unsigned long NTPTime = p_timeClient->getEpochTime();
-    // DSPL( dPrompt + "NTP time : " + String(p_timeClient->getEpochTime() ) );
+    //unsigned long NTPTime = 0;
+    unsigned long NTPTime = p_timeClient->getEpochTime();
+    DSPL( dPrompt + "NTP time : " + String(p_timeClient->getEpochTime() ) );
     DSPL( dPrompt + "time error : " + String( abs(NTPTime-RTCTime) ) );
-    // DSPL( dPrompt + "Next time check" + String(millis() - lastMillis ) );
+    //DSPL( dPrompt + "Next time check" + String(millis() - lastMillis ) );
 	
 }
 
@@ -138,11 +139,17 @@ void CRtc::update(){
     sDate += (String)now.hour()+":"+(String)now.minute()+":";
     sDate += (String)now.second();
 	DSPL( dPrompt + sDate );
-    // sysStatus.ntpErr.err( !timeClient.forceUpdate() );
+    
+    if ( p_timeClient != nullptr ){
+        sysStatus.ntpErr.err( !p_timeClient->forceUpdate() );
+    } else {
+        DSPL( dPrompt + "pointeur p_timeClient non initialisé ");
+        return;
+    }
     lastMillis = millis();
     if ( sysStatus.ntpErr.isErr() ) return ;
-    unsigned long NTPTime = 0;
-    // unsigned long NTPTime = timeClient.getEpochTime();
+    //unsigned long NTPTime = 0;
+    unsigned long NTPTime = p_timeClient->getEpochTime();
     unsigned long RTCTime = RTC_DS3231::now().unixtime();
     DSPL( dPrompt + F("Delta time = ") + String(abs( RTCTime - NTPTime )) );
     if ( abs( RTCTime - NTPTime ) < RTC_ALLOWED_TIME_ERROR ) return;

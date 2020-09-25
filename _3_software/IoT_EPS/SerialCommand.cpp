@@ -284,7 +284,7 @@ FSInfo filseSystemInfo;
             if (!errNTPinit) {
                 RTC_DS3231::adjust( NTPTime ); //why suddenly use RTC_DS3231 ? and not CRtc
                 INTERFACE.println( "Time set :");
-                // CRtc::displayTime();
+                CRtc::displayTime();
             }
             break;      
         case 't':

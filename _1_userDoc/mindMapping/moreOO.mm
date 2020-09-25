@@ -3,7 +3,7 @@
 <node TEXT="more OO" FOLDED="false" ID="ID_180563910" CREATED="1600199457979" MODIFIED="1600288551846" STYLE="oval">
 <font SIZE="18"/>
 <hook NAME="MapStyle" zoom="2.197">
-    <properties fit_to_viewport="false" show_icon_for_attributes="true" show_note_icons="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff"/>
+    <properties show_icon_for_attributes="true" fit_to_viewport="false" show_note_icons="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt">
@@ -64,7 +64,8 @@
 </map_styles>
 </hook>
 <hook NAME="AutomaticEdgeColor" COUNTER="3" RULE="ON_BRANCH_CREATION"/>
-<node TEXT="CWifiLink" POSITION="right" ID="ID_29959505" CREATED="1600199552535" MODIFIED="1600288666803">
+<node TEXT="CWifiLink" POSITION="right" ID="ID_29959505" CREATED="1600199552535" MODIFIED="1600879765013">
+<icon BUILTIN="button_ok"/>
 <edge STYLE="bezier" COLOR="#6666ff" WIDTH="1" DASH="SOLID"/>
 <node TEXT="but" ID="ID_797550368" CREATED="1600203162931" MODIFIED="1600203167667">
 <node TEXT="principalement : remplacer le bloc linéaire de code compris entre les lignes 361 et 491" ID="ID_172563353" CREATED="1600203221009" MODIFIED="1600284781159" STYLE="bubble"/>
@@ -245,8 +246,10 @@
 <node TEXT="staGateway" ID="ID_1988350869" CREATED="1600290291782" MODIFIED="1600290298153"/>
 <node TEXT="DNS1" ID="ID_1353216900" CREATED="1600290299738" MODIFIED="1600290300898"/>
 </node>
-<node TEXT="fonctions utilisées" ID="ID_1720824784" CREATED="1600288903663" MODIFIED="1600288910292">
-<node TEXT="simpleManualModeChaser();" ID="ID_1381864370" CREATED="1600205117059" MODIFIED="1600205121399">
+<node TEXT="fonctions utilisées" FOLDED="true" ID="ID_1720824784" CREATED="1600288903663" MODIFIED="1600879760546">
+<icon BUILTIN="button_ok"/>
+<node TEXT="simpleManualModeChaser();" ID="ID_1381864370" CREATED="1600205117059" MODIFIED="1600879756192">
+<icon BUILTIN="button_ok"/>
 <node TEXT="une seule occurence 495" ID="ID_46141577" CREATED="1600292048037" MODIFIED="1600292060004"/>
 <node TEXT="utilise fastLed et colorLeds ainsi que plugs" ID="ID_292396156" CREATED="1600465735647" MODIFIED="1600468008287">
 <node TEXT="Peut-on  redéfinir un FastLED ?" ID="ID_1878342399" CREATED="1600465789273" MODIFIED="1600467981241">
@@ -271,8 +274,51 @@
 <node TEXT="Mettre des const sur les trucs qui ne doivent pas être modifiés" ID="ID_1879955673" CREATED="1600462152784" MODIFIED="1600462173620"/>
 </node>
 </node>
-<node TEXT="" POSITION="right" ID="ID_257861246" CREATED="1600288556613" MODIFIED="1600288556613">
+<node TEXT="bug DS3231" POSITION="right" ID="ID_257861246" CREATED="1600288556613" MODIFIED="1600880199736">
 <edge COLOR="#0000ff"/>
+<node TEXT="découverte ?" ID="ID_1311426145" CREATED="1600880199762" MODIFIED="1600880206975"/>
+<node TEXT="bug hardware semble-t-il" ID="ID_1218040700" CREATED="1600880207747" MODIFIED="1600880221565"/>
+<node TEXT="L&apos;heure affichée est délirante" ID="ID_1380216903" CREATED="1600880448434" MODIFIED="1600880594209"/>
+<node TEXT="Attention des chose concernant CRtc et l&apos;intance rt ont été déplacé vers la classe CSystem" ID="ID_1106068649" CREATED="1600880462172" MODIFIED="1600880586475"/>
+<node TEXT="La commande de debug &lt;C&gt; fait partir en WD" FOLDED="true" ID="ID_969561540" CREATED="1600880598952" MODIFIED="1600880628916">
+<node TEXT="Elle utilise displayTime()" ID="ID_708625923" CREATED="1600880630970" MODIFIED="1600880643501"/>
+<node TEXT="Attention, il y a 2 instance de begin" ID="ID_919420653" CREATED="1600880644545" MODIFIED="1600880659838">
+<node TEXT="une sans le pointeur pNtp" ID="ID_821000656" CREATED="1600880661029" MODIFIED="1600880674644"/>
+<node TEXT="une avec" ID="ID_1351845985" CREATED="1600880676292" MODIFIED="1600880679355"/>
+<node TEXT="displayTimeutilise ce pointeur sans vérifier son init !" ID="ID_1229143359" CREATED="1600880679798" MODIFIED="1600880708053"/>
+</node>
+</node>
+<node TEXT="La commande &lt;s&gt; fonctionne correctement, ce qui met hors de cause le composant." ID="ID_130256845" CREATED="1600881079153" MODIFIED="1600881108596">
+<node TEXT="piste soft classe CSystem" ID="ID_1885309327" CREATED="1600881111318" MODIFIED="1600881124389"/>
+</node>
+<node TEXT="Le code autour de CRtc, DS3231... n&apos;est pas claire" ID="ID_966103089" CREATED="1600881189918" MODIFIED="1600881215858">
+<node TEXT="méthode static" ID="ID_1964989469" CREATED="1600881215865" MODIFIED="1600881235987"/>
+<node TEXT="Accès direct à DS3231" ID="ID_980583037" CREATED="1600881241092" MODIFIED="1600881363164">
+<node TEXT="SerialCommand.cpp &lt;s&gt;" ID="ID_1561886331" CREATED="1600881365253" MODIFIED="1600881381711"/>
+</node>
+</node>
+<node TEXT="pb timeClient et pasr extension pTimeClient instance de NTPClient pas initialisé" ID="ID_666294817" CREATED="1600886565199" MODIFIED="1600886926000">
+<node TEXT="son initi dépend d&apos;une condition sur _sysStat.ntpEnabled" ID="ID_1404125533" CREATED="1600886927794" MODIFIED="1600886963913"/>
+<node TEXT="mais _sysStat.ntpEnabled n&apos;est mis à enable que plus tard par le nouvel objet" ID="ID_1480091118" CREATED="1600886964835" MODIFIED="1600887015873"/>
+<node ID="ID_626439830" CREATED="1600887023367" MODIFIED="1600887023367"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <div style="color: #ffffff; background-color: #002451; font-family: Consolas, Courier New, monospace; font-weight: normal; font-size: 14px; line-height: 19px; white-space: pre">
+      <div>
+        <span style="color: #7285b7"><font color="#7285b7">//&nbsp;if&nbsp;((wifi&nbsp;is&nbsp;on&nbsp;station&nbsp;mode&nbsp;connected))</font></span>
+      </div>
+    </div>
+  </body>
+</html>
+
+</richcontent>
+</node>
+<node TEXT="La portion de code time server check se trouvait à l&apos;origine bien après l&apos;initialisation du wifi" ID="ID_238167312" CREATED="1600887068888" MODIFIED="1600887099986"/>
+</node>
 </node>
 <node TEXT="" POSITION="right" ID="ID_1233704241" CREATED="1600288559852" MODIFIED="1600288559853">
 <edge COLOR="#00ff00"/>

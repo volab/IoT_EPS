@@ -10,8 +10,8 @@
 #define  IOT_EPS_HEADER
 
 #define NTPSERVER "fr.pool.ntp.org"
-// #define OFFSET_HEURE 2 //ETE
-#define OFFSET_HEURE 1 //Hiver
+#define OFFSET_HEURE 2 //ETE
+//#define OFFSET_HEURE 1 //Hiver
 /** @todo [NECESSARY]Passage heure d'hiver/été : soit automatique soit configurable via l'interface */
 #define DEFAULT_PREFIX_NAME "ESP_IOT"
 #define FIRSTBOOTFORMFILENAME "/firstboot.htm"
@@ -79,6 +79,8 @@
 
 #include "cattiny_i2C_watchdog.h"
 #define RTC_UPDATE_PERIOD 15 //every 15mn
+// #define RTC_UPDATE_PERIOD 1 //every 1
+
 #define RTC_ALLOWED_TIME_ERROR 20//seconds
 #define I2C_CBIT_TEST_PERIOD 60 * 1000 //ms it smells millis() ;-)
 #define I2C_RETRIES 5

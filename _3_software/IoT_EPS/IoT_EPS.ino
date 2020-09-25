@@ -436,7 +436,7 @@ void loop(){
 
         if (sysStatus.ntpEnabled){
             bool rtcPreviousErr = sysStatus.ntpErr.isErr();
-            rtc.update(); //this check NTP access and update sysStatus - not @23/09/2020
+            rtc.update(); //this check NTP access and update sysStatus
             DSP( dPrompt + F("Check NTP access : " ) );
             if ( sysStatus.ntpErr.isErr() != rtcPreviousErr ){
                 cParam.write2Json( "ntpError", ( sysStatus.ntpErr.isErr()?"ON":"OFF") );
