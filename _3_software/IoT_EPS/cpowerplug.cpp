@@ -42,7 +42,6 @@ int CPowerPlug::modeId( String mode ){
     return i;
 }
 
-
 void CPowerPlug::begin( int pin , int onOffLedPin, int bpPin, int mode ){
     if (!_initDone) init();
     _pin = pin;
@@ -54,6 +53,23 @@ void CPowerPlug::begin( int pin , int onOffLedPin, int bpPin, int mode ){
     _nano.pinMode( _onOffLedPin, OUTPUT );
     bp.begin( bpPin );
     _pause = false;
+
+}
+
+void CPowerPlug::begin( int pin , int onOffLedPin, int bpPin
+                        , plugColor_t color, String name, int mode ){
+    if (!_initDone) init();
+    _pin = pin;
+    _onOffLedPin = onOffLedPin;
+    _mode = mode;
+    _state = OFF;
+    updateOutputs( false );
+    _nano.pinMode( _pin, OUTPUT );
+    _nano.pinMode( _onOffLedPin, OUTPUT );
+    bp.begin( bpPin );
+    _pause = false;
+    _plugName = name ;
+    _couleur = color;
 }
 
 /** 
