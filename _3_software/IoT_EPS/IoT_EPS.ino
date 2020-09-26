@@ -114,23 +114,13 @@ void setup(){
     DEFDPROMPT("setUp") // define dPrompt String
 
     int timeZone = OFFSET_HEURE;
+    String buildInfo =  String(__DATE__) + " @ " + String(__TIME__);
 
-    sysIoteps.init( ntpUDP, &sysStatus, &SPIFFS, &cParam, necessaryFileList );
+    sysIoteps.init( ntpUDP, &sysStatus, &SPIFFS, &cParam, necessaryFileList, buildInfo );
       
-    // if ( !(digitalRead(BP1) ) ){
-    //     DSPL( dPrompt + F("Special action take place..." ) );
-    //     // place special actions here
-    //     // example sysStatus._forceSystemStartOnFatalError = true;
-    //     cParam.creatDefaultJson();
-    // }
     FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
     FastLED.setBrightness( DEFAULT_LED_LUMINOSITY ); //default value for error display
-    /////////////////////////////////////////////////////////////////////////////
-    //     file system check                                                   //
-    /////////////////////////////////////////////////////////////////////////////
-    DSPL( dPrompt + " Build : " + __DATE__ + " @ " + __TIME__);
-    sysStatus.fsErr.err( !SPIFFS.begin() ); 
-    DSPL( dPrompt + F("File system correctly Open @ setup level") );
+
 
     /////////////////////////////////////////////////////////////////////////////
     //  Start of the check necessary files  presence                           //

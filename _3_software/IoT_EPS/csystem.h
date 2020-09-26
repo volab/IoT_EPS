@@ -23,7 +23,7 @@ class CSystem
 {
 	public:
 		void init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
-					String *necessaryFileList  );
+					const String *necessaryFileList, String buildInfo  );
 		NTPClient *_pTimeclient;
 		void timeServerCheck();
 	private:
@@ -33,7 +33,7 @@ class CSystem
 		ESP8266WebServer *_pServer;
 		CSysStatus *_psysStat;
 		FS *_pFileSystem;
-		String *_pNecessaryFiles;
+		const String *_pNecessaryFiles; //no need to keep if only used in init()
 		
 
 };

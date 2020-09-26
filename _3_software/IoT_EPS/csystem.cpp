@@ -20,7 +20,7 @@
 Start RTc DS3231 and nothing else @25/09/2020
 */
 void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
-                    String *necessaryFileList ){
+                    const String *necessaryFileList, String buildinfo ){
 
     DEFDPROMPT( "CSystem::init" )
 
@@ -41,7 +41,17 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     DSPL( dPrompt + F("Sketch start..."));
     pinMode( BP1, INPUT_PULLUP );
 
-    if ( !(digitalRead(BP1) ) ){
+    /////////////////////////////////////////////////////////////////////////////
+    //     file system check                                                   //
+    /////////////////////////////////////////////////////////////////////////////
+    DSPL( dPrompt + " Build : " + buildinfo );
+    _psysStat->fsErr.err( !_pFileSystem->begin() ); 
+    DSPL( dPrompt + F("File system correctly Open @ setup level") );
+
+    /////////////////////////////////////////////////////////////////////////////
+    //     Special Actions                                                     //
+    /////////////////////////////////////////////////////////////////////////////
+    if ( !(digitalRead(BP1) ) ){ // green PB
         DSPL( dPrompt + F("Special action take place..." ) );
         // place special actions here
         // example sysStatus._forceSystemStartOnFatalError = true;
