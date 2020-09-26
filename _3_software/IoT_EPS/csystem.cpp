@@ -20,7 +20,7 @@
 Start RTc DS3231 and nothing else @25/09/2020
 */
 void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
-                    const String *necessaryFileList, String buildinfo ){
+                    const String *necessaryFlLst, int necessaryFileNbr, String buildinfo ){
 
     DEFDPROMPT( "CSystem::init" )
 
@@ -57,6 +57,20 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
         // example sysStatus._forceSystemStartOnFatalError = true;
         _pcParam->creatDefaultJson();
     }
+
+    /////////////////////////////////////////////////////////////////////////////
+    //  Start of the check necessary files  presence                           //
+    /////////////////////////////////////////////////////////////////////////////
+    DSPL(dPrompt + F("File check !") );
+    bool fileExist = true;
+    for ( int i = 0; i < necessaryFileNbr; i++){
+        String s = necessaryFlLst[i];
+        bool b = _pFileSystem->exists(s);
+        fileExist &= b;
+        DSPL( dPrompt + F("file : ") + s + F(" is ") + (b?F("present"):F("not found")) );
+    }
+    DSPL( dPrompt + F("Result all files are present ? ") + (fileExist?"OK":"ERROR") );
+    _psysStat->filesErr.err( !fileExist );
 
     /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                    //

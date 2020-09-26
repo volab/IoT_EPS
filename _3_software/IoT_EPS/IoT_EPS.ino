@@ -116,24 +116,11 @@ void setup(){
     int timeZone = OFFSET_HEURE;
     String buildInfo =  String(__DATE__) + " @ " + String(__TIME__);
 
-    sysIoteps.init( ntpUDP, &sysStatus, &SPIFFS, &cParam, necessaryFileList, buildInfo );
+    sysIoteps.init( ntpUDP, &sysStatus, &SPIFFS, &cParam, necessaryFileList, NECESSARY_FILE_NBR
+                    , buildInfo );
       
     FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
     FastLED.setBrightness( DEFAULT_LED_LUMINOSITY ); //default value for error display
-
-
-    /////////////////////////////////////////////////////////////////////////////
-    //  Start of the check necessary files  presence                           //
-    /////////////////////////////////////////////////////////////////////////////
-    DSPL(dPrompt + F("File check !") );
-    bool fileExist = true;
-    for ( String s : necessaryFileList ){
-        bool b = SPIFFS.exists(s);
-        fileExist &= b;
-        DSPL( dPrompt + F("file : ") + s + F(" is ") + (b?F("present"):F("not found")) );
-    }
-    DSPL( dPrompt + F("Result all files are present ? ") + (fileExist?"OK":"ERROR") );
-    sysStatus.filesErr.err( !fileExist );
     
     ftpSrv.begin("esp8266","esp8266");
     
@@ -339,7 +326,8 @@ void setup(){
     //  Setup watchdog                                                         //
     /////////////////////////////////////////////////////////////////////////////    
     watchdog.setTimeout( 10 );
-    watchdog.setRefreshPeriod( 5 );    
+    watchdog.setRefreshPeriod( 5 );
+    DSPL( dPrompt + "Watchdog set to 10s with a refresh period to 5s");
     DSPL( dPrompt + "Loop start");
 }
 

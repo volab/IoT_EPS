@@ -212,7 +212,8 @@
 
 #include "csystem.h"
 
-const String necessaryFileList[] ={
+#define NECESSARY_FILE_NBR 9
+const String necessaryFileList[ NECESSARY_FILE_NBR ] ={
       "/index.html"
     , "/config4.json"
     , "/firstboot.html"

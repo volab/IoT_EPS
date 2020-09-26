@@ -23,7 +23,7 @@ class CSystem
 {
 	public:
 		void init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
-					const String *necessaryFileList, String buildInfo  );
+					const String *necessaryFileList, int necessaryFileNbr, String buildInfo  );
 		NTPClient *_pTimeclient;
 		void timeServerCheck();
 	private:
