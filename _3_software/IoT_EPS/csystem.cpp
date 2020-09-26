@@ -19,28 +19,34 @@
 
 Start RTc DS3231 and nothing else @25/09/2020
 */
-void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat ){
+void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
+                    String *necessaryFileList ){
 
     DEFDPROMPT( "CSystem::init" )
 
     String message;
 
     _psysStat = psysStat;
- 
+    _pFileSystem = pFileSyst;
+    _pcParam = pcParam;
+    _pNecessaryFiles = necessaryFileList;
     delay(1000);//a try to correct the powerup pb
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite( LED_BUILTIN, LOW ); //warning D4 BP bleue plug
     delay(1000);
     digitalWrite( LED_BUILTIN, HIGH ); //warning D4 BP bleue plug
     pinMode(LED_BUILTIN, INPUT);
-    
-    
-    DateTime now;
 
     DSPL();
     DSPL( dPrompt + F("Sketch start..."));
     pinMode( BP1, INPUT_PULLUP );
 
+    if ( !(digitalRead(BP1) ) ){
+        DSPL( dPrompt + F("Special action take place..." ) );
+        // place special actions here
+        // example sysStatus._forceSystemStartOnFatalError = true;
+        _pcParam->creatDefaultJson();
+    }
 
     /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                    //
@@ -52,7 +58,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat ){
     if (_rtc.lostPower()){
         DSPL( dPrompt + "une remise a l'heure est necessaire");
     }
-    now = _rtc.now();
+    DateTime now = _rtc.now();
     message = dPrompt + F("DS3231 Start date : ");
     message += (String)now.day()+"/"+(String)now.month()+"/";
     message += (String)now.year()+" ";
@@ -60,7 +66,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat ){
     message += (String)now.second();      
     DSPL( message);
 
-     
+    
         
 }
 
@@ -116,9 +122,9 @@ void CSystem::timeServerCheck(){
                 DSPL( dPrompt + F("DS3231 set to NTP time due to power lost.") );
                 // CRtc::displayTime();
             }
-            _cParam.write2Json( "ntpError", "OFF" );
+            _pcParam->write2Json( "ntpError", "OFF" );
         } else { 
             DSPL( dPrompt +"NTP ERROR");
-            _cParam.write2Json( "ntpError", "ON" ); }
+            _pcParam->write2Json( "ntpError", "ON" ); }
     }    
 }

@@ -115,14 +115,14 @@ void setup(){
 
     int timeZone = OFFSET_HEURE;
 
-    sysIoteps.init( ntpUDP, &sysStatus );
+    sysIoteps.init( ntpUDP, &sysStatus, &SPIFFS, &cParam, necessaryFileList );
       
-    if ( !(digitalRead(BP1) ) ){
-        DSPL( dPrompt + F("Special action take place..." ) );
-        // place special actions here
-        // example sysStatus._forceSystemStartOnFatalError = true;
-        cParam.creatDefaultJson();
-    }
+    // if ( !(digitalRead(BP1) ) ){
+    //     DSPL( dPrompt + F("Special action take place..." ) );
+    //     // place special actions here
+    //     // example sysStatus._forceSystemStartOnFatalError = true;
+    //     cParam.creatDefaultJson();
+    // }
     FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
     FastLED.setBrightness( DEFAULT_LED_LUMINOSITY ); //default value for error display
     /////////////////////////////////////////////////////////////////////////////
@@ -296,7 +296,6 @@ void setup(){
 	/////////////////////////////////////////////////////////////////////////////
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
-    
     wifilnk.begin( WiFi, simpleManualMode, &cParam, &sysStatus, &wifiLed,
                     &FastLED, colorLeds, plugs );
 
@@ -304,7 +303,7 @@ void setup(){
     /////////////////////////////////////////////////////////////////////////////
     //  Server configurations                                                  //
     /////////////////////////////////////////////////////////////////////////////
-//Replaced by webserver class August 2020
+    //Code replaced by webserver class August 2020
     if ( !simpleManualMode ){
         webServeur.init( &rtc, &cParam, plugs, &restartTempoLed, &WiFi );
     }

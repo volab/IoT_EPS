@@ -15,7 +15,7 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
                         ,ConfigParam *pcparam, CSysStatus *pcSysStatus, CFlasherNanoExp *pwifiled
                         , CFastLED *pFastLed, CRGB *pcolorLeds, CPowerPlug *plugs ){
     // _pWiFi = pWiFi;
-    _wifiRef = wifiRef;
+    _wifiRef = wifiRef; //recopie !
     _wifiCred.begin( );
     _cParam = pcparam;
     _pcSysStatus = pcSysStatus;

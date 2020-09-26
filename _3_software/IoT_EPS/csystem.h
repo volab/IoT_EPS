@@ -22,16 +22,19 @@ Tentative de clarification du code
 class CSystem
 {
 	public:
-		void init( WiFiUDP &ntpUDP, CSysStatus *psysStat );
+		void init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
+					String *necessaryFileList  );
 		NTPClient *_pTimeclient;
 		void timeServerCheck();
 	private:
-		ConfigParam _cParam;
+		ConfigParam *_pcParam;
 		Credential _wifiCred;
 		CRtc _rtc;
 		ESP8266WebServer *_pServer;
 		CSysStatus *_psysStat;
-
+		FS *_pFileSystem;
+		String *_pNecessaryFiles;
+		
 
 };
 

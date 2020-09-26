@@ -97,6 +97,9 @@ In my project, it is used to display colors of the LEDs and error message by CSy
 
 Where colorLeds are initialised ? line 279: after  if ( !mainPowerSwitchState )
 
+
+
+
 ====================================================================================================
 OO rewritting progress (last update 15/09/2020)
 ====================================================================================================
