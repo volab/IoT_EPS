@@ -20,7 +20,8 @@
 Start RTc DS3231 and nothing else @25/09/2020
 */
 void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
-                    const String *necessaryFlLst, int necessaryFileNbr, String buildinfo ){
+                    const String *necessaryFlLst, int necessaryFileNbr, String buildinfo
+                    , ESP8266WiFiClass *pWifi, CNanoI2CIOExpander *pNanoioExp ){
 
     DEFDPROMPT( "CSystem::init" )
 
@@ -73,6 +74,42 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _psysStat->filesErr.err( !fileExist );
 
     /////////////////////////////////////////////////////////////////////////////
+    //     Config param check                                                  //
+    /////////////////////////////////////////////////////////////////////////////
+    _pcParam->begin();
+    _psysStat->confFileErr.err( !_pcParam->ready );
+    DSPL( dPrompt + F("json mac add : ") + _pcParam->getMacAdd() );
+    DSPL( dPrompt + F("Board Sation MAC add = ") + pWifi->macAddress() );
+    if ( _pcParam->getMacAdd() == pWifi->macAddress() ) DSPL( dPrompt + "Station equal add");
+    else {
+        DSPL( dPrompt + "diff add, write to json");
+        _pcParam->write2Json( "macAdd", pWifi->macAddress() );
+    }
+    DSPL( dPrompt + F("json Soft AP mac add : ") + _pcParam->getSoftAPMacAdd() );
+    DSPL( dPrompt + F("Board Soft AP MAC add = ") + pWifi->softAPmacAddress() );
+    if ( _pcParam->getSoftAPMacAdd() == pWifi->softAPmacAddress() ) DSPL( dPrompt + "AP equal add");
+    else {
+        DSPL( dPrompt + "diff add, write to json");
+        _pcParam->write2Json( "softAP_macAdd", pWifi->softAPmacAddress() );
+    }
+    /////////////////////////////////////////////////////////////////////////////
+    //     I2C bus check                                                       //
+    ///////////////////////////////////////////////////////////////////////////// 
+    CNano::init();
+    DSPL( dPrompt+ F("I2C test start") );
+    int cpt = 1;
+    do{
+        if ( !pNanoioExp->test() ){
+            DSPL( dPrompt + "i2cRecov" + " number " + cpt);
+            SerialCommand::i2c_recovery();
+        } else cpt = 9;
+        
+        cpt++;
+    } while (cpt < I2C_RETRIES );
+    if (cpt != 10) _psysStat->nanoErr.err( true );
+    DSPL(dPrompt + F("Nano test ok"));
+
+    /////////////////////////////////////////////////////////////////////////////
     //     rtc DS3231 start                                                    //
     /////////////////////////////////////////////////////////////////////////////
 
@@ -80,7 +117,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _rtc.begin( _pTimeclient );
     _psysStat->rtcErr.err( _rtc.initErr );
     if (_rtc.lostPower()){
-        DSPL( dPrompt + "une remise a l'heure est necessaire");
+        DSPL( dPrompt + F("une remise a l'heure est necessaire") );
     }
     DateTime now = _rtc.now();
     message = dPrompt + F("DS3231 Start date : ");
@@ -111,23 +148,8 @@ void CSystem::timeServerCheck(){
     DateTime NTPTime;
     DEFDPROMPT( "CSystem::timeServerCheck" )
 
-    // String message = dPrompt;
-    // message += "Addr of systat globally  0x";
-    // message += String( (unsigned long)(&sysStatus) , HEX );
-    // DSPL( message );
-    // message = dPrompt;
-    // message += "Addr of systat locally 0x";
-    // message += String( (unsigned long)(&_sysStat) , HEX );
-    // DSPL( message );
-
-    // DSPL( dPrompt + "NTP enable ? globally " + String(sysStatus.ntpEnabled?"TRUE":"FALSE") );
-    // DSPL( dPrompt + "NTP enable ? locally  " + String(_sysStat.ntpEnabled?"TRUE":"FALSE") );
-    // CSysStatus *psysStat = &sysStatus;
-    // Serial.print("sysStatus add : 0x");
-    // Serial.println( (unsigned long)(psysStat), HEX );
-
     if( _psysStat->ntpEnabled){
-        DSPL(dPrompt + "check started");
+        DSPL(dPrompt + F("check started") );
         _pTimeclient->begin();
 
         _psysStat->ntpErr.err( !_pTimeclient->forceUpdate() ) ;

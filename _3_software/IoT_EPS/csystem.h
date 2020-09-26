@@ -23,14 +23,15 @@ class CSystem
 {
 	public:
 		void init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
-					const String *necessaryFileList, int necessaryFileNbr, String buildInfo  );
+					const String *necessaryFileList, int necessaryFileNbr, String buildInfo
+					, ESP8266WiFiClass *wifi, CNanoI2CIOExpander *pNanoExp  );
 		NTPClient *_pTimeclient;
 		void timeServerCheck();
 	private:
 		ConfigParam *_pcParam;
 		Credential _wifiCred;
 		CRtc _rtc;
-		ESP8266WebServer *_pServer;
+		//ESP8266WebServer *_pServer;
 		CSysStatus *_psysStat;
 		FS *_pFileSystem;
 		const String *_pNecessaryFiles; //no need to keep if only used in init()

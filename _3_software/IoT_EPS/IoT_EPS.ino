@@ -86,23 +86,19 @@ CpowerPlug class as a static member*/
 //Yes near 342 line : colorLeds[i] = plugs[i].getColor();
 
 
-bool simpleManualMode = false;
-
 CFlasherNanoExp wifiLed;
 /** DONE 13/07/2019 [NECESSARY] check if it is possible to remove Flasher class (CNanoI2CIOExp used)
 if yes remove Flasher.cpp and .h from source files */
 
-
-int mainPowerSwitchState;
-int mainPowerPrevState = 0;
-
 CSwitchNano specialBp;
 CNanoI2CIOExpander nanoioExp; //just for main pow led
+WiFiUDP ntpUDP;
 
+bool simpleManualMode = false;
+int mainPowerSwitchState;
+int mainPowerPrevState = 0;
 CTempo allLeds;
 bool restartTempoLed = false;
-
-WiFiUDP ntpUDP;
 
 
 /** @todo
@@ -117,7 +113,7 @@ void setup(){
     String buildInfo =  String(__DATE__) + " @ " + String(__TIME__);
 
     sysIoteps.init( ntpUDP, &sysStatus, &SPIFFS, &cParam, necessaryFileList, NECESSARY_FILE_NBR
-                    , buildInfo );
+                    , buildInfo, &WiFi, &nanoioExp );
       
     FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
     FastLED.setBrightness( DEFAULT_LED_LUMINOSITY ); //default value for error display
@@ -125,41 +121,7 @@ void setup(){
     ftpSrv.begin("esp8266","esp8266");
     
 	SerialCommand::init();
-    /////////////////////////////////////////////////////////////////////////////
-    //     Config param check                                                  //
-    /////////////////////////////////////////////////////////////////////////////
-    cParam.begin();
-    sysStatus.confFileErr.err( !cParam.ready );
-    DSPL( dPrompt + F("json mac add : ") + cParam.getMacAdd() );
-    DSPL( dPrompt + F("Board Sation MAC add = ") + WiFi.macAddress() );
-    if ( cParam.getMacAdd() == WiFi.macAddress() ) DSPL( dPrompt + "equal add");
-    else {
-        DSPL( dPrompt + "diff add, write to json");
-        cParam.write2Json( "macAdd", WiFi.macAddress() );
-    }
-    DSPL( dPrompt + F("json Soft AP mac add : ") + cParam.getSoftAPMacAdd() );
-    DSPL( dPrompt + F("Board Soft AP MAC add = ") + WiFi.softAPmacAddress() );
-    if ( cParam.getSoftAPMacAdd() == WiFi.softAPmacAddress() ) DSPL( dPrompt + "equal add");
-    else {
-        DSPL( dPrompt + "diff add, write to json");
-        cParam.write2Json( "softAP_macAdd", WiFi.softAPmacAddress() );
-    }
-    /////////////////////////////////////////////////////////////////////////////
-    //     I2C bus check                                                       //
-    ///////////////////////////////////////////////////////////////////////////// 
-    CNano::init();
 
-    int cpt = 1;
-    do{
-        if ( !nanoioExp.test() ){
-            DSPL( dPrompt + "i2cRecov" + " number " + cpt);
-            SerialCommand::i2c_recovery();
-        } else cpt = 9;
-        
-        cpt++;
-    } while (cpt < I2C_RETRIES );
-    if (cpt != 10) sysStatus.nanoErr.err( true );
-    DSPL(dPrompt + F("Nano test ok"));
     /////////////////////////////////////////////////////////////////////////////
     // Watchdog check                                                          //
     ///////////////////////////////////////////////////////////////////////////// 
@@ -239,8 +201,6 @@ void setup(){
     /* done : document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
 
-    
-
     /////////////////////////////////////////////////////////////////////////////
     //     Main power wait ON (the purpose is to maintain Wifi off)            //
     ///////////////////////////////////////////////////////////////////////////// 
@@ -259,6 +219,8 @@ void setup(){
     DSPL( dPrompt + "Main power ON"); 
     mainPowerPrevState = mainPowerSwitchState; // for the loop
     nanoioExp.digitalWrite( MAINPOWLED, 1);
+
+
 // with this way of doing it, we loose LED and other stuffs managment    
     // replace by WIFI_OFF no ?
     /** @todo [OPTION] try  WIFI_OFF when power is off */
@@ -336,9 +298,6 @@ void setup(){
 /////////////////////////////////////////////////////////////////////////////
 bool cycleState = false;
 
-
-
-
 void loop(){
     static unsigned long prevMillis = millis();
 
@@ -346,7 +305,7 @@ void loop(){
 
     DEFDPROMPT("in the loop")
     /////////////////////////////////////////////////////////////////////////////
-    //  CBIT : Continus Built In Test                                          //
+    //  CBIT : Continus Built In Test Start                                    //
     /////////////////////////////////////////////////////////////////////////////
     //I2C
     // 3 CBIT times defined in IoT_ESP.h:
