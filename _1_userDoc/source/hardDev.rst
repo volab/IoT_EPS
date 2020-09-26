@@ -144,14 +144,28 @@ Power ATtiny with 3.3V and don't forget pullup on D3 and on reset (15k)
 .. _`proto shield` : https://www.banggood.com/Arduino-Compatible-328-ProtoShield-Prototype-Expansion-Board-p-926451.html?rmmds=search&cur_warehouse=CN
 .. _`Heliox' Youtube video` : https://www.youtube.com/watch?v=S-oBujsoe-Q&t=247s
 
+**Pinout**
+
+::
+
+    // ATMEL ATTINY85 PINOUTS used for watchdog purpose
+    //                          o-\/-+ 
+    //                  Reset  1|    |8  VCC 
+    //      Factory Reset Pin  2|    |7  I2C-SCL to ESP
+    //      (debug) Serial TX  3|    |6  Reset output to ESP
+    //                    GND  4|    |5  I2C-SDA to ESP
+    //                          +----+ 
+
+
 ATiny85 watchdog test tips
 ============================
 There is a TX debug serial on pin 3  speed is 9600
 
 The name of the project of the Atiny code is ESPEasySlaves.
 
-Only for my eyes the code sits in 0044-Iot_ESP_PPlug\projet\_3_software\etudeDeCode (not pushed in 
-github).
+Only for my eyes the code sits in ::
+
+    0044-Iot_ESP_PPlug\projet\_3_software\etudeDeCode (not pushed in github).
 
 =============================
 MAX1232 integration aborted

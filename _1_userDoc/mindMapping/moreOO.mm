@@ -63,7 +63,7 @@
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="4" RULE="ON_BRANCH_CREATION"/>
+<hook NAME="AutomaticEdgeColor" COUNTER="6" RULE="ON_BRANCH_CREATION"/>
 <node TEXT="CWifiLink" FOLDED="true" POSITION="right" ID="ID_29959505" CREATED="1600199552535" MODIFIED="1601067242633">
 <icon BUILTIN="button_ok"/>
 <edge STYLE="bezier" COLOR="#6666ff" WIDTH="1" DASH="SOLID"/>
@@ -288,7 +288,7 @@
 </node>
 <node TEXT="Le code autour de CRtc, DS3231... n&apos;est pas claire" ID="ID_966103089" CREATED="1600881189918" MODIFIED="1600881215858">
 <node TEXT="méthode static" ID="ID_1964989469" CREATED="1600881215865" MODIFIED="1600881235987"/>
-<node TEXT="Accès direct à DS3231" ID="ID_980583037" CREATED="1600881241092" MODIFIED="1600881363164">
+<node TEXT="Accès direct à DS3231" FOLDED="true" ID="ID_980583037" CREATED="1600881241092" MODIFIED="1600881363164">
 <node TEXT="SerialCommand.cpp &lt;s&gt;" ID="ID_1561886331" CREATED="1600881365253" MODIFIED="1600881381711"/>
 </node>
 </node>
@@ -296,6 +296,7 @@
 <node TEXT="son initi dépend d&apos;une condition sur _sysStat.ntpEnabled" ID="ID_1404125533" CREATED="1600886927794" MODIFIED="1600886963913"/>
 <node TEXT="mais _sysStat.ntpEnabled n&apos;est mis à enable que plus tard par le nouvel objet" ID="ID_1480091118" CREATED="1600886964835" MODIFIED="1600887015873"/>
 <node TEXT="// if ((wifi is on station mode connected))" ID="ID_923932245" CREATED="1601072807163" MODIFIED="1601072812168"/>
+<node TEXT="Icons-master" ID="ID_1790076306" CREATED="1601148318712" MODIFIED="1601148318714" LINK="../../../../../01-materielGraphique/Icons-master/"/>
 <node TEXT="La portion de code time server check se trouvait à l&apos;origine bien après l&apos;initialisation du wifi" ID="ID_238167312" CREATED="1600887068888" MODIFIED="1600887099986"/>
 <node TEXT="Création d&apos;une nouvelle méthode void CSystem::timeServerCheck()" ID="ID_615742355" CREATED="1601067117587" MODIFIED="1601067226441" MAX_WIDTH="10.799999999999999 cm" MIN_WIDTH="10.799999999999999 cm"/>
 </node>
@@ -341,12 +342,57 @@
 <node TEXT="gain faible" ID="ID_120711314" CREATED="1601071394633" MODIFIED="1601071464894" BACKGROUND_COLOR="#ff9933"/>
 </node>
 <node TEXT="configParam" ID="ID_111608862" CREATED="1601071507204" MODIFIED="1601071512869"/>
-<node TEXT="Suppression des ligens de code entre" ID="ID_762607578" CREATED="1601072269633" MODIFIED="1601072281443">
-<node TEXT="BP1 special fonction" ID="ID_236739414" CREATED="1601078105874" MODIFIED="1601078114259"/>
-<node TEXT="file system check" ID="ID_1121116727" CREATED="1601072282265" MODIFIED="1601072286725"/>
+<node TEXT="Suppression des lignes de code entre" FOLDED="true" ID="ID_762607578" CREATED="1601072269633" MODIFIED="1601158031997">
+<node TEXT="BP1 special fonction" ID="ID_236739414" CREATED="1601078105874" MODIFIED="1601153760044">
+<icon BUILTIN="button_ok"/>
+</node>
+<node TEXT="file system check" ID="ID_1121116727" CREATED="1601072282265" MODIFIED="1601153766241">
+<icon BUILTIN="button_ok"/>
+</node>
+<node TEXT="necessary file" FOLDED="true" ID="ID_1676815515" CREATED="1601152559961" MODIFIED="1601153773793">
+<icon BUILTIN="button_ok"/>
+<node TEXT="pb quanfd je passe la liste des fichier à la méthode je perd la notion de tableau donc for s : necessaryFileList ne fonctionne plus." ID="ID_472630223" CREATED="1601152569486" MODIFIED="1601153743319"/>
+</node>
+<node TEXT="I2C" ID="ID_1629697988" CREATED="1601157993569" MODIFIED="1601158019743">
+<icon BUILTIN="button_ok"/>
+</node>
+<node TEXT="cParam check" ID="ID_1370148689" CREATED="1601157998420" MODIFIED="1601158014715">
+<icon BUILTIN="button_ok"/>
+</node>
 <node TEXT="Watchdog check" ID="ID_869677771" CREATED="1601072315882" MODIFIED="1601072319419"/>
 <node TEXT="Dans un premier temps" ID="ID_1989452332" CREATED="1601072322438" MODIFIED="1601072335325"/>
 </node>
+</node>
+</node>
+<node TEXT="FastLed and colorLeds case" FOLDED="true" POSITION="right" ID="ID_862680261" CREATED="1601157933981" MODIFIED="1601157961763">
+<edge COLOR="#00ffff"/>
+<node TEXT="2 utilisations différentes" ID="ID_1675868357" CREATED="1601157964345" MODIFIED="1601157973123">
+<node TEXT="Pour afficher les couleurs des prises" ID="ID_864957885" CREATED="1601158084313" MODIFIED="1601158102120">
+<node TEXT="chaque prise contient sa propre couleur" ID="ID_663641040" CREATED="1601158103324" MODIFIED="1601158115358"/>
+</node>
+<node TEXT="Pour afficher des message d&apos;erreur" ID="ID_555544024" CREATED="1601158117536" MODIFIED="1601158127518"/>
+</node>
+<node TEXT="Il n&apos;y a donc pas de raison que FastLed et colorLeds soient gérés en tant que membre de la classe CPowerPlug" ID="ID_409924776" CREATED="1601158127976" MODIFIED="1601158192423"/>
+</node>
+<node TEXT="bug set time, checkTime" POSITION="right" ID="ID_1898628912" CREATED="1601414500381" MODIFIED="1601414800501" BACKGROUND_COLOR="#ff0000">
+<edge COLOR="#7c0000"/>
+<node TEXT="décallage de 2 heures (heure d&apos;été)" ID="ID_1308221018" CREATED="1601414515942" MODIFIED="1601414530525"/>
+<node TEXT="un set time RS remet la bonne heure &lt;s&gt; bosse en local" ID="ID_1327936379" CREATED="1601414531421" MODIFIED="1601414661358">
+<node TEXT="timeclient variable local" ID="ID_1095333252" CREATED="1601414874563" MODIFIED="1601414934708">
+<node TEXT="avec ntpUDP, NTPSERVER" ID="ID_624749476" CREATED="1601415061619" MODIFIED="1601415077333"/>
+</node>
+<node TEXT="timeClient.begin();" ID="ID_1441691527" CREATED="1601414838926" MODIFIED="1601414844982"/>
+<node TEXT="timeClient.forceUpdate();" ID="ID_1869714379" CREATED="1601414778225" MODIFIED="1601414781951"/>
+<node TEXT="puis CRtc::displayTime" ID="ID_425242676" CREATED="1601415088969" MODIFIED="1601415103446"/>
+</node>
+<node TEXT="&lt;C&gt; check time" ID="ID_232935500" CREATED="1601414628186" MODIFIED="1601414636939">
+<node TEXT="fait appel à CRtc:displayTime" ID="ID_836507036" CREATED="1601414581915" MODIFIED="1601414594079"/>
+<node TEXT="signal un delta de 7200 après remise à l&apos;heure" FOLDED="true" ID="ID_1350392805" CREATED="1601415114042" MODIFIED="1601415133172">
+<node TEXT="mais au deuxième appel" ID="ID_74190710" CREATED="1601415134670" MODIFIED="1601415142796"/>
+</node>
+</node>
+<node TEXT="la loop fait rtc.update();" ID="ID_1786523165" CREATED="1601415371481" MODIFIED="1601415379819">
+<node TEXT="A suivre..." ID="ID_363011939" CREATED="1601415382326" MODIFIED="1601415407851" BACKGROUND_COLOR="#ffff00"/>
 </node>
 </node>
 </node>
