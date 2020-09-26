@@ -166,47 +166,26 @@ void setup(){
     // int with a maximum memory value (in bytes) equal to the maximum available 
     // for the int type variables
     
-
-
-    /* DONE test if CNano::initOk = true - if not don't start anything - this is fatal error*/
-    plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CRGB::Red
-                    , HTML_JSON_REDPLUGNAME, CPowerPlug::modeId("MANUEL") );
-    // plugs[0].setColor(  );
-    // plugs[0].setPlugName(  );
-    // if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[0].readFromJson( true ) );
-    // else  plugs[0].handleBpLongClic(); 
-    //change due to clone mode bug
     /** todo : no ! It is not a user config  [OPTION] add pin, pinLed and color to json file*/
     /** todo : no it should stay  as a #define 
     [NECESSARY for 2 and 1 plugs strip] + the number of plug to make this sequence dynamic*/
-    
+
+    /* DONE test if CNano::initOk = true - if not don't start anything - this is fatal error*/
+    plugs[0].begin( PLUG0PIN, PLUG0_ONOFFLEDPIN, BP0, CRGB::Red
+                    , HTML_JSON_REDPLUGNAME, CPowerPlug::modeId("MANUEL") );   
     plugs[1].begin( PLUG1PIN, PLUG1_ONOFFLEDPIN, BP1, CRGB::Green
-                    , HTML_JSON_GREENPLUGNAME, CPowerPlug::modeId("MANUEL") );
-    //plugs[1].setColor( CRGB::Green );
-    // plugs[1].setPlugName( HTML_JSON_GREENPLUGNAME );
-    // if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[1].readFromJson( true ) );
-    // else  plugs[1].handleBpLongClic();
-    
+                    , HTML_JSON_GREENPLUGNAME, CPowerPlug::modeId("MANUEL") );   
     plugs[2].begin( PLUG2PIN, PLUG2_ONOFFLEDPIN, BP2, CRGB::Blue
                     , HTML_JSON_BLUEPLUGNAME, CPowerPlug::modeId("MANUEL") );
-    // plugs[2].setColor( CRGB::Blue );
-    // plugs[2].setPlugName( HTML_JSON_BLUEPLUGNAME );
-    // if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[2].readFromJson( true ) );
-    // else  plugs[2].handleBpLongClic();
-    
-    // plugs[2].setColor( CRGB::Purple );
     plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, BP3, CRGB::Yellow
                     , HTML_JSON_YELLOWPLUGNAME, CPowerPlug::modeId("MANUEL") );
-    // plugs[3].setColor( CRGB::Yellow );
-    // plugs[3].setPlugName( HTML_JSON_YELLOWPLUGNAME );
-    
+
     for (int i = 0; i < NBRPLUGS; i++ ){
         if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[i].readFromJson( true ) );
         else  plugs[i].handleBpLongClic(); //force OFF is main power off   
     }
-      
-	
-    /* done : document simpleManualMode with no wifi at all */
+      	
+    /* DONE : document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
 
     /////////////////////////////////////////////////////////////////////////////
@@ -234,7 +213,6 @@ void setup(){
     /** @todo [OPTION] try  WIFI_OFF when power is off */
     for ( int i = 0; i < NBRPLUGS ; i++ ){
         colorLeds[i] = plugs[i].getColor();
-        /** @todo [OPTION]creat a pointer in CPowerPlug to one position off colorLeds*/
         plugs[i].setMainPow( mainPowerSwitchState );
     }
     FastLED.setBrightness( cParam.getLedsLuminosity() );
@@ -274,6 +252,8 @@ void setup(){
     }
 
     sysStatus.initCBITTimer();
+
+    //Check internet access
 
     if ( (WiFi.getMode() == WIFI_STA || WiFi.getMode() == WIFI_AP_STA) 
             && WiFi.status() == WL_CONNECTED ){
@@ -497,33 +477,3 @@ void loop(){
 
     yield();
 }
-
-
-/////////////////////////////////////////////////////////////////////////////
-//  Simple local functions                                                 //
-/////////////////////////////////////////////////////////////////////////////
-
-/** 
- @fn void simpleManualModeChaser()
- @brief Flash 4 colored LEDs in PURPLE 200ms/200ms 20 times and restaure colors to indicate
- Simple Manual mode activation
- @return no return value and no parameter
-*/
-// void simpleManualModeChaser(){
-// 	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
-// 	FastLED.show();
-// 	delay(500);
-	
-// 	for (int i=0; i < 20; i++){
-// 		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
-// 		FastLED.show();
-// 		delay(200);	
-// 		for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Purple;
-// 		FastLED.show();
-// 		delay(200);				
-// 	}
-	
-// 	//restaure Color Leds state
-// 	for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = plugs[i].getColor();    
-// 	FastLED.show();
-// }

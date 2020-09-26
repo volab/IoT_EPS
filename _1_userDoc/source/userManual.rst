@@ -34,7 +34,7 @@ WIFI connections
 **Station mode** : is available after first configuration and credential settings. In this mode, 
 human interface is mode responsive due to boostrap CDN usage.
 
-In station mode user can address all ist iot plug from its internet browser of its Mac, PC 
+In station mode, user can address all its iot plugs from its internet browser of its Mac, PC 
 or Android device.
 
 
@@ -49,6 +49,13 @@ At power up (wall plug - not by main power switch):
  - red push button : switch to very simple mode (without web interface)
  - green push button : restaure json file.
 
+All the time Special PB + a plugs PB indicates the mode off the plug
+
+- 1 flash <=> manual
+- 2 flashes <=> timer
+- 3 flashes <=> cycle
+- 4 flashes <=> week mode
+
 ================================
 Advanced user
 ================================
@@ -61,7 +68,7 @@ File delete : use seial commande <d _filename>
 
 FTP server dosen't work very well
 
-In csysstat.cpp et csysstat.h files, variable _forceSystemStartOnFatalError allow to desable the
+In csysstat.cpp et csysstat.h files, variable _forceSystemStartOnFatalError allow to disable the
 sabordage behavior.
 
 Special html pages
