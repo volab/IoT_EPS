@@ -157,7 +157,7 @@ it is used by::
    CSystem class a _rtc member
       should be a pointer on the global variable => used on 5 lignes only
 
-
+After OO refactoring, it is CSystem that initialize rtc instance.
 
 ====================================================================================================
 Weblinks

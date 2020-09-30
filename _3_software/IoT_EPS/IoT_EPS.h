@@ -78,8 +78,8 @@
 #include "cswitchnano.h"
 
 #include "cattiny_i2C_watchdog.h"
-#define RTC_UPDATE_PERIOD 15 //every 15mn
-// #define RTC_UPDATE_PERIOD 1 //every 1
+// #define RTC_UPDATE_PERIOD 15 //every 15mn
+#define RTC_UPDATE_PERIOD 1 //every 1
 
 #define RTC_ALLOWED_TIME_ERROR 20//seconds
 #define I2C_CBIT_TEST_PERIOD 60 * 1000 //ms it smells millis() ;-)

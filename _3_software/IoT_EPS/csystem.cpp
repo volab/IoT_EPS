@@ -114,6 +114,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     /////////////////////////////////////////////////////////////////////////////
 
     _pTimeclient = new NTPClient(ntpUDP, NTPSERVER);
+    _pTimeclient->setTimeOffset( OFFSET_HEURE * SECPERHOURS );
     _rtc.begin( _pTimeclient );
     _psysStat->rtcErr.err( _rtc.initErr );
     if (_rtc.lostPower()){

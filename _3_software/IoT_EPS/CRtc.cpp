@@ -48,6 +48,8 @@ bool CRtc::begin( NTPClient *p_tc ){
 */
 
 void CRtc::displayTime(){ //static !
+    unsigned long NTPTime;
+
 	DEFDPROMPT( "DS3231 Time")
     DateTime now = RTC_DS3231::now();
     String sDate = "";
@@ -58,6 +60,12 @@ void CRtc::displayTime(){ //static !
     unsigned long RTCTime = RTC_DS3231::now().unixtime();
     DSPL( dPrompt + "unix local time : " + RTCTime );
     if ( p_timeClient != nullptr ){
+        NTPTime = p_timeClient->getEpochTime();
+        DSPL( dPrompt + "NTP time : " + String(p_timeClient->getEpochTime() ) );
+        DSPL( dPrompt + "time error avant force update: " + String( abs(NTPTime-RTCTime) ) );    
+    }
+
+    if ( p_timeClient != nullptr ){
         sysStatus.ntpErr.err( !p_timeClient->forceUpdate() );
     } else {
         DSPL( dPrompt + "pointeur p_timeClient non initialisé ");
@@ -66,7 +74,7 @@ void CRtc::displayTime(){ //static !
     
     if ( sysStatus.ntpErr.isErr() ) return ;
     //unsigned long NTPTime = 0;
-    unsigned long NTPTime = p_timeClient->getEpochTime();
+    NTPTime = p_timeClient->getEpochTime();
     DSPL( dPrompt + "NTP time : " + String(p_timeClient->getEpochTime() ) );
     DSPL( dPrompt + "time error : " + String( abs(NTPTime-RTCTime) ) );
     //DSPL( dPrompt + "Next time check" + String(millis() - lastMillis ) );

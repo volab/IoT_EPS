@@ -289,7 +289,9 @@ bool cycleState = false;
 void loop(){
     static unsigned long prevMillis = millis();
 
-    CRtc rtc;
+    //CRtc rtc; // pourquoi une nouvelle instance locale
+    //Commented on 30/09/2020 to force global variable rtc usage on top of this file
+    //global instance is initialized by CSystem whith a NTP server pointer
 
     DEFDPROMPT("in the loop")
     /////////////////////////////////////////////////////////////////////////////
