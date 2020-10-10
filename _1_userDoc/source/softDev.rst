@@ -792,6 +792,15 @@ NTP server configuration ? not configurable for now only in IoT_EPS.h
 
 RTC on error strategy, No RTC component
 
+====================================================================================================
+I2C address
+====================================================================================================
+- watchdog : 0x26 (defined in cattiny_i2C_watchdog.h)
+- ioexpender : 0x58 (ored with D13) - defined in the ARDUINO NANO code
+- DS3231 : 0x68 defined in RTClib.h
+- +EEPROM on DS3231 1010011 normaly 0x53 base add is 0x50 and I have solder A2 slot
+
+There is 3 pull-up on the board.
 
 
 ================================
@@ -947,24 +956,48 @@ Used library
 ========================
 last update : 02/12/2018
 
-10 libs:
+13 libs:
 
-- Utilisation de la bibliothèque ESP8266WiFi version 1.0 
-- Utilisation de la bibliothèque ESP8266WebServer version 1.0 
-- Utilisation de la bibliothèque ArduinoJson version 5.13.2
-- Utilisation de la bibliothèque Wire version 1.0 
-- Utilisation de la bibliothèque RTClib version 1.2.0
-- Utilisation de la bibliothèque ESP8266mDNS prise
-- Utilisation de la bibliothèque Adafruit_MCP23017_Arduino_Library version 1.0.3 
-- Utilisation de la bibliothèque FastLED version 3.2.1 
-- Utilisation de la bibliothèque nanoI2CIOExpLib version 3.1
-- Utilisation de la bibliothèque NTPClient version 3.1.0
+- ESP8266WiFi version 1.0
+- ESP8266WebServer version 1.0
+- ArduinoJson version 5.13.2
+- Wire version 1.0
+- RTClib version 1.2.0
+- ESP8266mDNS prise
+- FastLED version 3.3.3
+- nanoI2CIOExpLib version 3.2
+- NTPClient version 3.1.0
+- Adafruit_GFX_Library version 1.1.8
+- Adafruit_SSD1306 version 1.1.2
+- SPI version 1.0
+- ESP8266HTTPClient version 1.1
 
-9 libs are official Arduino libs and one lib is spéciale:
-
-`nanoI2CIOExpLib`_
+12 libs are official Arduino libs and one lib is a special one: `nanoI2CIOExpLib`_
  
 .. _`nanoI2CIOExpLib` : https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc
+
+====================================================================================================
+OLED Screen integration
+====================================================================================================
+0.96" `128X64 I2C SSD1306 on Aliexpress`_
+
+.. _`128X64 I2C SSD1306 on Aliexpress` : https://fr.aliexpress.com/item/33008480580.html?spm=a2g0o.cart.0.0.5d273c007sJ7KR&mp=1
+
+Adafruitlibrary usage.
+
+Add I2C 0x78 on the board (7 or 8 bits add ?)
+
+The right add is 0x3C
+
+There is a pdf documentation for the GFX lib but no doc for special method in SSD13206.
+
+setTextSize : ???
+
+1 is default 6x8, 2 is 12x16, 3 is 18x24, etc (in adafruit source code)
+
+Size 1 : 8 lign of 21 char
+Size 2 : 4 lign of 10 char
+Size 3 : 2 lign of 5 char
 
 ===============================
 Eccueils et autres difficultés

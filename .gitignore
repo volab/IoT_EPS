@@ -18,6 +18,7 @@ _6_*/
 _7_*/
 **/99-*/
 *_v/
+*_build/
 __pycache__
 
 
@@ -86,3 +87,4 @@ Thumbs.db
 /_2_modelisation/*.stl
 /_3_software/codeIsoleAut2020
 /_3_software/copieEcranSortieMonitor
+/_1_userDoc/source/_build

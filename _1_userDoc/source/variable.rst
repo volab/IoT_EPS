@@ -114,21 +114,17 @@ CSystem class
 ====================================================================================================
 sysIoteps of **CSystem** class. This class should surround all system servitudes.
 
-Is it possible and/or necessary to hold in this class the following features:
+It should be possible and/or necessary to hold in this class the following features:
 
 - FtpServer ftpSrv;
 - CSystem sysIoteps;
 - CServerWeb webServeur;
 - CRtc rtc;
-
 - void wifiLedFlash( int speed, int count ); //defined at the end of the present file
-
 - ConfigParam cParam;
 - Credential wifiCred;
 - CPowerPlug \*plugs;
-
 - CRGB colorLeds[NUM_LEDS];
-
 - bool simpleManualMode = false;
 - CFlasherNanoExp wifiLed;
 - int mainPowerSwitchState;
@@ -158,6 +154,15 @@ it is used by::
       should be a pointer on the global variable => used on 5 lignes only
 
 After OO refactoring, it is CSystem that initialize rtc instance.
+
+FastLed and colorLeds case
+====================================================================================================
+2 different usages:
+
+- to display plugs colors each pllug holds its own color in its _couleur attirbut
+- to display error alertes
+
+So there is no reason for FastLed and colorLeds to be managed as a member of the CPowerPlug class.
 
 ====================================================================================================
 Weblinks

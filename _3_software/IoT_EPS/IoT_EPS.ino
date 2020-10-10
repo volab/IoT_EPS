@@ -73,6 +73,16 @@ CSystem sysIoteps;
 CServerWeb webServeur;
 CWifiLink wifilnk;
 
+
+
+Adafruit_SSD1306 display(-1);
+#if (SSD1306_LCDHEIGHT != 64)
+#warning SSD1306_LCDHEIGHT
+	
+#error("Height incorrect, please fix Adafruit_SSD1306.h!");
+#endif
+
+
 CRtc rtc;
 
 ConfigParam cParam; /**< @brief to hold the configuration parameters*/
@@ -100,7 +110,6 @@ int mainPowerPrevState = 0;
 CTempo allLeds;
 bool restartTempoLed = false;
 
-
 /** @todo
  - [OPTION 1] see for add colorLEd array in the class CPowerPlug as a static member
  - [NECESSARY for 1 and 2 plug strip] convert colorLeds array in dynamic version as for plugs array */
@@ -109,11 +118,14 @@ void setup(){
     DEBUGPORT.begin(DEBUGSPEED);
     DEFDPROMPT("setUp") // define dPrompt String
 
+    display.begin(SSD1306_SWITCHCAPVCC, OLED_I2C_ADD );
+    display.clearDisplay();
+
     int timeZone = OFFSET_HEURE;
     String buildInfo =  String(__DATE__) + " @ " + String(__TIME__);
 
     sysIoteps.init( ntpUDP, &sysStatus, &SPIFFS, &cParam, necessaryFileList, NECESSARY_FILE_NBR
-                    , buildInfo, &WiFi, &nanoioExp );
+                    , buildInfo, &WiFi, &nanoioExp, &display );
       
     FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
     FastLED.setBrightness( DEFAULT_LED_LUMINOSITY ); //default value for error display
@@ -126,12 +138,16 @@ void setup(){
     // Watchdog check                                                          //
     ///////////////////////////////////////////////////////////////////////////// 
     watchdog.begin();
-    DSP( dPrompt + F("watchdog test ") );
-    sysStatus.watchdogErr.err( !watchdog.test() ); 
-    DSPL( "OK");
+    DSPL( dPrompt + F("watchdog test ") );
+    sysStatus.watchdogErr.err( !watchdog.test() );
+    if ( !sysStatus.watchdogErr.isErr() ) DSPL( "watchdog OK"); //normaly if error we did not reach
+    //this point unless _forceSystemStartOnFatalError is true for debug
     watchdog.setTimeout( cParam.getSTAMaxRetries() );
     watchdog.setRefreshPeriod( cParam.getSTAMaxRetries()/3 );  
     DSPL( dPrompt + F("watchdog set to ") + String( cParam.getSTAMaxRetries() ) + F("s.") );
+    //oled message
+    display.println("* watchdog ok");
+    display.display();
 
     /////////////////////////////////////////////////////////////////////////////
     //     Main power first check                                              //

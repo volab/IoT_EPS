@@ -1,9 +1,9 @@
 <map version="freeplane 1.8.0">
 <!--To view this file, download free mind mapping software Freeplane from http://freeplane.sourceforge.net -->
-<node TEXT="more OO" FOLDED="false" ID="ID_180563910" CREATED="1600199457979" MODIFIED="1600288551846" STYLE="oval">
+<node TEXT="more OO" FOLDED="false" ID="ID_180563910" CREATED="1600199457979" MODIFIED="1602011956714" STYLE="oval">
 <font SIZE="18"/>
 <hook NAME="MapStyle" zoom="1.65">
-    <properties fit_to_viewport="false" show_icon_for_attributes="true" show_note_icons="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff"/>
+    <properties show_icon_for_attributes="true" fit_to_viewport="false" show_note_icons="true" edgeColorConfiguration="#808080ff,#ff0000ff,#0000ffff,#00ff00ff,#ff00ffff,#00ffffff,#7c0000ff,#00007cff,#007c00ff,#7c007cff,#007c7cff,#7c7c00ff"/>
 
 <map_styles>
 <stylenode LOCALIZED_TEXT="styles.root_node" STYLE="oval" UNIFORM_SHAPE="true" VGAP_QUANTITY="24.0 pt">
@@ -63,9 +63,8 @@
 </stylenode>
 </map_styles>
 </hook>
-<hook NAME="AutomaticEdgeColor" COUNTER="6" RULE="ON_BRANCH_CREATION"/>
-<node TEXT="CWifiLink" FOLDED="true" POSITION="right" ID="ID_29959505" CREATED="1600199552535" MODIFIED="1601067242633">
-<icon BUILTIN="button_ok"/>
+<hook NAME="AutomaticEdgeColor" COUNTER="8" RULE="ON_BRANCH_CREATION"/>
+<node TEXT="CWifiLink" FOLDED="true" POSITION="right" ID="ID_29959505" CREATED="1600199552535" MODIFIED="1602011686438">
 <edge STYLE="bezier" COLOR="#6666ff" WIDTH="1" DASH="SOLID"/>
 <node TEXT="but" ID="ID_797550368" CREATED="1600203162931" MODIFIED="1600203167667">
 <node TEXT="principalement : remplacer le bloc linéaire de code compris entre les lignes 361 et 491" ID="ID_172563353" CREATED="1600203221009" MODIFIED="1600284781159" STYLE="bubble"/>
@@ -301,7 +300,8 @@
 <node TEXT="Création d&apos;une nouvelle méthode void CSystem::timeServerCheck()" ID="ID_615742355" CREATED="1601067117587" MODIFIED="1601067226441" MAX_WIDTH="10.799999999999999 cm" MIN_WIDTH="10.799999999999999 cm"/>
 </node>
 </node>
-<node TEXT="CSystem class" POSITION="right" ID="ID_832846836" CREATED="1601070236532" MODIFIED="1601070249741">
+<node TEXT="CSystem class" FOLDED="true" POSITION="right" ID="ID_832846836" CREATED="1601070236532" MODIFIED="1602011968985">
+<icon BUILTIN="button_ok"/>
 <edge COLOR="#ff00ff"/>
 <node TEXT="the deal" ID="ID_259722028" CREATED="1601070252924" MODIFIED="1601070257448">
 <node TEXT="watchdog" ID="ID_74646402" CREATED="1601070519517" MODIFIED="1601070528142">
@@ -342,7 +342,10 @@
 <node TEXT="gain faible" ID="ID_120711314" CREATED="1601071394633" MODIFIED="1601071464894" BACKGROUND_COLOR="#ff9933"/>
 </node>
 <node TEXT="configParam" ID="ID_111608862" CREATED="1601071507204" MODIFIED="1601071512869"/>
-<node TEXT="Suppression des lignes de code entre" FOLDED="true" ID="ID_762607578" CREATED="1601072269633" MODIFIED="1601158031997">
+</node>
+<node TEXT="Suppression des lignes de code entre" ID="ID_762607578" CREATED="1601072269633" MODIFIED="1602011936274">
+<icon BUILTIN="button_ok"/>
+<hook NAME="accessories/plugins/HierarchicalIcons2.properties"/>
 <node TEXT="BP1 special fonction" ID="ID_236739414" CREATED="1601078105874" MODIFIED="1601153760044">
 <icon BUILTIN="button_ok"/>
 </node>
@@ -359,12 +362,24 @@
 <node TEXT="cParam check" ID="ID_1370148689" CREATED="1601157998420" MODIFIED="1601158014715">
 <icon BUILTIN="button_ok"/>
 </node>
-<node TEXT="Watchdog check" ID="ID_869677771" CREATED="1601072315882" MODIFIED="1601072319419"/>
+<node TEXT="Watchdog check" ID="ID_869677771" CREATED="1601072315882" MODIFIED="1602011913006">
+<icon BUILTIN="button_ok"/>
+</node>
 <node TEXT="Dans un premier temps" ID="ID_1989452332" CREATED="1601072322438" MODIFIED="1601072335325"/>
 </node>
 </node>
+<node TEXT="Légende des symboles" LOCALIZED_STYLE_REF="defaultstyle.floating" POSITION="right" ID="ID_1661520587" CREATED="1602011509748" MODIFIED="1602011956714" HGAP_QUANTITY="-218.9999934732916 pt" VSHIFT_QUANTITY="-77.24999769777065 pt">
+<hook NAME="FreeNode"/>
+<node TEXT="fini" ID="ID_518368506" CREATED="1602011569432" MODIFIED="1602011581686">
+<icon BUILTIN="button_ok"/>
 </node>
-<node TEXT="FastLed and colorLeds case" FOLDED="true" POSITION="right" ID="ID_862680261" CREATED="1601157933981" MODIFIED="1601157961763">
+<node TEXT="intégré à la doc" ID="ID_1174903288" CREATED="1602011582164" MODIFIED="1602011734465">
+<icon BUILTIN="emoji-1F44D"/>
+</node>
+</node>
+<node TEXT="FastLed and colorLeds case" FOLDED="true" POSITION="right" ID="ID_862680261" CREATED="1601157933981" MODIFIED="1602011875534">
+<icon BUILTIN="button_ok"/>
+<icon BUILTIN="emoji-1F44D"/>
 <edge COLOR="#00ffff"/>
 <node TEXT="2 utilisations différentes" ID="ID_1675868357" CREATED="1601157964345" MODIFIED="1601157973123">
 <node TEXT="Pour afficher les couleurs des prises" ID="ID_864957885" CREATED="1601158084313" MODIFIED="1601158102120">
@@ -374,8 +389,10 @@
 </node>
 <node TEXT="Il n&apos;y a donc pas de raison que FastLed et colorLeds soient gérés en tant que membre de la classe CPowerPlug" ID="ID_409924776" CREATED="1601158127976" MODIFIED="1601158192423"/>
 </node>
-<node TEXT="bug set time, checkTime" POSITION="right" ID="ID_1898628912" CREATED="1601414500381" MODIFIED="1601414800501" BACKGROUND_COLOR="#ff0000">
+<node TEXT="bug set time, checkTime" FOLDED="true" POSITION="right" ID="ID_1898628912" CREATED="1601414500381" MODIFIED="1601743609215" BACKGROUND_COLOR="#ff0000">
+<icon BUILTIN="button_ok"/>
 <edge COLOR="#7c0000"/>
+<node TEXT="branche bugHeure d&apos;été" ID="ID_952050739" CREATED="1601745507226" MODIFIED="1601745516797"/>
 <node TEXT="décallage de 2 heures (heure d&apos;été)" ID="ID_1308221018" CREATED="1601414515942" MODIFIED="1601414530525"/>
 <node TEXT="un set time RS remet la bonne heure &lt;s&gt; bosse en local" ID="ID_1327936379" CREATED="1601414531421" MODIFIED="1601414661358">
 <node TEXT="timeclient variable local" ID="ID_1095333252" CREATED="1601414874563" MODIFIED="1601414934708">
@@ -392,8 +409,70 @@
 </node>
 </node>
 <node TEXT="la loop fait rtc.update();" ID="ID_1786523165" CREATED="1601415371481" MODIFIED="1601415379819">
-<node TEXT="A suivre..." ID="ID_363011939" CREATED="1601415382326" MODIFIED="1601415407851" BACKGROUND_COLOR="#ffff00"/>
+<node TEXT="L&apos;instance de rtc de la boucle loop supprimée car mail initialisée" ID="ID_394561401" CREATED="1601745523652" MODIFIED="1601745549769"/>
 </node>
+</node>
+<node TEXT="OLED" POSITION="right" ID="ID_1520189184" CREATED="1601746163399" MODIFIED="1601746167240">
+<edge COLOR="#00007c"/>
+<node TEXT="beaucoup de méthode dans la lib Adafruit GFX" ID="ID_1357010096" CREATED="1601746169019" MODIFIED="1601746194995"/>
+<node TEXT="dessiner un logo" ID="ID_1652695772" CREATED="1601746283576" MODIFIED="1601746289393"/>
+<node TEXT="le logo adafruit est directement déclaré dans la lib" ID="ID_186815060" CREATED="1601746290008" MODIFIED="1601746389046">
+<node TEXT="LCDWIDTH = 128" ID="ID_737583629" CREATED="1601746334235" MODIFIED="1601746344917">
+<node TEXT="un bit = 1 pixel" ID="ID_618503113" CREATED="1601746395753" MODIFIED="1601746404940"/>
+<node TEXT="16 octets par ligne" ID="ID_683332752" CREATED="1601746405650" MODIFIED="1601746428419"/>
+</node>
+<node TEXT="LCDHIGHT = 64" ID="ID_189887350" CREATED="1601746345619" MODIFIED="1601746364520"/>
+<node TEXT="128*64/8" ID="ID_1118588185" CREATED="1601752060153" MODIFIED="1601752203356">
+<node TEXT="1024o" ID="ID_1123194808" CREATED="1601752205559" MODIFIED="1601752209400"/>
+</node>
+</node>
+<node TEXT="Question : y-a-t-il des outils pour dessinner un tel buffer" ID="ID_1291264421" CREATED="1601746457926" MODIFIED="1601746478741">
+<node TEXT="oui: trouvé sur le site Adafruti LCD assist" ID="ID_1171850549" CREATED="1601750782615" MODIFIED="1601750795895">
+<node TEXT="dl dans VoRoboticsAsso\04-Matos\PetitMatosLabo\ECRANS" ID="ID_1796503828" CREATED="1601750914369" MODIFIED="1601750957976"/>
+<node TEXT="HL : HorizontalLittle endian" ID="ID_1690871948" CREATED="1601754583199" MODIFIED="1601757380716"/>
+<node ID="ID_240351015" CREATED="1602012967797" MODIFIED="1602012967797" LINK="http://en.radzio.dxp.pl/bitmap_converter/"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <a href="http://en.radzio.dxp.pl/bitmap_converter/">http://en.radzio.dxp.pl/bitmap_converter/</a>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+<node TEXT="outil en ligne" ID="ID_599250197" CREATED="1602012844021" MODIFIED="1602012853345">
+<node ID="ID_1596119318" CREATED="1602012860095" MODIFIED="1602012860095" LINK="http://javl.github.io/image2cpp/"><richcontent TYPE="NODE">
+
+<html>
+  <head>
+    
+  </head>
+  <body>
+    <a href="http://javl.github.io/image2cpp/">http://javl.github.io/image2cpp/</a>
+  </body>
+</html>
+</richcontent>
+</node>
+</node>
+</node>
+<node TEXT="Todo : remove Adafruit Logo from lib 1kB" ID="ID_356192058" CREATED="1601757381821" MODIFIED="1602013074324">
+<icon BUILTIN="emoji-1F44E"/>
+<node TEXT="peut-être pas une bonne idée : réserve le buffer utilisé dans le reste de la lib" ID="ID_1168414494" CREATED="1602012029604" MODIFIED="1602012052422"/>
+</node>
+</node>
+<node TEXT="&lt;Volab setUp &gt; watchdog test &lt;Volab System error handler &gt; watchdog error" POSITION="right" ID="ID_926028215" CREATED="1602018504846" MODIFIED="1602019987651" MAX_WIDTH="12.799999999999999 cm" MIN_WIDTH="12.799999999999999 cm">
+<icon BUILTIN="emoji-1F44E"/>
+<edge COLOR="#007c00"/>
+<node TEXT="Visiblement le WD ne répond plus" ID="ID_263885838" CREATED="1602018661645" MODIFIED="1602018672378"/>
+<node TEXT="Détecté avec I2C scan pas de composant en 0x26" ID="ID_659505389" CREATED="1602018672914" MODIFIED="1602018696663"/>
+<node TEXT="Coller un RS dessus et voir si il y a de la vie !" ID="ID_597873432" CREATED="1602018936455" MODIFIED="1602018949889">
+<node TEXT="Fait et ça vie sauf qu&apos;il ne donne pas son addresse I2C mais juste boot" ID="ID_1141395995" CREATED="1602020032309" MODIFIED="1602020054883"/>
+<node TEXT="Affichage RC x I y" ID="ID_1677655988" CREATED="1602020097222" MODIFIED="1602020219342"/>
+</node>
+<node TEXT="Fausse alerte" ID="ID_132836310" CREATED="1602019990620" MODIFIED="1602019996191"/>
 </node>
 </node>
 </map>

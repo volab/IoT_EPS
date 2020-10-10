@@ -49,10 +49,28 @@
 #include <WiFiUdp.h> 
 #define SECPERHOURS (int)3600
 
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
 // #include <ESP8266Ping.h>
 // #include <Pinger.h>
 
+#define OLED_I2C_ADD 0x3C
+/*
+    Scanning (SDA : SCL) - GPIO4 : GPIO5 - 
+    I2C device found at address 0x26  !
+    I2C device found at address 0x3C  !
+    I2C device found at address 0x53  !
+    I2C device found at address 0x58  !
+    I2C device found at address 0x68  !
+    
 
+- watchdog : 0x26 (defined in cattiny_i2C_watchdog.h)
+- ioexpender : 0x58 (ored with D13) - defined in the ARDUINO NANO code
+- DS3231 : 0x68 defined in RTClib.h
+- +EEPROM on DS3231 1010011 normaly 0x53 base add is 0x50 and I have solder A2 slot
+there is 3 pull-up on the board.
+*/
 
 #define CONFIGFILENAME "/config4.json"
 #define DEFCONFIGFILENAME "/defConfig.json"
@@ -71,6 +89,7 @@
 //#include "serverFunction.h"
 #include "csysstat.h"
 #include "CWifiLink.h"
+
 
 #include "cEpsStrTime.h"
 // #include "Flasher.h"

@@ -8,7 +8,7 @@
 */
 
 #include "IoT_EPS.h"
-
+#include "oledMessages.h"
 
 #ifndef CSYSTEM_H
 #define CSYSTEM_H
@@ -24,7 +24,7 @@ class CSystem
 	public:
 		void init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
 					const String *necessaryFileList, int necessaryFileNbr, String buildInfo
-					, ESP8266WiFiClass *wifi, CNanoI2CIOExpander *pNanoExp  );
+					, ESP8266WiFiClass *wifi, CNanoI2CIOExpander *pNanoExp, Adafruit_SSD1306 *pdisplay  );
 		NTPClient *_pTimeclient;
 		void timeServerCheck();
 	private:
@@ -34,7 +34,10 @@ class CSystem
 		//ESP8266WebServer *_pServer;
 		CSysStatus *_psysStat;
 		FS *_pFileSystem;
+		Adafruit_SSD1306 *_pDisplay;
 		const String *_pNecessaryFiles; //no need to keep if only used in init()
+		static const unsigned char logoLab[1024];
+		void _oledStartMessagesManager();
 		
 
 };
