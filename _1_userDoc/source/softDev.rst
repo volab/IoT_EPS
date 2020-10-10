@@ -2,16 +2,22 @@
 IOT Electrical Power Strip Software development documentation
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+.. toctree::
+   :maxdepth: 2
+   :caption: Others related pages
+   :titlesonly:
+
+   firstboot
+   plugmodes
+   configAndParam
+   wifiwebinternet   
+   curentSensing
+   variable
+
 .. contents:: Table of Contents
     :backlinks: top
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents
-   :titlesonly:
-   
-   curentSensing
-   variable
+
 
 =============================
 Source code documentation
@@ -119,30 +125,6 @@ Naming convention
 
 Référence : config4.json
 
-====================================
-To be added to config json file
-====================================
-
-To be added 30/30/2019
- - firstBoot ON/OFF                                                                         DONE
- - Power led behavior versus economy mode (include or exclude) ON/OFF  powerLedEconomyMode  DONE
- - change/separate wifi Station param and soft app                                          DONE
- - add wifiSoftApSsid, wifiSoftApPass SSid are in credentials                               DONE
- - for C code, if wifiSoftApSsid or wifiSoftApPass are empty : creatIt (see @firstBoot)     
- - startInApMode : ON/OFF                                                                   DONE
- - remove wifimode                                                                          DONE
- - change IP in softAP_IP and Port in softAP_port                                           DONE
- - change name of the file to config4.json                                                  DONE
- 
-To be added 09/05/2019
- - IP add in soft AP mode to display it (what the utility ? to configure it)                DONE
- - mac add to display it                                                                    DONE
- - add ip in mode Station : to configure it if we are not in DHCP mode                      DONE
- - DHCP_mode : On or OFF                                                                    DONE
- - gateway add                                                                              DONE
-
- To be added 9/7/2019:
-  - time zone
 
 ====================================
 Remember
@@ -151,221 +133,6 @@ Remember
 #. see javascript http request to perform DELETE: obsolete
 
 
-.. index::
-    single: First boot
-
-====================================
-First boot configuration
-====================================
-
-@first boot :
- - mode AP connection and display config page to set SSID password and server name
- - softAP ssid <32
- - WARNING pass in AP mode >8 <63
- - propose a unic ID for server name to the user
- - explain that it will possible to change after
- 
-
-Restaure factory parameters 
-=====================================
-firstBoot after check box in config page.
-
-Restaure defConfig.json
- 
- 
-What are hypothesis, when boot for the first time ?
-=====================================================
-Is a config json exist ? What is inside it ? Yes and it contain FirstBoot ON and other stuff.
-
-Same questions with credentials ? No, we generate it
-
-We consider that the user upload sketch and data directory.
-
-When consider the first boot is OFF (end of first boot procedure) ? 
-When we receive the following form:
-
- - station mode or AP choice
- - SSID et pass du mode AP (WARNING provide diff SSID if you own more then one PowerStrip)
- - SSID and pass of station mode [ optional if user wish stay always in AP mode ]
- - propose default same hostname and default SSID AP build with mac add:
-   IOT_EPS_HHHH
-
-First boot process
-=========================
-#. check firstBoot param in config.json if ON
-#. start in AP mode with page firstboot.html only if main power is on
-#. if firstboot param is ON or TRY, we start the server with a special index page (firstboot.htm)
-#. server.on( /firstBoot, firstBootHandler) - who send /firstboot
-#. in firstBootHandler check param, write credential, set firstBoot param to "trySation" if needed
-#. restart ESP
-#. if Station is ok firstBoot is ended, set firstBoot param = off
-#. if station ko reload firstboot page with alert
-
-/fisrtboot page is send by firstboot.html page witch is register in place off index.html normale
-page when we received /
-
-Behavior when user move EPS from one physical site to another
-===============================================================
-It is not a first boot
-
-EPS will search its WiFi station and will not find it so it restart in AP mode then user can acces
-to the config special page change SSID and password.
-
-.. index::
-    single: Configuration
-
-===================================
-Configuration parameter
-===================================
- - add IP of AP mode
- - EPS name (host name)
- - Plugs names
- - Station SSID
- - Station mode passwd
- - Soft AP SSID and password
-
-All json general section parameter without:
- - numberOfPlugs
- - rtcValidity
- 
-set time in AP mode and perhaps for station mode summer and winter time.
-
-As for plugonof, we decide to build one configuration page for station mode and one configuration
-page for AP mode because in station mode we can use CDN( bootstrap and jquery) functionality but 
-not in AP mode because the embeded version of this `content delivery network (CDN)`_ are too 
-big >3Mo.
-
-Action name : cfgsend (all in lowercase)
-Action name to get json value updated page : cfgpage
-
-Set time and date parameter names
-=====================================
-setTime, setDate
-
-.. index:: Modes
-
-====================================
-Plugs modes description
-====================================
-
-Manuel
-======
-- press on ON/OFF push button
-- durée avant arrêt (durée limité à 300mn): pour s'offrir la possibilité de couper la prise en cas de départ prématurer...
-- ou heure d'arrêt : dans le même état d'esprit mais pour fixer une heure absolue.
-
-Timer / minuteur / mode cuit oeuf
-==================================
-- 1 seul paramètre la durée ON à partir de maintenant (durée limité à 300mn00s)
-- 1 appui court lance ou relance la minuterie
-- 1 appui sur BP (long) met OFF et repasse en manuelle
-- la minuterie peut être avec des secondes exmple 2mn30s (2:30 dans la requête)
-
-La minuterie est-elle uniquement lancée par BP ? Sinon comment on fait la diff
-If state == On immediat start 
-
-Périodique/cyclique
-=====================
-- duré on
-- durée off 
-- avec reprise de On après off indéfiniment jusqu'au repassage en commande manuelle.
-- avec champ heure de début (et 'Entrez une heure de début (facultatif)' par défaut)
-- un appui court sur BP met à OFF mais reste en mode cyclique pour le cycle suivant
-- un deuxième appui court reprend le cycle (attention ne met pas forcément à ON)
-- le mode pause de l'interface web effectue les mêmes actions que ci-dessus
-
-- 1 appui sur BP (long) met OFF et repasse en manuelle
-
-Hebdomadaire
-==============
-- heure de mise on
-- heure de mise off
-- choix des jours de la semaine
-- un appui court sur BP met à OFF mais reste en mode Hebdomadaire pour le cycle suivant
-- un deuxième appui court reprend le cycle (attention ne met pas forcément à ON)
-- le mode pause de l'interface web effectue les mêmes actions que ci-dessus
-- 1 appui sur BP (long) met OFF et repasse en manuelle
-
-Clone
-========
-Clone le fonctionnement d'une des 3 autres prises. Il s'agit d'une copie des paramètres.
-Ce n'est pas un clone dynamique. Ce qui signifie que l'information de la prise source et de
-son état au moment du clonage ne sont pas historisés.
-
-Evolutions possibles
-=====================
-- un mixte entre cyclique et hebo: clyclique mais seulement pendant un certaines 
-  période de la journée.
-- Sur le mode hebdo, prévoir la possibilité d'avoir plusieurs plage de fonctionnement par jours
-  et différentes chaque jour
-- connexion MQTT, IFTTT, Flic, openHAB
-
-
-Factorisation des varibales de mode
-=========================================
-
-::
-
-    redPlug
-      State = ON
-      Mode = Manuel | Minuterie | Cyclique | Hebdomadaire | Clone
-      hDebut =
-      hFin = 
-      dureeOn = 60 en minutes
-      dureeOff =  en minutes
-      Jours[] s = OFF,OFF,OFF,OFF,OFF,OFF,OFF
-      clonedPlug =
-      onOffCount = 10  
-
-.. index::
-    single: Startup
-
-=====================================
-Start up behavior
-=====================================
-
-Question:what should be the behavior when power is switched to ON ?
-
-2 cases are possibles when power is On: the button is switched to ON or the system restart after a
-genaral power cut
-
-Soit l'interrupteur général est actif (cas de la coupure EDF) et on reprend où on en était.
-
-Soit l'interrupteur général est  inactif et on reprend en mode manuel.
-
-L'interrupteur général coupe le 220V des prise mais pas de l'ESP8266.
-
-Bien expliquer les 2 modes de fonctionnement dans l'interface WEB et donner le choix à l'utilisateur.
-
-Expliquer le coup de la coupure de courant.
-
-Evol : après coupure EDF : donner le choix à l'utilisateur de configurer le comportement de
-chaque prise.
-
-Possible behaviors:
-
- #. on repart d'où on en était (avec éventuellement alerte instantanée à l'utilisateur)
- #. on met tout la prise à OFF en manuel(avec éventuellement alerte instantanée à l'utilisateur)
- #. on informe l'utilisateur (canal à définir, MQTT ou autre...) qui décide mais on met en
-    pause en attendant
-
-When main power switch is off : html server post no reply.
-
-Problem : when in AP mode WiFi start even if main power is OFF and in Station ESP connect to acces
-point. It is not a logically expected behavior. When power switch is in OFF position no Wifi 
-activity should be detected.
-
-Solution wait for power on in ARDUINO setup function.
-Restart ESP in ARDUINO loop when power is switch to OFF.
-
-.. index:: Special push buttons
-
-Special push button behaviors @startup
-===========================================
-PB0 : @power on (not by power switch but by wall plug) start in simple manual mode see `WIFI Modes`_
-
-PB1 : in same conditions as above, start specials action only for expert and debug mode
-(today create default json) with main power switch on on state (to be checked 21/10/2019) 
 
 ============================
 Software development choice
@@ -376,197 +143,6 @@ Html pages are in the file system SPIFFS
 
 Why do not use wifi manager ?
 =========================================
-
-
-=========================
-ARDUINO Configuration
-=========================
-
-WEMOS D1 MIN ARDUINO configurattion:
-
-.. image:: ./image/wemosD1Mini_configArduino.png
-
-
-.. index:: 
-   single: Wifi modes
-
-==================
-WIFI Modes
-==================
-
-In Json config file, it is configured with: "startInAPMode" value,
-
-No WiFi
-==========
-Also called simpleManualMode
-
-When power on (by the wall plug not by the power switch) the powerStrip, maintain Push button plug 1
-
-Power strip start in this mode independently of Json configured mode.
-
-4 Big color LED flasf 20 times in purple.
-
-In this very simple poor mode, powerstrip works only in manual mode with BP actions ON/OFF.
-
-SoftAP
-=========
-EPS starts in this mode when value of "startInAPMode" parameter is "ON".
-
-No acces to NTP server but all other functions work.
-
-After 20 false tries of station mode, power Strip automaticly switch in this mode
-
-Station
-=========
-EPS starts in this mode when value of "startInAPMode" parameter is "OFF".
-
-The best functionnal mode ! With full web interface and others functions.
-
-both mode STA and AP
-=======================
-July 2019 : reflexion when we start in DHCP station mode we don't know IP address of the IoT EPS.
-One way to know it is to use a tool to scan the local network !
-So why do not connect systematically in both mode !!!
-Do it in new dev branch  !!!!!!!!!!!!!!!!!! 10 months of development to achieve this !!!!
-
-====================================
-IP address
-====================================
-AP and non DHCP IP address are class C address (subnet mask is 255.255.255.0 hardcoded )
-
-.. index::
-    single: Wifi LEDs
-
-==================
-WIFI LED behavior
-==================
-In Station mode, fast flashing (20 times 100ms, 100ms) before to try connection
-and after slow flashing while waiting for connection.
-(500ms with a 20 times time out - new in 24/12/2018). If no connection detected afte 20 tries
-Automatically switch in SoftAP mode.
-
-In Access Point LED FLash quickly (20 times 100ms-500ms) and 
-led flash slowly (50ms-2s) while waiting for connection.
-
-Cause WiFi.softAPConfig function is a blocking function. This is wrong : 
-test on 24/12/2018 softAP is non blocking !
-
-So - in summary - if power led is on and WIFI Led flash (50ms-2s) WIFI wait for connection in AP mode. 
-
-It rises a new problem : in this state it is not possible to use plugs even in simple  manual mode 
-with push button. 
-
-Possible solution : check push button at startup if a particular combination is pressed,
-plugs do not try to connect to wifi and work in simple manual mode.
-In Dec 2018, push button
-added pressing plug 0 while power on the strip cause no WIFI mode (color LED FLASH in RED to confirm)
-This is : simpleManualMode (see above). To return to normal mode power off the strip 
-(not by the power on/off button but by removing the strip from the wall plug)
-
-===========================================
-ESP8266 and its wifi managment !
-===========================================
-ESP8266 store credentials information in FLASH but how to access to them ???
-And how to control them
-
-Question how to erase wifi flash param ?
-
-Memory mapping is not provided. Some peace of informations
-like in SPIFFS description that provide the order of memory big blocks but not their respective add
-
-Second question : how to directly access to flash memory ?
-
-Perhaps with SPI lib 
-
-https://github.com/esp8266/Arduino/blob/master/doc/libraries.rst#spi
-
-Answer :
-
-- ESP.flashRead(...)https://github.com/esp8266/Arduino/blob/master/cores/esp8266/Esp.h
-- ESP.flashWrite(..)
-- ESP.flashEraseSector(...)
-- ESP.eraseConfig() Erase all from start of the flash till -0x4000 about 16k
-- no-documented function !
-
-
-ESP-SDK ? nothing fond about erase
-
-persistant(false) <=> do not write in flash but do not clear informations
-
-Question 3: How to read  flash info  ?
-
-Answer : call Espressif SDK functions::
-
-    #include <user_interface.h> in
-    Arduino\Croquis\hardware\esp8266com\esp8266\tools\sdk\include
-    page 62/179 pdf ESP8266 Non-OS SDK API Reference 
-    3.5.33. wifi_softap_get_config_default
-
-.. code::
-
-    struct softap_config {
-        uint8 ssid[32];
-        uint8 password[64];
-        uint8 ssid_len;	// Note: Recommend to set it according to your ssid
-        uint8 channel;	// Note: support 1 ~ 13
-        AUTH_MODE authmode;	// Note: Don't support AUTH_WEP in softAP mode.
-        uint8 ssid_hidden;	// Note: default 0
-        uint8 max_connection;	// Note: default 4, max 4
-        uint16 beacon_interval;	// Note: support 100 ~ 60000 ms, default 100
-    };
-
-ESP12E module Flash size : W25Q32 32Mbits/4Mo 256octets /pages 16384 pages
-
-Could be erase by 16 ou 128 ou 256 -4(sectors)- or 32kB or even 64kB groups.
-
-====================================================================================================
-ESP8266Webserver
-====================================================================================================
-Documentation very hard to find
-
-`In github readme`_
-
-.. _`In github readme` : https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer
-
-Don't forget to `check the provided examples`_
-
-.. _`check the provided examples` : https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer/examples
-
-`ESP8266Webserver Doxygen documentation`_  do not wast your time !
-
-.. _`ESP8266Webserver Doxygen documentation` : https://links2004.github.io/Arduino/d3/d58/class_e_s_p8266_web_server.html
-
-We can `find this on Arduino`_  forum::
-
-    As for the ESP8266WiFi documentation, it is here::
-    The on() function is actually part of the ESP8266WebServer library. Most of the library 
-    documentation for the ESP8266 core for Arduino is found here:
-    https://arduino-esp8266.readthedocs.io/en/latest/index.html
-    but for some reason the ESP8266WebServer library documentation is missing from those pages. 
-    You can find it here:
-    https://github.com/esp8266/Arduino/blob/master/libraries/ESP8266WebServer/README.rst
-
-    https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/readme.html
-    Generally the ESP8266 libraries attempt to follow the API of the standard Arduino libraries 
-    and only document the differences. You may find it useful to refer to the Arduino WiFi library 
-    reference pages in addition to the ESP8266WiFi documentation:
-    https://www.arduino.cc/en/Reference/WiFi
-
-
-.. _`find this on Arduino` : https://forum.arduino.cc/index.php?topic=588866.0
-
-
-`Arduino ESP8266 example readthedoc`_
-
-.. _`Arduino ESP8266 example readthedoc` : https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/server-examples.html
-
-Bind to a method 
-====================================
-
-`Explication sur Stackoverflow`_
-
-.. _`Explication sur Stackoverflow` : https://stackoverflow.com/questions/32900314/esp8266webserver-setting-a-value-inside-a-class
-
 
 ====================================
 Displaying plugs mode only with LED
@@ -585,69 +161,6 @@ with a long time between group of flash 3 seconds for example.
 Implemented solution : n°1 with the little specialPB pushed in the same time as the plug Push Button
 
 Advice : retain special BP some seconds before pushing plug's PB to avoid to swith the plug.
-
-===========================
-WEB page development
-===========================
-
-HTML5 et css and bootstrap
-jquery, jquery ui, ajax and popper
-
-bootstrap from its CDN
-https://www.bootstrapcdn.com/
-
-
-.. index::
-    single: Html Request
-
-html requests
-=====================
-
-ipaddr/plugonoff?plug=redPlug...
-
-
-192.168.1.42/plugonoff?COLOR=redPlug&Mode=Manuel&State=ON
-
-Possible plugonoff requests:
-
-- Mode=Manuel&State=ON&dureeOff=299 : dureeOff on minutes only
-- Mode=Manuel&State=ON&dureeOff=299:59 : dureeOff on minutes and seconds
-- Mode=Manuel&State=ON&hFin=23:59 : hFin only one format HH:MM
-- Mode=Manuel&State=OFF
-- Mode=Manuel&State=ON
-
-Other request:
-
-- /time
-- /list
-- /edit
-- /cfgpage
-- /cfgsen?lots of parameter...
-- /ChangeCred?ssid=xxxx&pass=yyyy&softApSsid=ssidOfSoftApMode&softApPass=123456789
-
-
-
-NTP server name
-=================
-The name reside in the IoT_EPS.h file and is not a config param through web config page
-
-====================
-Serveur html ESP8266
-====================
-Copy from example provided in ARDUINO IDE : ESP8266WebServer/FSBrowser
-
-This example provide a lot of functions that managed file sending as css, jpg and so on
-
-edit page
-==============
-Strange behavior with html extension
-
-Le bouton parcourir tronc en htm et le visualisateur ne montre que les fichier htm
-
-Edit.htm source code ? not provided in the .ino file
-
-One possible source (but not really the same) :
-https://github.com/gmag11/FSBrowser/blob/master/data/edit.html
 
 ==============
 IOExpander
@@ -799,6 +312,7 @@ I2C address
 - ioexpender : 0x58 (ored with D13) - defined in the ARDUINO NANO code
 - DS3231 : 0x68 defined in RTClib.h
 - +EEPROM on DS3231 1010011 normaly 0x53 base add is 0x50 and I have solder A2 slot
+- OLED 0x3C
 
 There is 3 pull-up on the board.
 
@@ -814,7 +328,7 @@ Changed to 0x53
 Ok but why access to this EEPROM ? 
 Perhaps to store a copy of config3.json
 
-Live time ? 10^6 write cycle
+Live time2 ? 10^6 write cycle
 
 8 bytes/page 4ko
 
@@ -846,40 +360,6 @@ A great question : what is the realistic usage ?
 ====================================
  10^7 time 
 
-================================
-HTML IHM integration
-================================
-Start on March 2019
-
-Used technologies:
-
-- HTML5/css
-- Javascipt
-- JQuery
-- Boostrap
-
-Test list:
-
-For all plugs
-
-- manual ON/OFF :  OK on RED
-- manual ON with OFF time : ok on RED
-- manual ON with delay : ok on RED 1 minutes
-- timer : RED plug ko, state no transmit: corrected ok
-- timer red switched by bp : OK
-- clone from green cyclic to bleu : ok
-
-... see testAndErrorHandling.xlsx file for the rest of the tests
-
-bug finded :
-- manual hfin and dureeOff without parameter should be KO
-- manual cleanup buton dont remove hfin and others param
-- no default state in manual mode : corrected
-- minuterie (timer mode) no default value for the ratio immediat start or differed start - corrected
-- bug in ESP source side effect of main power switch  ?
-
-improvments:
-- add tips on main page : To refresh this page press F5
 
 ===============================
 Usefull Tools
@@ -1034,6 +514,8 @@ and `Reliable Startup for I2C Battery Backed RTC`_
 ===========================
 Vocabulary
 ===========================
+
+.. _refCdn:
 
 Un réseau de diffusion de contenu (RDC) ou en anglais `content delivery network (CDN)`_
 
