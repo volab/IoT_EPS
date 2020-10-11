@@ -204,6 +204,13 @@ void setup(){
     /* DONE : document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
 
+
+    //               123456789+123456789+1
+
+    display.println("Check main power sw"); //L2
+    display.display();
+    delay(200);
+
     /////////////////////////////////////////////////////////////////////////////
     //     Main power wait ON (the purpose is to maintain Wifi off)            //
     ///////////////////////////////////////////////////////////////////////////// 
@@ -219,9 +226,13 @@ void setup(){
             DSPL("Wait main power");
         } while( !mainPowerSwitchState );        
     }
-    DSPL( dPrompt + "Main power ON"); 
+    DSPL( dPrompt + "Main power ON");
     mainPowerPrevState = mainPowerSwitchState; // for the loop
     nanoioExp.digitalWrite( MAINPOWLED, 1);
+
+    display.println("Main power on"); //L3
+    display.display();
+    delay(200);    
 
 
 // with this way of doing it, we loose LED and other stuffs managment    

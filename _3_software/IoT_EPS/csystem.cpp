@@ -222,6 +222,10 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _pDisplay->println(OLED_CONFIG_PARAM_OK );
 
     _pDisplay->display();
+    delay(2000);
+    _pDisplay->clearDisplay();
+    _pDisplay->setCursor(0,0);
+    _pDisplay->display();
                         
 
 
