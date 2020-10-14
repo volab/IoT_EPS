@@ -13,7 +13,8 @@
 // void CWifiLink::begin( ESP8266WiFiClass * pWiFi, ESP8266WiFiClass &wifiRef ){
 void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
                         ,ConfigParam *pcparam, CSysStatus *pcSysStatus, CFlasherNanoExp *pwifiled
-                        , CFastLED *pFastLed, CRGB *pcolorLeds, CPowerPlug *plugs ){
+                        , CFastLED *pFastLed, CRGB *pcolorLeds, CPowerPlug *plugs
+                        , Adafruit_SSD1306 *pDisplay ){
     // _pWiFi = pWiFi;
     _wifiRef = wifiRef; //recopie !
     _wifiCred.begin( );
@@ -99,6 +100,10 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
             } 
             _wifiRef.begin( _wifiCred.getSsid(), _wifiCred.getPass() );
             DSPL(  dPrompt + F("Try to join : ") + _wifiCred.getSsid() );
+            //                 123456789*123456789*1
+            pDisplay->println("Try to joint :");
+            pDisplay->println(_wifiCred.getSsid() );
+            pDisplay->display();
             _wifiLedFlash( _pwifiled, WIFILED_FLASH_COUNT );
             _pwifiled->begin( WIFILED, WIFILED_FLASH_SLOW, WIFILED_FLASH_SLOW );
             while (_wifiRef.status() != WL_CONNECTED) {
@@ -120,6 +125,8 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
                 String staIP =  WiFi.localIP().toString();
                 DSPL(  dPrompt + F("Adresse Wifi.localIP Station mode : ") \
                     + staIP );
+                pDisplay->println(staIP);
+                pDisplay->display();
                     ConfigParam::write2Json( "staIP", staIP );
                 if ( _cParam->getFirstBoot() == ConfigParam::TRY ){
                     ConfigParam::write2Json( "firstBoot", "OFF" );

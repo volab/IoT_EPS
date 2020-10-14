@@ -18,7 +18,8 @@ class CWifiLink{
         // ~CWifiLink();
         void begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
                     , ConfigParam *cparam, CSysStatus *pcSysStatus, CFlasherNanoExp *pwifiled
-                    , CFastLED *pFastLed, CRGB *pcolorLeds, CPowerPlug *plugs );
+                    , CFastLED *pFastLed, CRGB *pcolorLeds, CPowerPlug *plugs
+                    , Adafruit_SSD1306 *pDisplay );
         // void begin( ESP8266WiFiClass * pWiFi, ESP8266WiFiClass &wifiRef);
 
 

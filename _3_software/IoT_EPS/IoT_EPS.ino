@@ -249,7 +249,7 @@ void setup(){
     //  WIFI start                                                             //
     /////////////////////////////////////////////////////////////////////////////
     wifilnk.begin( WiFi, simpleManualMode, &cParam, &sysStatus, &wifiLed,
-                    &FastLED, colorLeds, plugs );
+                    &FastLED, colorLeds, plugs, &display );
 
     DSPL( dPrompt + "NTP enable ? " + String(sysStatus.ntpEnabled?"TRUE":"FALSE") );
     /////////////////////////////////////////////////////////////////////////////

@@ -264,6 +264,9 @@ void CSystem::timeServerCheck(){
             sDate += (String)NTPTime.hour()+":"+(String)NTPTime.minute()+":";
             sDate += (String)NTPTime.second();
             DSPL( dPrompt + "NTP Time : " + sDate );
+            _pDisplay->println("NTP Time");
+            _pDisplay->println(sDate);
+            _pDisplay->display();
             
             if (_rtc.lostPower()){
                 RTC_DS3231::adjust( NTPTime );
