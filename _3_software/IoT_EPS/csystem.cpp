@@ -222,6 +222,10 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _pDisplay->println(OLED_CONFIG_PARAM_OK );
 
     _pDisplay->display();
+    delay(2000);
+    _pDisplay->clearDisplay();
+    _pDisplay->setCursor(0,0);
+    _pDisplay->display();
                         
 
 
@@ -260,6 +264,9 @@ void CSystem::timeServerCheck(){
             sDate += (String)NTPTime.hour()+":"+(String)NTPTime.minute()+":";
             sDate += (String)NTPTime.second();
             DSPL( dPrompt + "NTP Time : " + sDate );
+            _pDisplay->println("NTP Time");
+            _pDisplay->println(sDate);
+            _pDisplay->display();
             
             if (_rtc.lostPower()){
                 RTC_DS3231::adjust( NTPTime );
