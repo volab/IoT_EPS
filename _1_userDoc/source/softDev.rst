@@ -463,7 +463,9 @@ OLED Screen integration
 
 .. _`128X64 I2C SSD1306 on Aliexpress` : https://fr.aliexpress.com/item/33008480580.html?spm=a2g0o.cart.0.0.5d273c007sJ7KR&mp=1
 
-Adafruitlibrary usage.
+`Adafruit GFX library`_
+
+.. _`Adafruit GFX library` : https://learn.adafruit.com/adafruit-gfx-graphics-library/overview used 
 
 Add I2C 0x78 on the board (7 or 8 bits add ?)
 

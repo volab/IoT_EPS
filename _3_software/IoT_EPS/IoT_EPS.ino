@@ -298,7 +298,17 @@ void setup(){
         }
         http.end();        
     }
-
+    display.clearDisplay();
+    display.setCursor(0,0);
+    display.println("123456789*123456789*1");
+    display.println("AAAAAAAAAAAAAAAAAAAAA");
+    display.println("123456789*123456789*1");
+    display.println("AAAAAAAAAAAAAAAAAAAAA");
+    display.println("123456789*123456789*1");
+    display.println("AAAAAAAAAAAAAAAAAAAAA");
+    display.println("123456789*123456789*1");
+    display.println("AAAAAAAAAAAAAAAAAAAAA");
+    display.display();        
     /////////////////////////////////////////////////////////////////////////////
     //  Setup watchdog                                                         //
     /////////////////////////////////////////////////////////////////////////////    
