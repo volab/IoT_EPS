@@ -33,9 +33,11 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
 
  @bug Serial command < d > delete file with space in their name !
 
- @section How ti works (this code)
+ @section How it works (this code)
 
- ??? In July 2020, I realised that I don't know how my code works in details. by the usage of a lost
+ ??? In July 2020, I realised that I don't know how my code works in details. 
+ 
+ By the usage of a lost
  of external lib like FastLED, ESP8266Webserver, RTClib... A lot of global variables, a very very 
  long main code here. I decide to refactor my code. A very hard task.
 

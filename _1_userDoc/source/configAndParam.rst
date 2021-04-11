@@ -45,6 +45,9 @@ setTime, setDate
 
 
 
+.. index::
+    single: Wemos; Config
+
 =========================
 ARDUINO Configuration
 =========================

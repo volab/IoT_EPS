@@ -10,6 +10,17 @@ Importants variables
 .. contents::
     :backlinks: top
 
+
+
+
+====================================================================================================
+Goal of this page
+====================================================================================================
+To try to have a global view of the software project.
+
+
+
+
 .. _refVariableList:
 
 ====================================================================================================
@@ -159,10 +170,20 @@ FastLed and colorLeds case
 ====================================================================================================
 2 different usages:
 
-- to display plugs colors each pllug holds its own color in its _couleur attirbut
+- to display plugs colors each plug holds its own color in its _couleur attirbut
 - to display error alertes
 
 So there is no reason for FastLed and colorLeds to be managed as a member of the CPowerPlug class.
+
+====================================================================================================
+A try to UML doc
+====================================================================================================
+I try to use ModelIo to document this project
+
+.. image:: image/modelIOSample.jpg 
+   :width: 600 px
+
+
 
 ====================================================================================================
 Weblinks

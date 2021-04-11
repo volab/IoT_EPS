@@ -4,6 +4,7 @@ Hardware development documentation
 
 :Auteur: J.Soranzo
 :Date: Octobre 2018
+:update: 05/04/2021
 :version: git versionning
 
 
@@ -43,9 +44,26 @@ ou depuis son linux ?
 Ensuite il faut créer un compte avec fourniture d'adress mail sur tplink pour piloter une pauvre 
 prise ! Argl !
 
+====================================================================================================
+Et avec un Raspberry pi ?
+====================================================================================================
+
+La question se pose sérieusement avec le pi zero W (W pour Wifi) sur KuBii, il est à 10.44€ ttc
+
+Contre environ 2.5€ pour un Wemos D1 mini
+
+
+.. _hardProgress:
+
 ============
 Progres
 ============
+
+Terminated
+==============================
+
+::
+
 #. alimentation ESP/Wemos en 5V ? : **OK**
 #. horloge temps réelle : **OK**
 #. bouton poussoirs : **OK**
@@ -54,21 +72,27 @@ Progres
 #. définition des modes de fonctionnement : **OK**
 #. récup paramètre via form submit html : **OK**
 #. add  WS2801 LED : **OK**
-#. Alimentation du module relais en 5V (choix du conver.) : 60%
 #. add power led **OK**
 #. add power button : **OK** 
 #. add wifi led : **OK**
-#. add LDR : removed
+#. add LDR : **removed**
 #. add I2C nano expander with analog inputs **OK**
-
 #. change BP to nano I2C and relay command to ESP directly (to allow turnoff relays in fatal error) **OK**
 #. resolv power up problem : implement MAX1232 [ as an option onto the PCB ] **discarded**
 #. implement an I2C watch dog component [ as an option onto the PCB ] **OK**
 #. choix curent sensor: 75% - **discarded** in the first version
 #. pcb study **OK**
+
+In progress
+======================
+
+::
+
+#. Alimentation du module relais en 5V (choix du conver.) : 60%
 #. packaging study
 #. integartion
 #. add a MOSFET on general power relay to switch them all in one time on power off
+#. OLED screen intefgartion : 99%
 
 
 ####
@@ -167,9 +191,11 @@ Only for my eyes the code sits in ::
 
     0044-Iot_ESP_PPlug\projet\_3_software\etudeDeCode (not pushed in github).
 
-=============================
+
 MAX1232 integration aborted
 =============================
+
+MAX1232 is a uP supervisor. It features bp and watchdog
 
 .. figure:: image/MAX1232pinout.png
     :align: center
@@ -182,6 +208,8 @@ Very simple : connect VCC, GND and RST/ to RST pin of the 8266 !
 Add a pullup on RST/. Also pullup TOL pin 3 (tolerance 10%), pin 7 WD input and pin 1 PBRST/
 
 Warning MAW1232 check power supply in 5V+/-5% ie 4.75 to 5.25V
+
+Aborted because : timeout settings of 150ms, 600ms, or 1.2s (to short for us)
 
 ====================================
 Direct relay connection to ESP pins
@@ -526,6 +554,14 @@ Replace part on Maxim's site ? 78M6613 reference sold to SILERGIE ? obso Stok 0 
 A very short time new hope :-(
 
 .. _`at Mouser.com` : https://www.mouser.fr/ProductDetail/Maxim-Integrated/MAX71020AETI%2b?qs=%2Fha2pyFaduhbncrMXO3FSjhx%252BjRn69riAjwSGzocCvw%252Bj%2FNqq3%2F7JvLM9vZohPbP
+
+MCP3911
+====================================================================================================
+In Linky !
+
+ 1€64 @MOUSER
+
+Shunt mesurment
 
 ----------------------------------------------------------------------------------------------------
 

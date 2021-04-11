@@ -11,6 +11,7 @@ Welcome to IoT_EPS's documentation!
    :caption: Contents
    :titlesonly:
    
+   generalProgress
    softDev
    hardDev
    Bug_ToDoLst

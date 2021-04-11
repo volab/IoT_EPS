@@ -1,5 +1,5 @@
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-IOT Electrical Power Strip Software development documentation
+Software development documentation
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 .. toctree::
@@ -39,9 +39,7 @@ one main ino file with its .h : IoT_EPS
 in the header file we can find includes and config informations. (to be changed - see project
 todo list)
 
-A lot of usage of global variables and objects (not very optimal).
-
-:ref:`See variables list<refVariableList>`
+A lot of usage of global variables and objects (not very optimal). :ref:`See variables list<refVariableList>`
 
 Usage of one big json file (except for credentials) to store plugs information and 
 application parameters. Not optimal.
@@ -65,26 +63,102 @@ Timing are managed by CRtc a derived class from rtc from RTClib.
 The wifi : after a long expectation where I navigate between station mode or softAP mode. Finally,
 i activate the 2 modes simultaneously.
 
+====================================================================================================
+How does it work
+====================================================================================================
+There is 2 worlds
+
+The Plugs world and the Web world.
+
+The Plug world
+====================================================================================================
+It is although the hardware or physical world
+
+**Setup sequence**
+
+- serial, time, ftp, debug oled screen init
+- Watchdog check
+- Main power first check (already on ? Return from electrical power down, hot restart)
+- Plugs config
+- Main power wait ON (the purpose is to maintain Wifi off) loop
+- WIFI start
+- Server configurations
+- Time server check 
+- Setup last operations (displayCommandsList, initCBITTimer, check internet access and setup wd)
+
+**Loop sequence**
+
+- CBIT : Continus Built In Test Start : periodicly check file system, internet access
+- watchdog refresh
+- Some little jobs : specialBp, ftp, SerialProcess...
+- manage leds
+- manage bps + plugs time to switch  
+- main power switch actions
+
+The Web world
+====================================================================================================
+Server event (HTTP GET requests). They are mapped to C functions (CServerWeb methods)
+
+============== ===================================================================================
+Event          Binded functions
+============== ===================================================================================
+ /             firstBootHtmlForm, handleSoftAPIndex or handleIndex
+ /time         displayTime
+ /list         handleFileList
+ /plugonoff    handlePlugOnOff
+ /help         handleHelp
+ /edit         handleEdit, handleFileCreate, htmlOkResponse, handleFileUpload, handleFileDelete
+ /cfgpage      handelIOTESPConfPage
+ /cfgsend      handleIOTESPConfiguration
+ /changeCred   handleNewCred
+ /firstBoot    handleFirstBoot
+============== ===================================================================================
+
+Theses events are triggered by HTTP requests from user's Web browser. Some of these above request are
+not implemented in http pages and are only for debug and should be send directly in the uri like 
+``/time``
+
+Html pages are stored in the data folder of the SPIFFS in the ESP8266 flash.
+
+Links between the 2 worlds
+====================================================================================================
+These 2 worlds live their lives almost independent of each other.
+
+There are 2 links between them:
+
+- the json file
+- the time
+
+Events write data in json file and physical part of the system check periodicaly the data in the 
+json file and do the jobs.
+
+
+.. _devProgress:
 
 ===========================
 Progress of development
 ===========================
-#. Display single static html page: ok
-#. Affichage page html fichier SPIFFS : ok
-#. Affichage de l'heure à partir d'une page en dur dans le code : ok
-#. Affichage page avec CSS : ok
-#. Gestion des mode wifi SoftAP vs client : ok
-#. reception d'une action via un bouton :  ok
-#. lecture du fichier de configuration : ok
-#. intégration MCP23017 : ok
-#. lecture du fichier de configuration config3.json : ok
-#. gestion bouton poussoir mécanique : ok
-#. Write json file : ok
-#. Traitement de la requete html avec analyze, exécution et écriture json: ok
-#. manage wif led : ok
-#. integrate nano expander with analog inputs : ok
-#. scan I2C response 57 and 58 nano IoExpander !!!! not a bug simply DS3231 board has 2 component
-   DS3231 an EEPROM ! OK
+
+Terminated
+==============================
+
+::
+
+#. Display single static html page:                                                      ok
+#. Affichage page html fichier SPIFFS :                                                  ok
+#. Affichage de l'heure à partir d'une page en dur dans le code :                        ok
+#. Affichage page avec CSS :                                                             ok
+#. Gestion des mode wifi SoftAP vs client :                                              ok
+#. reception d'une action via un bouton :                                                ok
+#. lecture du fichier de configuration :                                                 ok
+#. intégration MCP23017 :                                                                ok
+#. lecture du fichier de configuration config3.json :                                    ok
+#. gestion bouton poussoir mécanique :                                                   ok
+#. Write json file :                                                                     ok
+#. Traitement de la requete html avec analyze, exécution et écriture json:               ok
+#. manage wif led :                                                                      ok
+#. integrate nano expander with analog inputs :                                          ok
+#. scan I2C response 57 and 58 nano IoExpander !!!! not a bug simply DS3231 board has 2 component DS3231 an EEPROM ! OK
 #. Time managment strategy : ok
 #. review work without rtc component strategy ok
 #. review work without NTP access strategy ok
@@ -92,20 +166,26 @@ Progress of development
 #. suppress html replies if main power is off ok
 #. generate a unique server name  ok
 
+
+
+In progress
+======================
+
+::
+
 #. Error handling improvement 95% (todo display low error with LED ? Which one : power led ?)
 #. configuration page (see softdev.rst)
-
 #. power measurement
-
 #. exhaustive test of hebdo mode : 95%
 #. write index special page for softAP Mode with local boostrap or other light js.framework 5%
-#. prepare an infographie résumant fonctionnalité et besoin : 
+#. Creat an infography that summarize features and needs 
 #. Write user manual : 1%
 #. Write builder manual
 #. rewrite main program setup and loop function with more object oriented structure 15%
+#. UML and classes documentation
 #. add OLED display managment in accordance of its hardware implementation of course
 
-Don't forget the todo list of the doxygen documentation
+Don't forget the todo list of the **doxygen documentation** and **git history**
 
 ====================================================================================================
 More object oriented rewriting (August 2020)
@@ -471,7 +551,7 @@ Add I2C 0x78 on the board (7 or 8 bits add ?)
 
 The right add is 0x3C
 
-There is a pdf documentation for the GFX lib but no doc for special method in SSD13206.
+There is a pdf documentation for the GFX lib but no doc for special method in SSD1306.
 
 setTextSize : ???
 
