@@ -36,13 +36,32 @@ AMAZON, Darty...
 
 .. _`prise multiple Polyco` : https://www.apynov.com/konyks-polyco
 
+.. index::
+    single: TP-LINK HS110
+
 ====================================================================================================
-Test de la prise TP-Link avec mesure de courant
+Test of TP-Link HS110 plug with curent measurment capability
 ====================================================================================================
-Tout d'abord il faut installer l'appli sur son smart phone ! Quid du pilotage depuis le pc ou le mac
-ou depuis son linux ?
-Ensuite il faut créer un compte avec fourniture d'adress mail sur tplink pour piloter une pauvre 
-prise ! Argl !
+Usage of `TP-LINK HS110`_
+
+.. _`TP-LINK HS110` : https://www.tp-link.com/en/home-networking/smart-plug/hs110/
+
+First of all, we need to install a smartphone application KASA. What about to drive the plug directly
+from a Windows, Mac or Linux computer. The plug is compatible with Alexa and IFTTT
+
+The application need to connect to your wifi network and more surprisingly active your location !
+
+You also need to creat a login on their internt site. Just to drive one simple plug !!!
+
+Clearly it's not a product for an hobbyist. It is not open source at all
+
+.. figure:: image/tplink-hs110.png
+    :width: 500 px
+    :figwidth: 100%
+    :align: center
+
+    TP-LINK HS110 
+
 
 ====================================================================================================
 Et avec un Raspberry pi ?
@@ -183,7 +202,7 @@ Power ATtiny with 3.3V and don't forget pullup on D3 and on reset (15k)
 
 ATiny85 watchdog test tips
 ============================
-There is a TX debug serial on pin 3  speed is 9600
+There is a TX debug serial on pin 3  speed is 1200
 
 The name of the project of the Atiny code is ESPEasySlaves.
 
@@ -258,6 +277,9 @@ and in French : `prises secteur sur wikipedia`_
 
 ####
 
+.. index::
+    single: Power supply
+
 ==================   
 ESP power 
 ==================
@@ -281,10 +303,15 @@ Can we power ESP with external 5V and USB at the same time ?
 
 The USB input is protected by a diode, ok
 
-But our external power is not. All +5V are connected together so USB wil power all the board and
+But our external power is not. All +5V are connected together so USB will power all the board and
 relays. It is not very good. We should put a diode between 5V of ESP and the rest of the board.
 In this way, external power could power ESP but +5V power from ESP could not power the rest of the
 plug.
+
+And what about 3.3V ? It come from ESP regulator to power few I2C components like:
+
+- RTC
+- Tiny85 who could work with 5v but to drive ESP input it is better to power ATiny with 3.3v
 
 ####
 
@@ -779,6 +806,22 @@ SONOF POW on `the SONOF site`_
 .. _`Smart Switch Having 6 Outputs & 5 Inputs` : https://www.hackster.io/ashish_8284/smart-switch-having-6-outputs-5-inputs-91fc29?utm_campaign=new_projects&utm_content=1&utm_medium=email&utm_source=hackster&utm_term=project_name
 
 .. _`How can I detect a power outage with a microcontroller?` : https://electronics.stackexchange.com/questions/17008/how-can-i-detect-a-power-outage-with-a-microcontroller
+
+
+====================================================================================================
+PCB dev
+====================================================================================================
+Tools : `EasyEDA.com`_
+
+.. _`EasyEDA.com` : https://easyeda.com/editor#id=69115a0a3c0e4fc9a7f6cf54611fa6d4|2b73c76a246e4b2a8ebcf58152a8890c
+
+:download:`Schéma<../../_4_PCB/easyeda/Schematic_IoT Electrical Power Strip_Sheet_1_20200208225752.pdf>`
+
+
+
+
+
+
 
 
 

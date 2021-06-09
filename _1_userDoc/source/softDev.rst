@@ -511,10 +511,15 @@ SPIFFS
 .. _`Official documentation for SPIFFS on Espressif` : https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/spiffs.html
 
 
+.. index::
+    pair: Used; Library
+
+.. _usedLirary:
+
 ========================
 Used library
 ========================
-last update : 02/12/2018
+last update : 05/05/2021
 
 13 libs:
 
@@ -523,7 +528,7 @@ last update : 02/12/2018
 - ArduinoJson version 5.13.2
 - Wire version 1.0
 - RTClib version 1.2.0
-- ESP8266mDNS prise
+- ESP8266mDNS
 - FastLED version 3.3.3
 - nanoI2CIOExpLib version 3.2
 - NTPClient version 3.1.0
@@ -531,6 +536,7 @@ last update : 02/12/2018
 - Adafruit_SSD1306 version 1.1.2
 - SPI version 1.0
 - ESP8266HTTPClient version 1.1
+
 
 12 libs are official Arduino libs and one lib is a special one: `nanoI2CIOExpLib`_
  
@@ -560,6 +566,29 @@ setTextSize : ???
 Size 1 : 8 lign of 21 char
 Size 2 : 4 lign of 10 char
 Size 3 : 2 lign of 5 char
+
+Screen définitions
+====================================================================================================
+Screen are created with GIMP. 
+
+How many and what screen do we need ?
+
+In the septup sequence:
+
+- DS3231 demarre a: ( CSystem.init() )
+- A partir d'ici:
+- * Fichiers ok
+- * Parametres ok
+
+
+
+
+In the loop sequence:
+
+.. image:: image/ecran1_201019_1402.png
+   :width: 128 px
+
+To display IPs, states and errors. Exemple: time server and Wifi accessibility... 
 
 ===============================
 Eccueils et autres difficultés
