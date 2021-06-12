@@ -382,35 +382,3 @@ void ConfigParam::creatDefaultJson(){
     
 }
 
-//I try to merge this function and write2Json but there is one level more in the json file.
-// so i decide to keep the 2 version of the function 
-/* void ConfigParam::_write2CredJson( String param, String value ){
-    DEFDPROMPT( "write to credentials");
-    File configFile = SPIFFS.open( "/credentials.json" , "r");
-    // File configFile = SPIFFS.open( file.c_str() , "r");
-    // DSPL( dPrompt);
-    if (configFile) {
-        size_t size = configFile.size();
-        // Allocate a buffer to store contents of the file.
-        std::unique_ptr<char[]> buf(new char[size]);
-        configFile.readBytes(buf.get(), size);
-        DynamicJsonBuffer jsonBuffer;
-        JsonObject& json = jsonBuffer.parseObject(buf.get());
-        if (json.success()) {
-            DSPL( dPrompt + " written WiFi "+ param +" : " + value);
-            json[param] = value; 
-            // configFile.seek(0, SeekSet);
-            configFile.close();
-            configFile = SPIFFS.open( "/credentials.json" , "w");
-            json.prettyPrintTo(configFile);
-            // plug.prettyPrintTo(Serial);
-            // DSPL();
-        } else {
-            DEBUGPORT.println(dPrompt + F("Failed to load json credentials"));
-            // return false;
-        }
-        configFile.close();
-        // return true;  
-/** @todo perhaps add error handling as in readFromJson()*/        
-   /* } 
-} */

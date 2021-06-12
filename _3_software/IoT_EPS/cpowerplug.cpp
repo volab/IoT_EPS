@@ -605,11 +605,11 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     } 
 }
 /** 
-@fn String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param )
-@brief to extract a parameter from all parameter
-@param allRecParam a concatened String containing all received parameters build in handlePlugOnOff()
-@param param the parameter to extract
-@return the value of the parameter or "nf" for not found or "" empty
+fn String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param )
+brief to extract a parameter from all parameter
+param allRecParam a concatened String containing all received parameters build in handlePlugOnOff()
+param param the parameter to extract
+return the value of the parameter or "nf" for not found or "" empty
 */
 /*
 String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){

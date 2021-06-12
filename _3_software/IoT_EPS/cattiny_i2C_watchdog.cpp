@@ -16,7 +16,7 @@
  @brief This method test readability of the 4 PID value on ATtiny85 I2C watchdog ...
  @return true if there is no error
 
-_detailDescription
+This method test only I2C accessibility to WD not the timer nor the reset founction.
 */
 bool CATtinyI2CWatchdog::test(){
     //DEFDPROMPT( "wd test");
@@ -39,6 +39,10 @@ bool CATtinyI2CWatchdog::test(){
  @fn void CATtinyI2CWatchdog::begin()
  @brief Method to start watchdog
  @return no return value and no parameter
+
+ This method start the Wire object (for I2C) and initialyze somme members.
+ This method dont realy start the timer. A the begining the watchodog is in stoped state.
+ To start the timer use setTimeout method.
 */
 void CATtinyI2CWatchdog::begin(){
     Wire.begin();

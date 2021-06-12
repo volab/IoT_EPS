@@ -174,7 +174,7 @@ void CWifiLink::_wifiLedFlash( CFlasherNanoExp *pled, int count ){
 }
 
 /** 
- @fn void simpleManualModeChaser()
+ @fn void CWifiLink::_simpleManualModeChaser()
  @brief Flash 4 colored LEDs in PURPLE 200ms/200ms 20 times and restaure colors to indicate
  Simple Manual mode activation
  @return no return value and no parameter

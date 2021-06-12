@@ -116,6 +116,10 @@ bool restartTempoLed = false;
  - [OPTION 1] see for add colorLEd array in the class CPowerPlug as a static member
  - [NECESSARY for 1 and 2 plug strip] convert colorLeds array in dynamic version as for plugs array */
 
+
+
+
+
 void setup(){
     DEBUGPORT.begin(DEBUGSPEED);
     DEFDPROMPT("setUp") // define dPrompt String
@@ -185,7 +189,7 @@ void setup(){
     // for the int type variables
     
     /** todo : no ! It is not a user config  [OPTION] add pin, pinLed and color to json file*/
-    /** todo : no it should stay  as a #define 
+    /** todo : no it should stay  as a define 
     [NECESSARY for 2 and 1 plugs strip] + the number of plug to make this sequence dynamic*/
 
     /* DONE test if CNano::initOk = true - if not don't start anything - this is fatal error*/
@@ -301,16 +305,16 @@ void setup(){
         http.end();        
     }
     display.clearDisplay();
-    display.setCursor(0,0);
-    display.println("123456789*123456789*1");
-    display.println("AAAAAAAAAAAAAAAAAAAAA");
-    display.println("123456789*123456789*1");
-    display.println("AAAAAAAAAAAAAAAAAAAAA");
-    display.println("123456789*123456789*1");
-    display.println("AAAAAAAAAAAAAAAAAAAAA");
-    display.println("123456789*123456789*1");
-    display.println("AAAAAAAAAAAAAAAAAAAAA");
-    display.display();        
+    sysIoteps.oledLoopBackScreen();    
+    display.setCursor(6,11);
+    display.println("19/06/21   23:24:30");
+    display.setCursor(6,22);
+    display.println("STATE: XYZW");
+    display.setCursor(6,41);
+    display.println("LAN:192.168.255.255");
+    display.setCursor(6,50);
+    display.println(" AP:192.168.255.255");
+    display.display(); 
     /////////////////////////////////////////////////////////////////////////////
     //  Setup watchdog                                                         //
     /////////////////////////////////////////////////////////////////////////////    
@@ -515,6 +519,9 @@ void loop(){
             while( 1 )yield(); //another way to stop AtinyWD refresh.
             //ESP.restart();
     }
+
+    //Main loop Oled displays
+    //cparam has ip adresse
 
     yield();
 }

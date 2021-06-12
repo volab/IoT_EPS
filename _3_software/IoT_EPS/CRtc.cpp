@@ -37,7 +37,7 @@ bool CRtc::begin( NTPClient *p_tc ){
 }
 
 /** 
- @fn static void displayTime()
+ @fn static void CRtc::displayTime()
  @return no return value and no parameter
  
  This function work with debugSerial.h

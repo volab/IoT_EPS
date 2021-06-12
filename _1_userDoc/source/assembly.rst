@@ -18,6 +18,18 @@ Solder components onto the board
 ================================
 Progressive assembly and test
 
+To check the board fonctionnality, we need all I2C components:
+
+- on the board:
+  - ATtiny watch dog (programmed)
+  - Nano I2C IO expander (programmed)
+
+- out of the board
+  - RTC
+  - oled screen (not absolutly necessary for test but very usefull)
+
+The 5V power supply
+
 ====================================================================================================
 Program Attiny85 watchdog
 ====================================================================================================
@@ -325,7 +337,8 @@ Program Arduino nano
 With nanoI2CIOExpander project
 
 
-With ligne 19 in the file debugSerialPort.h uncommented Nano display debug info like this @9600::
+With ligne 19 in the file debugSerialPort.h uncommented Nano display debug info like this @9600 
+serial speed::
 
     <Volab IOExpander setup : > NANO version : 2.1 : BUILD May  5 2021 22:39:15
     <Volab I2C ADD builder : > add pin number = 13
@@ -365,6 +378,28 @@ With ligne 19 in the file debugSerialPort.h uncommented Nano display debug info 
     <Volab IOExpander setup : > registers[1f] = a5
 
 But with this ligne commented it display nothing !
+
+================================
+Connect wires to the plugs
+================================
+Wire all parts like on this pictures
+
+
+.. figure:: image/pushButtonAndColorLed_1.jpg
+    :width: 300 px
+    :figwidth: 100%
+    :align: center
+
+    Push button and color led wires 
+
+.. figure:: image/pushButtonAndColorLedDetails.jpg
+    :width: 300 px
+    :figwidth: 100%
+    :align: center
+
+    Push button and color led wires details 
+
+
 
 ====================================================================================================
 Notes de mise au point du PCB (A SUPRIMER)
@@ -421,9 +456,7 @@ on bloque rapidement sur un Erreur fatale et impossible de diagnostiquer à caus
 
 Création d'un branche dédiée à cette mise au point branch : noSaborde
 
-================================
-Connect wires to the plugs
-================================
+
 
 =========
 Weblinks

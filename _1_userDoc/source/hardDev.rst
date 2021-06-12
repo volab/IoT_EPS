@@ -18,6 +18,10 @@ Hardware development documentation
 
    mockup
 
+.. |clearer|  raw:: html
+
+    <div class="clearer"></div>
+
 ================================
 Ce qui existe en 2020 !
 ================================    
@@ -47,7 +51,12 @@ Usage of `TP-LINK HS110`_
 .. _`TP-LINK HS110` : https://www.tp-link.com/en/home-networking/smart-plug/hs110/
 
 First of all, we need to install a smartphone application KASA. What about to drive the plug directly
-from a Windows, Mac or Linux computer. The plug is compatible with Alexa and IFTTT
+from a Windows, Mac or Linux computer. The plug is compatible with Alexa and IFTTT.
+Above is true but with the help of Softscheck and their blog article : `Reverse Engineering the TP-Link HS110`_
+
+.. _`Reverse Engineering the TP-Link HS110` : https://www.softscheck.com/en/reverse-engineering-tp-link-hs110/
+
+We can do a lot of thing ! Great job and thanks to them !
 
 The application need to connect to your wifi network and more surprisingly active your location !
 
@@ -56,12 +65,13 @@ You also need to creat a login on their internt site. Just to drive one simple p
 Clearly it's not a product for an hobbyist. It is not open source at all
 
 .. figure:: image/tplink-hs110.png
-    :width: 500 px
+    :width: 200 px
     :figwidth: 100%
-    :align: center
+    :align: left
 
     TP-LINK HS110 
 
+|clearer|
 
 ====================================================================================================
 Et avec un Raspberry pi ?
@@ -354,6 +364,19 @@ Power consumption : 1.9mA measured 08/03/19
 =======================
 Current sensor choice
 =======================
+
+Great youtube video on this subject from Andreas Spiess (the guy with the swiss accent)
+
+`#245 Deep-Sleep Current: Which is better? µCurrent or CurrentRanger? (ESP32, ESP8266)`_
+
+.. _`#245 Deep-Sleep Current: Which is better? µCurrent or CurrentRanger? (ESP32, ESP8266)` : https://www.youtube.com/watch?v=HmXfyLyN38c
+
+`#321 7 Sensors tested: Measuring Current with Microcontrollers (Arduino, ESP32, ESP8266)`_
+
+.. _`#321 7 Sensors tested: Measuring Current with Microcontrollers (Arduino, ESP32, ESP8266)` : https://www.youtube.com/watch?v=cG8moaufmQs
+
+
+
 
 INA219 et INA220
 =================
@@ -675,6 +698,8 @@ Source : sur `RandomeredTutorial ESP8266 pinout`_
 
 ----------------------------------------------------------------------------------------------------
 
+.. _nanoI2CIoExpander:
+
 .. index::
     pair: Hardware; IO Expander
 
@@ -682,10 +707,10 @@ Source : sur `RandomeredTutorial ESP8266 pinout`_
 ===========================
 nanoI2CIOExpander
 ===========================
-To solve digital I/O and analog I decide to use a ARDUINO nano as I2C slave. I belived that someone
+To solve digital I/O and analog I decide to use an ARDUINO nano as I2C slave. I belived that someone
 like ADAFRUIT or SPARFUN has build a lib to use an ARDUINO Nano as `I2C I/O expander`_.
 
-At my great surprise, nobody does it ! So I wrote it and I provide it on `HACKSTER IO`_
+To my surprise, nobody does it ! So I wrote it and I provide it on `HACKSTER IO`_
 
 
 .. _`I2C I/O expander` : https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc
@@ -694,7 +719,7 @@ At my great surprise, nobody does it ! So I wrote it and I provide it on `HACKST
 
 Nano pining :
 
-.. table:: Affectation des broches sur l'ARDUINO Nano I2C I/O Expander
+.. table:: ARDUINO Nano I2C I/O Expander pins assignment
     :align: center
     
     ===== ======= =============
@@ -724,9 +749,9 @@ Nano pining :
     
 ####
 
-=====================
-BOM
-=====================
+==========================================
+BOM (obsolete 10/06/2021)
+==========================================
 
 - Carte 8 relais banggood 4.57
 - 4 BP 0.2€ = 0.8€
@@ -816,13 +841,6 @@ Tools : `EasyEDA.com`_
 .. _`EasyEDA.com` : https://easyeda.com/editor#id=69115a0a3c0e4fc9a7f6cf54611fa6d4|2b73c76a246e4b2a8ebcf58152a8890c
 
 :download:`Schéma<../../_4_PCB/easyeda/Schematic_IoT Electrical Power Strip_Sheet_1_20200208225752.pdf>`
-
-
-
-
-
-
-
 
 
 =============

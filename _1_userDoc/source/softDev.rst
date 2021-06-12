@@ -28,29 +28,30 @@ Source code documentation provide a lot of informations
  `<codeDoc\\html\\index.html>`_
 
 ====================================================================================================
-Software architecture
+Software architecture or how does it work
 ====================================================================================================
 Some words on software architecture @13/07/2020
 
 Major points
 ====================================================================================================
 
-one main ino file with its .h : IoT_EPS
-in the header file we can find includes and config informations. (to be changed - see project
+One main .ino file with its .h : IoT_EPS.
+In the header file we can find include and config informations. (to be changed - see project
 todo list)
 
 A lot of usage of global variables and objects (not very optimal). :ref:`See variables list<refVariableList>`
 
 Usage of one big json file (except for credentials) to store plugs information and 
-application parameters. Not optimal.
+application parameters. Not optimal (a better choice would be one file for general informations and
+one file for flugs parameters and perhaps one file by plug).
 
-Usage of static functions in some object like Crtc.
+Usage of static functions in some object like Crtc du to usage of external library.
 
-Usage of a pseudo object in SerialCommand (just a struct)
+Usage of a pseudo object in SerialCommand (just a struct) due to reuse of code from an other project.
 
 The embedded html server is based on ESP8266webserver class 
 
-file system globale SPIFFS is based on ESP8266 core
+Global File system SPIFFS is based on ESP8266 core
 
 Operations
 ====================================================================================================
@@ -97,7 +98,7 @@ It is although the hardware or physical world
 
 The Web world
 ====================================================================================================
-Server event (HTTP GET requests). They are mapped to C functions (CServerWeb methods)
+Server event (HTTP GET requests). They are mapped to callback C functions (CServerWeb methods)
 
 ============== ===================================================================================
 Event          Binded functions
@@ -195,7 +196,6 @@ see in :ref:`variable list<refVariableList>`
 
 
 
-
 .. index::
     single: Naming
 
@@ -203,16 +203,11 @@ see in :ref:`variable list<refVariableList>`
 Naming convention
 ====================================
 
-Référence : config4.json
 
+Référence : config4.json (the is the only file name that is mandatory to ensure interface between 
+plugs and wed worlds.
 
-====================================
-Remember
-====================================
-
-#. see javascript http request to perform DELETE: obsolete
-
-
+In the code i use lower Camel Case.
 
 ============================
 Software development choice
@@ -223,33 +218,32 @@ Html pages are in the file system SPIFFS
 
 Why do not use wifi manager ?
 =========================================
+A good question and i have no answers today !
 
-====================================
-Displaying plugs mode only with LED
-====================================
+======================================
+Displaying plugs mode only with LEDs
+======================================
 
 Problem : how to displays functional mode of a plug without the web interface
 
-Problem2 : is it really necessary ?
-
-Solution1: Use the little plug red LED. When OFF flash 1 shortly one time for mode 1 manual to five
- time for mode 5 Clone. When ON invert ton and toff of the flasher
+Solution1: Use the little plug red LED. When the LED is OFF flash shortly one time for mode 1 "manual" to five
+time for mode 5 "Clone". When ON is on invert ton and toff of the flasher
 
 Solution2: use color LED with flash capability one time for mode manual to 5 times to mode Clone
 with a long time between group of flash 3 seconds for example.
 
-Implemented solution : n°1 with the little specialPB pushed in the same time as the plug Push Button
+Implemented : solution n°1 with the little specialPB pushed in the same time as the plug Push Button
 
-Advice : retain special BP some seconds before pushing plug's PB to avoid to swith the plug.
+**An advice for users** : retain special BP pressed some seconds before pushing plug's PB to avoid to swith the plug.
 
 ==============
 IOExpander
 ==============
 
-The following text is for history only and it is obsolète:
+The following text is for history only and is **obsolete**:
 
 When we define hardware pin usage, we decide to use IOEpander MPC23017.
-Due to this choice=, we need to use a new lib Adafruit_MCP23017.h
+Due to this choice, we need to use a new lib Adafruit_MCP23017.h
 
 Available method:
 
@@ -272,7 +266,7 @@ Available method:
     uint8_t getLastInterruptPin();
     uint8_t getLastInterruptPinValue();
   
-Adresse par défaut: 0x20 (avec les 3 broches d'adresse à 0)
+Default address: 0x20 (with the 3 adrees pins at ground)
 
 En premier mouture, essai avec la librairie directement mais en deuxième monte, faire une classe
 qui prennent en charge la gestion du temps (classe Flasher dédiée au MCP)
@@ -287,8 +281,9 @@ _initDone et _mpc (mpc étant la ressource commune à toutes les instances de la
     On aurait pu utiliser la broche de commande du relais mais au cas où les 2
     seraient inversées l'une par rapport à l'autre, cela apporte plus de liberté.
 
-During development, to get more digital IO and 4 analog input, we decide to add a ARDUINO Nano as 
-an I2C IO expander (see Hardware dev doc)
+During development, to get more digital IO and 4 analog inputs, we decide to add an ARDUINO Nano as 
+an I2C IO expander (see :ref:`Hardware dev doc<nanoI2CIoExpander>` ) 
+
 
 .. index::
     single: Error handling
@@ -567,21 +562,38 @@ Size 1 : 8 lign of 21 char
 Size 2 : 4 lign of 10 char
 Size 3 : 2 lign of 5 char
 
-Screen définitions
+Screen definitions
 ====================================================================================================
-Screen are created with GIMP. 
+Screen are created with GIMP and converted with `LCD Assistant from radzio.dxp.pl`_
+
+.. _`LCD Assistant from radzio.dxp.pl` : http://en.radzio.dxp.pl/bitmap_converter/
+
+Screen color shall be inverted in GIMP text shall be in black and screen in white.
+ 
+Bitmap exported file from GIMP shall be in 2 bits indexed color maode
+(In gimp: Image/Mode/Couleur indexée... menu and dialog box)
 
 How many and what screen do we need ?
 
-In the septup sequence:
+First screen VoLAB logo
 
-- DS3231 demarre a: ( CSystem.init() )
-- A partir d'ici:
-- * Fichiers ok
-- * Parametres ok
+.. image:: image/ecranlogo_210612_1940.png
 
 
+Second screen : The project name : 
 
+.. image:: image/firstScreen.png 
+
+
+First and second screen are display by CSystem::_oledStartMessagesManager
+
+In the septup sequence::
+
+  - DS3231 demarre a: ( CSystem.init() )    [on line 1]
+  - A partir d'ici:                         [on line 3]
+  - * I2C ok                                [on line 4]
+  - * Fichiers ok
+  - * Parametres ok
 
 In the loop sequence:
 
@@ -589,6 +601,15 @@ In the loop sequence:
    :width: 128 px
 
 To display IPs, states and errors. Exemple: time server and Wifi accessibility... 
+
+On the above screen, only Date, time and state can change. Ip adress stay the same to the next reboot !
+
+So the right place to put it it at the end of setup loop.
+
+I place methods in the CSystem class not very logic. The right way to do it should be to creat a new
+dedicate dislayMessageClass.
+
+
 
 ===============================
 Eccueils et autres difficultés
