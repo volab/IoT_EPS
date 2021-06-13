@@ -155,6 +155,36 @@ void CSystem::oledLoopBackScreen(){
     _pDisplay->display();   
 }
 
+void CSystem::_oledBlankLine(int16_t x, int16_t y){
+    _pDisplay->setCursor( x,y);
+    _pDisplay->println("                   ");
+    _pDisplay->setCursor( x,y);
+}
+
+void CSystem::oledDisplayDate(){
+    
+    String date;
+    _pDisplay->setCursor( OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_DATE);
+    DateTime now = _rtc.now();
+    
+    date = (String)now.day()+"/"+(String)now.month()+"/";
+    date += (String)now.year()+"   ";
+    date += (String)now.hour()+":"+ (String)now.minute()+":";
+    date += (String)now.second();  
+    _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_DATE);  
+    _pDisplay->println(date);
+}
+void CSystem::oledDisplaySate(){
+    _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_STATE); 
+    _pDisplay->println("STATE: XYZW");
+}
+void CSystem::oledDisplayIps(){
+    _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_LAN_IPADD);
+    _pDisplay->println("LAN:" + WiFi.localIP().toString() );
+    _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_AP_IPADD);
+    _pDisplay->println(" AP:" + WiFi.softAPIP().toString() );
+}
+
 /**
  @fn void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
                     const String *necessaryFlLst, int necessaryFileNbr, String buildinfo
@@ -168,7 +198,7 @@ void CSystem::oledLoopBackScreen(){
  @param necessaryFlLst a pointer on the necessary list files
  @param necessaryFileNbr a many necessary files
  @param buildinfo as ti says
- @param pWifi an other pointer on the wifi class connection
+ @param pWifi a pointer on the wifi class connection
  @param pNanoioExp a pointer on the instance of nano io expension
  @param pdisplay a pointer on the oled display
  @return no return val

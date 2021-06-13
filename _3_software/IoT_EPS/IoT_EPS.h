@@ -232,6 +232,12 @@ there is 3 pull-up on the board.
 
 #include "csystem.h"
 
+#define OLED_XPOS_STARTLIGN 6
+#define OLED_YPOS_FOR_DATE 11
+#define OLED_YPOS_FOR_STATE 22
+#define OLED_YPOS_FOR_LAN_IPADD 41
+#define OLED_YPOS_FOR_AP_IPADD 50
+
 #define NECESSARY_FILE_NBR 9
 const String necessaryFileList[ NECESSARY_FILE_NBR ] ={
       "/index.html"

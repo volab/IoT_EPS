@@ -306,15 +306,10 @@ void setup(){
     }
     display.clearDisplay();
     sysIoteps.oledLoopBackScreen();    
-    display.setCursor(6,11);
-    display.println("19/06/21   23:24:30");
-    display.setCursor(6,22);
-    display.println("STATE: XYZW");
-    display.setCursor(6,41);
-    display.println("LAN:192.168.255.255");
-    display.setCursor(6,50);
-    display.println(" AP:192.168.255.255");
-    display.display(); 
+    sysIoteps.oledDisplayDate();
+    sysIoteps.oledDisplaySate();
+    sysIoteps.oledDisplayIps();
+    
     /////////////////////////////////////////////////////////////////////////////
     //  Setup watchdog                                                         //
     /////////////////////////////////////////////////////////////////////////////    

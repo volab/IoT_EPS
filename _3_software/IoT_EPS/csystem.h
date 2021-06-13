@@ -28,7 +28,11 @@ class CSystem
 		NTPClient *_pTimeclient;
 		void timeServerCheck();
         void oledLoopBackScreen();
+        void oledDisplayDate();
+        void oledDisplaySate();
+        void oledDisplayIps();
 	private:
+        void _oledBlankLine(int16_t x, int16_t y);
         static const unsigned char logoLab[1024];
         static const unsigned char loopBackScreen[1024];
 		void _oledStartMessagesManager();
