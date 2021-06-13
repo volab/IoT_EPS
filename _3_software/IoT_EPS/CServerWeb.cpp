@@ -66,7 +66,7 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs
     server->on("/edit", HTTP_DELETE, std::bind(&CServerWeb::handleFileDelete, this));
     server->on("/cfgpage", HTTP_GET, std::bind(&CServerWeb::handelIOTESPConfPage, this));
     server->on("/cfgsend", HTTP_POST, std::bind(&CServerWeb::handleIOTESPConfiguration, this));
-    server->on("/ChangeCred", HTTP_GET, std::bind(&CServerWeb::handleNewCred, this) );
+    server->on("/ChangeCred", HTTP_POST, std::bind(&CServerWeb::handleNewCred, this) );
     server->onNotFound(std::bind(&CServerWeb::notFoundHandler, this));
     server->on("/firstBoot", HTTP_POST, std::bind(&CServerWeb::handleFirstBoot, this) );
 
