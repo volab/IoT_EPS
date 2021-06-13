@@ -643,7 +643,7 @@ This function write credentials.json file in the SPIFFS with received SSID and p
 void CServerWeb::handleNewCred(){
     //usage /ChangeCred?ssid=xxxx/pass="yyyy" or connect to EPS in softAP mode to change
     // credential.
-    DEFDPROMPT( F("handel New Cred") );
+    DEFDPROMPT( F("handle New Cred") );
     String uriReceived = server->uri();
     DSPL( dPrompt + F(" Received uri = ") + uriReceived );
         DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
