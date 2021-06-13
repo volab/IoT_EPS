@@ -10,25 +10,22 @@
 
 //Warning global : SPIFFS used !!
 
-// CServerWeb::CServerWeb(/* args */)
-// {
-// }
+CServerWeb::CServerWeb(/* args */)
+{
+}
 
-// CServerWeb::~CServerWeb()
-// {
-// }
+CServerWeb::~CServerWeb()
+{
+}
 
 /**
- @fn void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs, bool* restartTempoLed, ESP8266WiFiClass *pWifiCon)
- @brief Iot_EPS web server initialisation method
- @param prtc a class RTC pointer
- @param pcParam a pointer on the cParam class
- @param pPlugs a pointer on the Plugs array
- @param restartTempoLed ?
- @param pWifiCon a pointer on the wificonnection class
- @return no return value 
+@fn CServerWeb::init()
+@brief Iot_EPS web server initialisation method
+@param prtc a class RTC pointer
+@return no return value
 */
-void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs, bool* restartTempoLed, ESP8266WiFiClass *pWifiCon){
+void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs
+        , bool* restartTempoLed, ESP8266WiFiClass *pWifiCon){
     //big warning if _rtc is initialised with a local variable !!!!
     DEFDPROMPT( "WEbServer init")
     
@@ -69,7 +66,7 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs, bool
     server->on("/edit", HTTP_DELETE, std::bind(&CServerWeb::handleFileDelete, this));
     server->on("/cfgpage", HTTP_GET, std::bind(&CServerWeb::handelIOTESPConfPage, this));
     server->on("/cfgsend", HTTP_POST, std::bind(&CServerWeb::handleIOTESPConfiguration, this));
-    server->on("/ChangeCred", HTTP_GET, std::bind(&CServerWeb::handleNewCred, this) );
+    server->on("/ChangeCred", HTTP_POST, std::bind(&CServerWeb::handleNewCred, this) );
     server->onNotFound(std::bind(&CServerWeb::notFoundHandler, this));
     server->on("/firstBoot", HTTP_POST, std::bind(&CServerWeb::handleFirstBoot, this) );
 
@@ -80,28 +77,25 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs, bool
 
 
 /**
- @fn void CServerWeb::notFoundHandler()
- @brief Web server page not found handler function
- @return no param and return value
+@fn CServerWeb::notFoundHandler()
+@brief Web server page not found handler function
+@return no param and return value
 */
 void CServerWeb::notFoundHandler(){
     if (!handleFileRead(server->uri()))
         server->send(404, "text/plain", "IoTEPS : FileNotFound");
 }
 
-
-
-
 void CServerWeb::htmlOkResponse(){
     server->send(200, "text/plain", "");
 }
 
 /**
- @fn void CServerWeb::serviceClient()
- @brief Web server client handle
- @return not param and no return value
- 
- Just a wrapper on the official method to be called from main program
+@fn CServerWeb::serviceClient()
+@brief Web server client handle
+@return not param and no return value
+
+Just a wrapper on the official method to be called from main program
 */
 void CServerWeb::serviceClient(){
     DEFDPROMPT("ServiceWeb");
@@ -135,20 +129,20 @@ void CServerWeb::displayTime(){
 }
 
 /**
- @fn void CServerWeb::handlePlugOnOff()
- @brief IoT_EPS web server handel plug on or off actions...
- @return not param and no return value
- 
- This method handel request that come from client web browser in the form:
- 192.168.1.42/plugonoff?COLOR=redPlug&Mode=Manuel&State=ON
- 
- Possible requests:
- 
- - Mode=Manuel&State=ON&dureeOff=299 : dureeOff on minutes only
- - Mode=Manuel&State=ON&dureeOff=299:59 : dureeOff on minutes and seconds
- - Mode=Manuel&State=ON&hFin=23:59 : hFin only one format HH:MM
- - Mode=Manuel&State=OFF
- - Mode=Manuel&State=ON
+@fn CServerWeb::handlePlugOnOff()
+@brief IoT_EPS web server handel plug on or off actions...
+@return not param and no return value
+
+This method handel request that come from client web browser in the form:
+192.168.1.42/plugonoff?COLOR=redPlug&Mode=Manuel&State=ON
+
+Possible requests:
+
+- Mode=Manuel&State=ON&dureeOff=299 : dureeOff on minutes only
+- Mode=Manuel&State=ON&dureeOff=299:59 : dureeOff on minutes and seconds
+- Mode=Manuel&State=ON&hFin=23:59 : hFin only one format HH:MM
+- Mode=Manuel&State=OFF
+- Mode=Manuel&State=ON
 
 */
 void CServerWeb::handlePlugOnOff(){
@@ -222,7 +216,7 @@ void CServerWeb::handlePlugOnOff(){
  @fn CServerWeb::handleFileRead(String path)
  @brief IoT_EPS a web server private method to handle file read request from others methods
  @param path a string that represent the path of the file to bo served
- @return error
+ @return
 
 */
 bool CServerWeb::handleFileRead(String path){
@@ -296,11 +290,11 @@ void CServerWeb::handleSoftAPIndex(){
 }
 
 /** 
- @fn String CServerWeb::extractParamFromHtmlReq( String allRecParam, String param )
- @brief to extract a parameter from all parameter
- @param allRecParam a concatened String containing all received parameters build in handlePlugOnOff()
- @param param the parameter to extract
- @return the value of the parameter or "nf" for not found or "" empty
+@fn String extractParamFromHtmlReq( String allRecParam, String param )
+@brief to extract a parameter from all parameter
+@param allRecParam a concatened String containing all received parameters build in handlePlugOnOff()
+@param param the parameter to extract
+@return the value of the parameter or "nf" for not found or "" empty
 */
 String CServerWeb::extractParamFromHtmlReq(String allRecParam, String param){
     DEFDPROMPT("extract param");
@@ -637,13 +631,13 @@ void CServerWeb::handleIOTESPConfiguration(){
  @brief fun tha handle new credential in response to handleSoftAPIndex...
  @return no return value and no parameter
 
-This function write credentials.json file in the SPIFFS with received SSID and password.
+ This function write credentials.json file in the SPIFFS with received SSID and password.
  
 */
 void CServerWeb::handleNewCred(){
     //usage /ChangeCred?ssid=xxxx/pass="yyyy" or connect to EPS in softAP mode to change
     // credential.
-    DEFDPROMPT( F("handle New Cred") );
+    DEFDPROMPT( F("handel New Cred") );
     String uriReceived = server->uri();
     DSPL( dPrompt + F(" Received uri = ") + uriReceived );
         DSPL( dPrompt + " nbr de parametres : "+(String)server->args() );
@@ -702,7 +696,7 @@ void CServerWeb::handleNewCred(){
  @brief Special firsboot page handler...
  @return no return value and no parameter
  
-Firstboot special page provide a way to the user to set SSID and pass for AP or Station mode.
+ Firstboot special page provide a way to the user to set SSID and pass for AP or Station mode.
 */
 void CServerWeb::firstBootHtmlForm(){
     /** DONE here 13/07/2019 if (firstBoot == tryStattion ){ add warning to the page} */ 
@@ -733,9 +727,9 @@ void CServerWeb::firstBootHtmlForm(){
  @brief Special firsboot reponse handler...
  @return no return value and no parameter
  
-Firstboot special page provide a way to the user to set SSID and pass for AP or Station mode.
+ Firstboot special page provide a way to the user to set SSID and pass for AP or Station mode.
  
-Here we process the answer of the user to write credential file and switch to normal mode.
+ Here we process the answer of the user to write credential file and switch to normal mode.
 */
 void CServerWeb::handleFirstBoot(){
     // check parameters
@@ -824,7 +818,7 @@ void CServerWeb::handleFirstBoot(){
 }
 
 /** 
- @fn String CServerWeb::buildMacAddName( String prefix)
+ @fn String buildMacAddName( String prefix)
  @brief return a string from mac add...
  @param prefix the prefix of the wanted name example IoT_ESP
  @return a tring with the prefix followed by _MMNN
