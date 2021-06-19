@@ -37,18 +37,6 @@ class sysError {
 
 class CSysStatus {
     public:
-        // CSysStatus();
-        sysError rtcErr;
-        // sysError i2cErr;
-        sysError nanoErr;
-        sysError fsErr;
-        sysError confFileErr; //config4.json gen parma part error
-        sysError plugParamErr;
-        sysError credFileErr;
-        sysError filesErr;
-        sysError ntpErr;
-        sysError internetErr;
-        sysError watchdogErr;
         /** 
          @fn CSysStatus::CSysStatus()
          @brief CSysSattus constructor...
@@ -70,6 +58,19 @@ class CSysStatus {
             {
             
         }
+        // CSysStatus();
+        sysError fsErr;
+        sysError nanoErr;
+        sysError rtcErr;
+        // sysError i2cErr;
+        sysError confFileErr; //config4.json gen parma part error
+        sysError credFileErr;
+        sysError filesErr;
+        sysError plugParamErr;
+        sysError ntpErr;
+        sysError internetErr;
+        sysError watchdogErr;
+
 
         // sysError *nanoErr = new sysError( sysError::fatal, CRGB::RoyalBlue, CRGB::Black);
         

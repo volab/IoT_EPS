@@ -34,6 +34,7 @@ bool CRtc::begin( NTPClient *p_tc ){
     
     p_timeClient = p_tc; //only used by displayTime and update methods
     begin();
+    return true; // this line will be never reach -only here to supress a compil warn.
 }
 
 /** 
