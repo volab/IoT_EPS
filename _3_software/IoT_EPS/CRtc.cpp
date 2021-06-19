@@ -18,9 +18,9 @@ NTPClient *CRtc::p_timeClient = nullptr;
 
 
 /** 
-@fn bool CRtc::begin( void )
-@brief extend RTC_DS3231::begin to add error handling capability
-@return 
+ @fn bool CRtc::begin( void )
+ @brief extend RTC_DS3231::begin to add error handling capability
+ @return 
 */
 bool CRtc::begin( void ){
 	RTC_DS3231::begin();

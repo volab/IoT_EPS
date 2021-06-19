@@ -185,6 +185,17 @@ void CSystem::oledDisplayIps(){
     _pDisplay->println(" AP:" + WiFi.softAPIP().toString() );
 }
 
+void CSystem::oledLoopChangeDispayIf(){
+    if ( millis() - _oledPrevMillis > _oledRefreshPeriod*1000 ){
+        _oledPrevMillis = millis();
+        oledDisplayDate();
+        //do the job here
+        
+    }   
+}
+
+
+
 /**
  @fn void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
                     const String *necessaryFlLst, int necessaryFileNbr, String buildinfo
@@ -344,7 +355,8 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _pDisplay->clearDisplay();
     _pDisplay->setCursor(0,0);
     _pDisplay->display();
-                        
+    _oledRefreshPeriod = OLED_REFRESH_PERIOD;
+    _oledPrevMillis = millis();                    
 
 
     
@@ -360,7 +372,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
 Need to be called after Wifi init cause _psysStat->ntpEnabled set by Wifi link
 */
 void CSystem::timeServerCheck(){
-/////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
     //  Time server check                                                     //
     /////////////////////////////////////////////////////////////////////////////
     // if ((wifi is on station mode connected))

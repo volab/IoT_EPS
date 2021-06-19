@@ -71,6 +71,7 @@
 - +EEPROM on DS3231 1010011 normaly 0x53 base add is 0x50 and I have solder A2 slot
 there is 3 pull-up on the board.
 */
+#define OLED_REFRESH_PERIOD 1 //in seconds
 
 #define CONFIGFILENAME "/config4.json"
 #define DEFCONFIGFILENAME "/defConfig.json"
