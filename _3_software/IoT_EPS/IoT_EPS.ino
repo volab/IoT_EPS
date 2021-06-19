@@ -127,7 +127,7 @@ void setup(){
     display.begin(SSD1306_SWITCHCAPVCC, OLED_I2C_ADD );
     display.clearDisplay();
 
-    int timeZone = OFFSET_HEURE;
+    // int timeZone = OFFSET_HEURE;
     String buildInfo =  String(__DATE__) + " @ " + String(__TIME__);
 
     sysIoteps.init( ntpUDP, &sysStatus, &SPIFFS, &cParam, necessaryFileList, NECESSARY_FILE_NBR

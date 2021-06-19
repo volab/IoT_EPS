@@ -674,10 +674,10 @@ void CServerWeb::handleNewCred(){
         if (json.success()) {
             JsonObject& general = json["general"]; // main level
             // DSPL( dPrompt + " general : " + param + " = " + value);
-            if ( ssid != "" & ssid != NOT_FOUND ) general[JSON_SSID_NAME] = ssid; 
-            if ( pass != "" & pass != NOT_FOUND) general[ JSON_PPASS_NAME ] = pass ;
-            if ( softAPssid != "" & softAPssid != NOT_FOUND ) general[ JSON_APSSID_NAME ] = softAPssid ;
-            if ( sofATPpass != "" & sofATPpass != NOT_FOUND ) general[ JSON_APPASS_NAME ] = sofATPpass ;
+            if ( (ssid != "") & (ssid != NOT_FOUND) ) general[JSON_SSID_NAME] = ssid; 
+            if ( (pass != "") & (pass != NOT_FOUND) ) general[ JSON_PPASS_NAME ] = pass ;
+            if ( (softAPssid != "") & (softAPssid != NOT_FOUND) ) general[ JSON_APSSID_NAME ] = softAPssid ;
+            if ( (sofATPpass != "") & (sofATPpass != NOT_FOUND) ) general[ JSON_APPASS_NAME ] = sofATPpass ;
             creFile.close();
             creFile = SPIFFS.open( CREDENTIALFILENAME , "w");
             json.printTo(creFile);
