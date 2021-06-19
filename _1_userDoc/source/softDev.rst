@@ -188,6 +188,7 @@ In progress
 
 Don't forget the todo list of the **doxygen documentation** and **git history**
 
+
 ====================================================================================================
 More object oriented rewriting (August 2020)
 ====================================================================================================
