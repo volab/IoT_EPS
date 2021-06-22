@@ -152,14 +152,9 @@ const unsigned char CSystem::loopBackScreen [1024] = {
 void CSystem::oledLoopBackScreen(){
     _pDisplay->setCursor(0,0);
     _pDisplay->drawBitmap(0,0, loopBackScreen, 128,64,1);
-    _pDisplay->display();   
+    // _pDisplay->display();   
 }
 
-void CSystem::_oledBlankLine(int16_t x, int16_t y){
-    _pDisplay->setCursor( x,y);
-    _pDisplay->println("                   ");
-    _pDisplay->setCursor( x,y);
-}
 
 void CSystem::oledDisplayDate(){
     
@@ -171,25 +166,44 @@ void CSystem::oledDisplayDate(){
     date += (String)now.year()+"   ";
     date += (String)now.hour()+":"+ (String)now.minute()+":";
     date += (String)now.second();  
-    _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_DATE);  
+    // _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_DATE);
+  
     _pDisplay->println(date);
+    // _pDisplay->display(); 
 }
 void CSystem::oledDisplaySate(){
-    _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_STATE); 
+    // _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_STATE); 
+    _pDisplay->setCursor(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_STATE); 
     _pDisplay->println("STATE: XYZW");
+    
 }
 void CSystem::oledDisplayIps(){
-    _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_LAN_IPADD);
+    // _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_LAN_IPADD);
+    _pDisplay->setCursor(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_LAN_IPADD);
     _pDisplay->println("LAN:" + WiFi.localIP().toString() );
-    _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_AP_IPADD);
+    // _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_AP_IPADD);
+    _pDisplay->setCursor(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_AP_IPADD);
     _pDisplay->println(" AP:" + WiFi.softAPIP().toString() );
+     
 }
 
 void CSystem::oledLoopChangeDispayIf(){
+    DEFDPROMPT( "CSystem::oledLoopChangeDispayIf" )
     if ( millis() - _oledPrevMillis > _oledRefreshPeriod*1000 ){
         _oledPrevMillis = millis();
+        _pDisplay->clearDisplay();
+
+        oledLoopBackScreen();  
+        
         oledDisplayDate();
+        oledDisplayIps();
         //do the job here
+
+        oledDisplaySate();
+        
+
+        _pDisplay->display();
+    
         
     }   
 }

@@ -385,13 +385,21 @@ RTC on error strategy, No RTC component
 I2C address
 ====================================================================================================
 - watchdog : 0x26 (defined in cattiny_i2C_watchdog.h)
+- OLED 0x3C
+- EEPROM on DS3231 1010011 normaly 0x53 base add is 0x50 and I have solder A2 slot
 - ioexpender : 0x58 (ored with D13) - defined in the ARDUINO NANO code
 - DS3231 : 0x68 defined in RTClib.h
-- +EEPROM on DS3231 1010011 normaly 0x53 base add is 0x50 and I have solder A2 slot
-- OLED 0x3C
 
 There is 3 pull-up on the board.
 
+<F> command result (22/06/2021)::
+
+    I2C device found at address 0x26  !
+    I2C device found at address 0x3C  !
+    I2C device found at address 0x53  !
+    I2C device found at address 0x58  !
+    I2C device found at address 0x68  !
+    
 
 ================================
 RTC DS3231 EEPROM access
@@ -545,9 +553,9 @@ OLED Screen integration
 
 .. _`128X64 I2C SSD1306 on Aliexpress` : https://fr.aliexpress.com/item/33008480580.html?spm=a2g0o.cart.0.0.5d273c007sJ7KR&mp=1
 
-`Adafruit GFX library`_
+`Adafruit GFX library`_  used 
 
-.. _`Adafruit GFX library` : https://learn.adafruit.com/adafruit-gfx-graphics-library/overview used 
+.. _`Adafruit GFX library` : https://learn.adafruit.com/adafruit-gfx-graphics-library
 
 Add I2C 0x78 on the board (7 or 8 bits add ?)
 
