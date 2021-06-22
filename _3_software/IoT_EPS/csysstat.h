@@ -86,6 +86,9 @@ class CSysStatus {
         
         void initCBITTimer();
         bool isCbitTime();
+
+        /**  @brief Return anded global system state */
+        bool isSystemok();
        
     private:
         unsigned long _prevMillisCbit;

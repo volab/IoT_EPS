@@ -91,4 +91,15 @@ void CSysStatus::display(){
     
 }
 
+
+/** 
+ @fn bool CSysStatus::isSystemok()
+ @return true if system has no error at all.
+
+*/
+bool CSysStatus::isSystemok(){
+    return ( !fsErr.isErr() && !nanoErr.isErr() && !rtcErr.isErr() && !confFileErr.isErr()
+               && !credFileErr.isErr() && !filesErr.isErr() && ! plugParamErr.isErr() && !ntpErr.isErr() );
+}
+
 CSysStatus sysStatus;

@@ -215,7 +215,7 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
 //    Restaure physical state                                              //
 /////////////////////////////////////////////////////////////////////////////
                     if ( restaurePhyState )
-                        if ( _state && !_pause ) on(); else off();
+                        if ( _state && (!_pause) ) on(); else off();
 /////////////////////////////////////////////////////////////////////////////
 //    debug displays                                                       //
 /////////////////////////////////////////////////////////////////////////////

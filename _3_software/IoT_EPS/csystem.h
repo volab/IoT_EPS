@@ -24,7 +24,8 @@ class CSystem
 	public:
 		void init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
 					const String *necessaryFileList, int necessaryFileNbr, String buildInfo
-					, ESP8266WiFiClass *wifi, CNanoI2CIOExpander *pNanoExp, Adafruit_SSD1306 *pdisplay  );
+					, ESP8266WiFiClass *wifi, CNanoI2CIOExpander *pNanoExp, Adafruit_SSD1306 *pdisplay
+                      );
 		NTPClient *_pTimeclient;
 		void timeServerCheck();
         void oledLoopBackScreen();
@@ -52,6 +53,8 @@ class CSystem
         */
         void oledLoopChangeDispayIf();
 
+        void setPlugsAdd( CPowerPlug *plugs ){ _pPlugs = plugs; }
+
 	private:
 
         /**
@@ -77,10 +80,12 @@ class CSystem
 		CSysStatus *_psysStat;
 		FS *_pFileSystem;
 		Adafruit_SSD1306 *_pDisplay;
+        CPowerPlug *_pPlugs;
 		const String *_pNecessaryFiles; //no need to keep if only used in init()
 
         unsigned long _oledPrevMillis;
         unsigned long _oledRefreshPeriod; //in seconds
+        uint8_t _oledCptPlugToDisplay;
 
 		
 

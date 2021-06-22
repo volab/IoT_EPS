@@ -206,7 +206,10 @@ void setup(){
         if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[i].readFromJson( true ) );
         else  plugs[i].handleBpLongClic(); //force OFF is main power off   
     }
-      	
+    
+    sysIoteps.setPlugsAdd( plugs ); // cause of the new plugs above
+
+
     /* DONE : document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
 

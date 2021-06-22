@@ -173,8 +173,30 @@ void CSystem::oledDisplayDate(){
 }
 void CSystem::oledDisplaySate(){
     // _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_STATE); 
-    _pDisplay->setCursor(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_STATE); 
-    _pDisplay->println("STATE: XYZW");
+    _pDisplay->setCursor(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_STATE);
+    String message;
+    if ( _psysStat->isSystemok() ){
+        // display one plug state
+        message = _pPlugs[_oledCptPlugToDisplay++].getPlugName();
+        message += "mode ";
+        message += (String)_pPlugs[_oledCptPlugToDisplay++].getMode();
+        _pDisplay->println(message);
+        //cpt++
+        //if cpt >= plug Number => cpt =0
+        if ( _oledCptPlugToDisplay >= _pcParam->getNumberOfPlugs() ){
+            _oledCptPlugToDisplay =0;
+        }
+    } else {
+        // how to display many errors
+        // cpt = _psysStat->howManyError
+        // display oneError and cpt--
+        //if cpt = 0 reload
+        if ( _psysStat->fsErr.isErr() ){
+
+        }
+    }
+    // _pDisplay->println("STATE: XYZW");
+
     
 }
 void CSystem::oledDisplayIps(){
@@ -234,7 +256,8 @@ with almost all components in the system.
 void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
                     const String *necessaryFlLst, int necessaryFileNbr, String buildinfo
                     , ESP8266WiFiClass *pWifi, CNanoI2CIOExpander *pNanoioExp
-                    , Adafruit_SSD1306 *pdisplay ){
+                    , Adafruit_SSD1306 *pdisplay
+                     ){
 
     DEFDPROMPT( "CSystem::init" )
 
@@ -246,6 +269,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _pcParam = pcParam;
     _pNecessaryFiles = necessaryFileList;
     _pDisplay = pdisplay;
+    
     delay(1000);//a try to correct the powerup pb
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite( LED_BUILTIN, LOW ); //warning D4 BP bleue plug
@@ -372,7 +396,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _oledRefreshPeriod = OLED_REFRESH_PERIOD;
     _oledPrevMillis = millis();                    
 
-
+    _oledCptPlugToDisplay = 0;
     
         
 }
