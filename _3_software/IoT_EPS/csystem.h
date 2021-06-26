@@ -86,6 +86,7 @@ class CSystem
         unsigned long _oledPrevMillis;
         unsigned long _oledRefreshPeriod; //in seconds
         uint8_t _oledCptPlugToDisplay;
+        uint8_t _oledCptErrToDisplay=0;
 
 		
 

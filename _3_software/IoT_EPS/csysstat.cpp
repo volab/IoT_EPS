@@ -102,4 +102,51 @@ bool CSysStatus::isSystemok(){
                && !credFileErr.isErr() && !filesErr.isErr() && ! plugParamErr.isErr() && !ntpErr.isErr() );
 }
 
+
+/** 
+ @fn int8_t CSysStatus::howManyError()
+ @return The number of error.
+
+Method developped specialy for oled display
+*/
+int8_t CSysStatus::howManyError(){
+    int8_t cpt = 0;
+    if ( fsErr.isErr() ) cpt++;
+    if ( nanoErr.isErr() ) cpt++;
+    if ( rtcErr.isErr() ) cpt++;
+    if ( confFileErr.isErr() ) cpt++;
+    if ( credFileErr.isErr() ) cpt++;
+    if ( filesErr.isErr() ) cpt++;
+    if ( plugParamErr.isErr() ) cpt++;
+    if ( ntpErr.isErr() ) cpt++;
+    return cpt;
+}
+
+String CSysStatus::getMsg( int8_t n){
+    int8_t cpt = 0;
+    if ( fsErr.isErr() ) cpt++;
+    if ( cpt == n ) return fsErr.getMsg();
+    if ( nanoErr.isErr() ) cpt++;
+    if ( cpt == n ) return nanoErr.getMsg();
+    if ( rtcErr.isErr() ) cpt++;
+    if ( cpt == n ) return rtcErr.getMsg();
+    if ( confFileErr.isErr() ) cpt++;
+    if ( cpt == n ) return confFileErr.getMsg();
+    if ( credFileErr.isErr() ) cpt++;
+    if ( cpt == n ) return credFileErr.getMsg();
+    if ( filesErr.isErr() ) cpt++;
+    if ( cpt == n ) return filesErr.getMsg();
+    if ( plugParamErr.isErr() ) cpt++;
+    if ( cpt == n ) return plugParamErr.getMsg();
+    if ( ntpErr.isErr() ) cpt++;
+    if ( cpt == n ) return ntpErr.getMsg();
+
+    /** @todo [NECESSARY] best way to return error message will be to creat an array in howmanyError
+     * method and find it here */
+
+
+
+
+}
+
 CSysStatus sysStatus;

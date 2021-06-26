@@ -158,15 +158,18 @@ void CSystem::oledLoopBackScreen(){
 
 void CSystem::oledDisplayDate(){
     
-    String date;
+    //String date;
+    char date[21];
     _pDisplay->setCursor( OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_DATE);
     DateTime now = _rtc.now();
     
-    date = (String)now.day()+"/"+(String)now.month()+"/";
-    date += (String)now.year()+"   ";
-    date += (String)now.hour()+":"+ (String)now.minute()+":";
-    date += (String)now.second();  
+    // date = (String)now.day()+"/"+(String)now.month()+"/";
+    // date += (String)now.year()+"   ";
+    // date += (String)now.hour()+":"+ (String)now.minute()+":";
+    // date += (String)now.second();  
     // _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_DATE);
+    sprintf( date, "%02d/%02d/%04d  %02d:%02d:%02d", now.day(), now.month(), now.year(), now.hour(), 
+    now.minute(), now.second());
   
     _pDisplay->println(date);
     // _pDisplay->display(); 
@@ -177,8 +180,8 @@ void CSystem::oledDisplaySate(){
     String message;
     if ( _psysStat->isSystemok() ){
         // display one plug state
-        message = _pPlugs[_oledCptPlugToDisplay++].getPlugName();
-        message += "mode ";
+        message = _pPlugs[_oledCptPlugToDisplay].getPlugName();
+        message += " mode ";
         message += (String)_pPlugs[_oledCptPlugToDisplay++].getMode();
         _pDisplay->println(message);
         //cpt++
@@ -191,8 +194,9 @@ void CSystem::oledDisplaySate(){
         // cpt = _psysStat->howManyError
         // display oneError and cpt--
         //if cpt = 0 reload
+        if ( _oledCptErrToDisplay = 0 ) _oledCptErrToDisplay = _psysStat->howManyError();
         if ( _psysStat->fsErr.isErr() ){
-
+            message = _psysStat->fsErr.getMsg();
         }
     }
     // _pDisplay->println("STATE: XYZW");

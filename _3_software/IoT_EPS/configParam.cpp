@@ -40,6 +40,7 @@ std::unique_ptr<char[]> buf(new char[size]);
 It allow to creat a DynamicJsonBuffer without size  
 */
 bool ConfigParam::readFromJson(){
+    bool returnVal;
     DEFDPROMPT("reading config param.")
 
     DSPL( dPrompt +F("Mounting FS..."));
@@ -97,22 +98,23 @@ bool ConfigParam::readFromJson(){
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
                     
-                    return false;
+                    returnVal = false;
                 }
                 ///Config file closing
                 configFile.close();
-                return true;
+                returnVal = true;
             }
         } else {
             dPrompt += F("Failed to open ");
             dPrompt += CONFIGFILENAME;
             DEBUGPORT.println(dPrompt);
-            return false;
+            returnVal = false;
         }
     } else { //normaly do not arrive cause there is a file system check before - 18/05/2019
         DEBUGPORT.println( dPrompt + F("Failed to mount FS"));
-        return false;
+        returnVal = false;
     }  
+    return returnVal; //to supresse return value warning 26/06/2021
 }
 
 /** 

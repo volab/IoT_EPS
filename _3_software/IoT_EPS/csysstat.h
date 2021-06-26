@@ -45,15 +45,16 @@ class CSysStatus {
         Allow to creat and initialize erros variables
         */
         CSysStatus():
+/* Message max lenght 20c for oled display */
               fsErr( sysError::fatal, CRGB::Red, CRGB::Black, "File system error" )
             , nanoErr( sysError::fatal, CRGB::Red, CRGB::Blue, "Nano error" )
             , rtcErr( sysError::fatal, CRGB::Brown, CRGB::Black, "DS3231 error" ) 
             , confFileErr( sysError::fatal, CRGB::Red, CRGB::Yellow, "Config file error" )
             , credFileErr( sysError::medium, "Credential error" )
-            , filesErr( sysError::fatal, CRGB::OrangeRed, CRGB::Black, "Necessary files error" )
-            , plugParamErr( sysError::fatal, CRGB::Red, CRGB::Snow, "Plug's file error"  )
+            , filesErr( sysError::fatal, CRGB::OrangeRed, CRGB::Black, "Needed files error" )
+            , plugParamErr( sysError::fatal, CRGB::Red, CRGB::Snow,    "Plug's file error"  )
             , ntpErr( sysError::low, "NTP error")
-            , internetErr( sysError::fatal, CRGB::RoyalBlue, CRGB::OrangeRed, "Internet access error" )
+            , internetErr( sysError::fatal, CRGB::RoyalBlue, CRGB::OrangeRed, "Internet error" )
             , watchdogErr( sysError::fatal, CRGB::Snow, CRGB::Black, "watchdog error")
             {
             
@@ -87,8 +88,13 @@ class CSysStatus {
         void initCBITTimer();
         bool isCbitTime();
 
-        /**  @brief Return anded global system state */
+        /** @brief Return anded global system state */
         bool isSystemok();
+
+        /** @brief  return the number of error for oled display */
+        int8_t howManyError();
+
+        String getMsg( int8_t n);
        
     private:
         unsigned long _prevMillisCbit;
