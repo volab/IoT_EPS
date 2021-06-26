@@ -183,7 +183,7 @@ void CSystem::oledDisplaySate(){
         message = _pPlugs[_oledCptPlugToDisplay].getPlugName();
         message += " mode ";
         message += (String)_pPlugs[_oledCptPlugToDisplay++].getMode();
-        _pDisplay->println(message);
+        // _pDisplay->println(message);
         //cpt++
         //if cpt >= plug Number => cpt =0
         if ( _oledCptPlugToDisplay >= _pcParam->getNumberOfPlugs() ){
@@ -195,11 +195,10 @@ void CSystem::oledDisplaySate(){
         // display oneError and cpt--
         //if cpt = 0 reload
         if ( _oledCptErrToDisplay = 0 ) _oledCptErrToDisplay = _psysStat->howManyError();
-        if ( _psysStat->fsErr.isErr() ){
-            message = _psysStat->fsErr.getMsg();
-        }
+        message = _psysStat->getMsg( _oledCptErrToDisplay-- );
+
     }
-    // _pDisplay->println("STATE: XYZW");
+    _pDisplay->println(message);
 
     
 }
