@@ -4,6 +4,7 @@ Hardware development documentation
 
 :Auteur: J.Soranzo
 :Date: Octobre 2018
+:update: 05/04/2021
 :version: git versionning
 
 
@@ -17,12 +18,20 @@ Hardware development documentation
 
    mockup
 
-================================
-Ce qui existe en 2020 !
-================================    
+.. |clearer|  raw:: html
+
+    <div class="clearer"></div>
+
+====================================================================================================
+In 2021 find on the net
+====================================================================================================
+
 TPlink
 
-MEROSS
+`MEROSS`_ 26€
+
+.. _`MEROSS` : https://www.amazon.fr/Multiprise-HTbrightly-puissance3680W-Protection-surtensions/dp/B08T1DNG2R/ref=sr_1_19?__mk_fr_FR=%C3%85M%C3%85%C5%BD%C3%95%C3%91&dchild=1&keywords=meross-Multiprise-Connect%C3%A9e-Intelligente&qid=1624739465&sr=8-19
+
 
 WECONN
 
@@ -35,17 +44,59 @@ AMAZON, Darty...
 
 .. _`prise multiple Polyco` : https://www.apynov.com/konyks-polyco
 
+.. index::
+    single: TP-LINK HS110
+
 ====================================================================================================
-Test de la prise TP-Link avec mesure de courant
+Test of TP-Link HS110 plug with curent measurment capability
 ====================================================================================================
-Tout d'abord il faut installer l'appli sur son smart phone ! Quid du pilotage depuis le pc ou le mac
-ou depuis son linux ?
-Ensuite il faut créer un compte avec fourniture d'adress mail sur tplink pour piloter une pauvre 
-prise ! Argl !
+Usage of `TP-LINK HS110`_
+
+.. _`TP-LINK HS110` : https://www.tp-link.com/en/home-networking/smart-plug/hs110/
+
+First of all, we need to install a smartphone application KASA. What about to drive the plug directly
+from a Windows, Mac or Linux computer. The plug is compatible with Alexa and IFTTT.
+Above is true but with the help of Softscheck and their blog article : `Reverse Engineering the TP-Link HS110`_
+
+.. _`Reverse Engineering the TP-Link HS110` : https://www.softscheck.com/en/reverse-engineering-tp-link-hs110/
+
+We can do a lot of thing ! Great job and thanks to them !
+
+The application need to connect to your wifi network and more surprisingly active your location !
+
+You also need to creat a login on their internt site. Just to drive one simple plug !!!
+
+Clearly it's not a product for an hobbyist. It is not open source at all
+
+.. figure:: image/tplink-hs110.png
+    :width: 200 px
+    :figwidth: 100%
+    :align: left
+
+    TP-LINK HS110 
+
+|clearer|
+
+====================================================================================================
+Et avec un Raspberry pi ?
+====================================================================================================
+
+La question se pose sérieusement avec le pi zero W (W pour Wifi) sur KuBii, il est à 10.44€ ttc
+
+Contre environ 2.5€ pour un Wemos D1 mini
+
+
+.. _hardProgress:
 
 ============
 Progres
 ============
+
+Terminated
+==============================
+
+::
+
 #. alimentation ESP/Wemos en 5V ? : **OK**
 #. horloge temps réelle : **OK**
 #. bouton poussoirs : **OK**
@@ -54,21 +105,27 @@ Progres
 #. définition des modes de fonctionnement : **OK**
 #. récup paramètre via form submit html : **OK**
 #. add  WS2801 LED : **OK**
-#. Alimentation du module relais en 5V (choix du conver.) : 60%
 #. add power led **OK**
 #. add power button : **OK** 
 #. add wifi led : **OK**
-#. add LDR : removed
+#. add LDR : **removed**
 #. add I2C nano expander with analog inputs **OK**
-
 #. change BP to nano I2C and relay command to ESP directly (to allow turnoff relays in fatal error) **OK**
 #. resolv power up problem : implement MAX1232 [ as an option onto the PCB ] **discarded**
 #. implement an I2C watch dog component [ as an option onto the PCB ] **OK**
 #. choix curent sensor: 75% - **discarded** in the first version
 #. pcb study **OK**
+
+In progress
+======================
+
+::
+
+#. Alimentation du module relais en 5V (choix du conver.) : 60%
 #. packaging study
 #. integartion
 #. add a MOSFET on general power relay to switch them all in one time on power off
+#. OLED screen intefgartion : 99%
 
 
 ####
@@ -159,7 +216,7 @@ Power ATtiny with 3.3V and don't forget pullup on D3 and on reset (15k)
 
 ATiny85 watchdog test tips
 ============================
-There is a TX debug serial on pin 3  speed is 9600
+There is a TX debug serial on pin 3  speed is 1200
 
 The name of the project of the Atiny code is ESPEasySlaves.
 
@@ -167,9 +224,11 @@ Only for my eyes the code sits in ::
 
     0044-Iot_ESP_PPlug\projet\_3_software\etudeDeCode (not pushed in github).
 
-=============================
+
 MAX1232 integration aborted
 =============================
+
+MAX1232 is a uP supervisor. It features bp and watchdog
 
 .. figure:: image/MAX1232pinout.png
     :align: center
@@ -182,6 +241,8 @@ Very simple : connect VCC, GND and RST/ to RST pin of the 8266 !
 Add a pullup on RST/. Also pullup TOL pin 3 (tolerance 10%), pin 7 WD input and pin 1 PBRST/
 
 Warning MAW1232 check power supply in 5V+/-5% ie 4.75 to 5.25V
+
+Aborted because : timeout settings of 150ms, 600ms, or 1.2s (to short for us)
 
 ====================================
 Direct relay connection to ESP pins
@@ -230,6 +291,9 @@ and in French : `prises secteur sur wikipedia`_
 
 ####
 
+.. index::
+    single: Power supply
+
 ==================   
 ESP power 
 ==================
@@ -253,10 +317,15 @@ Can we power ESP with external 5V and USB at the same time ?
 
 The USB input is protected by a diode, ok
 
-But our external power is not. All +5V are connected together so USB wil power all the board and
+But our external power is not. All +5V are connected together so USB will power all the board and
 relays. It is not very good. We should put a diode between 5V of ESP and the rest of the board.
 In this way, external power could power ESP but +5V power from ESP could not power the rest of the
 plug.
+
+And what about 3.3V ? It come from ESP regulator to power few I2C components like:
+
+- RTC
+- Tiny85 who could work with 5v but to drive ESP input it is better to power ATiny with 3.3v
 
 ####
 
@@ -299,6 +368,19 @@ Power consumption : 1.9mA measured 08/03/19
 =======================
 Current sensor choice
 =======================
+
+Great youtube video on this subject from Andreas Spiess (the guy with the swiss accent)
+
+`#245 Deep-Sleep Current: Which is better? µCurrent or CurrentRanger? (ESP32, ESP8266)`_
+
+.. _`#245 Deep-Sleep Current: Which is better? µCurrent or CurrentRanger? (ESP32, ESP8266)` : https://www.youtube.com/watch?v=HmXfyLyN38c
+
+`#321 7 Sensors tested: Measuring Current with Microcontrollers (Arduino, ESP32, ESP8266)`_
+
+.. _`#321 7 Sensors tested: Measuring Current with Microcontrollers (Arduino, ESP32, ESP8266)` : https://www.youtube.com/watch?v=cG8moaufmQs
+
+
+
 
 INA219 et INA220
 =================
@@ -527,6 +609,14 @@ A very short time new hope :-(
 
 .. _`at Mouser.com` : https://www.mouser.fr/ProductDetail/Maxim-Integrated/MAX71020AETI%2b?qs=%2Fha2pyFaduhbncrMXO3FSjhx%252BjRn69riAjwSGzocCvw%252Bj%2FNqq3%2F7JvLM9vZohPbP
 
+MCP3911
+====================================================================================================
+In Linky !
+
+ 1€64 @MOUSER
+
+Shunt mesurment
+
 ----------------------------------------------------------------------------------------------------
 
 .. index::
@@ -612,6 +702,8 @@ Source : sur `RandomeredTutorial ESP8266 pinout`_
 
 ----------------------------------------------------------------------------------------------------
 
+.. _nanoI2CIoExpander:
+
 .. index::
     pair: Hardware; IO Expander
 
@@ -619,10 +711,10 @@ Source : sur `RandomeredTutorial ESP8266 pinout`_
 ===========================
 nanoI2CIOExpander
 ===========================
-To solve digital I/O and analog I decide to use a ARDUINO nano as I2C slave. I belived that someone
+To solve digital I/O and analog I decide to use an ARDUINO nano as I2C slave. I belived that someone
 like ADAFRUIT or SPARFUN has build a lib to use an ARDUINO Nano as `I2C I/O expander`_.
 
-At my great surprise, nobody does it ! So I wrote it and I provide it on `HACKSTER IO`_
+To my surprise, nobody does it ! So I wrote it and I provide it on `HACKSTER IO`_
 
 
 .. _`I2C I/O expander` : https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc
@@ -631,7 +723,7 @@ At my great surprise, nobody does it ! So I wrote it and I provide it on `HACKST
 
 Nano pining :
 
-.. table:: Affectation des broches sur l'ARDUINO Nano I2C I/O Expander
+.. table:: ARDUINO Nano I2C I/O Expander pins assignment
     :align: center
     
     ===== ======= =============
@@ -661,9 +753,9 @@ Nano pining :
     
 ####
 
-=====================
-BOM
-=====================
+==========================================
+BOM (obsolete 10/06/2021)
+==========================================
 
 - Carte 8 relais banggood 4.57
 - 4 BP 0.2€ = 0.8€
@@ -744,6 +836,15 @@ SONOF POW on `the SONOF site`_
 
 .. _`How can I detect a power outage with a microcontroller?` : https://electronics.stackexchange.com/questions/17008/how-can-i-detect-a-power-outage-with-a-microcontroller
 
+
+====================================================================================================
+PCB dev
+====================================================================================================
+Tools : `EasyEDA.com`_
+
+.. _`EasyEDA.com` : https://easyeda.com/editor#id=69115a0a3c0e4fc9a7f6cf54611fa6d4|2b73c76a246e4b2a8ebcf58152a8890c
+
+:download:`Schéma<../../_4_PCB/easyeda/Schematic_IoT Electrical Power Strip_Sheet_1_20200208225752.pdf>`
 
 
 =============

@@ -103,12 +103,13 @@ String s;
 String key,value;
 char k[40];
 char v[40];
-int h,m, deux, trois, n;
+// int h,m, deux, trois, n;
+int n;
 DateTime now;
 String date;
 
 CNanoI2CIOExpander nanoI2C;
-bool nineState;
+// bool nineState; unused warning
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, NTPSERVER);
@@ -119,7 +120,7 @@ int timeZone = OFFSET_HEURE;
 
 nanoI2C.pinMode( 9, OUTPUT );
 
-int eightState;
+// int eightState; unused warning
 String str = "";
 Dir dir;	
 FSInfo filseSystemInfo;

@@ -44,6 +44,8 @@ Set time and date parameter names
 setTime, setDate
 
 
+.. index::
+    single: Wemos; Config
 
 =========================
 ARDUINO Configuration

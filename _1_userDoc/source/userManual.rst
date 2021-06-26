@@ -59,6 +59,10 @@ All the time Special PB + a plugs PB indicates the mode off the plug
 ================================
 Advanced user
 ================================
+
+.. index::
+    single: Serial;  speed
+
 Serial com speed : 115200 (dans debugSerialPort.h DEBUGSPEED)
 
 File upload : use web interface (need to be connected to internet) PowerStip01/edit

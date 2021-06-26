@@ -40,6 +40,7 @@ std::unique_ptr<char[]> buf(new char[size]);
 It allow to creat a DynamicJsonBuffer without size  
 */
 bool ConfigParam::readFromJson(){
+    bool returnVal;
     DEFDPROMPT("reading config param.")
 
     DSPL( dPrompt +F("Mounting FS..."));
@@ -97,22 +98,23 @@ bool ConfigParam::readFromJson(){
                 } else {
                     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
                     
-                    return false;
+                    returnVal = false;
                 }
                 ///Config file closing
                 configFile.close();
-                return true;
+                returnVal = true;
             }
         } else {
             dPrompt += F("Failed to open ");
             dPrompt += CONFIGFILENAME;
             DEBUGPORT.println(dPrompt);
-            return false;
+            returnVal = false;
         }
     } else { //normaly do not arrive cause there is a file system check before - 18/05/2019
         DEBUGPORT.println( dPrompt + F("Failed to mount FS"));
-        return false;
+        returnVal = false;
     }  
+    return returnVal; //to supresse return value warning 26/06/2021
 }
 
 /** 
@@ -382,35 +384,3 @@ void ConfigParam::creatDefaultJson(){
     
 }
 
-//I try to merge this function and write2Json but there is one level more in the json file.
-// so i decide to keep the 2 version of the function 
-/* void ConfigParam::_write2CredJson( String param, String value ){
-    DEFDPROMPT( "write to credentials");
-    File configFile = SPIFFS.open( "/credentials.json" , "r");
-    // File configFile = SPIFFS.open( file.c_str() , "r");
-    // DSPL( dPrompt);
-    if (configFile) {
-        size_t size = configFile.size();
-        // Allocate a buffer to store contents of the file.
-        std::unique_ptr<char[]> buf(new char[size]);
-        configFile.readBytes(buf.get(), size);
-        DynamicJsonBuffer jsonBuffer;
-        JsonObject& json = jsonBuffer.parseObject(buf.get());
-        if (json.success()) {
-            DSPL( dPrompt + " written WiFi "+ param +" : " + value);
-            json[param] = value; 
-            // configFile.seek(0, SeekSet);
-            configFile.close();
-            configFile = SPIFFS.open( "/credentials.json" , "w");
-            json.prettyPrintTo(configFile);
-            // plug.prettyPrintTo(Serial);
-            // DSPL();
-        } else {
-            DEBUGPORT.println(dPrompt + F("Failed to load json credentials"));
-            // return false;
-        }
-        configFile.close();
-        // return true;  
-/** @todo perhaps add error handling as in readFromJson()*/        
-   /* } 
-} */

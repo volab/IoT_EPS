@@ -215,7 +215,7 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
 //    Restaure physical state                                              //
 /////////////////////////////////////////////////////////////////////////////
                     if ( restaurePhyState )
-                        if ( _state && !_pause ) on(); else off();
+                        if ( _state && (!_pause) ) on(); else off();
 /////////////////////////////////////////////////////////////////////////////
 //    debug displays                                                       //
 /////////////////////////////////////////////////////////////////////////////
@@ -264,6 +264,8 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
         DEBUGPORT.println( dPrompt + F("Failed to mount FS"));
         return false;
     }
+
+    return true; // non reachable line just for warning
 }
 
 /** 
@@ -305,7 +307,10 @@ String CPowerPlug::readFromJson( String param ){
     } else {
         DEBUGPORT.println( dPrompt + F("Failed to mount FS"));
         return RETURN_NOT_FOUND_VALUE;
-    }    
+    }
+
+    /** @todo [optionnal] change if structure to remove next line */
+    return ""; //just for warning no reachable line !
 }
 
 /** 
@@ -605,11 +610,11 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     } 
 }
 /** 
-@fn String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param )
-@brief to extract a parameter from all parameter
-@param allRecParam a concatened String containing all received parameters build in handlePlugOnOff()
-@param param the parameter to extract
-@return the value of the parameter or "nf" for not found or "" empty
+fn String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param )
+brief to extract a parameter from all parameter
+param allRecParam a concatened String containing all received parameters build in handlePlugOnOff()
+param param the parameter to extract
+return the value of the parameter or "nf" for not found or "" empty
 */
 /*
 String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
@@ -902,7 +907,7 @@ void CPowerPlug::handleBpDoubleClic(){
     DEFDPROMPT( "handleBpDoubleClic");
     if ( !_flashLed ){
         DSPL( dPrompt + F("flash mode : 1 for manual, 2 timer, 3 cyclique, 4 hebdo.") );
-        int flashCounter = _mode + 1 ;
+        // int flashCounter = _mode + 1 ; unused variable warning
         // if (_state)flashCounter++;
         // onOffFlasher.begin( _onOffLedPin, 100, 500, flashCounter, 3000);
         onOffFlasher.begin( _onOffLedPin, 100, 500, 5, 5000); // a great number (loop that stop flashing)

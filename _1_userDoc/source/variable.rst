@@ -10,6 +10,17 @@ Importants variables
 .. contents::
     :backlinks: top
 
+
+
+
+====================================================================================================
+Goal of this page
+====================================================================================================
+To try to have a global view of the software project.
+
+
+
+
 .. _refVariableList:
 
 ====================================================================================================
@@ -63,9 +74,9 @@ Its usage:
 
 As this instance is declared in its own cpp file, it doesn't appear in the doxygen documentation.
 
-This clas store system status and managed them.
+This class stores system status and managed them.
 
-28 reference in 5 files
+28 references in 5 files
 
 cParam
 ====================================================================================================
@@ -159,10 +170,24 @@ FastLed and colorLeds case
 ====================================================================================================
 2 different usages:
 
-- to display plugs colors each pllug holds its own color in its _couleur attirbut
+- to display plugs colors each plug holds its own color in its _couleur attirbut
 - to display error alertes
 
 So there is no reason for FastLed and colorLeds to be managed as a member of the CPowerPlug class.
+
+====================================================================================================
+A try to UML doc
+====================================================================================================
+I try to use Model Io to document this project
+
+.. image:: image/modelIOSample.jpg 
+   :width: 600 px
+
+After some short test I leave it rappidly because of its internal structure.
+
+It use a workspace behavior and a directory strucutred database.
+
+Not very usefull for me becase i am aulone for this developpement and because it needs a hudge effort.
 
 ====================================================================================================
 Weblinks

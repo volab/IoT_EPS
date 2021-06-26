@@ -10,6 +10,9 @@ User manual annexe
 .. contents::
     :backlinks: top
 
+.. index::
+    pair: Exmple; Serial output example
+
 ====================================================================================================
 Serial monitor output example
 ====================================================================================================
@@ -163,6 +166,9 @@ Serial monitor output example
     <Volab setUp > [HTTP] GET... code: 200
     <Volab setUp > Watchdog set to 10s with a refresh period to 5s
     <Volab setUp > Loop start
+
+.. index::
+    pair: Help; Commands
 
 
 ====================================================================================================

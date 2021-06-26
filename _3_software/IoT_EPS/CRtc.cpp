@@ -18,9 +18,9 @@ NTPClient *CRtc::p_timeClient = nullptr;
 
 
 /** 
-@fn bool CRtc::begin( void )
-@brief extend RTC_DS3231::begin to add error handling capability
-@return 
+ @fn bool CRtc::begin( void )
+ @brief extend RTC_DS3231::begin to add error handling capability
+ @return 
 */
 bool CRtc::begin( void ){
 	RTC_DS3231::begin();
@@ -34,10 +34,11 @@ bool CRtc::begin( NTPClient *p_tc ){
     
     p_timeClient = p_tc; //only used by displayTime and update methods
     begin();
+    return true; // this line will be never reach -only here to supress a compil warn.
 }
 
 /** 
- @fn static void displayTime()
+ @fn static void CRtc::displayTime()
  @return no return value and no parameter
  
  This function work with debugSerial.h

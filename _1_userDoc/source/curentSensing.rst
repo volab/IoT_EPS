@@ -145,6 +145,10 @@ See `Root mean square definition on Wikipedia`_
 .. _`Root mean square definition on Wikipedia` : https://en.wikipedia.org/wiki/Root_mean_square
 
 
+====================================================================================================
+Possible components
+====================================================================================================
+
 ================================
 Weblinks
 ================================

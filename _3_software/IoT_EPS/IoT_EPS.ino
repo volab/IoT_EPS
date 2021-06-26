@@ -33,9 +33,11 @@ In station mode, when WIFI is not reachable, it switchs in softAP mode and WIFI 
 
  @bug Serial command < d > delete file with space in their name !
 
- @section How ti works (this code)
+ @section How it works (this code)
 
- ??? In July 2020, I realised that I don't know how my code works in details. by the usage of a lost
+ ??? In July 2020, I realised that I don't know how my code works in details. 
+ 
+ By the usage of a lost
  of external lib like FastLED, ESP8266Webserver, RTClib... A lot of global variables, a very very 
  long main code here. I decide to refactor my code. A very hard task.
 
@@ -114,6 +116,10 @@ bool restartTempoLed = false;
  - [OPTION 1] see for add colorLEd array in the class CPowerPlug as a static member
  - [NECESSARY for 1 and 2 plug strip] convert colorLeds array in dynamic version as for plugs array */
 
+
+
+
+
 void setup(){
     DEBUGPORT.begin(DEBUGSPEED);
     DEFDPROMPT("setUp") // define dPrompt String
@@ -121,7 +127,7 @@ void setup(){
     display.begin(SSD1306_SWITCHCAPVCC, OLED_I2C_ADD );
     display.clearDisplay();
 
-    int timeZone = OFFSET_HEURE;
+    // int timeZone = OFFSET_HEURE;
     String buildInfo =  String(__DATE__) + " @ " + String(__TIME__);
 
     sysIoteps.init( ntpUDP, &sysStatus, &SPIFFS, &cParam, necessaryFileList, NECESSARY_FILE_NBR
@@ -183,7 +189,7 @@ void setup(){
     // for the int type variables
     
     /** todo : no ! It is not a user config  [OPTION] add pin, pinLed and color to json file*/
-    /** todo : no it should stay  as a #define 
+    /** todo : no it should stay  as a define 
     [NECESSARY for 2 and 1 plugs strip] + the number of plug to make this sequence dynamic*/
 
     /* DONE test if CNano::initOk = true - if not don't start anything - this is fatal error*/
@@ -200,7 +206,10 @@ void setup(){
         if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[i].readFromJson( true ) );
         else  plugs[i].handleBpLongClic(); //force OFF is main power off   
     }
-      	
+    
+    sysIoteps.setPlugsAdd( plugs ); // cause of the new plugs above
+
+
     /* DONE : document simpleManualMode with no wifi at all */
     simpleManualMode = plugs[0].bp.directRead();
 
@@ -298,7 +307,12 @@ void setup(){
         }
         http.end();        
     }
-
+    display.clearDisplay();
+    sysIoteps.oledLoopBackScreen();    
+    sysIoteps.oledDisplayDate();
+    sysIoteps.oledDisplaySate();
+    sysIoteps.oledDisplayIps();
+    
     /////////////////////////////////////////////////////////////////////////////
     //  Setup watchdog                                                         //
     /////////////////////////////////////////////////////////////////////////////    
@@ -394,6 +408,11 @@ void loop(){
         //DSPL( dPrompt + F("TimeToRefresh wd") ) ;
         watchdog.refresh();
     }
+
+    /////////////////////////////////////////////////////////////////////////////
+    //  oled refresh display if necessary                                      //
+    /////////////////////////////////////////////////////////////////////////////
+    sysIoteps.oledLoopChangeDispayIf();
     
     /////////////////////////////////////////////////////////////////////////////
     //  Some little jobs : specialBp, ftp, SerialProcess...                    //
@@ -503,6 +522,9 @@ void loop(){
             while( 1 )yield(); //another way to stop AtinyWD refresh.
             //ESP.restart();
     }
+
+    //Main loop Oled displays
+    //cparam has ip adresse
 
     yield();
 }

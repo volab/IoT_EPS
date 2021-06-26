@@ -284,7 +284,8 @@ For all plugs
 
 ... see testAndErrorHandling.xlsx file for the rest of the tests
 
-bug finded :
+bugs found :
+
 - manual hfin and dureeOff without parameter should be KO
 - manual cleanup buton dont remove hfin and others param
 - no default state in manual mode : corrected

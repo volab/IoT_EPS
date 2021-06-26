@@ -10,19 +10,24 @@
 
 //Warning global : SPIFFS used !!
 
-CServerWeb::CServerWeb(/* args */)
-{
-}
+// CServerWeb::CServerWeb(/* args */)
+// {
+// }
 
-CServerWeb::~CServerWeb()
-{
-}
+// CServerWeb::~CServerWeb()
+// {
+// }
 
 /**
-@fn CServerWeb::init()
-@brief Iot_EPS web server initialisation method
-@param prtc a class RTC pointer
-@return no return value
+ @fn CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs
+        , bool* restartTempoLed, ESP8266WiFiClass *pWifiCon)
+ @brief Iot_EPS web server initialisation method
+ @param prtc a class RTC pointer
+ @param pcParam a CParm pointer
+ @param pPlugs Plugs array class pointer
+ @param restartTempoLed restart booleen pointer
+ @param pWifiCon a pointer to acces wifi param
+ @return no return value
 */
 void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs
         , bool* restartTempoLed, ESP8266WiFiClass *pWifiCon){
@@ -290,7 +295,7 @@ void CServerWeb::handleSoftAPIndex(){
 }
 
 /** 
-@fn String extractParamFromHtmlReq( String allRecParam, String param )
+@fn String CServerWeb::extractParamFromHtmlReq( String allRecParam, String param )
 @brief to extract a parameter from all parameter
 @param allRecParam a concatened String containing all received parameters build in handlePlugOnOff()
 @param param the parameter to extract
@@ -669,10 +674,10 @@ void CServerWeb::handleNewCred(){
         if (json.success()) {
             JsonObject& general = json["general"]; // main level
             // DSPL( dPrompt + " general : " + param + " = " + value);
-            if ( ssid != "" & ssid != NOT_FOUND ) general[JSON_SSID_NAME] = ssid; 
-            if ( pass != "" & pass != NOT_FOUND) general[ JSON_PPASS_NAME ] = pass ;
-            if ( softAPssid != "" & softAPssid != NOT_FOUND ) general[ JSON_APSSID_NAME ] = softAPssid ;
-            if ( sofATPpass != "" & sofATPpass != NOT_FOUND ) general[ JSON_APPASS_NAME ] = sofATPpass ;
+            if ( (ssid != "") & (ssid != NOT_FOUND) ) general[JSON_SSID_NAME] = ssid; 
+            if ( (pass != "") & (pass != NOT_FOUND) ) general[ JSON_PPASS_NAME ] = pass ;
+            if ( (softAPssid != "") & (softAPssid != NOT_FOUND) ) general[ JSON_APSSID_NAME ] = softAPssid ;
+            if ( (sofATPpass != "") & (sofATPpass != NOT_FOUND) ) general[ JSON_APPASS_NAME ] = sofATPpass ;
             creFile.close();
             creFile = SPIFFS.open( CREDENTIALFILENAME , "w");
             json.printTo(creFile);
@@ -818,7 +823,7 @@ void CServerWeb::handleFirstBoot(){
 }
 
 /** 
- @fn String buildMacAddName( String prefix)
+ @fn String CServerWeb::buildMacAddName( String prefix)
  @brief return a string from mac add...
  @param prefix the prefix of the wanted name example IoT_ESP
  @return a tring with the prefix followed by _MMNN
