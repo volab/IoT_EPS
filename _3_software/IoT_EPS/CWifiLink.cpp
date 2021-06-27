@@ -41,7 +41,7 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
         _wifiRef.persistent(false);
         _wifiRef.mode(WIFI_AP_STA);
         /*******************************************************************************************
-        
+        below juste displays for debug purpose
         *******************************************************************************************/
         DSPL( dPrompt + F("Wifi def mode in FLASH : ") + String(wifi_get_opmode_default	() ) );
         softap_config	config;

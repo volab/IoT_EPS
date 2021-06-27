@@ -103,7 +103,7 @@ bool ConfigParam::readFromJson(){
                 ///Config file closing
                 configFile.close();
                 returnVal = true;
-            }
+            } else { returnVal = false; } // not realy the bug but... configFile ko
         } else {
             dPrompt += F("Failed to open ");
             dPrompt += CONFIGFILENAME;

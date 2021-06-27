@@ -88,7 +88,7 @@ void CSysStatus::display(){
     DSPL( dPrompt + filesErr.getMsg() + " : " + (filesErr.isErr()?"ERROR":"no error") );
     DSPL( dPrompt + plugParamErr.getMsg() + " : " + (plugParamErr.isErr()?"ERROR":"no error") );
     DSPL( dPrompt + ntpErr.getMsg() + " : " + (ntpErr.isErr()?"ERROR":"no error") );
-    
+    /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr */
 }
 
 
@@ -100,6 +100,7 @@ void CSysStatus::display(){
 bool CSysStatus::isSystemok(){
     return ( !fsErr.isErr() && !nanoErr.isErr() && !rtcErr.isErr() && !confFileErr.isErr()
                && !credFileErr.isErr() && !filesErr.isErr() && ! plugParamErr.isErr() && !ntpErr.isErr() );
+               /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr */
 }
 
 
@@ -119,6 +120,7 @@ int8_t CSysStatus::howManyError(){
     if ( filesErr.isErr() ) cpt++;
     if ( plugParamErr.isErr() ) cpt++;
     if ( ntpErr.isErr() ) cpt++;
+    /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr */
     return cpt;
 }
 
@@ -140,6 +142,7 @@ String CSysStatus::getMsg( int8_t n){
     if ( cpt == n ) return plugParamErr.getMsg();
     if ( ntpErr.isErr() ) cpt++;
     if ( cpt == n ) return ntpErr.getMsg();
+    /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr */
 
     /** @todo [NECESSARY] best way to return error message will be to creat an array in howmanyError
      * method and find it here */
