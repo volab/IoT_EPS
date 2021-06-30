@@ -56,6 +56,7 @@ class CSysStatus {
             , ntpErr( sysError::low, "NTP error")
             , internetErr( sysError::fatal, CRGB::RoyalBlue, CRGB::OrangeRed, "Internet error" )
             , watchdogErr( sysError::fatal, CRGB::Snow, CRGB::Black, "watchdog error")
+            , wifiSoftApErr(sysError::medium, CRGB::Snow, CRGB::Black, "SoftAp error")
             /** @todo [NECESSARY] creat wifiSoftSoftAPErr and wifiErr and wifiStaModeErr (choose a color) */
             {
             
@@ -72,6 +73,7 @@ class CSysStatus {
         sysError ntpErr;
         sysError internetErr;
         sysError watchdogErr;
+        sysError wifiSoftApErr;
         /** @todo [NECESSARY] creat wifiSoftSoftAPErr and wifiErr */
 
 

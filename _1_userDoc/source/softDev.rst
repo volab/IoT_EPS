@@ -470,6 +470,26 @@ On PC : `Angry IP Scanner`_
 Usefull Documentation
 ===============================
 
+Espressif
+====================================================================================================
+:download:`ESP8266 Non-OS SDK<fichiersJoints/2c-esp8266_non_os_sdk_api_reference_en.pdf>` pdf file
+
+Containt function and class and struct like::
+
+    wifi_softap_get_config_default
+
+    struct softap_config {
+        uint8 ssid[32];
+        uint8 password[64];
+        uint8 ssid_len;     
+        uint8 channel;           // support 1 ~ 13     
+        uint8 authmode;          // Don’t support AUTH_WEP in  SoftAP mode     
+        uint8 ssid_hidden;       // default 0     
+        uint8 max_connection;    // default 4, max 4     
+        uint16 beacon_interval;  // 100 ~ 60000 ms, default 100 };
+
+Which is very usefull to debug !
+
 Html server
 =====================
 

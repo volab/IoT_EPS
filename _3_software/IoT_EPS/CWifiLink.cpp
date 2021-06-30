@@ -45,39 +45,54 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
         *******************************************************************************************/
         DSPL( dPrompt + F("Wifi def mode in FLASH : ") + String(wifi_get_opmode_default	() ) );
         softap_config	config;
-        wifi_softap_get_config_default(&config);
-        DSPL( dPrompt + "Stored Wifi default soft AP param : " );
+        wifi_softap_get_config_default(&config); // from ESPRESSIF PDF ESP8266 Non-OS SDK
+        DSPL( dPrompt + "Stored Wifi default soft AP param in the ESP Flash: " );
         DSPL( dPrompt + F("    SSID len : ") + config.ssid_len );
         DSP( dPrompt + F("    Stored SSID :") );
         for ( int i = 0; i < config.ssid_len ; i++ ){
             DSP( char(config.ssid[i]) );
         }
         DSPL( "." );
-
-        if( 1 ){
-
-            //displayWifiMode();           
-
-            
-            _displayWifiMode();
-            DSPL( dPrompt + F("Try softAccess") );
-            
-            IPAddress apIP = _cParam->getIPAdd();
-            _wifiRef.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-            // cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
-            /** DONE review the interest of keeping code below! */
-            //As it is only debug informations leave it. When debug define will be turn off
-            //this peace of code should desapear at the coompilation time.
-            if ( _wifiCred.ready ){
-                DSPL( dPrompt + "Try soft AP with : " + _wifiCred.getSoftApSsid() 
-                        + " and " + _wifiCred.getSoftApPass() );
-                DSP( dPrompt + F("softAP : "));
-                DSPL(_wifiRef.softAP(_wifiCred.getSoftApSsid(),
-                    _wifiCred.getSoftApPass() )?F("Ready"):F("Failed!"));
-                IPAddress myIP = _wifiRef.softAPIP();
-                DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
-            }
+        DSP( dPrompt + F("    Stored password :") );
+        uint8_t c;
+        for ( int i=0; i < 64; i++ ){ //there is no password len in the strucure max len 64
+           c = config.password[i];
+           if ( c != 0 ) DSP( char (c) );
         }
+        DSPL( "." );
+         
+
+            
+        _displayWifiMode();
+        DSPL( dPrompt + F("Try softAccess") );
+        
+        IPAddress apIP = _cParam->getIPAdd();
+        DSPL( dPrompt + "SoftAP IP address red from Json= " + apIP.toString()  );
+        DSP( dPrompt + F("Config soft AP IP : ") );
+
+        DSPL ( _wifiRef.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0) )?F("Succeded"):F("Failed!") );
+        // cParam.setWifiMode( "softAP" ); // not in the config file just for temorary mode
+        /** DONE review the interest of keeping code below! Answer : YES*/
+        if ( _wifiCred.ready ){
+            DSPL( dPrompt + "Try soft AP with : " + _wifiCred.getSoftApSsid() 
+                    + " and " + _wifiCred.getSoftApPass() );
+            DSP( dPrompt + F("softAP : "));
+            bool returnCode = _wifiRef.softAP(_wifiCred.getSoftApSsid(), _wifiCred.getSoftApPass() );
+            IPAddress myIP;
+            if ( returnCode ){
+                DSPL(F("Ready"));
+                myIP = _wifiRef.softAPIP();
+
+            } else {
+                DSPL(F("Failed!"));
+                myIP.fromString( "0.0.0.0" );
+                _pcSysStatus->wifiSoftApErr.err( true );
+            }
+
+            
+            DSPL( dPrompt + "SoftAP returned IP address = " + myIP.toString()  );
+        }
+        
 		DSPL( dPrompt + F("Host name which does not work with Android is : ") + _cParam->getHostName() );
 		// MDNS.begin( cParam.getHostName().c_str() ); //ne fonctionne pas sous Android
         /** @todo [OPTION] mDNS.begin issue on github #4417 https://github.com/esp8266/Arduino/issues/4417

@@ -5,7 +5,7 @@ Bug et ToDo-list
 Déscription
 ===========
 
-    Dans se fichier sont renseignés les bugs identifiés et la liste des choses à faire.
+    Dans ce fichier sont renseignés les bugs identifiés et la liste des choses à faire.
     
     #. Bugs identifiés
     
@@ -34,37 +34,24 @@ Model Type
 
 ----------------------------------------------------------------------------------------------------
 
-Todo : Complete the CSystem class
-==========================================
-
-    :Date de saisie:        11/09/2020
-    :Date de traitemant:    
-    :Cible:                 [software]
-    :Status:                [no started]
-    :Problematique:         Add all system servitude in this class
-    :Traitement:            Move code froom .ino to this code
-
-
-------------------------------------------------------------------------------------------
-
 Bug identifiés
 ==============
 
-    :Date de saisie:        
-    :Date de traitemant:    
-    :Cible:                 [userDoc, modelisation, software, PCB, autre]
-    :Status:                
-    :Problematique:         
-    :Traitement:            
+    :Date de saisie:        27/06/2021      
+    :Date de traitemant:    30/06/2021
+    :Cible:                 firmware
+    :Status:                closed
+    :Problematique:         Soft AP fails
+    :Traitement:            Set Arduino IDE/ESP in Wifi debug mode has correct the problem !!!
     
 ------------------------------------------------------------------------------------------
 
 Bug : wrong global table refresh
 ==================================
 
-    :Date de saisie:   191225    
+    :Date de saisie:    191225    
     :Date de traitemant:    
-    :Cible:             software
+    :Cible:             software / IHM
     :Status:            open    
     :Problematique:     le tableau de synthèse ne se met pas à jour quand il y a un changement d'état d'une prise    
     :Traitement:        Le touche F5 n'est pas une solution, renvoie également la dernière commande !
@@ -77,7 +64,7 @@ Bug : Allumage intempestif
 
     :Date de saisie:        191225     
     :Date de traitemant:    
-    :Cible:                 autre
+    :Cible:                 firmware
     :Status:                open
     :Problematique:         Au cours des essais 2 prises bleu et jaune se sont retrouvé allumées alors
                             que dans le json elles étaient off !
@@ -131,7 +118,22 @@ ToDo-list
     :Cible:                 firmware
     :Status:                open
     :Problematique:         Créer un fichier de config.h regroupant tous les #define
-    :Traitement:            
+    :Traitement:  
+
+----------------------------------------------------------------------------------------------------
+
+Todo : Complete the CSystem class
+==========================================
+
+    :Date de saisie:        11/09/2020
+    :Date de traitemant:    10/02/2021
+    :Cible:                 [software]
+    :Status:                [closed]
+    :Problematique:         Add all system servitude in this class
+    :Traitement:            Move code froom .ino to this code
+
+
+----------------------------------------------------------------------------------------------------
 
 ToDo-list
 =========

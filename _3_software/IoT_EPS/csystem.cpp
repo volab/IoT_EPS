@@ -178,6 +178,7 @@ void CSystem::oledDisplaySate(){
     // _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_STATE); 
     _pDisplay->setCursor(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_STATE);
     String message;
+    DEFDPROMPT( "CSystem::oledDisplatState" )
     if ( _psysStat->isSystemok() ){
         // display one plug state
         message = _pPlugs[_oledCptPlugToDisplay].getPlugName();
@@ -195,6 +196,7 @@ void CSystem::oledDisplaySate(){
         // display oneError and cpt--
         //if cpt = 0 reload
         if ( _oledCptErrToDisplay = 0 ) _oledCptErrToDisplay = _psysStat->howManyError();
+        DSPL( dPrompt + "Nomber of error :" + (String)_oledCptErrToDisplay );
         message = _psysStat->getMsg( _oledCptErrToDisplay-- );
 
     }
@@ -208,7 +210,12 @@ void CSystem::oledDisplayIps(){
     _pDisplay->println("LAN:" + WiFi.localIP().toString() );
     // _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_AP_IPADD);
     _pDisplay->setCursor(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_AP_IPADD);
-    _pDisplay->println(" AP:" + WiFi.softAPIP().toString() );
+    if ( !_psysStat->wifiSoftApErr.isErr() ){
+        _pDisplay->println(" AP:" + WiFi.softAPIP().toString() );
+    } else {
+        _pDisplay->println(" AP:error" );
+    }
+    
      
 }
 
