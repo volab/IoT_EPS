@@ -95,14 +95,13 @@ bool ConfigParam::readFromJson(){
                     s_tmpIP = json["general"]["staGateway"].as<String>();
                     _staGateway.fromString( s_tmpIP );
                     if (_firstBoot == YES ) _wifimode = "softAP";
+                    returnVal = true;
                 } else {
-                    DEBUGPORT.println(dPrompt + F("Failed to load json config"));
-                    
+                    DEBUGPORT.println(dPrompt + F("Failed to load json config"));     
                     returnVal = false;
                 }
                 ///Config file closing
                 configFile.close();
-                returnVal = true;
             } else { returnVal = false; } // not realy the bug but... configFile ko
         } else {
             dPrompt += F("Failed to open ");

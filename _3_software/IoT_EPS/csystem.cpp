@@ -196,7 +196,7 @@ void CSystem::oledDisplaySate(){
         // display oneError and cpt--
         //if cpt = 0 reload
         if ( _oledCptErrToDisplay = 0 ) _oledCptErrToDisplay = _psysStat->howManyError();
-        DSPL( dPrompt + "Nomber of error :" + (String)_oledCptErrToDisplay );
+        //DSPL( dPrompt + "Nomber of error :" + (String)_oledCptErrToDisplay );
         message = _psysStat->getMsg( _oledCptErrToDisplay-- );
 
     }
