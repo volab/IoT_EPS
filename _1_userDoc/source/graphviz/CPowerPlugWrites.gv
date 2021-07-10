@@ -1,0 +1,58 @@
+digraph config4writeFromCPlug {
+    label="IoTEps CpowerPlug::writeToJson usage"
+    fontsize=18
+    fontcolor=darkslateblue
+    labelloc="t"
+    rankdir="LR"
+#    layout="twopi"
+#    ratio=auto;
+#    ranksep=1.8
+#   compound=true
+#   constraint=true (dot only)
+#   overlap=false
+
+    
+    node [style=filled  shape=none ]
+    "Only call from CPowerPlug::handleHtmlReq()"
+    "call only from CPowerPlug other methods"
+
+    node [style=none shape=ellipse]
+
+#54 occurences
+    "CpowerPlug::writeToJson" -> {
+        "CServerWeb::handleIOTESPConfiguration()"
+        "CPowerPlug::on()"
+        "CPowerPlug::off()"
+        "CPowerPlug::toggle()"
+        "CPowerPlug::updateOutputs()"
+        "CPowerPlug::handleHtmlReq()"
+        "CPowerPlug::switchAtTime()"
+        "CPowerPlug::handleBpClic()"
+    }[dir=back]
+
+    "CPowerPlug::writeDaysToJson()" -> "CPowerPlug::handleHtmlReq()"[dir=back]
+    "CPowerPlug::writeDaysToJson()" -> "Only call from CPowerPlug::handleHtmlReq()"[arrowhead=none dir=back arrowtail=none style=dashed]
+
+    "CPowerPlug::handleHtmlReq()" -> "CServerWeb::handlePlugOnOff()" -> "CServerWeb::init"[dir=back]
+    "CPowerPlug::switchAtTime()" -> "CPowerPlug::handleBpClic()"->"ino loop manage plugs 1 call"[dir=back]
+    "CPowerPlug::switchAtTime()" ->"ino loop manage plugs 1 call"[dir=back]
+
+    node[shape=rect]
+    {
+        "CPowerPlug::on()"
+        "CPowerPlug::off()"
+        "CPowerPlug::toggle()"
+        "CPowerPlug::updateOutputs()"
+    } -> "call only from CPowerPlug other methods"[dir=back]
+    "CPowerPlug::handleHtmlReq()" -> "between 3 to 9 times function of the plug's mode"
+    "CPowerPlug::switchAtTime()" -> "between 2 to 5 times function of the plug's mode"
+
+    
+
+
+    "CServerWeb::handleIOTESPConfiguration()" -> "CServerWeb::init"[dir=back]
+
+
+
+
+}

@@ -1,0 +1,52 @@
+digraph config4JsonAccess {
+    label="IoTEps Config4.json access" 
+    fontsize=18 
+    fontcolor=darkslateblue 
+    #layout="twopi"
+    labelloc="t" 
+    rankdir="LR" 
+    ratio=auto; 
+    ranksep=1.8
+    compound=true
+
+
+    node[style=filled fillcolor=red]
+    "CPowerPlug::writeToJson( p,v )"
+    "CPowerPlug::writeDaysToJson()"
+    "CPowerPlug::handleBpLongClic()"
+    "ConfigParam::write2Json( p,v,f)"
+    "ConfigParam::creatDefaultJson()"
+
+    node [style=none shape=ellipse]
+
+    CONFIGFILENAME -> {
+        "configParam.cpp"
+        "CServeurwep.cpp"
+        "cpowerplug.cpp"
+    }
+
+
+edge[dir=back]
+    "cpowerplug.cpp" -> {
+        "CPowerPlug::readFromJson( restaurePhyState )"
+        "CPowerPlug::readFromJson( param )"
+        "CPowerPlug::writeToJson( p,v )"
+        "CPowerPlug::writeDaysToJson()"
+        "CPowerPlug::handleBpLongClic()"
+    }[dir=back]
+
+    "configParam.cpp" -> {
+        "ConfigParam::readFromJson()"
+        "ConfigParam::readFromJsonParam( p,s )"
+        "ConfigParam::displayJson( file )"
+        "ConfigParam::displayJsonGeneral()"
+        "ConfigParam::write2Json( p,v,f)"
+        "ConfigParam::creatDefaultJson()"
+    }[dir=back]
+
+
+    "CServeurwep.cpp" -> "CServerWeb::handleIOTESPConfiguration()" ->
+        "ConfigParam::write2Json( p,v,f)"
+
+
+}

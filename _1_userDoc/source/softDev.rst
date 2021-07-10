@@ -647,6 +647,66 @@ So the right place to put it it at the end of setup loop.
 I place methods in the CSystem class not very logic. The right way to do it should be to creat a new
 dedicate dislayMessageClass.
 
+====================================================================================================
+Config file improvments
+====================================================================================================
+Simple improvments
+====================================================================================================
+05/07/2021:
+
+CPowerPlug::readFromJson() : move up configFile.close(); at l253 to l189
+
+readFromJson twice defined. Ontime in CPowerPlug and on time in ConfigParam
+
+ConfigParam::readFromJsonParam() : move up Too
+
+CpowerPlug::on, off toggle, updateOutputs could be private
+
+Write to file improvments
+====================================================================================================
+**First question**: track all json config file access by tracking all usage of CONFIGFILENAME
+
+See GraphViz diagram : IoTEps config4.json access
+
+.. graphviz:: graphviz/config4Access.gv
+
+Conclusion there are 2 places that write to json file : in ConfigParam Class for configuration
+parameters and in Cpowerplug class for plugs parameters.
+
+There are 6 méthods that write to json file:
+
+- "CPowerPlug::handleBpLongClic()"
+- "CPowerPlug::writeToJson(p,v)"
+- "ConfigParam::write2Json()"
+- "ConfigParam::creatDefaultJson()"
+- "CPowerPlug::writeDaysToJson()"
+- "CServerWeb::handelIOTESPConfPage()"
+
+**Second question**: after track all usage of write to json méthods
+
+
+
+**third question**: what are the events that trig writes on json file ?
+
+handleBpLongClic
+====================================================================================================
+This méthod is used 3 times in the ino file. One time in the setup and 2 times in the loop.
+The purpose of this fonction is to force plugs mode to manual. After power off switching or
+after a long press on the plug's button
+
+.. graphviz:: graphviz/handleBpLongClic.gv
+
+
+CPowerPlug::writeToJson(p,v) and writeDaysToJson
+====================================================================================================
+
+.. graphviz:: graphviz/CPowerPlugWrites.gv
+
+
+The second one could be a private method
+
+
+
 
 
 ===============================

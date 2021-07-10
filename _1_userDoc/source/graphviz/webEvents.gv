@@ -1,0 +1,31 @@
+digraph webEvents {
+    label="IoTEps web events" 
+    fontsize=18 
+    fontcolor=darkslateblue 
+    #layout="twopi"
+    labelloc="t" 
+    rankdir="LR" 
+    ratio=auto; 
+    ranksep=0.5
+    compound=true
+    
+
+
+    node[shape=rect]
+    "/" -> handleIndex
+    "/" -> firstBootHtmlForm[label="if first boot or try"]
+    "/time" -> displayTime
+    "/list"-> handleFileList
+    "/plugonoff" -> handlePlugOnOff
+    "/help" -> handleHelp
+    "/edit" -> handleEdit
+    "/edit" ->handleFileCreate
+    "/edit" -> htmlOkResponse
+    "/edit" -> handleFileDelete
+    "/cfgpage" -> handelIOTESPConfPage
+    "/cfgsend" -> handleIOTESPConfiguration
+    "/ChangeCred" -> handleNewCred
+    "/firstBoot" -> handleFirstBoot
+
+    onNotFound -> notFoundHandler
+}
