@@ -1,11 +1,18 @@
 @startuml
-web -> config4.json: clic to config
-plug -> config4.json: time To switch
-bpLonClic -> config4.json: restaure file
-web -> config4.json: clic to set plug
-@enduml
 
-@startuml
+<style>
+caption {
+FontSize 20
+}
+</style>
+
+
+
+caption Write events: web details (configuration)
+actor web
+participant handleIOTESPConfiguration
+participant "ConfigParam:write2Json"
+database SPIFFS #red
 web -> handleIOTESPConfiguration: clic config buton
 loop For all parameters (confParam[9], plugsNickName[4], chekBoxes[4])
     handleIOTESPConfiguration -> "ConfigParam:write2Json":HTML_XXXX_PARAM
@@ -16,7 +23,5 @@ loop For all parameters (confParam[9], plugsNickName[4], chekBoxes[4])
     "ConfigParam:write2Json" --> handleIOTESPConfiguration
     deactivate "ConfigParam:write2Json"
 end
-
-
 
 @enduml

@@ -9,6 +9,7 @@ digraph config4JsonAccess {
     ranksep=1.8
     compound=true
 
+    "Lots of access"[style=none shape = rect]
 
     node[style=filled fillcolor=red]
     "CPowerPlug::writeToJson( p,v )"
@@ -17,8 +18,10 @@ digraph config4JsonAccess {
     "ConfigParam::write2Json( p,v,f)"
     "ConfigParam::creatDefaultJson()"
 
+    "in red direct acces to the file"
+
     node[fillcolor=yellow]
-    "CPowerPlug::handleHtmlReq"
+    "CPowerPlug::handleHtmlReq" -> "Lots of access"[dir=none style=dotted]
 
     node [style=none shape=ellipse]
 

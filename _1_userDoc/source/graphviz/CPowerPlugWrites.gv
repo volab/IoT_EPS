@@ -44,8 +44,8 @@ digraph config4writeFromCPlug {
         "CPowerPlug::toggle()"
         "CPowerPlug::updateOutputs()"
     } -> "call only from CPowerPlug other methods"[dir=back]
-    "CPowerPlug::handleHtmlReq()" -> "between 3 to 9 times function of the plug's mode"
-    "CPowerPlug::switchAtTime()" -> "between 2 to 5 times function of the plug's mode"
+    "CPowerPlug::handleHtmlReq()" -> "between 3 to 9 calls, function of the plug's mode"
+    "CPowerPlug::switchAtTime()" -> "between 2 to 5 calls, function of the plug's mode"
 
     
 

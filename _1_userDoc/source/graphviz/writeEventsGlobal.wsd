@@ -1,0 +1,14 @@
+@startuml
+
+<style>
+caption {
+FontSize 20
+}
+</style>
+
+caption configJson Write events
+web -> config4.json: clic to config
+plug -> config4.json: time To switch
+bpLonClic -> config4.json: restaure file
+web -> config4.json: clic to set plug
+@enduml

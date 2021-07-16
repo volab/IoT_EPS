@@ -1,0 +1,133 @@
+@startuml
+
+<style>
+caption {
+FontSize 20
+}
+</style>
+
+caption Write events: plug details
+actor redPlug
+
+participant "CPowerPlug::switchAtTime"
+participant "CPowerPlug::on"
+participant "CPowerPlug::off"
+participant "CPowerplug:writeToJson"
+database SPIFFS #red
+
+
+redPlug -> "CPowerPlug::switchAtTime":isTimeToSwitch == true
+note left
+ also for green
+ bleue and yellow plug
+end note
+alt "mode==Manual"
+    "CPowerPlug::switchAtTime" -> "CPowerplug:writeToJson":EndTime=""
+    activate "CPowerplug:writeToJson"
+        "CPowerplug:writeToJson" -> SPIFFS:open
+        "CPowerplug:writeToJson" -> SPIFFS:read all
+        "CPowerplug:writeToJson" -> SPIFFS:write all
+        "CPowerplug:writeToJson" --> "CPowerPlug::switchAtTime"
+    deactivate "CPowerplug:writeToJson"
+    
+    "CPowerPlug::switchAtTime" -> "CPowerplug:writeToJson":OffDuration=""
+    activate "CPowerplug:writeToJson"
+        "CPowerplug:writeToJson" -> SPIFFS:open
+        "CPowerplug:writeToJson" -> SPIFFS:read all
+        "CPowerplug:writeToJson" -> SPIFFS:write all
+        "CPowerplug:writeToJson" --> "CPowerPlug::switchAtTime"
+    deactivate "CPowerplug:writeToJson"
+    "CPowerPlug::switchAtTime" -> "CPowerplug:writeToJson":OnDuration=""
+    activate "CPowerplug:writeToJson"
+        "CPowerplug:writeToJson" -> SPIFFS:open
+        "CPowerplug:writeToJson" -> SPIFFS:read all
+        "CPowerplug:writeToJson" -> SPIFFS:write all
+        "CPowerplug:writeToJson" --> "CPowerPlug::switchAtTime"
+    deactivate "CPowerplug:writeToJson"
+    "CPowerPlug::switchAtTime" -> "CPowerplug:writeToJson":StartTime=""
+    activate "CPowerplug:writeToJson"
+        "CPowerplug:writeToJson" -> SPIFFS:open
+        "CPowerplug:writeToJson" -> SPIFFS:read all
+        "CPowerplug:writeToJson" -> SPIFFS:write all
+        "CPowerplug:writeToJson" --> "CPowerPlug::switchAtTime"
+    deactivate "CPowerplug:writeToJson"
+
+else "mode==Timer"
+    "CPowerPlug::switchAtTime" -> "CPowerPlug::off"
+    "CPowerPlug::off" -> "CPowerplug:writeToJson":state=OFF
+    activate "CPowerplug:writeToJson"
+        "CPowerplug:writeToJson" -> SPIFFS:open
+        "CPowerplug:writeToJson" -> SPIFFS:read all
+        "CPowerplug:writeToJson" -> SPIFFS:write all
+        "CPowerplug:writeToJson" --> "CPowerPlug::off"
+    deactivate "CPowerplug:writeToJson"
+else "mode==Cycle"
+    alt "state==ON"
+        "CPowerPlug::switchAtTime" -> "CPowerPlug::off"
+        "CPowerPlug::off" -> "CPowerplug:writeToJson":state=OFF
+        activate "CPowerplug:writeToJson"
+            "CPowerplug:writeToJson" -> SPIFFS:open
+            "CPowerplug:writeToJson" -> SPIFFS:read all
+            "CPowerplug:writeToJson" -> SPIFFS:write all
+            "CPowerplug:writeToJson" --> "CPowerPlug::off"
+        deactivate "CPowerplug:writeToJson"
+    else
+        alt "!Pause"
+            "CPowerPlug::switchAtTime" -> "CPowerPlug::on"
+            "CPowerPlug::on" -> "CPowerplug:writeToJson":state=ON
+            activate "CPowerplug:writeToJson"
+                "CPowerplug:writeToJson" -> SPIFFS:open
+                "CPowerplug:writeToJson" -> SPIFFS:read all
+                "CPowerplug:writeToJson" -> SPIFFS:write all
+                "CPowerplug:writeToJson" --> "CPowerPlug::on"
+            deactivate "CPowerplug:writeToJson"
+        else
+            "CPowerPlug::switchAtTime" -> "CPowerplug:writeToJson":Pause=off
+            activate "CPowerplug:writeToJson"
+                "CPowerplug:writeToJson" -> SPIFFS:open
+                "CPowerplug:writeToJson" -> SPIFFS:read all
+                "CPowerplug:writeToJson" -> SPIFFS:write all
+                "CPowerplug:writeToJson" --> "CPowerPlug::switchAtTime"
+            deactivate "CPowerplug:writeToJson"
+        end
+    end
+else "mode==hebdo"
+    alt "state==ON"
+        "CPowerPlug::switchAtTime" -> "CPowerPlug::off"
+        "CPowerPlug::off" -> "CPowerplug:writeToJson":state=OFF
+        activate "CPowerplug:writeToJson"
+            "CPowerplug:writeToJson" -> SPIFFS:open
+            "CPowerplug:writeToJson" -> SPIFFS:read all
+            "CPowerplug:writeToJson" -> SPIFFS:write all
+            "CPowerplug:writeToJson" --> "CPowerPlug::off"
+        deactivate "CPowerplug:writeToJson"
+    else
+        alt "!Pause"
+            "CPowerPlug::switchAtTime" -> "CPowerPlug::on"
+            "CPowerPlug::on" -> "CPowerplug:writeToJson":state=ON
+            activate "CPowerplug:writeToJson"
+                "CPowerplug:writeToJson" -> SPIFFS:open
+                "CPowerplug:writeToJson" -> SPIFFS:read all
+                "CPowerplug:writeToJson" -> SPIFFS:write all
+                "CPowerplug:writeToJson" --> "CPowerPlug::on"
+            deactivate "CPowerplug:writeToJson"            
+        else
+            "CPowerPlug::switchAtTime" -> "CPowerplug:writeToJson":Pause=off
+            activate "CPowerplug:writeToJson"
+                "CPowerplug:writeToJson" -> SPIFFS:open
+                "CPowerplug:writeToJson" -> SPIFFS:read all
+                "CPowerplug:writeToJson" -> SPIFFS:write all
+                "CPowerplug:writeToJson" --> "CPowerPlug::switchAtTime"
+            deactivate "CPowerplug:writeToJson"
+        end
+    end
+
+end
+"CPowerPlug::switchAtTime" -> "CPowerplug:writeToJson":nextTimeToSwitch
+            activate "CPowerplug:writeToJson"
+                "CPowerplug:writeToJson" -> SPIFFS:open
+                "CPowerplug:writeToJson" -> SPIFFS:read all
+                "CPowerplug:writeToJson" -> SPIFFS:write all
+                "CPowerplug:writeToJson" --> "CPowerPlug::switchAtTime"
+            deactivate "CPowerplug:writeToJson"
+@enduml

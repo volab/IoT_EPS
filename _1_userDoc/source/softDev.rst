@@ -673,7 +673,7 @@ See GraphViz diagram : IoTEps config4.json access
 Conclusion there are 2 places that write to json file : in ConfigParam Class for configuration
 parameters and in Cpowerplug class for plugs parameters.
 
-There are 6 méthods that write to json file:
+There are 6 methods that write to json file:
 
 - "CPowerPlug::handleBpLongClic()"
 - "CPowerPlug::writeToJson(p,v)"
@@ -690,8 +690,8 @@ There are 6 méthods that write to json file:
 
 handleBpLongClic
 ====================================================================================================
-This méthod is used 3 times in the ino file. One time in the setup and 2 times in the loop.
-The purpose of this fonction is to force plugs mode to manual. After power off switching or
+This method is used 3 times in the ino file. One time in the setup and 2 times in the loop.
+The purpose of this function is to force plugs modes to manual. After power off switching or
 after a long press on the plug's button
 
 .. graphviz:: graphviz/handleBpLongClic.gv
@@ -705,9 +705,25 @@ CPowerPlug::writeToJson(p,v) and writeDaysToJson
 
 The second one could be a private method
 
+From configParam classe
+====================================================================================================
+In configParam class there is only 2 methods that directly write to config4.json file.
 
+- writeTOJson( p,v,f ) : the MAIN function
+- creatDefaultJson() : to restaure a fresh file when corrupted
 
+Write to json events
+====================================================================================================
 
+.. uml:: graphviz/writeEventsGlobal.wsd
+
+----------------------------------------------------------------------------------------------------
+
+.. uml:: graphviz/wrtiteEventsWebdetails.wsd
+
+----------------------------------------------------------------------------------------------------
+
+.. uml:: graphviz/writeEventsTimeToSwitch.wsd
 
 ===============================
 Eccueils et autres difficultés
