@@ -345,7 +345,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         DSPL( dPrompt + F("Manual mode actions ") );
         //manual mode parameters :
         //State
-        if ( mode != prevMode ) bp.acquit(); //to reset previus memorised pushed bp
+        if ( mode != prevMode ) bp.acquit(); //to reset previously memorised pushed bp
         param = JSON_PARAMNAME_STATE;
         state = CServerWeb::extractParamFromHtmlReq( allRecParam, param );
         DSPL( dPrompt + _plugName + F(" : extracted state = ") + state);

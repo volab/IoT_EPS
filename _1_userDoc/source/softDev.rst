@@ -725,6 +725,10 @@ Write to json events
 
 .. uml:: graphviz/writeEventsTimeToSwitch.wsd
 
+----------------------------------------------------------------------------------------------------
+
+.. uml:: graphviz/writeEventsWebPlugOnOff.wsd
+
 ===============================
 Eccueils et autres difficultés
 ===============================

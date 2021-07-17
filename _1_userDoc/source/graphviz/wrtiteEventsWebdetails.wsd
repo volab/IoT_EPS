@@ -13,7 +13,10 @@ actor web
 participant handleIOTESPConfiguration
 participant "ConfigParam:write2Json"
 database SPIFFS #red
-web -> handleIOTESPConfiguration: clic config buton
+web -> handleIOTESPConfiguration: /cfgpage
+note left
+clic config buton
+end note
 loop For all parameters (confParam[9], plugsNickName[4], chekBoxes[4])
     handleIOTESPConfiguration -> "ConfigParam:write2Json":HTML_XXXX_PARAM
     activate "ConfigParam:write2Json"

@@ -1,0 +1,75 @@
+@startuml
+
+
+
+<style>
+caption {
+FontSize 20
+}
+</style>
+
+caption configJson Write events: web details (plug on/off)
+
+actor web
+participant "CServerWeb::handlePlugOnOff"
+participant "CPowerPlug::handleHtmlReq"
+participant "CPowerPlug:on"
+participant "CPowerplug:writeToJson"
+
+database SPIFFS #red
+
+!procedure $activeWrite( $returnDest )
+        activate "CPowerplug:writeToJson"
+            "CPowerplug:writeToJson" -> SPIFFS:open
+            "CPowerplug:writeToJson" -> SPIFFS:read all
+            "CPowerplug:writeToJson" -> SPIFFS:write all
+            "CPowerplug:writeToJson" --> "$returnDest"
+        deactivate "CPowerplug:writeToJson"
+!end procedure
+
+
+web -> "CServerWeb::handlePlugOnOff": /plugonoff
+note left
+ clic to set some/or all plug parameters
+ red, green, blue or yellow
+ one plug at time
+end note
+"CServerWeb::handlePlugOnOff" -> "CPowerPlug::handleHtmlReq": allArgs
+note left
+If all is ok
+end note
+alt "mode==Manual"
+    alt "state param == ON"
+        "CPowerPlug::handleHtmlReq" -> "CPowerPlug:on"
+        "CPowerPlug:on" -> "CPowerplug:writeToJson":state=ON
+        $activeWrite( "CPowerPlug:on" )
+        "CPowerPlug::handleHtmlReq" -> "CPowerplug:writeToJson" :dureeOff
+        note left
+            if present and valid
+            if not valid write""
+        end note
+        $activeWrite("CPowerPlug::handleHtmlReq")
+        "CPowerPlug::handleHtmlReq" -> "CPowerplug:writeToJson" :hFin
+        note left
+            if present and valid
+            if not valid write""
+        end note
+        activate "CPowerplug:writeToJson"
+            "CPowerplug:writeToJson" -> SPIFFS:open
+            "CPowerplug:writeToJson" -> SPIFFS:read all
+            "CPowerplug:writeToJson" -> SPIFFS:write all
+            "CPowerplug:writeToJson" --> "CPowerPlug::handleHtmlReq"
+        deactivate "CPowerplug:writeToJson"
+
+    else
+
+    end
+else "mode==Timer"
+
+else "mode==cycle"
+
+else "mode==hebdo"
+end
+
+
+@enduml

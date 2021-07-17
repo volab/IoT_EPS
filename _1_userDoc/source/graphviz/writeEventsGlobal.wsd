@@ -7,8 +7,15 @@ FontSize 20
 </style>
 
 caption configJson Write events
+actor web
+participant config4.json
+participant plug
+participant bpLongClic
+actor user
+
 web -> config4.json: clic to config
 plug -> config4.json: time To switch
-bpLonClic -> config4.json: restaure file
+user -> bpLongClic: press plug button more then 2s
+bpLongClic -> config4.json: restaure file
 web -> config4.json: clic to set plug
 @enduml
