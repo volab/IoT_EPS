@@ -1,7 +1,4 @@
 @startuml
-
-
-
 <style>
 caption {
 FontSize 20
@@ -14,17 +11,47 @@ actor web
 participant "CServerWeb::handlePlugOnOff"
 participant "CPowerPlug::handleHtmlReq"
 participant "CPowerPlug:on"
+participant "CPowerPlug:off"
+participant "CPowerplug:writeDaysToJson"
 participant "CPowerplug:writeToJson"
-
 database SPIFFS #red
 
 !procedure $activeWrite( $returnDest )
         activate "CPowerplug:writeToJson"
-            "CPowerplug:writeToJson" -> SPIFFS:open
-            "CPowerplug:writeToJson" -> SPIFFS:read all
-            "CPowerplug:writeToJson" -> SPIFFS:write all
+            "CPowerplug:writeToJson" -> SPIFFS:open, read all, write all
             "CPowerplug:writeToJson" --> "$returnDest"
         deactivate "CPowerplug:writeToJson"
+!end procedure
+
+!procedure $activeWriteForDays( $returnDest )
+        activate "CPowerplug:writeDaysToJson"
+            "CPowerplug:writeDaysToJson" -> SPIFFS:open, read all, write all
+            "CPowerplug:writeDaysToJson" --> "$returnDest"
+        deactivate "CPowerplug:writeDaysToJson"
+!end procedure
+
+!procedure $noteIfPresVal()
+        note left
+            if present and valid
+            if not valid write""
+        end note
+!end procedure
+
+!procedure $off()
+    "CPowerPlug::handleHtmlReq" -> "CPowerPlug:off"
+    "CPowerPlug:off" -> "CPowerplug:writeToJson":state=OFF
+    $activeWrite( "CPowerPlug:off" )
+!end procedure
+
+!procedure $on()
+    "CPowerPlug::handleHtmlReq" -> "CPowerPlug:on"
+    "CPowerPlug:on" -> "CPowerplug:writeToJson":state=ON
+    $activeWrite( "CPowerPlug:on" )
+!end procedure
+
+!procedure $WTJ( $message )
+    "CPowerPlug::handleHtmlReq" -> "CPowerplug:writeToJson": $message
+    $activeWrite("CPowerPlug::handleHtmlReq")
 !end procedure
 
 
@@ -38,37 +65,100 @@ end note
 note left
 If all is ok
 end note
-alt "mode==Manual"
-    alt "state param == ON"
-        "CPowerPlug::handleHtmlReq" -> "CPowerPlug:on"
-        "CPowerPlug:on" -> "CPowerplug:writeToJson":state=ON
-        $activeWrite( "CPowerPlug:on" )
+alt mode == Manual
+    alt state param == ON
+        $on()
         "CPowerPlug::handleHtmlReq" -> "CPowerplug:writeToJson" :dureeOff
-        note left
-            if present and valid
-            if not valid write""
-        end note
+        $noteIfPresVal()
         $activeWrite("CPowerPlug::handleHtmlReq")
         "CPowerPlug::handleHtmlReq" -> "CPowerplug:writeToJson" :hFin
-        note left
-            if present and valid
-            if not valid write""
-        end note
-        activate "CPowerplug:writeToJson"
-            "CPowerplug:writeToJson" -> SPIFFS:open
-            "CPowerplug:writeToJson" -> SPIFFS:read all
-            "CPowerplug:writeToJson" -> SPIFFS:write all
-            "CPowerplug:writeToJson" --> "CPowerPlug::handleHtmlReq"
-        deactivate "CPowerplug:writeToJson"
+        $noteIfPresVal()
+        note right : dureeOFF XOR Hfin
+        $activeWrite("CPowerPlug::handleHtmlReq")
+        $WTJ("set nextTimeToSwitch")
 
-    else
-
+    else state = off 
+        "CPowerPlug::handleHtmlReq" -> "CPowerplug:writeToJson":Next = 0
+        note right: reset parameters when state = OFF
+        $activeWrite("CPowerPlug::handleHtmlReq")
+        $WTJ( "reset EndTime" )
+        $WTJ( "reset offDuration")
+        $WTJ("reset onDuration")
+        $WTJ("reset start time")
+        "CPowerPlug::handleHtmlReq" -> "CPowerplug:writeDaysToJson":reset days
+        $activeWriteForDays("CPowerPlug::handleHtmlReq")
     end
-else "mode==Timer"
+    $WTJ( "mode manual" )
+else mode == Timer
+    $WTJ("set on duration parameter to dureeOn")
+    $WTJ("Next time to switch")
+    alt state = on
+        $on()
+    else state = off
+        $off()
+    end
+    $WTJ("set mode parameter to Timer")
+else mode == cycle
+    alt pause requested
+        alt state is on ?
+            $off()
+            $WTJ("set pause parameter")
+            note left #red: exit to web
+        end
+    else alt already in pause
+        $on()
+        $WTJ("reset pause parameter")
+        note left #red: exit to web
+    end
 
-else "mode==cycle"
+    alt dureeOn and dureeOff valid
+        alt hdebut valid
+            $off()
+            $WTJ("set startTime to hDebut parameter")
+        else hDebut invalid
+            $on()
+            $WTJ("reset startTime parameter")
+        end
+        $WTJ("set nextTimeToSwitch")
+        $WTJ("set on duration parameter to dureeOn")
+        $WTJ("set off duration parameter to dureeOff")
+        $WTJ("set mode parameter to Cycle")
+    end
+else mode == hebdo
+    alt pause requested
+        alt state is on ?
+            $off()
+            $WTJ("set pause parameter")
+            note left #red: exit to web
+        end
+    else alt already in pause
+        $on()
+        $WTJ("reset pause parameter")
+        note left #red: exit to web
+    end
+    alt hDebut and hFin valid
+        $WTJ("set start time parameter to hDebut")
+        $WTJ("set end time parameter to hFin")    
+        "CPowerPlug::handleHtmlReq" -> "CPowerplug:writeDaysToJson":requested days
+        $activeWriteForDays("CPowerPlug::handleHtmlReq") 
+        alt now is beetween hDebut, hFin
+            $on()
 
-else "mode==hebdo"
+        else
+            alt state is already on
+                $off()
+            end
+        end 
+        $WTJ("set nextTimeToSwitch")
+         $WTJ("set mode parameter to Hebdo")
+    end
+else mode == clone
+    loop for StartTime, EndTime, onDuration, OffDuration, state, pause, mode, nextTimeToSwitch
+     $WTJ("a copy from other plug")
+    "CPowerPlug::handleHtmlReq" -> "CPowerplug:writeDaysToJson":requested days
+    $activeWriteForDays("CPowerPlug::handleHtmlReq")      
+    $WTJ("cloned Plug Name")
+    end
 end
 
 

@@ -34,11 +34,31 @@ Model Type
 
 ----------------------------------------------------------------------------------------------------
 
-Bug identifiés
-==============
+Bug : clone pause
+==================
 
-    :Date de saisie:        27/06/2021      
-    :Date de traitemant:    30/06/2021
+    :Date de saisie:        210718
+    :Date de traitemant:    
+    :Cible:                 firmware
+    :Status:                open
+    :Problematique:         Bug not confirmed but in CPowerPlug::handleHtmlReq in mode cloned
+    :Traitement:
+    
+    ::
+
+        test pause before to call on or off method (about line 601) write
+        if (_state && !_pause) but move line ``_pause = clonedPlug.getPause();``
+        before
+
+                
+
+----------------------------------------------------------------------------------------------------
+
+Bug soft AP fail
+=================
+
+    :Date de saisie:        210627      
+    :Date de traitemant:    210630
     :Cible:                 firmware
     :Status:                closed
     :Problematique:         Soft AP fails
@@ -110,8 +130,8 @@ ToDo : online gh-page
 
 ------------------------------------------------------------------------------------------
 
-ToDo-list
-=========
+ToDo : config.h
+================
 
     :Date de saisie:        200703        
     :Date de traitemant:    

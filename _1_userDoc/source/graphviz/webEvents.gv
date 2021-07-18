@@ -1,23 +1,40 @@
 digraph webEvents {
-    label="IoTEps web events" 
+    label="IoTEps web events and associated handler" 
     fontsize=18 
     fontcolor=darkslateblue 
     #layout="twopi"
     labelloc="t" 
     rankdir="LR" 
-    ratio=auto; 
-    ranksep=0.5
-    compound=true
-    
+    #ratio=auto; 
+    ranksep=0.1
+    #compound=true
+    center=true
 
+    subgraph clusterLegend {
+        label = "links are defined in CServerWeb::init"
+        ranksep=0.1
+        color=none
+        #shape = rectangle
+        #color =  green
+        a[style=invis]
+        b[style=invis]
+        a->b[style=invis]
+
+        #X -> Y[style= invis]
+    }
 
     node[shape=rect]
     "/" -> handleIndex
     "/" -> firstBootHtmlForm[label="if first boot or try"]
+    "return softApIndex.htm file"[shape=none]
+    "/" -> handleSoftAPIndex 
+    handleSoftAPIndex ->"return softApIndex.htm file"[label="simple op." style=dashed dir=back arrowhead=none arrowtail=none ]
     "/time" -> displayTime
     "/list"-> handleFileList
     "/plugonoff" -> handlePlugOnOff
     "/help" -> handleHelp
+    "return help.htm file"[shape=none]
+    handleHelp -> "return help.htm file"[label="simple op." style=dashed dir=back arrowhead=none arrowtail=none]
     "/edit" -> handleEdit
     "/edit" ->handleFileCreate
     "/edit" -> htmlOkResponse
@@ -28,4 +45,10 @@ digraph webEvents {
     "/firstBoot" -> handleFirstBoot
 
     onNotFound -> notFoundHandler
+
+
+
+   
+
+
 }

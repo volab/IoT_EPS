@@ -11,11 +11,11 @@ actor web
 participant config4.json
 participant plug
 participant bpLongClic
-actor user
+actor "local user"
 
 web -> config4.json: clic to config
 plug -> config4.json: time To switch
-user -> bpLongClic: press plug button more then 2s
+"local user" -> bpLongClic: press plug button more then 2s
 bpLongClic -> config4.json: restaure file
 web -> config4.json: clic to set plug
 @enduml

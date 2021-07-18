@@ -32,6 +32,8 @@ Software architecture or how does it work
 ====================================================================================================
 Some words on software architecture @13/07/2020
 
+see also `Config file improvments`_
+
 Major points
 ====================================================================================================
 

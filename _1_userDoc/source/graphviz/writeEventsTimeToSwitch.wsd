@@ -21,7 +21,7 @@ note left
  also for green
  bleue and yellow plug
 end note
-alt "mode==Manual"
+alt mode == Manual
     "CPowerPlug::switchAtTime" -> "CPowerplug:writeToJson":EndTime=""
     activate "CPowerplug:writeToJson"
         "CPowerplug:writeToJson" -> SPIFFS:open
@@ -52,7 +52,7 @@ alt "mode==Manual"
         "CPowerplug:writeToJson" --> "CPowerPlug::switchAtTime"
     deactivate "CPowerplug:writeToJson"
 
-else "mode==Timer"
+else mode == Timer
     "CPowerPlug::switchAtTime" -> "CPowerPlug::off"
     "CPowerPlug::off" -> "CPowerplug:writeToJson":state=OFF
     activate "CPowerplug:writeToJson"
@@ -61,8 +61,8 @@ else "mode==Timer"
         "CPowerplug:writeToJson" -> SPIFFS:write all
         "CPowerplug:writeToJson" --> "CPowerPlug::off"
     deactivate "CPowerplug:writeToJson"
-else "mode==Cycle"
-    alt "state==ON"
+else mode == Cycle
+    alt state == ON
         "CPowerPlug::switchAtTime" -> "CPowerPlug::off"
         "CPowerPlug::off" -> "CPowerplug:writeToJson":state=OFF
         activate "CPowerplug:writeToJson"
@@ -71,8 +71,8 @@ else "mode==Cycle"
             "CPowerplug:writeToJson" -> SPIFFS:write all
             "CPowerplug:writeToJson" --> "CPowerPlug::off"
         deactivate "CPowerplug:writeToJson"
-    else
-        alt "!Pause"
+    else state == OFF
+        alt not on Pause
             "CPowerPlug::switchAtTime" -> "CPowerPlug::on"
             "CPowerPlug::on" -> "CPowerplug:writeToJson":state=ON
             activate "CPowerplug:writeToJson"
@@ -81,7 +81,7 @@ else "mode==Cycle"
                 "CPowerplug:writeToJson" -> SPIFFS:write all
                 "CPowerplug:writeToJson" --> "CPowerPlug::on"
             deactivate "CPowerplug:writeToJson"
-        else
+        else already on pause
             "CPowerPlug::switchAtTime" -> "CPowerplug:writeToJson":Pause=off
             activate "CPowerplug:writeToJson"
                 "CPowerplug:writeToJson" -> SPIFFS:open
@@ -91,8 +91,8 @@ else "mode==Cycle"
             deactivate "CPowerplug:writeToJson"
         end
     end
-else "mode==hebdo"
-    alt "state==ON"
+else mode == hebdo
+    alt state == ON
         "CPowerPlug::switchAtTime" -> "CPowerPlug::off"
         "CPowerPlug::off" -> "CPowerplug:writeToJson":state=OFF
         activate "CPowerplug:writeToJson"
@@ -101,8 +101,8 @@ else "mode==hebdo"
             "CPowerplug:writeToJson" -> SPIFFS:write all
             "CPowerplug:writeToJson" --> "CPowerPlug::off"
         deactivate "CPowerplug:writeToJson"
-    else
-        alt "!Pause"
+    else state == OFF
+        alt not on Pause
             "CPowerPlug::switchAtTime" -> "CPowerPlug::on"
             "CPowerPlug::on" -> "CPowerplug:writeToJson":state=ON
             activate "CPowerplug:writeToJson"
@@ -111,7 +111,7 @@ else "mode==hebdo"
                 "CPowerplug:writeToJson" -> SPIFFS:write all
                 "CPowerplug:writeToJson" --> "CPowerPlug::on"
             deactivate "CPowerplug:writeToJson"            
-        else
+        else already on pause
             "CPowerPlug::switchAtTime" -> "CPowerplug:writeToJson":Pause=off
             activate "CPowerplug:writeToJson"
                 "CPowerplug:writeToJson" -> SPIFFS:open
