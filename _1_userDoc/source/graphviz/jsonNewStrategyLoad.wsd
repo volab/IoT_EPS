@@ -1,0 +1,45 @@
+@startuml
+
+<style>
+caption {
+FontSize 20
+}
+</style>
+
+caption Json New startegy : store file
+
+start
+'skinparam ConditionEndStyle hline
+repeat
+:cpt=0;
+    repeat
+        :store jsonData to config4.json;
+        :load config4.json to jsonDataCopy;
+        if(jsonData == jsonDataCopy?) then (yes)
+            break
+        else (no)
+            :cpt++;
+            if (<b>cpt?) then (<b>3)
+                :setError lvl1;
+            endif   
+        endif
+    repeat while (cpt<3?) equals (yes)
+
+    :store jsonData to config4copy1.json;
+    :store jsonData to config4copy2.json;
+    :compute config4.json Hash to H0|
+    :compute config4copy1.json Hash to H1|
+    :compute config4copy2.json Hash to H2|
+
+    if (H0==H1==H2) then (yes)
+        break 
+    else
+        :cpt++;
+        if (<b>cpt2?) then (<b>3)
+            :setError lvl2;
+        endif       
+    endif
+repeat while(cpt2<3?) equals (yes)
+end
+
+@enduml

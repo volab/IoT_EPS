@@ -75,6 +75,8 @@ CSystem sysIoteps;
 CServerWeb webServeur;
 CWifiLink wifilnk;
 
+CJsonIotEps jsonData;
+
 
 
 Adafruit_SSD1306 display(-1);

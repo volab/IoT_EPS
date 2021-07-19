@@ -653,6 +653,33 @@ la bobine est données pour 70ohm sous 5V soit I environ 75mA * 8 = 571mA
 
 Nous avons mesuré 156mA pour 2 relais ce qui donnerais 624mA pour les 8 soit un convertisseur 
 AC/DC capable de délivrer 3.2W
+
+
+Livetime of the relays
+====================================
+ 10^7 time 
+
+===================================
+Livetime of ESP8266 flash SPIFFS
+===================================
+hypothesis :
+- 4 plugs that work in clycle mode 1 minutes on and 1 minutes off
+- 4 plugs not synchronyzed
+With this hyp. the 4write/minutes 
+
+WEMOS D1 Flash is Ai ESP12-F module W25Q32 pour 32Mbits soit 4Mo
+100k erase/write cycle
+
+25k minutes = 416 hours = 17 days
+
+But it is a very hard hypothesis
+
+A great question : what is the realistic usage ?
+
+- one On/off cycle by hour on each plug every days only 12 hours by days
+  25k hours /12 <=> 2083 days <=> more than 5 years
+ 
+
     
 ----------------------------------------------------------------------------------------------------
 
