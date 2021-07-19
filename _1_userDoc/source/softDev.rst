@@ -17,6 +17,9 @@ Software development documentation
 .. contents:: Table of Contents
     :backlinks: top
 
+.. |clearer|  raw:: html
+
+    <div class="clearer"></div>
 
 
 =============================
@@ -32,7 +35,7 @@ Software architecture or how does it work
 ====================================================================================================
 Some words on software architecture @13/07/2020
 
-see also `Config file improvments`_
+see also `Json file improvments : analyse`_
 
 Major points
 ====================================================================================================
@@ -162,13 +165,14 @@ Terminated
 #. manage wif led :                                                                      ok
 #. integrate nano expander with analog inputs :                                          ok
 #. scan I2C response 57 and 58 nano IoExpander !!!! not a bug simply DS3231 board has 2 component DS3231 an EEPROM ! OK
-#. Time managment strategy : ok
-#. review work without rtc component strategy ok
-#. review work without NTP access strategy ok
-#. define rtc component versus NTP update strategy ok
-#. suppress html replies if main power is off ok
-#. generate a unique server name  ok
-
+#. Time managment strategy :                                                             ok
+#. review work without rtc component strategy                                            ok
+#. review work without NTP access strategy                                               ok
+#. define rtc component versus NTP update strategy                                       ok
+#. suppress html replies if main power is off                                            ok
+#. generate a unique server name                                                         ok
+#. rewrite main program setup and loop function with more object oriented structure      ok
+#. add OLED display managment in accordance of its hardware implementation of course     ok
 
 
 In progress
@@ -178,17 +182,22 @@ In progress
 
 #. Error handling improvement 95% (todo display low error with LED ? Which one : power led ?)
 #. configuration page (see softdev.rst)
-#. power measurement
 #. exhaustive test of hebdo mode : 95%
 #. write index special page for softAP Mode with local boostrap or other light js.framework 5%
 #. Creat an infography that summarize features and needs 
 #. Write user manual : 1%
 #. Write builder manual
-#. rewrite main program setup and loop function with more object oriented structure 15%
-#. UML and classes documentation
-#. add OLED display managment in accordance of its hardware implementation of course
+#. UML and classes documentation 10% - web and json
+
 
 Don't forget the todo list of the **doxygen documentation** and **git history**
+
+Differed to next version
+====================================================================================================
+
+::
+
+#. power measurement - not in this vesion
 
 
 ====================================================================================================
@@ -430,30 +439,228 @@ Live time2 ? 10^6 write cycle
 .. index::
     single: Lives times
 
-===================================
-Livetime of ESP8266 flash SPIFFS
-===================================
-hypothesis :
-- 4 plugs that work in clycle mode 1 minutes on and 1 minutes off
-- 4 plugs not synchronyzed
-With this hyp. the 4write/minutes 
 
-WEMOS D1 Flash is Ai ESP12-F module W25Q32 pour 32Mbits soit 4Mo
-100k erase/write cycle
 
-25k minutes = 416 hours = 17 days
 
-But it is a very hard hypothesis
 
-A great question : what is the realistic usage ?
 
-- one On/off cycle by hour on each plug every days only 12 hours by days
-  25k hours /12 <=> 2083 days <=> more than 5 years
+====================================================================================================
+OLED Screen integration
+====================================================================================================
+0.96" `128X64 I2C SSD1306 on Aliexpress`_
+
+.. _`128X64 I2C SSD1306 on Aliexpress` : https://fr.aliexpress.com/item/33008480580.html?spm=a2g0o.cart.0.0.5d273c007sJ7KR&mp=1
+
+`Adafruit GFX library`_  used 
+
+.. _`Adafruit GFX library` : https://learn.adafruit.com/adafruit-gfx-graphics-library
+
+Add I2C 0x78 on the board (7 or 8 bits add ?)
+
+The right add is 0x3C
+
+There is a pdf documentation for the GFX lib but no doc for special method in SSD1306.
+
+setTextSize : ???
+
+1 is default 6x8, 2 is 12x16, 3 is 18x24, etc (in adafruit source code)
+
+Size 1 : 8 lign of 21 char
+Size 2 : 4 lign of 10 char
+Size 3 : 2 lign of 5 char
+
+Screen definitions
+====================================================================================================
+Screen are created with GIMP and converted with `LCD Assistant from radzio.dxp.pl`_
+
+.. _`LCD Assistant from radzio.dxp.pl` : http://en.radzio.dxp.pl/bitmap_converter/
+
+Screen color shall be inverted in GIMP text shall be in black and screen in white.
  
-====================================
- Livetime of the relays
-====================================
- 10^7 time 
+Bitmap exported file from GIMP shall be in 2 bits indexed color maode
+(In gimp: Image/Mode/Couleur indexée... menu and dialog box)
+
+How many and what screen do we need ?
+
+First screen VoLAB logo
+
+.. image:: image/ecranlogo_210612_1940.png
+
+
+Second screen : The project name : 
+
+.. image:: image/firstScreen.png 
+
+
+First and second screen are display by CSystem::_oledStartMessagesManager
+
+In the septup sequence::
+
+  - DS3231 demarre a: ( CSystem.init() )    [on line 1]
+  - A partir d'ici:                         [on line 3]
+  - * I2C ok                                [on line 4]
+  - * Fichiers ok
+  - * Parametres ok
+
+In the loop sequence:
+
+.. image:: image/ecran1_201019_1402.png
+   :width: 128 px
+
+To display IPs, states and errors. Exemple: time server and Wifi accessibility... 
+
+On the above screen, only Date, time and state can change. Ip adress stay the same to the next reboot !
+
+So the right place to put it it at the end of setup loop.
+
+I place methods in the CSystem class not very logic. The right way to do it should be to creat a new
+dedicate dislayMessageClass.
+
+====================================================================================================
+Json file improvments : analyse
+====================================================================================================
+Simple improvments
+====================================================================================================
+05/07/2021:
+
+CPowerPlug::readFromJson() : move up configFile.close(); at l253 to l189
+
+readFromJson twice defined. Ontime in CPowerPlug and on time in ConfigParam: not the same method. 
+One for Plug parameters and one for géneral parameter
+
+ConfigParam::readFromJsonParam() : move up configFile.close() Too
+
+CpowerPlug::on, off toggle, updateOutputs could be private
+
+Write to file improvments
+====================================================================================================
+**First question**: track all json config file access by tracking all usage of CONFIGFILENAME
+
+See GraphViz diagram : IoTEps config4.json access
+
+.. graphviz:: graphviz/config4Access.gv
+
+Conclusion there are 2 places that write to json file : in ConfigParam Class for configuration
+parameters and in Cpowerplug class for plugs parameters.
+
+There are 6 methods that write to json file:
+
+- "CPowerPlug::handleBpLongClic()"
+- "CPowerPlug::writeToJson(p,v)"
+- "ConfigParam::write2Json()"
+- "ConfigParam::creatDefaultJson()"
+- "CPowerPlug::writeDaysToJson()"
+- "CServerWeb::handelIOTESPConfPage()"
+
+**Second question**: after track all usage of write to json méthods
+
+**third question**: what are the events that trig writes on json file ?
+
+handleBpLongClic
+====================================================================================================
+This method is used 3 times in the ino file. One time in the setup and 2 times in the loop.
+The purpose of this function is to force plugs modes to manual. After power off switching or
+after a long press on the plug's button
+
+.. graphviz:: graphviz/handleBpLongClic.gv
+
+
+CPowerPlug::writeToJson(p,v) and writeDaysToJson
+====================================================================================================
+
+.. graphviz:: graphviz/CPowerPlugWrites.gv
+
+
+The second one could be a private method
+
+From configParam classe
+====================================================================================================
+In configParam class there is only 2 methods that directly write to config4.json file.
+
+- writeTOJson( p,v,f ) : the MAIN function
+- creatDefaultJson() : to restaure a fresh file when corrupted
+
+Write to json events
+====================================================================================================
+
+.. uml:: graphviz/writeEventsGlobal.wsd
+
+----------------------------------------------------------------------------------------------------
+
+.. uml:: graphviz/wrtiteEventsWebdetails.wsd
+
+----------------------------------------------------------------------------------------------------
+
+.. uml:: graphviz/writeEventsTimeToSwitch.wsd
+
+----------------------------------------------------------------------------------------------------
+
+.. uml:: graphviz/writeEventsWebPlugOnOff.wsd
+
+====================================================================================================
+JSON improvments : rewriting stage
+====================================================================================================
+
+On git branch : json_new
+
+Class CJsonIotEps created. Instance jsonData in .ino file created.
+
+Strategy
+====================================================================================================
+
+One json master file : config4.json (no change) and 2 copies
+
+throughout operation, Json data **reside** in RAM : this is the **most important change**.
+
+On web and plug events, write2json methods do not write directly to the file, they change data in RAM
+and after all changes, file is store in RAM and 2 copies are made whith hash verification.
+
+At startup, hash of the 3 files are checked to determin what file is good and what file is corrupted.
+After this check, the good file is loaded or none if all 3 files are corrupted. In this situation a
+new system error is rised.
+
+See the figures below.
+
+
+.. uml:: graphviz/jsonNewStrategyStore.wsd
+
+----------------------------------------------------------------------------------------------------
+
+|clearer|
+
+.. uml:: graphviz/jsonNewStrategyLoad.wsd
+    :align: center
+
+|clearer|
+
+Json data in RAM
+====================================================================================================
+How to crate ? A check at `ArduinoJson documentation`_
+
+Static or Dynamic json Document ?
+
+::
+
+    The memory of theJsonDocumentcan be either in the stack or in the heap. The location depends on the 
+    derived class you choose. If you use a StaticJsonDocument, it will be in the stack; if you use a
+    DynamicJsonDocument, it will be in the heap
+
+.. _`ArduinoJson documentation` : https://arduinojson.org/v6/doc/
+
+From my reads, the technique is to keep a simple strucutre in RAM and to creat the json object at
+write or load time. Not to keep the json object throughout operations.
+
+It is not a good idea to keep Json object in memory see `Arduinojsondoc Why is it wrong to reuse a JsonDocument?`_
+
+.. _`Arduinojsondoc Why is it wrong to reuse a JsonDocument?` : https://arduinojson.org/v6/how-to/reuse-a-json-document/
+
+More : data are already in ram : in configParam and in plugs[] instances !
+
+The new clas needs only 2 pointers to acces to this data.
+
+Hash lib
+====================================================================================================
+
 
 
 ===============================
@@ -468,6 +675,39 @@ On PC : `Angry IP Scanner`_
 .. _`Network IP Scanner` : https://play.google.com/store/apps/details?id=com.network.networkip&hl=fr
 .. _`Angry IP Scanner` : https://angryip.org/
     
+
+
+.. index::
+    pair: Used; Library
+
+.. _usedLirary:
+
+========================
+Used library
+========================
+last update : 05/05/2021
+
+13 libs:
+
+- ESP8266WiFi version 1.0
+- ESP8266WebServer version 1.0
+- ArduinoJson version 5.13.2
+- Wire version 1.0
+- RTClib version 1.2.0
+- ESP8266mDNS
+- FastLED version 3.3.3
+- nanoI2CIOExpLib version 3.2
+- NTPClient version 3.1.0
+- Adafruit_GFX_Library version 1.1.8
+- Adafruit_SSD1306 version 1.1.2
+- SPI version 1.0
+- ESP8266HTTPClient version 1.1
+
+
+12 libs are official Arduino libs and one lib is a special one: `nanoI2CIOExpLib`_
+ 
+.. _`nanoI2CIOExpLib` : https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc
+
 ===============================
 Usefull Documentation
 ===============================
@@ -545,191 +785,6 @@ SPIFFS
 
 .. _`Official documentation for SPIFFS on Espressif` : https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/storage/spiffs.html
 
-
-.. index::
-    pair: Used; Library
-
-.. _usedLirary:
-
-========================
-Used library
-========================
-last update : 05/05/2021
-
-13 libs:
-
-- ESP8266WiFi version 1.0
-- ESP8266WebServer version 1.0
-- ArduinoJson version 5.13.2
-- Wire version 1.0
-- RTClib version 1.2.0
-- ESP8266mDNS
-- FastLED version 3.3.3
-- nanoI2CIOExpLib version 3.2
-- NTPClient version 3.1.0
-- Adafruit_GFX_Library version 1.1.8
-- Adafruit_SSD1306 version 1.1.2
-- SPI version 1.0
-- ESP8266HTTPClient version 1.1
-
-
-12 libs are official Arduino libs and one lib is a special one: `nanoI2CIOExpLib`_
- 
-.. _`nanoI2CIOExpLib` : https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc
-
-====================================================================================================
-OLED Screen integration
-====================================================================================================
-0.96" `128X64 I2C SSD1306 on Aliexpress`_
-
-.. _`128X64 I2C SSD1306 on Aliexpress` : https://fr.aliexpress.com/item/33008480580.html?spm=a2g0o.cart.0.0.5d273c007sJ7KR&mp=1
-
-`Adafruit GFX library`_  used 
-
-.. _`Adafruit GFX library` : https://learn.adafruit.com/adafruit-gfx-graphics-library
-
-Add I2C 0x78 on the board (7 or 8 bits add ?)
-
-The right add is 0x3C
-
-There is a pdf documentation for the GFX lib but no doc for special method in SSD1306.
-
-setTextSize : ???
-
-1 is default 6x8, 2 is 12x16, 3 is 18x24, etc (in adafruit source code)
-
-Size 1 : 8 lign of 21 char
-Size 2 : 4 lign of 10 char
-Size 3 : 2 lign of 5 char
-
-Screen definitions
-====================================================================================================
-Screen are created with GIMP and converted with `LCD Assistant from radzio.dxp.pl`_
-
-.. _`LCD Assistant from radzio.dxp.pl` : http://en.radzio.dxp.pl/bitmap_converter/
-
-Screen color shall be inverted in GIMP text shall be in black and screen in white.
- 
-Bitmap exported file from GIMP shall be in 2 bits indexed color maode
-(In gimp: Image/Mode/Couleur indexée... menu and dialog box)
-
-How many and what screen do we need ?
-
-First screen VoLAB logo
-
-.. image:: image/ecranlogo_210612_1940.png
-
-
-Second screen : The project name : 
-
-.. image:: image/firstScreen.png 
-
-
-First and second screen are display by CSystem::_oledStartMessagesManager
-
-In the septup sequence::
-
-  - DS3231 demarre a: ( CSystem.init() )    [on line 1]
-  - A partir d'ici:                         [on line 3]
-  - * I2C ok                                [on line 4]
-  - * Fichiers ok
-  - * Parametres ok
-
-In the loop sequence:
-
-.. image:: image/ecran1_201019_1402.png
-   :width: 128 px
-
-To display IPs, states and errors. Exemple: time server and Wifi accessibility... 
-
-On the above screen, only Date, time and state can change. Ip adress stay the same to the next reboot !
-
-So the right place to put it it at the end of setup loop.
-
-I place methods in the CSystem class not very logic. The right way to do it should be to creat a new
-dedicate dislayMessageClass.
-
-====================================================================================================
-Config file improvments
-====================================================================================================
-Simple improvments
-====================================================================================================
-05/07/2021:
-
-CPowerPlug::readFromJson() : move up configFile.close(); at l253 to l189
-
-readFromJson twice defined. Ontime in CPowerPlug and on time in ConfigParam
-
-ConfigParam::readFromJsonParam() : move up Too
-
-CpowerPlug::on, off toggle, updateOutputs could be private
-
-Write to file improvments
-====================================================================================================
-**First question**: track all json config file access by tracking all usage of CONFIGFILENAME
-
-See GraphViz diagram : IoTEps config4.json access
-
-.. graphviz:: graphviz/config4Access.gv
-
-Conclusion there are 2 places that write to json file : in ConfigParam Class for configuration
-parameters and in Cpowerplug class for plugs parameters.
-
-There are 6 methods that write to json file:
-
-- "CPowerPlug::handleBpLongClic()"
-- "CPowerPlug::writeToJson(p,v)"
-- "ConfigParam::write2Json()"
-- "ConfigParam::creatDefaultJson()"
-- "CPowerPlug::writeDaysToJson()"
-- "CServerWeb::handelIOTESPConfPage()"
-
-**Second question**: after track all usage of write to json méthods
-
-
-
-**third question**: what are the events that trig writes on json file ?
-
-handleBpLongClic
-====================================================================================================
-This method is used 3 times in the ino file. One time in the setup and 2 times in the loop.
-The purpose of this function is to force plugs modes to manual. After power off switching or
-after a long press on the plug's button
-
-.. graphviz:: graphviz/handleBpLongClic.gv
-
-
-CPowerPlug::writeToJson(p,v) and writeDaysToJson
-====================================================================================================
-
-.. graphviz:: graphviz/CPowerPlugWrites.gv
-
-
-The second one could be a private method
-
-From configParam classe
-====================================================================================================
-In configParam class there is only 2 methods that directly write to config4.json file.
-
-- writeTOJson( p,v,f ) : the MAIN function
-- creatDefaultJson() : to restaure a fresh file when corrupted
-
-Write to json events
-====================================================================================================
-
-.. uml:: graphviz/writeEventsGlobal.wsd
-
-----------------------------------------------------------------------------------------------------
-
-.. uml:: graphviz/wrtiteEventsWebdetails.wsd
-
-----------------------------------------------------------------------------------------------------
-
-.. uml:: graphviz/writeEventsTimeToSwitch.wsd
-
-----------------------------------------------------------------------------------------------------
-
-.. uml:: graphviz/writeEventsWebPlugOnOff.wsd
 
 ===============================
 Eccueils et autres difficultés

@@ -99,6 +99,10 @@ there is 3 pull-up on the board.
 #include "cswitchnano.h"
 
 #include "cattiny_i2C_watchdog.h"
+
+#include "jsonIotEps.h"
+
+
 #define RTC_UPDATE_PERIOD 15 //every 15mn
 // #define RTC_UPDATE_PERIOD 1 //every 1
 

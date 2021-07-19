@@ -38,7 +38,7 @@ extensions = ['sphinx.ext.autodoc',
 plantuml = 'java -jar C:\plantUML\plantuml.jar'
 
 graphviz_output_format = "svg"
-plantuml_output_format = "svg"
+plantuml_output_format = "svg_obj"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
