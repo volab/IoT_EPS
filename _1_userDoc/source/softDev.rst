@@ -532,6 +532,16 @@ ConfigParam::readFromJsonParam() : move up configFile.close() Too
 
 CpowerPlug::on, off toggle, updateOutputs could be private
 
+JSON structure
+====================================================================================================
+.. uml:: graphviz/config4json.wsd
+
+JSON structure vs variables
+====================================================================================================
+.. uml:: graphviz/config4jsonVsVariables.wsd
+
+
+
 Write to file improvments
 ====================================================================================================
 **First question**: track all json config file access by tracking all usage of CONFIGFILENAME
