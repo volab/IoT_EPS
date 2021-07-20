@@ -1,0 +1,57 @@
+@startjson
+#highlight "general" / "emplacement"
+#highlight "general" / "ntpError"
+#highlight "general" / "_clé à créer 1_"
+#highlight "general" / "startInAPMode"
+#highlight "redPlug" / "hDebut"
+#highlight "redPlug" / "hFin"
+#highlight "redPlug" / "dureeOn"
+#highlight "redPlug" / "dureeOff"
+#highlight "redPlug" / "clonedPlug"
+#highlight "redPlug" / "onOffCount"
+
+{
+  "general": {
+    "emplacement": "salon",
+    "numberOfPlugs": "int ConfigParam::_numberOfPlugs",
+    "allLedsOnTime": "long ConfigParam::_allLedsOnTime",
+    "ledsGlobalLuminosity": "int ConfigParam::_ledsGlobalLuminosity",
+    "powerLedEconomyMode": "bool ConfigParam::_powerLedEconomyMode",
+    "firstBoot": "firstBootVal ConfigParam::_firstBoot",
+    "hostName": "String ConfigParam::_host",
+    "startInAPMode": "OFF",
+    "softAP_IP": "IPAddress ConfigParam:: _addIP",
+    "softAP_port": "int ConfigParam::_serverPort",
+    "dhcp_mode": "bool ConfigParam::_DHCPMode",
+    "staIP": "IPAddress ConfigParam::_staIP",
+    "staGateway": "IPAddress ConfigParam::_staGateway",
+    "macAdd": "String ConfigParam::_macAdd",
+    "softAP_macAdd": "String ConfigParam::_softAPMacAdd",
+    "STAmaxWifiConnectionRetry": "unsigned int ConfigParam::_STAmaxWifiConnectionRetries",
+    "ntpError": "OFF : is it very usefull ???",
+    "_clé à créer 1_":"String ConfigParam::_wifimode"
+    
+  },
+  "redPlug": {
+    "nickName": "String CPowerPlug::_plugName",
+    "State": "bool CPowerPlug::_state",
+    "Pause": "bool CPowerPlug::_pause",
+    "Mode": "int CPowerPlug::_mode",
+    "hDebut": "",
+    "hFin": "",
+    "dureeOn": "",
+    "dureeOff": "",
+    "Jours": "uint8_t CPowerPlug::_daysOnWeek",
+    "clonedPlug": "",
+    "onOffCount": "70",
+    "nextTimeToSwitch": "uint32_t CPowerPlug::_nextTimeToSwitch"
+  },
+  "greenPlug": {
+  },
+  "bluePlug": {
+  },
+  "yellowPlug": {
+  }
+}
+
+@endjson
