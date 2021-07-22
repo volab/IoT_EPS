@@ -28,7 +28,7 @@
     "macAdd": "String ConfigParam::_macAdd",
     "softAP_macAdd": "String ConfigParam::_softAPMacAdd",
     "STAmaxWifiConnectionRetry": "unsigned int ConfigParam::_STAmaxWifiConnectionRetries",
-    "ntpError": "OFF : is it very usefull ???",
+    "ntpError": "CSysStatus::ntpErr : is it very usefull ???",
     "_clé à créer 1_":"String ConfigParam::_wifimode"
     
   },

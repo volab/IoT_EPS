@@ -73,6 +73,8 @@ class ConfigParam{
         IPAddress _staIP;
         IPAddress _staGateway;
         // bool _fileCopy( String from, String to);
+        String _emplacement;
+        bool _startInApMode;
         
 
 };

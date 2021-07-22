@@ -540,7 +540,19 @@ JSON structure vs variables
 ====================================================================================================
 .. uml:: graphviz/config4jsonVsVariables.wsd
 
+22/07/2021: création of the members of ConfigParam:
 
+- _emplacement
+- _startInApMode
+- ``_clé à créer 1_`` : becomes wifimode in config4.json
+
+About ntpError json parameter:
+
+- write in the loop at lign 396 in cbit.
+
+- and write in CSystem::timeServerCheck
+
+but what is its usage ??? in the system ?
 
 Write to file improvments
 ====================================================================================================
@@ -620,7 +632,7 @@ Strategy
 
 One json master file : config4.json (no change) and 2 copies
 
-throughout operation, Json data **reside** in RAM : this is the **most important change**.
+Throughout operation, Json data **reside** in RAM : this is the **most important change**.
 
 On web and plug events, write2json methods do not write directly to the file, they change data in RAM
 and after all changes, file is store in RAM and 2 copies are made whith hash verification.
@@ -664,9 +676,11 @@ It is not a good idea to keep Json object in memory see `Arduinojsondoc Why is i
 
 .. _`Arduinojsondoc Why is it wrong to reuse a JsonDocument?` : https://arduinojson.org/v6/how-to/reuse-a-json-document/
 
-More : data are already in ram : in configParam and in plugs[] instances !
+.. warning::
 
-The new clas needs only 2 pointers to acces to this data.
+    More : data are already in ram : in configParam and in plugs[] instances !
+    
+    The new class needs only 2 pointers to acces to this data.
 
 Hash lib
 ====================================================================================================

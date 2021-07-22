@@ -19,6 +19,16 @@ void CJsonIotEps::storeJson(){
 }
 
 bool CJsonIotEps::loadJson(){
+    bool fileLoaded = false;
 
+    //compute HO hash of config4.json
+
+
+    // compute H1 of config4copy1.json
+
+    if ( H0 == H1 ){
+        // master ok
+        //load config4.json
+    }
     return true;
 }

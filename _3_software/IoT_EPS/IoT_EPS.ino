@@ -332,7 +332,7 @@ bool cycleState = false;
 void loop(){
     static unsigned long prevMillis = millis();
 
-    //CRtc rtc; // pourquoi une nouvelle instance locale
+    //CRtc rtc; // why a new local instance ?
     //Commented on 30/09/2020 to force global variable rtc usage on top of this file
     //global instance is initialized by CSystem whith a NTP server pointer
 
@@ -396,6 +396,9 @@ void loop(){
                 cParam.write2Json( "ntpError", ( sysStatus.ntpErr.isErr()?"ON":"OFF") );
             }
             DSPL( sysStatus.ntpErr.isErr()?"ERROR":"OK" );
+            /** @todo: check the use of configjson param : ntperror see softDev.rst 
+             * JSON structure vs variables chapter
+            */
         }
     }
 

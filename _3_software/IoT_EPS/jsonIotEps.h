@@ -23,6 +23,9 @@ class CJsonIotEps{
 
     private:
         JsonObject* _json;
+        //needed
+        // ConfigParma *
+        // CPlugs * to set theirs attributs
 
 };
 
