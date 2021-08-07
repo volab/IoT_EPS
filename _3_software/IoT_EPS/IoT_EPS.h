@@ -76,18 +76,22 @@ there is 3 pull-up on the board.
 #define CONFIGFILENAME "/config4.json"
 #define DEFCONFIGFILENAME "/defConfig.json"
 #define CREDENTIALFILENAME "/credentials.json"
+#define CONFIGFILENAME_COPY1 "/config4copy1.json"
+#define CONFIGFILENAME_COPY2 "/config4copy2.json"
 
 
 #include "SerialCommand.h"
 #include "debugSerialPort.h"
 #include "credential.h"
 #define MAX_WIFI_CONNECT_RETRY 30 /**< @brief In Station mode number of try before to switch to access point connection*/
-#include "jsonIotEps.h"
+
 #include "configParam.h"
+
 #include "bouton.h"
 #include "cnano.h"
 
 #include "CPowerPlug.h"
+#include "jsonIotEps.h"
 #include "CRtc.h"
 #include "CServerWeb.h"
 //#include "serverFunction.h"

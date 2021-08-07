@@ -54,7 +54,7 @@ class CSystem
         */
         void oledLoopChangeDispayIf();
 
-        void setPlugsAdd( CPowerPlug *plugs ){ _pPlugs = plugs; }
+        void setPlugsAdd( CPowerPlug *plugs );
 
 	private:
 

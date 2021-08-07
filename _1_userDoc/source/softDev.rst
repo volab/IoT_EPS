@@ -620,16 +620,11 @@ Write to json events
 .. uml:: graphviz/writeEventsWebPlugOnOff.wsd
 
 ====================================================================================================
-JSON improvments : rewriting stage
+JSON improvements : rewriting stage
 ====================================================================================================
 
 On git branch : json_new
 
-<<<<<<< HEAD
-=======
-Class CJsonIotEps created. Instance jsonData in .ino file created.
-
->>>>>>> 0845e70c54efb074fd22b71a4a6fe2ac82313fea
 Strategy
 ====================================================================================================
 
@@ -660,11 +655,8 @@ See the figures below.
 
 Json data in RAM
 ====================================================================================================
-<<<<<<< HEAD
+
 How to create ? A check at `ArduinoJson documentation`_
-=======
-How to crate ? A check at `ArduinoJson documentation`_
->>>>>>> 0845e70c54efb074fd22b71a4a6fe2ac82313fea
 
 Static or Dynamic json Document ?
 
@@ -762,12 +754,22 @@ New instance of
 
 Hash lib
 ====================================================================================================
-https://arduinojson.org/v5/doc/tricks/
+There is a class example on arduinojson.org to compute CRC32 of json object or array. 
+`See arduinojson.org/v5/doc/tricks`_ §Compute hash of JSON output
 
-https://github.com/esp8266/Arduino/blob/master/libraries/Hash/examples/sha1/sha1.ino
-=======
-Hash lib
-====================================================================================================
+.. _`See arduinojson.org/v5/doc/tricks` : https://arduinojson.org/v5/doc/tricks/
+
+With this way, we need to load data in RAM !
+
+An other example provided `on Arduino lib github`_
+
+.. _`on Arduino lib github` : https://github.com/esp8266/Arduino/blob/master/libraries/Hash/examples/sha1/sha1.ino
+
+it works on RAM data too !
+
+
+
+
 
 
 

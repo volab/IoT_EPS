@@ -15,17 +15,27 @@
 class CJsonIotEps{
 
     public:
+        enum jsonFileIntegrity_t { KEEP_MASTER, KEEP_COPY, FILES_ERROR };
 
-        bool init();
+        bool init( ConfigParam *pcParam, CPowerPlug *plugs );
+
+        void checkJsonFilesIntegrity();
         void storeJson();
-        bool loadJson();
+        bool loadJsonConfigParam();
+        //bool loadJsonPlugParam(int plugNumber);
         
 
     private:
-        JsonObject* _json;
+        //JsonObject* _json;
+        
+        ConfigParam *_pcParam;
+        CPowerPlug *_pPlugs;
+        
+        jsonFileIntegrity_t _jsonFileIntegrity = FILES_ERROR;
         //needed
         // ConfigParma *
         // CPlugs * to set theirs attributs
+
 
 };
 

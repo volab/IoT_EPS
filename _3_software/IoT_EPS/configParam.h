@@ -24,7 +24,7 @@ class ConfigParam{
         enum firstBootVal { YES, NO, TRY };
     
         bool ready = false;
-        void begin( CJsonIotEps &jsonData ); //pour le moment
+        void begin( ); 
         String getWifiMode(){ return _wifimode; }
 		void setWifiMode( String mode ){ _wifimode = mode ; }
         String getHostName(){ return _host; }
@@ -75,7 +75,6 @@ class ConfigParam{
         // bool _fileCopy( String from, String to);
         String _emplacement;
         bool _startInApMode;
-        CJsonIotEps _jsonData;
         
 
 };

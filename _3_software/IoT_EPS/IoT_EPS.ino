@@ -204,16 +204,18 @@ void setup(){
     plugs[3].begin( PLUG3PIN, PLUG3_ONOFFLEDPIN, BP3, CRGB::Yellow
                     , HTML_JSON_YELLOWPLUGNAME, CPowerPlug::modeId("MANUEL") );
 
+    sysIoteps.setPlugsAdd( plugs ); // cause of the new plugs above
+
     for (int i = 0; i < NBRPLUGS; i++ ){
         if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[i].readFromJson( true ) );
         else  plugs[i].handleBpLongClic(); //force OFF is main power off  
-        plugs[i].setJsonClassPointer( jsonData );
+        
     }
 
     //note: 07/08/2021 : in the above code we can't call _pPlugs in sysIoteps cause it is a private
     // member.
 
-    sysIoteps.setPlugsAdd( plugs ); // cause of the new plugs above
+    
 
 
 

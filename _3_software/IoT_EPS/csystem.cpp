@@ -282,6 +282,8 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _pNecessaryFiles = necessaryFileList;
     _pDisplay = pdisplay;
     _jsonData = jsonData;
+    _jsonData.init( _pcParam, _pPlugs ); 
+
     
     delay(1000);//a try to correct the powerup pb
     pinMode(LED_BUILTIN, OUTPUT);
@@ -328,7 +330,8 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     /////////////////////////////////////////////////////////////////////////////
     //     Config param check                                                  //
     /////////////////////////////////////////////////////////////////////////////
-    _pcParam->begin( jsonData );
+
+    _pcParam->begin();
     _psysStat->confFileErr.err( !_pcParam->ready );
     DSPL( dPrompt + F("json mac add : ") + _pcParam->getMacAdd() );
     DSPL( dPrompt + F("Board Sation MAC add = ") + pWifi->macAddress() );
@@ -412,6 +415,11 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _oledCptPlugToDisplay = 0;
     
         
+}
+
+void CSystem::setPlugsAdd( CPowerPlug *plugs ){ 
+    _pPlugs = plugs;
+    _jsonData.init( _pcParam, _pPlugs ); 
 }
 
 
