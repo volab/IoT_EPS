@@ -1,0 +1,110 @@
+{
+  "general": {
+    "emplacement": "salon",
+    "numberOfPlugs": "4",
+    "allLedsOnTime": "-1",
+    "ledsGlobalLuminosity": "5",
+    "powerLedEconomyMode": "OFF",
+    "firstBoot": "OFF",
+    "hostName": "PowerStrip01",
+    "startInAPMode": "OFF",
+    "softAP_IP": "192.168.95.42",
+    "softAP_port": "80",
+    "dhcp_mode": "ON",
+    "staIP": "192.168.1.5",
+    "staGateway": "192.168.1.254",
+    "macAdd": "11:22:33:44:55:66",
+    "softAP_macAdd": "11:22:33:44:55:66",
+    "STAmaxWifiConnectionRetry": "30",
+    "ntpError": "OFF",
+	"wifimode": "DHCP"
+  },
+  "redPlug": {
+    "nickName": "Aquarium",
+    "State": "OFF",
+    "Pause": "OFF",
+    "Mode": "Manuel",
+    "hDebut": "",
+    "hFin": "",
+    "dureeOn": "",
+    "dureeOff": "",
+    "Jours": [
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "70",
+    "nextTimeToSwitch": "0"
+  },
+  "greenPlug": {
+    "nickName": "Télé",
+    "State": "OFF",
+    "Pause": "OFF",
+    "Mode": "Manuel",
+    "hDebut": "",
+    "hFin": "",
+    "dureeOn": "",
+    "dureeOff": "",
+    "Jours": [
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "109",
+    "nextTimeToSwitch": "0"
+  },
+  "bluePlug": {
+    "nickName": "jardin",
+    "State": "OFF",
+    "Pause": "OFF",
+    "Mode": "Manuel",
+    "hDebut": "",
+    "hFin": "",
+    "dureeOn": "",
+    "dureeOff": "",
+    "Jours": [
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "18",
+    "nextTimeToSwitch": "0"
+  },
+  "yellowPlug": {
+    "nickName": "liseuse",
+    "State": "OFF",
+    "Pause": "OFF",
+    "Mode": "Manuel",
+    "hDebut": "",
+    "hFin": "",
+    "dureeOn": "",
+    "dureeOff": "",
+    "Jours": [
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF",
+      "OFF"
+    ],
+    "clonedPlug": "",
+    "onOffCount": "9",
+    "nextTimeToSwitch": "0"
+  }
+}

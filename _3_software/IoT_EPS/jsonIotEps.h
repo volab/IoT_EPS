@@ -19,7 +19,7 @@ class CJsonIotEps{
 
         bool init( ConfigParam *pcParam, CPowerPlug *plugs );
 
-        void checkJsonFilesIntegrity();
+        jsonFileIntegrity_t checkJsonFilesIntegrity();
         void storeJson();
         bool loadJsonConfigParam();
         //bool loadJsonPlugParam(int plugNumber);

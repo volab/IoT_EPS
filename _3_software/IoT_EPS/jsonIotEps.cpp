@@ -35,7 +35,7 @@ bool CJsonIotEps::loadJsonConfigParam(){
     return true;
 }
 
-void CJsonIotEps::checkJsonFilesIntegrity(){
+CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
 
 
     _jsonFileIntegrity = FILES_ERROR;
@@ -69,4 +69,6 @@ void CJsonIotEps::checkJsonFilesIntegrity(){
             }
         }
     } */
+
+    return _jsonFileIntegrity;
 }
