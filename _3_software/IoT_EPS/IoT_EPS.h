@@ -85,6 +85,7 @@ there is 3 pull-up on the board.
 #include "configParam.h"
 #include "bouton.h"
 #include "cnano.h"
+#include "jsonIotEps.h"
 #include "CPowerPlug.h"
 #include "CRtc.h"
 #include "CServerWeb.h"
@@ -100,7 +101,7 @@ there is 3 pull-up on the board.
 
 #include "cattiny_i2C_watchdog.h"
 
-#include "jsonIotEps.h"
+
 
 
 #define RTC_UPDATE_PERIOD 15 //every 15mn

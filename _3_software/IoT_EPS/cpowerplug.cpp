@@ -59,6 +59,8 @@ void CPowerPlug::begin( int pin , int onOffLedPin, int bpPin
     _couleur = color;
 }
 
+
+
 /** 
 @fn void CPowerPlug::on()
 @brief  method that change state of the plug but not only...
@@ -214,8 +216,9 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
 /////////////////////////////////////////////////////////////////////////////
 //    Restaure physical state                                              //
 /////////////////////////////////////////////////////////////////////////////
-                    if ( restaurePhyState )
+                    if ( restaurePhyState ){
                         if ( _state && (!_pause) ) on(); else off();
+                    }                     
 /////////////////////////////////////////////////////////////////////////////
 //    debug displays                                                       //
 /////////////////////////////////////////////////////////////////////////////

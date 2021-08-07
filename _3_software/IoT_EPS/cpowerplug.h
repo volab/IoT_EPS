@@ -65,6 +65,7 @@ class CPowerPlug : public CNano {
         plugColor_t getColor(){ return _couleur; }
         String getPlugName(){return _plugName ; }
         void setPlugName( String name ){ _plugName = name ; }
+        void setJsonClassPointer( CJsonIotEps *jsonDataPointer ){ _pJsonData = jsonDataPointer; }
         
         void on();
         void off();
@@ -115,6 +116,7 @@ class CPowerPlug : public CNano {
         bool _pause = false;
         bool _ledOn = true;
         bool _mainPower;
+        CJsonIotEps* _pJsonData;
 };
 
 

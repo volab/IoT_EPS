@@ -172,7 +172,7 @@ void setup(){
 
   
     /////////////////////////////////////////////////////////////////////////////
-    //     Plugs config                                                        //
+    //     Plugs init and config                                                        //
     /////////////////////////////////////////////////////////////////////////////
     delete [] plugs;
     DSPL( dPrompt + F("number of plugs : ") + cParam.getNumberOfPlugs() );
@@ -206,10 +206,15 @@ void setup(){
 
     for (int i = 0; i < NBRPLUGS; i++ ){
         if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[i].readFromJson( true ) );
-        else  plugs[i].handleBpLongClic(); //force OFF is main power off   
+        else  plugs[i].handleBpLongClic(); //force OFF is main power off  
+        plugs[i].setJsonClassPointer( &jsonData );
     }
-    
+
+    //note: 07/08/2021 : in the above code we can't call _pPlugs in sysIoteps cause it is a private
+    // member.
+
     sysIoteps.setPlugsAdd( plugs ); // cause of the new plugs above
+
 
 
     /* DONE : document simpleManualMode with no wifi at all */

@@ -688,7 +688,29 @@ don't answer to this question !!!!!
 
 sysIoteps.init -> ConfigParam.begin -> ConfigParam.readFromJson
 
+.ino (setup)::
 
+    if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[i].readFromJson( true ) );
+
+This line restaure plug parameters
+
+**Answer**: new instance in the .ino file
+
+**Question**: who need to call new class ? CSystem, ConfigParam, CPowerPlug ?
+
+In others words, who init with what ? New class with a pointer to ConfigParam an CplowerPlug or
+this 2 clas with a pointer to new class
+
+**Answer elements**: 
+
+- ConfigParam and CPowerPlug need to trig write on json file
+- at startup CJsonIotEps needs to populate ConfigParam and CPowerPlug
+
+This 2 classes already have their own readFromJson method.
+
+At startup ConfigParam and CPowerPlug could ask to CJsonIotEps to read their prameter
+
+**Answer**: ConfigParam and CPowerPlug hve a new members : a pointer to CJsonIotEps instance.
 
 22/07/2021: creation of the members of ConfigParam:
 
