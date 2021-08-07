@@ -12,7 +12,7 @@
 #include "IoT_EPS.h"
 // #include  "configParam.h"
 
-void ConfigParam::begin(){
+void ConfigParam::begin( CJsonIotEps &jsonData ){
     _wifimode = "softAP" ; //default value
     _host= "PowerStrip";
     String ipad = DEFAULTIPADD;
@@ -22,7 +22,8 @@ void ConfigParam::begin(){
     // _allLedsOnTime = 30;
     _allLedsOnTime = -1;
     
-    _ledsGlobalLuminosity = 5;    
+    _ledsGlobalLuminosity = 5;
+    _jsonData = jsonData;    
     ready = readFromJson();
 }
 

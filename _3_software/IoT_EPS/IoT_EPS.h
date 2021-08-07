@@ -82,10 +82,11 @@ there is 3 pull-up on the board.
 #include "debugSerialPort.h"
 #include "credential.h"
 #define MAX_WIFI_CONNECT_RETRY 30 /**< @brief In Station mode number of try before to switch to access point connection*/
+#include "jsonIotEps.h"
 #include "configParam.h"
 #include "bouton.h"
 #include "cnano.h"
-#include "jsonIotEps.h"
+
 #include "CPowerPlug.h"
 #include "CRtc.h"
 #include "CServerWeb.h"

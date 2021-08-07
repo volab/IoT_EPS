@@ -258,6 +258,7 @@ void CSystem::oledLoopChangeDispayIf(){
  @param pWifi a pointer on the wifi class connection
  @param pNanoioExp a pointer on the instance of nano io expension
  @param pdisplay a pointer on the oled display
+ @param jsonData a ref to jsonData
  @return no return val
 
 Start RTc DS3231 and nothing else @25/09/2020. With all this pointers Csysteminstance can inteeract
@@ -267,6 +268,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
                     const String *necessaryFlLst, int necessaryFileNbr, String buildinfo
                     , ESP8266WiFiClass *pWifi, CNanoI2CIOExpander *pNanoioExp
                     , Adafruit_SSD1306 *pdisplay
+                    , CJsonIotEps &jsonData
                      ){
 
     DEFDPROMPT( "CSystem::init" )
@@ -279,6 +281,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _pcParam = pcParam;
     _pNecessaryFiles = necessaryFileList;
     _pDisplay = pdisplay;
+    _jsonData = jsonData;
     
     delay(1000);//a try to correct the powerup pb
     pinMode(LED_BUILTIN, OUTPUT);
@@ -325,7 +328,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     /////////////////////////////////////////////////////////////////////////////
     //     Config param check                                                  //
     /////////////////////////////////////////////////////////////////////////////
-    _pcParam->begin();
+    _pcParam->begin( jsonData );
     _psysStat->confFileErr.err( !_pcParam->ready );
     DSPL( dPrompt + F("json mac add : ") + _pcParam->getMacAdd() );
     DSPL( dPrompt + F("Board Sation MAC add = ") + pWifi->macAddress() );
