@@ -532,6 +532,28 @@ ConfigParam::readFromJsonParam() : move up configFile.close() Too
 
 CpowerPlug::on, off toggle, updateOutputs could be private
 
+JSON structure
+====================================================================================================
+.. uml:: graphviz/config4json.wsd
+
+JSON structure vs variables
+====================================================================================================
+.. uml:: graphviz/config4jsonVsVariables.wsd
+
+22/07/2021: création of the members of ConfigParam:
+
+- _emplacement
+- _startInApMode
+- ``_clé à créer 1_`` : becomes wifimode in config4.json
+
+About ntpError json parameter:
+
+- write in the loop at lign 396 in cbit.
+
+- and write in CSystem::timeServerCheck
+
+but what is its usage ??? in the system ?
+
 Write to file improvments
 ====================================================================================================
 **First question**: track all json config file access by tracking all usage of CONFIGFILENAME
@@ -603,6 +625,11 @@ JSON improvments : rewriting stage
 
 On git branch : json_new
 
+<<<<<<< HEAD
+=======
+Class CJsonIotEps created. Instance jsonData in .ino file created.
+
+>>>>>>> 0845e70c54efb074fd22b71a4a6fe2ac82313fea
 Strategy
 ====================================================================================================
 
@@ -633,7 +660,11 @@ See the figures below.
 
 Json data in RAM
 ====================================================================================================
+<<<<<<< HEAD
 How to create ? A check at `ArduinoJson documentation`_
+=======
+How to crate ? A check at `ArduinoJson documentation`_
+>>>>>>> 0845e70c54efb074fd22b71a4a6fe2ac82313fea
 
 Static or Dynamic json Document ?
 
@@ -657,6 +688,7 @@ It is not a good idea to keep Json object in memory see `Arduinojsondoc Why is i
     More : data are already in ram : in configParam and in plugs[] instances !
     
     The new class needs only 2 pointers to acces to this data.
+
 
 JSON structure
 ====================================================================================================
@@ -733,6 +765,10 @@ Hash lib
 https://arduinojson.org/v5/doc/tricks/
 
 https://github.com/esp8266/Arduino/blob/master/libraries/Hash/examples/sha1/sha1.ino
+=======
+Hash lib
+====================================================================================================
+
 
 
 

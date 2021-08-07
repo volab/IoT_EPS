@@ -20,7 +20,9 @@ void CJsonIotEps::storeJson(){
 
 bool CJsonIotEps::loadJson(){
     bool fileLoaded = false;
+
     int H0, H1;
+
     //compute HO hash of config4.json
 
 
