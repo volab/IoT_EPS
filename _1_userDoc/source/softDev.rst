@@ -532,28 +532,6 @@ ConfigParam::readFromJsonParam() : move up configFile.close() Too
 
 CpowerPlug::on, off toggle, updateOutputs could be private
 
-JSON structure
-====================================================================================================
-.. uml:: graphviz/config4json.wsd
-
-JSON structure vs variables
-====================================================================================================
-.. uml:: graphviz/config4jsonVsVariables.wsd
-
-22/07/2021: création of the members of ConfigParam:
-
-- _emplacement
-- _startInApMode
-- ``_clé à créer 1_`` : becomes wifimode in config4.json
-
-About ntpError json parameter:
-
-- write in the loop at lign 396 in cbit.
-
-- and write in CSystem::timeServerCheck
-
-but what is its usage ??? in the system ?
-
 Write to file improvments
 ====================================================================================================
 **First question**: track all json config file access by tracking all usage of CONFIGFILENAME
@@ -625,8 +603,6 @@ JSON improvments : rewriting stage
 
 On git branch : json_new
 
-Class CJsonIotEps created. Instance jsonData in .ino file created.
-
 Strategy
 ====================================================================================================
 
@@ -657,7 +633,7 @@ See the figures below.
 
 Json data in RAM
 ====================================================================================================
-How to crate ? A check at `ArduinoJson documentation`_
+How to create ? A check at `ArduinoJson documentation`_
 
 Static or Dynamic json Document ?
 
@@ -682,8 +658,59 @@ It is not a good idea to keep Json object in memory see `Arduinojsondoc Why is i
     
     The new class needs only 2 pointers to acces to this data.
 
+JSON structure
+====================================================================================================
+.. uml:: graphviz/config4json.wsd
+
+JSON structure vs variables
+====================================================================================================
+.. uml:: graphviz/config4jsonVsVariables.wsd
+
+Lines in green tag differences between json and class members.
+
+emplacement, startInAPMode and ntpError exist in json but not in the ConfigParam class.
+
+_wifiMode exists in ConfigParam class but not in json
+
+In the same maner for plug structures:
+
+hDebut, hFin, dureeOn, dureeOff, clonePlug and onOffCount are in json but not in the class.
+
+Modifications
+====================================================================================================
+
+Class CJsonIotEps created. Instance jsonData in .ino file created.
+
+**Question**: new instance in .ino or in class CSystem ?
+
+@startup stage : how load the json into ConfigParam and in the plugs ? All the above graphics 
+don't answer to this question !!!!!
+
+sysIoteps.init -> ConfigParam.begin -> ConfigParam.readFromJson
+
+
+
+22/07/2021: creation of the members of ConfigParam:
+
+- _emplacement
+- _startInApMode
+- ``_clé à créer 1_`` : becomes wifimode in config4.json
+
+About **ntpError** json parameter:
+
+- write in the loop at lign 396 in cbit.
+
+- and write in CSystem::timeServerCheck
+
+but what is its usage ??? in the system ?
+
+New instance of 
+
 Hash lib
 ====================================================================================================
+https://arduinojson.org/v5/doc/tricks/
+
+https://github.com/esp8266/Arduino/blob/master/libraries/Hash/examples/sha1/sha1.ino
 
 
 
