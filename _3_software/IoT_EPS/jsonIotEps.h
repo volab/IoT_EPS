@@ -12,10 +12,32 @@
 #ifndef CJSONIOTEPS_H
 #define CJSONIOTEPS_H
 
+#include <FastCRC.h> // https://github.com/FrankBoesing/FastCRC
+
+class HashPrint : public Print {
+public:
+    HashPrint() {
+      _hash = _hasher.crc32(NULL, 0);
+    }
+
+    virtual size_t write(uint8_t c) {
+        _hash = _hasher.crc32_upd(&c, 1);
+    }
+
+    uint32_t hash() const {
+        return _hash;
+    }
+
+private:
+    FastCRC32 _hasher;
+    uint32_t _hash;
+};
+
+
 class CJsonIotEps{
 
     public:
-        enum jsonFileIntegrity_t { KEEP_MASTER, KEEP_COPY, FILES_ERROR };
+        enum jsonFileIntegrity_t { KEEP_MASTER, KEEP_COPY1, TRY_MASTER, FILES_ERROR };
 
         bool init( ConfigParam *pcParam, CPowerPlug *plugs );
 
@@ -32,9 +54,9 @@ class CJsonIotEps{
         CPowerPlug *_pPlugs;
         
         jsonFileIntegrity_t _jsonFileIntegrity = FILES_ERROR;
-        //needed
-        // ConfigParma *
-        // CPlugs * to set theirs attributs
+        bool _fileLoaded = false;
+
+        uint32_t _hashFile( File jsonFile );
 
 
 };

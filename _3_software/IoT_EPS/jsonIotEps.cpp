@@ -19,7 +19,7 @@ void CJsonIotEps::storeJson(){
 }
 
 bool CJsonIotEps::loadJsonConfigParam(){
-    bool fileLoaded = false;
+    //bool _fileLoaded = false;
 
     int H0, H1;
 
@@ -37,9 +37,12 @@ bool CJsonIotEps::loadJsonConfigParam(){
 
 CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
 
-
+    
+    uint32_t H0 = 0;
+    uint32_t H1 = 0;
+    uint32_t H2 = 0;
     _jsonFileIntegrity = FILES_ERROR;
-/*
+
     DEFDPROMPT("Check Json Integrity")
 
     DSPL( dPrompt +F("Mounting FS..."));
@@ -51,24 +54,81 @@ CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
             //file exists, reading and loading
             DSPL(dPrompt + F("reading Json file master"));
             File configFile = SPIFFS.open( CONFIGFILENAME, "r");
-            
-            if (configFile) {
-                DSPL( F("\tJson file opened ") );
-                size_t size = configFile.size();
-                DSPL( dPrompt + "Config file size : " + (String)size ) ;
-                // Allocate a buffer to store contents of the file.
-                std::unique_ptr<char[]> buf(new char[size]);
-///Config file read
-                configFile.readBytes(buf.get(), size);
-                DynamicJsonBuffer jsonBuffer;
-                JsonObject& json = jsonBuffer.parseObject(buf.get());
-                // json.printTo(DEBUGPORT);
-                if (json.success()) {
-
-                }
-            }
+            if (configFile) { H0 = _hashFile( configFile ); }
+            DSPL(dPrompt + "H0 = " + String(H0));
         }
-    } */
+        if (SPIFFS.exists( CONFIGFILENAME_COPY1 )) {
+            DSPL(dPrompt + F("reading Json file copy1"));
+            File configFile = SPIFFS.open( CONFIGFILENAME_COPY1, "r");
+            if (configFile) { H1 = _hashFile( configFile ); }
+            DSPL(dPrompt + "H1 = " + String(H1));
+        }
+        if (SPIFFS.exists( CONFIGFILENAME_COPY2 )) {
+            DSPL(dPrompt + F("reading Json file copy2"));
+            File configFile = SPIFFS.open( CONFIGFILENAME_COPY2, "r");
+            if (configFile) { H2 = _hashFile( configFile ); }
+            DSPL(dPrompt + "H2 = " + String( H2 ));
+        }        
+    }
 
+    if ( H0 !=0 && H0 == H1 ){ _jsonFileIntegrity = KEEP_MASTER; } //best situation
+    if ( H0 !=0 && H0 == H2 ){ _jsonFileIntegrity = KEEP_MASTER; } //low probability
+    //cause it means that copy1 corrupted and not master and copy2
+    //sequence of wrtites is master, copy1 and at the end copy2
+    if ( H1 !=0 && H1 == H2 ){ _jsonFileIntegrity = KEEP_COPY1; }
+    //2 possibilities:
+    //master is realy corrupted
+    //master is good and there was a shut down just before the first copy
+
+    //if (H0, H1 and H2 !=0) and H0 != H1 != H2 (all hash values are differents)
+    //this situation corresponds to a good master write but wrong write at the time of first copy
+    //In this case master is good and has a hash value, copy1 is wrong and has a diffrent hash value
+    //regardless of master and copy2 and copy2 is good but is out of date and has a third hash value
+    if ( H0 != H1 && H0 != H1 && H1 != H2 ){ _jsonFileIntegrity = TRY_MASTER; }
+
+    //if only H0 != 0 we can try to use it
+    if (H0 !=0 && H1 == 0 && H2 ==0 ){ _jsonFileIntegrity = TRY_MASTER; }
+
+    //If all hash value are 0 there is no file : it is a fatal error
+    
+    switch (_jsonFileIntegrity)
+    {
+    case KEEP_MASTER:
+        DSPL( dPrompt + F("Keep master"));
+        break;
+    case KEEP_COPY1:
+        DSPL( dPrompt + F("Keep copy"));
+        break;  
+    case TRY_MASTER:
+        DSPL( dPrompt + F("Try master"));
+        break;
+    case FILES_ERROR:
+        DSPL( dPrompt + F("Fatal file error"));
+        break;           
+    default:
+        break;
+    }
     return _jsonFileIntegrity;
+}
+
+uint32_t CJsonIotEps::_hashFile( File jsonFile ){
+    HashPrint hashPrint;
+    uint32_t hVal = 0;
+    DEFDPROMPT("Hasfile")
+    DSPL( F("\tJson file opened ") );
+    size_t size = jsonFile.size();
+    DSPL( dPrompt + "json file size : " + (String)size ) ;
+    // Allocate a buffer to store contents of the file.
+    std::unique_ptr<char[]> buf(new char[size]);
+    jsonFile.readBytes(buf.get(), size);
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& json = jsonBuffer.parseObject(buf.get());
+    // json.printTo(DEBUGPORT);
+    if (json.success()) {
+        json.printTo(hashPrint);
+        hVal = hashPrint.hash();
+        //DSPL(dPrompt + "H0 =" +String(H0));
+    }
+    jsonFile.close();
+    return hVal;  
 }

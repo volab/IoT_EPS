@@ -76,8 +76,8 @@ there is 3 pull-up on the board.
 #define CONFIGFILENAME "/config4.json"
 #define DEFCONFIGFILENAME "/defConfig.json"
 #define CREDENTIALFILENAME "/credentials.json"
-#define CONFIGFILENAME_COPY1 "/config4copy1.json"
-#define CONFIGFILENAME_COPY2 "/config4copy2.json"
+#define CONFIGFILENAME_COPY1 "/config4copie1.json"
+#define CONFIGFILENAME_COPY2 "/config4copie2.json"
 
 
 #include "SerialCommand.h"
@@ -247,10 +247,13 @@ there is 3 pull-up on the board.
 #define OLED_YPOS_FOR_LAN_IPADD 41
 #define OLED_YPOS_FOR_AP_IPADD 50
 
-#define NECESSARY_FILE_NBR 9
+#define NECESSARY_FILE_NBR 11
 const String necessaryFileList[ NECESSARY_FILE_NBR ] ={
       "/index.html"
     , "/config4.json"
+    , "/config4copie1.json"
+    , "/config4copie2.json"
+    /** @todo [NECESSARY] only one of the 3 json file is necessary to run !!!*/
     , "/firstboot.html"
     // and why no credentials file ? because on firstboot we creat it
     // and after ???

@@ -6,50 +6,40 @@ FontSize 20
 }
 </style>
 
-caption Json New startegy : load file
+caption Json New startegy : store file
 
 start
 'skinparam ConditionEndStyle hline
+repeat
+:cpt=0;
+    repeat
+        :store jsonData to config4.json;
+        :load config4.json to jsonDataCopy;
+        if(jsonData == jsonDataCopy?) then (yes)
+            break
+        else (no)
+            :cpt++;
+            if (<b>cpt?) then (<b>3)
+                :setError lvl1;
+            endif   
+        endif
+    repeat while (cpt<3?) equals (yes)
 
-:fileLoaded = false;
-
-:compute config4.json Hash to H0|
-:compute config4copy1.json Hash to H1|
-
-if (H0 <> H1) then (differents)
+    :store jsonData to config4copy1.json;
+    :store jsonData to config4copy2.json;
+    :compute config4.json Hash to H0|
+    :compute config4copy1.json Hash to H1|
     :compute config4copy2.json Hash to H2|
-    if (H0 == H2) then
-        :load config4.json to jsonData;
-        note left
-            copy1 ko
-            master AND copy2 same
-            <b>keep master
-        end note
-        #palegreen:fileLoaded = true;
-    endif
-    if (H1 == H2 ) then ( config4.json ko) 
-        :load config4copy1.json to jsonData;
-        note left
-            copy 1 AND copy 2 same
-            master ko 
-            <b>keep copy
-        end note
-        #palegreen:fileLoaded = true;
-    endif
-else
-    :load config4.json to jsonData;
-    note right
-        master AND copy 1 same
-        and perhaps copy 2 also
-        <b>keep master
-    end note
-    #palegreen:fileLoaded = true;
-endif
 
-if (file?) is (<b>not loaded) then
-#red:set error json file;
-endif
-
+    if (H0==H1==H2) then (yes)
+        break 
+    else
+        :cpt++;
+        if (<b>cpt2?) then (<b>3)
+            :setError lvl2;
+        endif       
+    endif
+repeat while(cpt2<3?) equals (yes)
 end
 
 @enduml

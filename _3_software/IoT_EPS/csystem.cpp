@@ -282,7 +282,9 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _pNecessaryFiles = necessaryFileList;
     _pDisplay = pdisplay;
     _jsonData = jsonData;
-    _jsonData.init( _pcParam, _pPlugs ); 
+    _jsonData.init( _pcParam, _pPlugs );
+
+    _jsonData.checkJsonFilesIntegrity();
 
     
     delay(1000);//a try to correct the powerup pb

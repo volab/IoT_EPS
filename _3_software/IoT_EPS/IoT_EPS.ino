@@ -19,6 +19,7 @@
  - Utilisation de la bibliothèque FastLED version 3.2.1
  - Utilisation de la bibliothèque nanoI2CIOExpLib version 3.1
  - Utilisation de la bibliothèque NTPClient version 3.1.0
+ - Utilisation de la bibliothèque FastCRC-master version 1.31
 
 @section wifi WIFIs connexions
 

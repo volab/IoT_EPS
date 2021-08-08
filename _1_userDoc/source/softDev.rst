@@ -644,6 +644,16 @@ See the figures below.
 
 .. uml:: graphviz/jsonNewStrategyStore.wsd
 
+.. WARNING::
+
+    Pb: in the write procedure, if power is shut down just after first json write, the master file 
+    is good but the file has a different hash value of copy1 and copy2
+    Pb2: if power is shut down just after the write of copy 1, 3 hash values are different but
+    master is good !
+    To solve this possible bug we decide to had a special field in the json file to check the 
+    readability of the data in the file.
+    At startup we concider that all values 
+
 ----------------------------------------------------------------------------------------------------
 
 |clearer|
