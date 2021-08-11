@@ -10,6 +10,8 @@
 #include "jsonIotEps.h"
 
 bool CJsonIotEps::init( ConfigParam *pcParam, CPowerPlug *plugs){
+    _pcParam = pcParam;
+    _pPlugs = plugs;
     return true;
 }
 
@@ -18,26 +20,75 @@ void CJsonIotEps::storeJson(){
     return;
 }
 
+
+
+/**
+ @fn bool CJsonIotEps::loadJsonConfigParam()
+ @brief Check the integrity of json file
+ @return a booleen true if all is ok.
+
+ Need the integrity is checked before use it
+*/
 bool CJsonIotEps::loadJsonConfigParam(){
     //bool _fileLoaded = false;
+    DEFDPROMPT("CJson Config Param Loading")
+    bool returnVal = false;
 
-    int H0, H1;
-
-    //compute HO hash of config4.json
-
-
-    // compute H1 of config4copy1.json
-
-    if ( H0 == H1 ){
-        // master ok
-        //load config4.json
+    if ( _jsonFileIntegrity != FILES_ERROR ){
+        File file = SPIFFS.open( _fileNameToLoad, "r");
+        if (file){
+            size_t size = file.size();
+            std::unique_ptr<char[]> buf(new char[size]);
+            file.readBytes(buf.get(), size);
+            DynamicJsonBuffer jsonBuffer;
+            JsonObject& json = jsonBuffer.parseObject(buf.get());
+            if (json.success()){
+                String s_IpAdd = json["general"]["softAP_IP"].as<String>();
+                _pcParam->_addIP.fromString( s_IpAdd );
+                _pcParam->_numberOfPlugs = json["general"]["numberOfPlugs"].as<String>().toInt();
+                _pcParam->_serverPort = json["general"]["softAP_port"].as<String>().toInt();
+                String startInAPMode = json["general"]["startInAPMode"].as<String>();
+                if ( startInAPMode == "OFF") _pcParam->_wifimode = "Station";
+                else _pcParam->_wifimode = "softAP";
+                String s_FirstBootTmp = json["general"]["firstBoot"].as<String>();
+                //possible value are "ON" "OFF" or "TRYSTA"
+                if ( s_FirstBootTmp == "ON") _pcParam->_firstBoot = ConfigParam::YES;
+                else if ( s_FirstBootTmp == "OFF" ) _pcParam->_firstBoot = ConfigParam::NO;
+                else if ( s_FirstBootTmp == "TRYSTA" ) _pcParam->_firstBoot = ConfigParam::TRY;
+                else _pcParam->_firstBoot = ConfigParam::YES; // default value
+                _pcParam->_STAmaxWifiConnectionRetries = \
+                        json["general"]["STAmaxWifiConnectionRetry"].as<String>().toInt();
+                _pcParam->_host = json["general"]["hostName"].as<String>();
+                _pcParam->_allLedsOnTime = json["general"]["allLedsOnTime"].as<String>().toInt();
+                _pcParam->_ledsGlobalLuminosity = \
+                    json["general"]["ledsGlobalLuminosity"].as<String>().toInt();
+                _pcParam->_powerLedEconomyMode = \
+                        (json["general"]["powerLedEconomyMode"].as<String>() == "ON");
+                _pcParam->_macAdd = json["general"]["macAdd"].as<String>();
+                _pcParam->_softAPMacAdd = json["general"]["softAP_macAdd"].as<String>();
+                _pcParam->_DHCPMode = ( json["general"]["dhcp_mode"].as<String>() == "ON" );
+                String s_tmpIP = json["general"]["staIP"].as<String>();
+                _pcParam->_staIP.fromString( s_tmpIP );
+                s_tmpIP = json["general"]["staGateway"].as<String>();
+                _pcParam->_staGateway.fromString( s_tmpIP );
+                if (_pcParam->_firstBoot == ConfigParam::YES ) _pcParam->_wifimode = "softAP";
+                _pcParam->_emplacement = json["general"]["emplacement"].as<String>();
+                returnVal = true;
+            } else {
+                DSPL(dPrompt + F("Failed to load json config"));     
+                returnVal = false;
+            }   
+        }
     }
-    return true;
+ 
+    return returnVal;
 }
-
-CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
-
-    
+/**
+ @fn CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity()
+ @brief Check the integrity of json file
+ @return jsonFileIntegrity Value.
+*/
+CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){ 
     uint32_t H0 = 0;
     uint32_t H1 = 0;
     uint32_t H2 = 0;
@@ -91,23 +142,74 @@ CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
 
     //If all hash value are 0 there is no file : it is a fatal error
     
-    switch (_jsonFileIntegrity)
-    {
-    case KEEP_MASTER:
-        DSPL( dPrompt + F("Keep master"));
-        break;
-    case KEEP_COPY1:
-        DSPL( dPrompt + F("Keep copy"));
-        break;  
-    case TRY_MASTER:
-        DSPL( dPrompt + F("Try master"));
-        break;
-    case FILES_ERROR:
-        DSPL( dPrompt + F("Fatal file error"));
-        break;           
-    default:
-        break;
+    switch (_jsonFileIntegrity){
+        case KEEP_MASTER:
+            DSPL( dPrompt + F("Keep master"));
+            _fileNameToLoad = CONFIGFILENAME;
+            break;
+        case KEEP_COPY1:
+            DSPL( dPrompt + F("Keep copy"));
+            _fileNameToLoad = CONFIGFILENAME_COPY1;
+            break;  
+        case TRY_MASTER:
+            DSPL( dPrompt + F("Try master"));
+            _fileNameToLoad = CONFIGFILENAME;
+            break;
+        case FILES_ERROR:
+            DSPL( dPrompt + F("Fatal file error"));
+            _fileNameToLoad = "";
+            break;           
+        default:
+            break;
     }
+
+    if ( _jsonFileIntegrity != FILES_ERROR ){
+        File file = SPIFFS.open( _fileNameToLoad, "r");
+        _jsonVersion = "";
+        _jsonTag = "";
+        if (file){
+            size_t size = file.size();
+            std::unique_ptr<char[]> buf(new char[size]);
+            file.readBytes(buf.get(), size);
+            DynamicJsonBuffer jsonBuffer;
+            JsonObject& json = jsonBuffer.parseObject(buf.get());
+            if (json.success()) {
+                _jsonVersion = json["general"]["jsonVersion"].as<String>();
+                _jsonTag = json["general"]["jsonTag"].as<String>();
+                DSPL( dPrompt + F("JSON file read version : ") + _jsonVersion );
+            }
+        }
+        file.close();
+        if ( ( _jsonVersion != JSON_VERSION ) || ( _jsonTag != JSON_TAG ) ){
+            _jsonFileIntegrity = FILES_ERROR;
+            _fileNameToLoad = "";
+        }
+
+    DSPL( dPrompt + F("after Tag and version check."));
+    switch (_jsonFileIntegrity){
+        case KEEP_MASTER:
+            DSPL( dPrompt + F("Keep master"));
+            _fileNameToLoad = CONFIGFILENAME;
+            break;
+        case KEEP_COPY1:
+            DSPL( dPrompt + F("Keep copy"));
+            _fileNameToLoad = CONFIGFILENAME_COPY1;
+            break;  
+        case TRY_MASTER:
+            DSPL( dPrompt + F("Try master"));
+            _fileNameToLoad = CONFIGFILENAME;
+            break;
+        case FILES_ERROR:
+            DSPL( dPrompt + F("Fatal file error"));
+            _fileNameToLoad = "";
+            break;           
+        default:
+            break;
+    }
+
+
+    }
+
     return _jsonFileIntegrity;
 }
 

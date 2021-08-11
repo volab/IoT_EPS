@@ -1,5 +1,7 @@
 {
   "general": {
+  	"jsonTag":"IoTEps",
+	"jsonVersion":"v5.0",
     "emplacement": "salon",
     "numberOfPlugs": "4",
     "allLedsOnTime": "-1",

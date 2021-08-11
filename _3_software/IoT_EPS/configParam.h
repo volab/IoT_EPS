@@ -75,6 +75,8 @@ class ConfigParam{
         // bool _fileCopy( String from, String to);
         String _emplacement;
         bool _startInApMode;
+
+        friend class CJsonIotEps;
         
 
 };

@@ -334,6 +334,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     /////////////////////////////////////////////////////////////////////////////
 
     _pcParam->begin();
+    _pcParam->ready = _jsonData.loadJsonConfigParam();
     _psysStat->confFileErr.err( !_pcParam->ready );
     DSPL( dPrompt + F("json mac add : ") + _pcParam->getMacAdd() );
     DSPL( dPrompt + F("Board Sation MAC add = ") + pWifi->macAddress() );

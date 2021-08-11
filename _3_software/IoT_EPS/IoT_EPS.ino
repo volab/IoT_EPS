@@ -539,5 +539,8 @@ void loop(){
     //Main loop Oled displays
     //cparam has ip adresse
 
+    // Store json file if needed
+    // if cParam.storeNeeded or for i in 4 plug[i].storeNeeded
+
     yield();
 }

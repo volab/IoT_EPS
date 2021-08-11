@@ -55,6 +55,9 @@ class CJsonIotEps{
         
         jsonFileIntegrity_t _jsonFileIntegrity = FILES_ERROR;
         bool _fileLoaded = false;
+        String _fileNameToLoad;
+        String _jsonVersion;
+        String _jsonTag;
 
         uint32_t _hashFile( File jsonFile );
 
