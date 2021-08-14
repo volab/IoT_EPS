@@ -103,12 +103,15 @@ bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState ){
                         DSPL( dPrompt + F("Relay on off count = ") + sOnOffCount );
                         DSPL( dPrompt + F("next time to switch = ") + sNextTime2switch );
                         /////////////////////////////////////////////////////////////////////////////
-                        //    plug member updates                                                       //
+                        //    plug member updates                                                  //
                         /////////////////////////////////////////////////////////////////////////////
-                        _pPlugs[i]._mode = _pPlugs[i].modeId( sMode );
-                        _pPlugs[i]._state = (sState == "ON");                    
-                        _pPlugs[i]._nextTimeToSwitch = sNextTime2switch.toInt();
+                        _pPlugs[i]._nickName = sNickName;
+                        _pPlugs[i]._state = (sState == "ON");
                         _pPlugs[i]._pause = ( sPause == "ON" );
+                        _pPlugs[i]._mode = _pPlugs[i].modeId( sMode ); 
+                        _pPlugs[i]._hDebut = CEpsStrTime( sHDebut, CEpsStrTime::HHMM);                 
+                        _pPlugs[i]._nextTimeToSwitch = sNextTime2switch.toInt();
+                        
                         /////////////////////////////////////////////////////////////////////////////
                         //    special for days of Hebdo mode                                       //
                         /////////////////////////////////////////////////////////////////////////////
