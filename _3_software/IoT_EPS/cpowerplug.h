@@ -116,6 +116,8 @@ class CPowerPlug : public CNano {
         bool _pause = false;
         bool _ledOn = true;
         bool _mainPower;
+
+        friend class CJsonIotEps;
         
 };
 

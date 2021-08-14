@@ -554,6 +554,15 @@ About ntpError json parameter:
 
 but what is its usage ??? in the system ?
 
+.. WARNING::
+
+    Don't confuse String CPowerPlug::_plugName and nickName
+
+On power plug class side, creation of new members:
+
+String nickName, hDebut, hFin, dureeOn, dureeOff, clonedPlug, onOffCount.
+
+
 Write to file improvments
 ====================================================================================================
 **First question**: track all json config file access by tracking all usage of CONFIGFILENAME

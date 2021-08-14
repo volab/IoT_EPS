@@ -268,7 +268,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
                     const String *necessaryFlLst, int necessaryFileNbr, String buildinfo
                     , ESP8266WiFiClass *pWifi, CNanoI2CIOExpander *pNanoioExp
                     , Adafruit_SSD1306 *pdisplay
-                    , CJsonIotEps &jsonData
+                    , CJsonIotEps *pjsonData
                      ){
 
     DEFDPROMPT( "CSystem::init" )
@@ -281,10 +281,10 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     _pcParam = pcParam;
     _pNecessaryFiles = necessaryFileList;
     _pDisplay = pdisplay;
-    _jsonData = jsonData;
-    _jsonData.init( _pcParam, _pPlugs );
+    _pJsonData = pjsonData;
+    _pJsonData->init( _pcParam, _pPlugs );
 
-    _jsonData.checkJsonFilesIntegrity();
+    
 
     
     delay(1000);//a try to correct the powerup pb
@@ -312,6 +312,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
         DSPL( dPrompt + F("Special action take place..." ) );
         // place special actions here
         // example sysStatus._forceSystemStartOnFatalError = true;
+        /** @todo [NECESSARY] check creatDefaultJson with new class jsonIoTEps */
         _pcParam->creatDefaultJson();
     }
 
@@ -329,12 +330,13 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     DSPL( dPrompt + F("Result all files are present ? ") + (fileExist?"OK":"ERROR") );
     _psysStat->filesErr.err( !fileExist );
 
+    _pJsonData->checkJsonFilesIntegrity();
     /////////////////////////////////////////////////////////////////////////////
     //     Config param check                                                  //
     /////////////////////////////////////////////////////////////////////////////
 
     _pcParam->begin();
-    _pcParam->ready = _jsonData.loadJsonConfigParam();
+    _pcParam->ready = _pJsonData->loadJsonConfigParam();
     _psysStat->confFileErr.err( !_pcParam->ready );
     DSPL( dPrompt + F("json mac add : ") + _pcParam->getMacAdd() );
     DSPL( dPrompt + F("Board Sation MAC add = ") + pWifi->macAddress() );
@@ -422,7 +424,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
 
 void CSystem::setPlugsAdd( CPowerPlug *plugs ){ 
     _pPlugs = plugs;
-    _jsonData.init( _pcParam, _pPlugs ); 
+    _pJsonData->init( _pcParam, _pPlugs ); 
 }
 
 

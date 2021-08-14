@@ -15,12 +15,126 @@ bool CJsonIotEps::init( ConfigParam *pcParam, CPowerPlug *plugs){
     return true;
 }
 
+void CJsonIotEps::printFileIntegrity(){
+    DEFDPROMPT("Json file integrity fonction print");
+
+    switch (_jsonFileIntegrity){
+        case KEEP_MASTER:
+            DSPL( dPrompt + F("Keep master"));
+            _fileNameToLoad = CONFIGFILENAME;
+            break;
+        case KEEP_COPY1:
+            DSPL( dPrompt + F("Keep copy"));
+            _fileNameToLoad = CONFIGFILENAME_COPY1;
+            break;  
+        case TRY_MASTER:
+            DSPL( dPrompt + F("Try master"));
+            _fileNameToLoad = CONFIGFILENAME;
+            break;
+        case FILES_ERROR:
+            DSPL( dPrompt + F("Fatal file error"));
+            _fileNameToLoad = "";
+            break;           
+        default:
+            break;
+    }
+}
 
 void CJsonIotEps::storeJson(){
     return;
 }
 
+/**
+ @fn bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState )
+ @brief Check the integrity of json file
+ @param plugNumber : Number of plugs in the system
+ @param mainPowerSwitchState : to decide if we stat normaly or if we need to stop all plugs.
+ @return a booleen true if all is ok.
 
+ Need the integrity is checked before use it
+*/
+bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState ){
+    bool returnVal = false;
+    String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
+    String sClonedPlug, sOnOffCount, sNextTime2switch, sPause;
+    String sNickName;
+    String sJours[7];
+
+    DEFDPROMPT( "Load Json Plugs Data");
+    DSPL( dPrompt + F("Enter in the fonction. ")  );
+    if ( _jsonFileIntegrity != FILES_ERROR ){
+        File file = SPIFFS.open( _fileNameToLoad, "r");
+        DSPL( dPrompt + F("File open ") + _fileNameToLoad );
+        if (file){
+            size_t size = file.size();
+            std::unique_ptr<char[]> buf(new char[size]);
+            file.readBytes(buf.get(), size);
+            file.close();
+            DynamicJsonBuffer jsonBuffer;
+            JsonObject& json = jsonBuffer.parseObject(buf.get());
+            if (json.success()){
+                for (int i = 0; i < plugNumber; i++ ){
+                    if ( mainPowerSwitchState == 1 ){ // 1 if switch is on
+                        JsonObject& plug = json[_pPlugs[i].getPlugName()];
+                        sNickName = plug["nickName"].as<String>();
+                        sState = plug["State"].as<String>();
+                        sPause = plug[JSON_PARAMNAME_PAUSE].as<String>();
+                        sMode = plug["Mode"].as<String>();
+                        sHDebut = plug["hDebut"].as<String>();
+                        sHFin = plug["hFin"].as<String>();
+                        sDureeOn = plug["dureeOn"].as<String>();
+                        sDureeOff = plug["dureeOff"].as<String>();
+                        sClonedPlug = plug["clonedPlug"].as<String>();
+                        sOnOffCount = plug["onOffCount"].as<String>();
+                        sNextTime2switch = plug[JSON_PARAMNAME_NEXTSWITCH].as<String>();
+
+                        
+
+                        DSPL( dPrompt + F("Plug name : ") + _pPlugs[i].getPlugName() );
+                        DSPL( dPrompt + F("Nick name : ") + sNickName );
+                        DSPL( dPrompt + F("Etat = ") + sState );
+                        DSPL( dPrompt + F("Pause state = ") + sPause );
+                        DSPL( dPrompt + F("Mode = ") + sMode );
+                        DSPL( dPrompt + F("Start time = ") + sHDebut );
+                        DSPL( dPrompt + F("End time = ") + sHFin );
+                        DSPL( dPrompt + F("on duration = ") + sDureeOn );
+                        DSPL( dPrompt + F("off duration = ") + sDureeOff );
+                        DSPL( dPrompt + F("Cloned plug = ") + sClonedPlug );
+                        DSPL( dPrompt + F("Relay on off count = ") + sOnOffCount );
+                        DSPL( dPrompt + F("next time to switch = ") + sNextTime2switch );
+
+                        /////////////////////////////////////////////////////////////////////////////
+                        //    special for days of Hebdo mode                                       //
+                        /////////////////////////////////////////////////////////////////////////////
+                        DSPL( dPrompt + "Jours : ");
+                        JsonArray& plugJours = plug["Jours"];
+                        for ( int i = 0; i < 7 ; i++ ){
+                            sJours[i] = plugJours[i].as<String>();
+                            // DSPL( dPrompt + "jours " + (String)i + " = " + sJours[i] );
+                            if (sJours[i] == "ON"){
+                                DSPL( "Jours " + (String)i + " est ON. " );
+                                //bitSet( _daysOnWeek, i);
+                            } else {
+                                DSPL( "Jours " + (String)i + " est OFF. " );
+                            } 
+                        }
+                        DSPL("");                        
+                    } else { // main power switch is off stop all plugs
+                    //plugs return to manual mode OFF state.
+
+                    }
+                }
+            }
+            returnVal = true;
+        }
+
+    } else {
+        DSPL( dPrompt + F("Json file integrity error") );
+    }
+
+
+    return (returnVal);
+}
 
 /**
  @fn bool CJsonIotEps::loadJsonConfigParam()

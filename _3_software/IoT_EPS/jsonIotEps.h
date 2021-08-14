@@ -44,7 +44,8 @@ class CJsonIotEps{
         jsonFileIntegrity_t checkJsonFilesIntegrity();
         void storeJson();
         bool loadJsonConfigParam();
-        //bool loadJsonPlugParam(int plugNumber);
+        bool loadJsonPlugParam( int plugNumber, int mainPowerSwitchState );
+        void printFileIntegrity();
         
 
     private:

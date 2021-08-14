@@ -3,6 +3,7 @@
 #highlight "general" / "ntpError"
 #highlight "general" / "_clé à créer 1_"
 #highlight "general" / "startInAPMode"
+#highlight "redPlug" / "nickName"
 #highlight "redPlug" / "hDebut"
 #highlight "redPlug" / "hFin"
 #highlight "redPlug" / "dureeOn"
@@ -32,7 +33,7 @@
     
   },
   "redPlug": {
-    "nickName": "String CPowerPlug::_plugName",
+    "nickName": "",
     "State": "bool CPowerPlug::_state",
     "Pause": "bool CPowerPlug::_pause",
     "Mode": "int CPowerPlug::_mode",

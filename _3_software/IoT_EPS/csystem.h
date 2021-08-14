@@ -25,7 +25,7 @@ class CSystem
 		void init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
 					const String *necessaryFileList, int necessaryFileNbr, String buildInfo
 					, ESP8266WiFiClass *wifi, CNanoI2CIOExpander *pNanoExp, Adafruit_SSD1306 *pdisplay
-                    , CJsonIotEps &jsonData
+                    , CJsonIotEps *pjsonData
                       );
 		NTPClient *_pTimeclient;
 		void timeServerCheck();
@@ -88,7 +88,7 @@ class CSystem
         unsigned long _oledRefreshPeriod; //in seconds
         uint8_t _oledCptPlugToDisplay;
         uint8_t _oledCptErrToDisplay=0;
-        CJsonIotEps _jsonData;
+        CJsonIotEps* _pJsonData;
 
 		
 

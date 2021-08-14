@@ -134,8 +134,11 @@ void setup(){
     String buildInfo =  String(__DATE__) + " @ " + String(__TIME__);
 
     sysIoteps.init( ntpUDP, &sysStatus, &SPIFFS, &cParam, necessaryFileList, NECESSARY_FILE_NBR
-                    , buildInfo, &WiFi, &nanoioExp, &display, jsonData );
-      
+                    , buildInfo, &WiFi, &nanoioExp, &display, &jsonData );
+
+    DSPL( dPrompt + F("Check json integrity after System init "));
+    jsonData.printFileIntegrity();
+
     FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
     FastLED.setBrightness( DEFAULT_LED_LUMINOSITY ); //default value for error display
     
@@ -207,6 +210,9 @@ void setup(){
 
     sysIoteps.setPlugsAdd( plugs ); // cause of the new plugs above
 
+    sysStatus.plugParamErr.err( 
+        !jsonData.loadJsonPlugParam( cParam.getNumberOfPlugs(), mainPowerSwitchState ) );
+    
     for (int i = 0; i < NBRPLUGS; i++ ){
         if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[i].readFromJson( true ) );
         else  plugs[i].handleBpLongClic(); //force OFF is main power off  
