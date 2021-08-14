@@ -91,6 +91,7 @@ there is 3 pull-up on the board.
 
 #include "bouton.h"
 #include "cnano.h"
+#include "cEpsStrTime.h"
 
 #include "CPowerPlug.h"
 #include "jsonIotEps.h"
@@ -101,7 +102,7 @@ there is 3 pull-up on the board.
 #include "CWifiLink.h"
 #include "oledMessages.h"
 
-#include "cEpsStrTime.h"
+
 // #include "Flasher.h"
 // #include "CRtc.h"
 #include "cswitchnano.h"

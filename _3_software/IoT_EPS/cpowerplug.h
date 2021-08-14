@@ -117,6 +117,14 @@ class CPowerPlug : public CNano {
         bool _ledOn = true;
         bool _mainPower;
 
+        String nickName;
+        CEpsStrTime hDebut;
+        CEpsStrTime hFin;
+        CEpsStrTime dureeOn;
+        CEpsStrTime dureeOff;
+        String clonedPlug;
+        long onOffCount;
+
         friend class CJsonIotEps;
         
 };
