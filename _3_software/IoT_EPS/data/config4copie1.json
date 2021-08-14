@@ -18,8 +18,7 @@
     "macAdd": "11:22:33:44:55:66",
     "softAP_macAdd": "11:22:33:44:55:66",
     "STAmaxWifiConnectionRetry": "30",
-    "ntpError": "OFF",
-	"wifimode": "DHCP"
+    "ntpError": "OFF"
   },
   "redPlug": {
     "nickName": "Aquarium",

@@ -13,17 +13,17 @@
 // #include  "configParam.h"
 
 void ConfigParam::begin( ){
-    _wifimode = "softAP" ; //default value
-    _host= "PowerStrip";
-    String ipad = DEFAULTIPADD;
+    _wifimode = "" ; //default value
+    _host= "";
+    String ipad = "0.0.0.0";
     _addIP.fromString( ipad );
-    _numberOfPlugs = 4;
-    _serverPort = 80;
+    _numberOfPlugs = 1;
+    _serverPort = 0;
     // _allLedsOnTime = 30;
     _allLedsOnTime = -1;
     
-    _ledsGlobalLuminosity = 5;   
-    ready = readFromJson();
+    _ledsGlobalLuminosity = 1;   
+    //ready = readFromJson();
 }
 
 /**

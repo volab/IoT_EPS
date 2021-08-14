@@ -19,7 +19,7 @@
     "powerLedEconomyMode": "bool ConfigParam::_powerLedEconomyMode",
     "firstBoot": "firstBootVal ConfigParam::_firstBoot",
     "hostName": "String ConfigParam::_host",
-    "startInAPMode": "OFF",
+    "startInAPMode": "String ConfigParam::_wifimode",
     "softAP_IP": "IPAddress ConfigParam:: _addIP",
     "softAP_port": "int ConfigParam::_serverPort",
     "dhcp_mode": "bool ConfigParam::_DHCPMode",
@@ -28,8 +28,7 @@
     "macAdd": "String ConfigParam::_macAdd",
     "softAP_macAdd": "String ConfigParam::_softAPMacAdd",
     "STAmaxWifiConnectionRetry": "unsigned int ConfigParam::_STAmaxWifiConnectionRetries",
-    "ntpError": "CSysStatus::ntpErr : is it very usefull ???",
-    "_clé à créer 1_":"String ConfigParam::_wifimode"
+    "ntpError": "CSysStatus::ntpErr : is it very usefull ???"
     
   },
   "redPlug": {

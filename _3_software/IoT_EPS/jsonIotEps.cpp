@@ -40,6 +40,7 @@ bool CJsonIotEps::loadJsonConfigParam(){
             size_t size = file.size();
             std::unique_ptr<char[]> buf(new char[size]);
             file.readBytes(buf.get(), size);
+            file.close();
             DynamicJsonBuffer jsonBuffer;
             JsonObject& json = jsonBuffer.parseObject(buf.get());
             if (json.success()){
@@ -74,11 +75,44 @@ bool CJsonIotEps::loadJsonConfigParam(){
                 if (_pcParam->_firstBoot == ConfigParam::YES ) _pcParam->_wifimode = "softAP";
                 _pcParam->_emplacement = json["general"]["emplacement"].as<String>();
                 returnVal = true;
+                /** @todo [NECESSARY] clear usage of NTP error */ 
             } else {
                 DSPL(dPrompt + F("Failed to load json config"));     
                 returnVal = false;
-            }   
+            }  
         }
+        DSPL( dPrompt + F("Config param loaded : "));
+        DSPL( dPrompt + F(" - emplacement : ") + _pcParam->_emplacement );
+        DSPL( dPrompt + F(" - Number of plugs : ") + String(_pcParam->_numberOfPlugs) );
+        DSPL( dPrompt + F(" - All Led On Time : ") + String(_pcParam->_allLedsOnTime)  );
+        DSPL( dPrompt + F(" - LEDs Global illum : ") + String(_pcParam->_ledsGlobalLuminosity) );
+        DSPL( dPrompt + F(" - Power Led economy mode : ") +  _pcParam->_powerLedEconomyMode );
+        String firstBoot_s;
+        switch (_pcParam->_firstBoot){
+            case ConfigParam::YES:
+                firstBoot_s = "YES";
+                break;
+            case ConfigParam::NO:
+                firstBoot_s = "NO";
+                break;
+            case ConfigParam::TRY:
+                firstBoot_s = "TRY";
+                break;            
+            default:
+                break;
+        }
+        DSPL( dPrompt + F(" - First boot : ") +  firstBoot_s );
+        DSPL( dPrompt + F(" - Host name : ") +  _pcParam->_host );
+        DSPL( dPrompt + F(" - Strat in AP mode (_wifiMode) : ") + _pcParam->_wifimode  );
+        DSP( dPrompt + F(" - Soft AP IP add (_addIP) : " )); _pcParam->_addIP.printTo(Serial);DSPL();
+        DSPL( dPrompt + F(" - Soft AP port (_serverPort): ") + String(_pcParam->_serverPort)  );
+        DSPL( dPrompt + F(" - DHCP mode  : ") + (_pcParam->_DHCPMode?"ON":"OFF")  );
+        DSP( dPrompt + F(" - Station IP address  : ") );_pcParam->_staIP.printTo(Serial);DSPL();
+        DSP( dPrompt + F(" - Station gateway IP address  : ") ); _pcParam->_staGateway.printTo(Serial);DSPL();
+        DSPL( dPrompt + F(" - MAC address  : ") +  _pcParam->_macAdd  );
+        DSPL( dPrompt + F(" - Soft AP MAC address  : ") + _pcParam->_softAPMacAdd  );
+        DSPL( dPrompt + F(" - MAX Wifi connexion retry  : ") + String(_pcParam->_STAmaxWifiConnectionRetries)  );
+        //DSPL( dPrompt + F(" - TNP Error  : ") +   ); //CSysSattus::ntpErr
     }
  
     return returnVal;

@@ -55,18 +55,18 @@ class ConfigParam{
         static String readFromJsonParam( String parameter, String section );
     
     private:
-        String _wifimode = "softAP" ; //default value
-        String _host= "PowerStrip";
+        String _wifimode = "" ; //default value
+        String _host= "";
         bool readFromJson();
         IPAddress _addIP; /**< brief warning softAP IP */
-        int _numberOfPlugs = 4;
+        int _numberOfPlugs = 1;
         int _serverPort;
         long _allLedsOnTime;
         bool _powerLedEconomyMode = false;
         //in seconds (not unsigned cause -1 could serve to allways on in future)
         int _ledsGlobalLuminosity;
         firstBootVal _firstBoot;
-        unsigned int _STAmaxWifiConnectionRetries = MAX_WIFI_CONNECT_RETRY ;
+        unsigned int _STAmaxWifiConnectionRetries = 0 ;
         String _macAdd;
         String _softAPMacAdd;
         bool _DHCPMode;
