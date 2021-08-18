@@ -175,7 +175,31 @@ FSInfo filseSystemInfo;
             }
             break;
         case 'J': //display config.json
-            ConfigParam::displayJson();
+            n = sscanf( com+1,"%s", v );
+            if ( n == 1){
+                value = String(v);
+                if (value.toInt() >=0 && value.toInt() <= 2){
+                    switch (value.toInt()){
+                        case 0:
+                            s = CONFIGFILENAME;
+                            break;
+                        case 1:
+                            s = CONFIGFILENAME_COPY1;
+                            break;
+                        case 2:
+                            s = CONFIGFILENAME_COPY2;
+                            break;
+                        default:
+                            break;
+                    }
+                    ConfigParam::displayJson( s );
+                } else {
+                    INTERFACE.println("Value must be between 0 to 2 include !");
+                }
+                
+            } else {
+                INTERFACE.println("Warning this command riquires only ONE parameter value from 0 to 2!");
+            }
             break;
         case 'L': //Change AP_SSID
             n = sscanf( com+1,"%s", v );
@@ -321,7 +345,7 @@ void SerialCommand::displayCommandsList(){
     list += F("<S JJ/MM/AAAA HH:MM:SS> returns code <O>\n");
     list += F("<T HH:MM:SS> returns code <O>\n");
     list += F("<s> set DS3231 by NTP server\n");
-    list += F("<J> for display config.json\n");
+    list += F("<J _jsonFileNumber 0..2> for display config.json or one of its copy\n");
     list += F("<W> display WIFI mode\n");
     list += F("<P key value> write config parameter in json WARNING\n");
     list += F("<I _newSSID> write SSID in credentials WARNING\n");
@@ -339,7 +363,7 @@ void SerialCommand::displayCommandsList(){
     list += F("<L> _newSoftAP_SSID> write SoftAP SSID in credentials WARNING\n");
     list += F("<l> _wifiPass> write soft AP password in credentials WARNING\n");
     list += F("<D> SPIFFS dir\n");
-    list += F("<j> display general part of config json file\n");
+    list += F("<j> display general part of main config json file\n");
     list += F("<d _filename> erase a file WARNING\n");
     list += F("<e> display system status\n");
     list += F("<p> display main power state\n");

@@ -176,6 +176,7 @@ This function is call by SerialCommand. It works with debugSerialPort
 */
 void ConfigParam::displayJson( String file ){
 	DEFDPROMPT("Display json")
+    DSPL( dPrompt + F("Json file: ") + file );
     if (SPIFFS.begin()) {
         // if (SPIFFS.exists( CONFIGFILENAME)) {
         if (SPIFFS.exists( file)) {
