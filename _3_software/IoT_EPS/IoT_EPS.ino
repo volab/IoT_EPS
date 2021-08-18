@@ -213,11 +213,11 @@ void setup(){
     sysStatus.plugParamErr.err( 
         !jsonData.loadJsonPlugParam( cParam.getNumberOfPlugs(), mainPowerSwitchState ) );
     
-    for (int i = 0; i < NBRPLUGS; i++ ){
-        if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[i].readFromJson( true ) );
-        else  plugs[i].handleBpLongClic(); //force OFF is main power off  
+    // for (int i = 0; i < NBRPLUGS; i++ ){
+    //     if ( mainPowerSwitchState ) sysStatus.plugParamErr.err( !plugs[i].readFromJson( true ) );
+    //     else  plugs[i].handleBpLongClic(); //force OFF is main power off  
         
-    }
+    // }
 
     //note: 07/08/2021 : in the above code we can't call _pPlugs in sysIoteps cause it is a private
     // member.

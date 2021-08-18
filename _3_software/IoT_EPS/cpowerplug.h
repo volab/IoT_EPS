@@ -124,6 +124,7 @@ class CPowerPlug : public CNano {
         CEpsStrTime _dureeOff;
         String _clonedPlug;
         long _onOffCount;
+        bool _jsonWriteRequest = false;
 
         friend class CJsonIotEps;
         

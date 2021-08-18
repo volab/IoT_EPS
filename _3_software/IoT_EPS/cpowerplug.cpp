@@ -862,6 +862,10 @@ void CPowerPlug::handleBpLongClic(){
         //a place to close the file without waiting
         DynamicJsonBuffer jsonBuffer;
         JsonObject& json = jsonBuffer.parseObject(buf.get());
+
+        // set all members to reset values
+        // set _jsonWriteRequest to true;
+        
         if (json.success()) {
             JsonObject& plug = json[_plugName]; 
             JsonArray& plugJours = plug["Jours"];

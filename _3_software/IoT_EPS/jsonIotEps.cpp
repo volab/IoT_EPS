@@ -41,6 +41,8 @@ void CJsonIotEps::printFileIntegrity(){
 }
 
 void CJsonIotEps::storeJson(){
+    DEFDPROMPT( "CJsonIotEps store json method" );
+    DSPL( dPrompt );
     return;
 }
 
@@ -59,6 +61,7 @@ bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState ){
     String sClonedPlug, sOnOffCount, sNextTime2switch, sPause;
     String sNickName;
     String sJours[7];
+    bool writeReq = false;
 
     DEFDPROMPT( "Load Json Plugs Data");
     DSPL( dPrompt + F("Enter in the fonction. ")  );
@@ -103,13 +106,18 @@ bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState ){
                         DSPL( dPrompt + F("Relay on off count = ") + sOnOffCount );
                         DSPL( dPrompt + F("next time to switch = ") + sNextTime2switch );
                         /////////////////////////////////////////////////////////////////////////////
-                        //    plug member updates                                                  //
+                        //    plugs member updates                                                  //
                         /////////////////////////////////////////////////////////////////////////////
                         _pPlugs[i]._nickName = sNickName;
                         _pPlugs[i]._state = (sState == "ON");
                         _pPlugs[i]._pause = ( sPause == "ON" );
                         _pPlugs[i]._mode = _pPlugs[i].modeId( sMode ); 
-                        _pPlugs[i]._hDebut = CEpsStrTime( sHDebut, CEpsStrTime::HHMM);                 
+                        _pPlugs[i]._hDebut = CEpsStrTime( sHDebut, CEpsStrTime::HHMM);
+                        _pPlugs[i]._hFin = CEpsStrTime( sHFin, CEpsStrTime::HHMM );
+                        _pPlugs[i]._dureeOn = CEpsStrTime( sDureeOn, CEpsStrTime::MMM );
+                        _pPlugs[i]._dureeOff = CEpsStrTime( sDureeOff, CEpsStrTime::MMM );
+                        _pPlugs[i]._clonedPlug = sClonedPlug;
+                        _pPlugs[i]._onOffCount = sOnOffCount.toInt();             
                         _pPlugs[i]._nextTimeToSwitch = sNextTime2switch.toInt();
                         
                         /////////////////////////////////////////////////////////////////////////////
@@ -117,12 +125,13 @@ bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState ){
                         /////////////////////////////////////////////////////////////////////////////
                         DSPL( dPrompt + "Jours : ");
                         JsonArray& plugJours = plug["Jours"];
+                        _pPlugs[i]._daysOnWeek = 0;
                         for ( int i = 0; i < 7 ; i++ ){
                             sJours[i] = plugJours[i].as<String>();
                             // DSPL( dPrompt + "jours " + (String)i + " = " + sJours[i] );
                             if (sJours[i] == "ON"){
                                 DSPL( "Jours " + (String)i + " est ON. " );
-                                //bitSet( _daysOnWeek, i);
+                                bitSet( _pPlugs[i]._daysOnWeek, i);
                             } else {
                                 DSPL( "Jours " + (String)i + " est OFF. " );
                             } 
@@ -130,9 +139,14 @@ bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState ){
                         DSPL("");                        
                     } else { // main power switch is off stop all plugs
                     //plugs return to manual mode OFF state.
-
+                        _pPlugs[i].handleBpLongClic();
+                        writeReq = writeReq | _pPlugs[i]._jsonWriteRequest;
+                        _pPlugs[i]._jsonWriteRequest = false;
                     }
                 }
+            }
+            if ( writeReq ){
+                storeJson();
             }
             returnVal = true;
         }
