@@ -89,7 +89,20 @@ Bug : Allumage intempestif
     :Problematique:         Au cours des essais 2 prises bleu et jaune se sont retrouvé allumées alors
                             que dans le json elles étaient off !
     :Traitement:            
-    
+
+------------------------------------------------------------------------------------------
+
+ToDo : minify javascripts
+===========================
+
+    :Date de saisie:        210821
+    :Date de traitemant:    
+    :Cible:                 Data/javascript
+    :Status:                
+    :Problematique:         reduce the size of the web files. Reduce the size of the logo.
+    :Traitement:            
+            
+
 ------------------------------------------------------------------------------------------
 
 ToDo : doxy HTML js

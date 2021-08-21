@@ -299,6 +299,10 @@ The file nema parameter has a default valeur (see in configParam.h)
 */
 void ConfigParam::write2Json( String param, String value, String file ){
     DEFDPROMPT( "write  param to jSon file");
+
+    _jsonWriteRequest = true;
+    /** @todo [ECESSARY] remove below code*/
+
     // File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     File configFile = SPIFFS.open( file , "r");
     DSPL( dPrompt + file);

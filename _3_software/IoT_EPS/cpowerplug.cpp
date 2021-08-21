@@ -79,6 +79,7 @@ void CPowerPlug::on(){
     _state = ON ;
     updateOutputs( prevState != _state ); //to count only real plug switch
     writeToJson( JSON_PARAMNAME_STATE, "ON" );
+    
 
 }
 
@@ -646,6 +647,10 @@ Writes value on parma for _plugName plug of course !
 */
 void CPowerPlug::writeToJson( String param, String value ){
     DEFDPROMPT( "write to jSon");
+
+    _jsonWriteRequest = true;
+    /** @todo [ECESSARY] remove below code*/
+
     File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     // DSPL( dPrompt);
     if (configFile) {
@@ -684,6 +689,10 @@ It works on _dayOfWeek member
 */
 void CPowerPlug::writeDaysToJson(){
     DEFDPROMPT( "write days to jSon");
+
+    _jsonWriteRequest = true;
+    /** @todo [ECESSARY] remove below code*/
+
     File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     // DSPL( dPrompt);
     if (configFile) {
@@ -843,6 +852,9 @@ void CPowerPlug::handleBpLongClic(){
     DEFDPROMPT("handleLongClic");
     DSPL( dPrompt );
     // off();
+
+    /** @todo [ECESSARY] be shure to reset all members*/
+
     bool prevState = _state;
     _state = OFF ;
     updateOutputs( prevState != _state ); //to count only real plug switch
@@ -852,6 +864,9 @@ void CPowerPlug::handleBpLongClic(){
     mode = MANUAL_MODE;
     _mode = modeId( mode );
     _daysOnWeek = 0;    
+
+    _jsonWriteRequest = true;
+    /** @todo [ECESSARY] remove below code*/
    
     File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     if (configFile) {

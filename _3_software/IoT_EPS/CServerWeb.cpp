@@ -580,7 +580,8 @@ void CServerWeb::handleIOTESPConfiguration(){
     for (configItem i : confParam) {
         if (i.val != "") {
             // DSPL( dPrompt + "Write to json for " + i.name + " value : " + i.val );
-            ConfigParam::write2Json(i.name, i.val, CONFIGFILENAME);
+            //ConfigParam::write2Json(i.name, i.val, CONFIGFILENAME);
+            _pcParam->write2Json(i.name, i.val, CONFIGFILENAME);
         }
     }
     cpt = 0;
@@ -590,7 +591,8 @@ void CServerWeb::handleIOTESPConfiguration(){
     }
     for (configItem i : checkBoxes) {
         // DSPL( dPrompt + "Write to json for " + i.name + " value : " + i.val);
-        ConfigParam::write2Json(i.name, i.val, CONFIGFILENAME);
+        //ConfigParam::write2Json(i.name, i.val, CONFIGFILENAME);
+        _pcParam->write2Json(i.name, i.val, CONFIGFILENAME);
     }
     cpt = 0;
     for (configItem i : plugsNickNames)
@@ -742,7 +744,9 @@ void CServerWeb::handleFirstBoot(){
     // if (mode == AP) set firstBoot to OFF
     DEFDPROMPT( "handle First Boot "); 
     _pcParam->creatDefaultJson();
-    ConfigParam::write2Json( "firstBoot", "ON" ); //not very usefull
+    //ConfigParam::write2Json( "firstBoot", "ON" ); //not very usefull
+    _pcParam->write2Json( "firstBoot", "ON" );
+    
     //1) when we came from a real firstBoot this value change in this function
     //2) when we came from config page config handler has previously write this value and it is 
     //    the next reset who trigger this method and this value change in this method
@@ -787,8 +791,10 @@ void CServerWeb::handleFirstBoot(){
         }
         credFile.close();
         //write to config.json
-        ConfigParam::write2Json( "firstBoot", "OFF" );
-        ConfigParam::write2Json( "startInAPMode", "ON" );
+        //ConfigParam::write2Json( "firstBoot", "OFF" );
+        _pcParam->write2Json( "firstBoot", "OFF" );
+        //ConfigParam::write2Json( "startInAPMode", "ON" );
+        _pcParam->write2Json( "startInAPMode", "ON" );
         //Empty STA_SSId and pass
         //AP_SSID and PASS
         /** @todo [NECESSARY] replace reset by watchdog not refresh 2 times */
@@ -813,8 +819,10 @@ void CServerWeb::handleFirstBoot(){
             DSPL( dPrompt + F("File /credentials.json open for write fail !") );
         }
         credFile.close();
-        ConfigParam::write2Json( "startInAPMode", "OFF" );
-        ConfigParam::write2Json( "firstBoot", "TRYSTA" );
+        //ConfigParam::write2Json( "startInAPMode", "OFF" );
+        _pcParam->write2Json( "startInAPMode", "OFF" );
+        //ConfigParam::write2Json( "firstBoot", "TRYSTA" );
+        _pcParam->write2Json( "firstBoot", "TRYSTA" );
         /** @todo [NECESSARY] replace reset by watchdog not refresh */
         ESP.reset();        
     }

@@ -547,6 +547,9 @@ void loop(){
 
     // Store json file if needed
     // if cParam.storeNeeded or for i in 4 plug[i].storeNeeded
+    if ( jsonData.checkIfStoreNeeded() ){
+        jsonData.storeJson();
+    }
 
     yield();
 }

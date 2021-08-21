@@ -142,9 +142,11 @@ void CWifiLink::begin( ESP8266WiFiClass &wifiRef, const bool simpleManualMode
                     + staIP );
                 pDisplay->println(staIP);
                 pDisplay->display();
-                    ConfigParam::write2Json( "staIP", staIP );
+                    //ConfigParam::write2Json( "staIP", staIP );
+                    _cParam->write2Json( "staIP", staIP );
                 if ( _cParam->getFirstBoot() == ConfigParam::TRY ){
-                    ConfigParam::write2Json( "firstBoot", "OFF" );
+                    //ConfigParam::write2Json( "firstBoot", "OFF" );
+                    _cParam->write2Json( "firstBoot", "OFF" );
                     _cParam->setFirstBoot( ConfigParam::NO );
                 }                    
             } else { 

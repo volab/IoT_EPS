@@ -19,6 +19,7 @@ Welcome to IoT_EPS's documentation!
    userManual
    interface_Web
    pitch
+   chronogram
 
 
 

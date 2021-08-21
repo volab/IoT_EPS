@@ -120,6 +120,8 @@ int timeZone = OFFSET_HEURE;
 
 nanoI2C.pinMode( 9, OUTPUT );
 
+ConfigParam cParam; //juste to call writeToJson 
+
 // int eightState; unused warning
 String str = "";
 Dir dir;	
@@ -169,7 +171,8 @@ FSInfo filseSystemInfo;
             if ( n == 1){
                 value = String(v);
                 INTERFACE.println("new SSID : " + value);
-                ConfigParam::chgSSID( value );
+                // ConfigParam::chgSSID( value );
+                cParam.chgSSID( value );
             } else {
                 INTERFACE.println("Warning this command riquires only ONE parameter !");
             }
@@ -206,7 +209,8 @@ FSInfo filseSystemInfo;
             if ( n == 1){
                 value = String(v);
                 INTERFACE.println("new softAP SSID : " + value);
-                ConfigParam::chgSSID( value, "softApSsid" );
+                // ConfigParam::chgSSID( value, "softApSsid" );
+                cParam.chgSSID( value, "softApSsid" );
             } else {
                 INTERFACE.println("Warning this command riquires only ONE parameter !");
             }			
@@ -224,7 +228,8 @@ FSInfo filseSystemInfo;
                 key = String(k);
                 value = String(v);
                 INTERFACE.println("Parametres : " + key + " value : " + value);
-                ConfigParam::write2Json( key, value );
+                // ConfigParam::write2Json( key, value );
+                cParam.write2Json( key, value );
             } else {
                 INTERFACE.println("Warning this command riquires 2 parameters !");
             }
@@ -271,7 +276,8 @@ FSInfo filseSystemInfo;
             if ( n == 1){
                 value = String(v);
                 INTERFACE.println("new pass : " + value);
-                ConfigParam::chgWifiPass( value );
+                // ConfigParam::chgWifiPass( value );
+                cParam.chgWifiPass( value );
             } else {
                 INTERFACE.println("Warning this command riquires only ONE parameter !");
             }
@@ -285,7 +291,8 @@ FSInfo filseSystemInfo;
                 value = String(v);
                 if ( value.length() > 8 && value.length() < 63 ){
                     INTERFACE.println("new soft AP pass : " + value);
-                    ConfigParam::chgWifiPass( value, "softApPass" );
+                    // ConfigParam::chgWifiPass( value, "softApPass" );
+                    cParam.chgWifiPass( value, "softApPass" );
                 } else INTERFACE.println( "Error : 8 < pass length < 63, nothing change");    
             } else {
                 INTERFACE.println("Warning this command riquires only ONE parameter !");

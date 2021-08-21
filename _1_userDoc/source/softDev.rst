@@ -642,7 +642,7 @@ One json master file : config4.json (no change) and 2 copies
 Throughout operation, Json data **reside** in RAM : this is the **most important change**.
 
 On web and plug events, write2json methods do not write directly to the file, they change data in RAM
-and after all changes, file is store in RAM and 2 copies are made whith hash verification.
+and after all changes, file is store in SPIFFS and 2 copies are made whith hash verification.
 
 At startup, hash of the 3 files are checked to determin what file is good and what file is corrupted.
 After this check, the good file is loaded or none if all 3 files are corrupted. In this situation a
@@ -657,11 +657,18 @@ See the figures below.
 
     Pb: in the write procedure, if power is shut down just after first json write, the master file 
     is good but the file has a different hash value of copy1 and copy2
-    Pb2: if power is shut down just after the write of copy 1, 3 hash values are different but
+
+    Pb2: if power is shut down just after the write of copy 1, 3 hash values are differents but
     master is good !
+    
     To solve this possible bug we decide to had a special field in the json file to check the 
     readability of the data in the file.
-    At startup we concider that all values 
+
+As we can't compute hash directly on the file but only with data in RAM, the file store strategy 
+presented here is not feasable.
+
+So finaly we made 3 stores, check the 3 hash values if there are not same we retry 3 times. After 
+3 tries, we rise a fatal error.
 
 ----------------------------------------------------------------------------------------------------
 

@@ -32,8 +32,10 @@ class ConfigParam{
 		void displayWifiMode();
         static void displayJsonGeneral();
         
-        static void chgSSID( String value, String key = "ssid" );
-        static void chgWifiPass( String value, String key = "pass" );
+        // static void chgSSID( String value, String key = "ssid" );
+        void chgSSID( String value, String key = "ssid" );
+        // static void chgWifiPass( String value, String key = "pass" );
+        void chgWifiPass( String value, String key = "pass" );
         IPAddress getIPAdd(){ return _addIP; }
         int getNumberOfPlugs(){ return _numberOfPlugs; }
         int getServerPort(){ return _serverPort; }
@@ -43,7 +45,8 @@ class ConfigParam{
         bool getPowLedEconomyMode(){ return _powerLedEconomyMode; } 
         firstBootVal getFirstBoot(){ return _firstBoot; }
         void setFirstBoot( firstBootVal val ){ _firstBoot = val; }
-        static void write2Json( String param, String value, String file = CONFIGFILENAME );
+        // static void write2Json( String param, String value, String file = CONFIGFILENAME );
+        void write2Json( String param, String value, String file = CONFIGFILENAME );
         // static void _write2CredJson( String param, String value );
         unsigned int getSTAMaxRetries(){ return _STAmaxWifiConnectionRetries; }
         String getMacAdd(){ return _macAdd; }
@@ -75,6 +78,7 @@ class ConfigParam{
         // bool _fileCopy( String from, String to);
         String _emplacement;
         bool _startInApMode;
+        bool _jsonWriteRequest = false;
 
         friend class CJsonIotEps;
         

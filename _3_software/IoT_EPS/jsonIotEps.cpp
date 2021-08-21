@@ -15,8 +15,37 @@ bool CJsonIotEps::init( ConfigParam *pcParam, CPowerPlug *plugs){
     return true;
 }
 
+
+/**
+ @fn bool CJsonIotEps::checkIfStoreNeeded()
+ @brief Check if CParam or CPowerPlugs store json file is needed
+ @return true if store is needed
+*/
+bool CJsonIotEps::checkIfStoreNeeded(){
+    bool retVal = false;
+    DEFDPROMPT("JsonIotEps");
+    
+    if ( _pcParam->_jsonWriteRequest ){
+        retVal=true;
+    } else { //if true no need to test plug causeonly one json file
+        for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
+            retVal |= _pPlugs[i]._jsonWriteRequest;
+            _pPlugs[i]._jsonWriteRequest = false; //to be remove after test
+        }
+    }
+
+    return retVal;
+}
+
+
+
+/**
+ @fn void CJsonIotEps::printFileIntegrity()
+ @brief Print file integrity for debug purpose
+ @return no param and no return
+*/
 void CJsonIotEps::printFileIntegrity(){
-    DEFDPROMPT("Json file integrity fonction print");
+    DEFDPROMPT("Json file integrity print function");
 
     switch (_jsonFileIntegrity){
         case KEEP_MASTER:
@@ -43,6 +72,13 @@ void CJsonIotEps::printFileIntegrity(){
 void CJsonIotEps::storeJson(){
     DEFDPROMPT( "CJsonIotEps store json method" );
     DSPL( dPrompt );
+
+
+    //to remember
+    _pcParam->_jsonWriteRequest = false;
+    for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
+        _pPlugs[i]._jsonWriteRequest = false;
+    }
     return;
 }
 
@@ -307,9 +343,11 @@ CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
     //In this case master is good and has a hash value, copy1 is wrong and has a diffrent hash value
     //regardless of master and copy2 and copy2 is good but is out of date and has a third hash value
     if ( H0 != H1 && H0 != H1 && H1 != H2 ){ _jsonFileIntegrity = TRY_MASTER; }
+    // could be KEEP_MASTER
 
     //if only H0 != 0 we can try to use it
     if (H0 !=0 && H1 == 0 && H2 ==0 ){ _jsonFileIntegrity = TRY_MASTER; }
+    // could be KEEP_MASTER
 
     //If all hash value are 0 there is no file : it is a fatal error
     
@@ -334,6 +372,7 @@ CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
             break;
     }
 
+    //Check file spacial Tag Values (Version an TAG)
     if ( _jsonFileIntegrity != FILES_ERROR ){
         File file = SPIFFS.open( _fileNameToLoad, "r");
         _jsonVersion = "";

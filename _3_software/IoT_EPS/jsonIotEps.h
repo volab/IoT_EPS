@@ -46,6 +46,7 @@ class CJsonIotEps{
         bool loadJsonConfigParam();
         bool loadJsonPlugParam( int plugNumber, int mainPowerSwitchState );
         void printFileIntegrity();
+        bool checkIfStoreNeeded();
         
 
     private:
