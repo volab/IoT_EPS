@@ -134,20 +134,21 @@ String ConfigParam::readFromJsonParam( String parameter, String section ){
         // if (SPIFFS.exists("/config.json")) {
         if (SPIFFS.exists( CONFIGFILENAME)) {
             //file exists, reading and loading
-            // DSPL(dPrompt + F("reading config file"));
+            DSPL(dPrompt + F("reading config file"));
             File configFile = SPIFFS.open( CONFIGFILENAME, "r");
             
             if (configFile) {
                 // DSPL( F("\tconfig file opened ") );
                 size_t size = configFile.size();
-                // DSPL( dPrompt + "Config file size : " + (String)size ) ;
+                DSPL( dPrompt + "Config file size : " + (String)size ) ;
                 // Allocate a buffer to store contents of the file.
                 std::unique_ptr<char[]> buf(new char[size]);
-
+                
                 configFile.readBytes(buf.get(), size);
+                for (int i = 0; i < size; i++){Serial.write(buf[i]); }
                 DynamicJsonBuffer jsonBuffer;
                 JsonObject& json = jsonBuffer.parseObject(buf.get());
-                // json.printTo(DEBUGPORT);
+                json.printTo(DEBUGPORT); DSPL();
                 if (json.success()) {
                     DSPL( dPrompt + "Param : " + parameter + " from " + section );
                     paramVal = json[section][parameter].as<String>();

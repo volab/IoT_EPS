@@ -71,7 +71,7 @@ void CJsonIotEps::printFileIntegrity(){
 
 void CJsonIotEps::storeJson(){
     DEFDPROMPT( "CJsonIotEps store json method" );
-    DSPL( dPrompt );
+    DSPL( dPrompt + F("*********JSON WRITE REQUESTED***************"));
 
 
     //to remember

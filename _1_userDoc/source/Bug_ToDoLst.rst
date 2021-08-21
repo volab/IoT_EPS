@@ -34,6 +34,19 @@ Model Type
 
 ----------------------------------------------------------------------------------------------------
 
+Bug : cfgpage
+==================
+
+    :Date de saisie:        210821
+    :Date de traitemant:    
+    :Cible:                 firmware
+    :Status:                open
+    :Problematique:         /cfgpage : faile to loag json param!
+    :Traitement:
+    
+
+----------------------------------------------------------------------------------------------------
+
 Bug : clone pause
 ==================
 
