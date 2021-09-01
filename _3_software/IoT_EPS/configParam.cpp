@@ -135,8 +135,9 @@ String ConfigParam::readFromJsonParam( String parameter, String section ){
         if (SPIFFS.exists( CONFIGFILENAME)) {
             //file exists, reading and loading
             DSPL(dPrompt + F("reading config file"));
-            File configFile = SPIFFS.open( CONFIGFILENAME, "r");
-            
+            // File configFile = SPIFFS.open( CONFIGFILENAME, "r");
+            File configFile = SPIFFS.open( CONFIGFILENAME_COPY1, "r");
+            DSPL( dPrompt + CONFIGFILENAME_COPY1 );
             if (configFile) {
                 // DSPL( F("\tconfig file opened ") );
                 size_t size = configFile.size();
@@ -145,16 +146,16 @@ String ConfigParam::readFromJsonParam( String parameter, String section ){
                 std::unique_ptr<char[]> buf(new char[size]);
                 
                 configFile.readBytes(buf.get(), size);
-                for (int i = 0; i < size; i++){Serial.write(buf[i]); }
+                //for (int i = 0; i < size; i++){Serial.write(buf[i]); }
                 DynamicJsonBuffer jsonBuffer;
                 JsonObject& json = jsonBuffer.parseObject(buf.get());
-                json.printTo(DEBUGPORT); DSPL();
-                if (json.success()) {
-                    DSPL( dPrompt + "Param : " + parameter + " from " + section );
-                    paramVal = json[section][parameter].as<String>();
-                } else {
-                    DEBUGPORT.println(dPrompt + F("Failed to load json config"));
-                }
+                json.prettyPrintTo(DEBUGPORT); DSPL();
+                // if (json.success()) {
+                //     DSPL( dPrompt + "Param : " + parameter + " from " + section );
+                //     paramVal = json[section][parameter].as<String>();
+                // } else {
+                //     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+                // }
                 configFile.close();
             }
         } else {
