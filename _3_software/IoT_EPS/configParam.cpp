@@ -12,6 +12,8 @@
 #include "IoT_EPS.h"
 // #include  "configParam.h"
 
+//#include <Esp.h>
+
 void ConfigParam::begin( ){
     _wifimode = "" ; //default value
     _host= "";
@@ -135,21 +137,26 @@ String ConfigParam::readFromJsonParam( String parameter, String section ){
         if (SPIFFS.exists( CONFIGFILENAME)) {
             //file exists, reading and loading
             DSPL(dPrompt + F("reading config file"));
-            // File configFile = SPIFFS.open( CONFIGFILENAME, "r");
-            File configFile = SPIFFS.open( CONFIGFILENAME_COPY1, "r");
-            DSPL( dPrompt + CONFIGFILENAME_COPY1 );
+            File configFile = SPIFFS.open( CONFIGFILENAME, "r");
+            // File configFile = SPIFFS.open( CONFIGFILENAME_COPY1, "r");
+            DSPL( dPrompt + CONFIGFILENAME );
+            // DSPL( dPrompt + CONFIGFILENAME_COPY1 );
             if (configFile) {
                 // DSPL( F("\tconfig file opened ") );
                 size_t size = configFile.size();
                 DSPL( dPrompt + "Config file size : " + (String)size ) ;
                 // Allocate a buffer to store contents of the file.
                 std::unique_ptr<char[]> buf(new char[size]);
+                // std::unique_ptr<char[]> buf(new char[500]);
                 
+                // configFile.readBytes(buf.get(), 500);
                 configFile.readBytes(buf.get(), size);
-                //for (int i = 0; i < size; i++){Serial.write(buf[i]); }
-                DynamicJsonBuffer jsonBuffer;
-                JsonObject& json = jsonBuffer.parseObject(buf.get());
-                json.prettyPrintTo(DEBUGPORT); DSPL();
+                // for (int i = 0; i < 500; i++){Serial.write(buf[i]); }
+                DSPL( dPrompt + "Free mem : " + String( ESP.getFreeHeap() ));
+                DSPL();
+                // DynamicJsonBuffer jsonBuffer;
+                // JsonObject& json = jsonBuffer.parseObject(buf.get());
+                // json.prettyPrintTo(DEBUGPORT); DSPL();
                 // if (json.success()) {
                 //     DSPL( dPrompt + "Param : " + parameter + " from " + section );
                 //     paramVal = json[section][parameter].as<String>();
@@ -157,6 +164,7 @@ String ConfigParam::readFromJsonParam( String parameter, String section ){
                 //     DEBUGPORT.println(dPrompt + F("Failed to load json config"));
                 // }
                 configFile.close();
+                DSPL( dPrompt + "Free mem after close: " + String( ESP.getFreeHeap() ));
             }
         } else {
             dPrompt += F("Failed to open ");
@@ -186,7 +194,7 @@ void ConfigParam::displayJson( String file ){
             // DSPL(dPrompt + F("reading config file"));
             // File configFile = SPIFFS.open( CONFIGFILENAME, "r");
             File configFile = SPIFFS.open( file, "r");
-            
+            DSPL( dPrompt + "Free mem : " + String( ESP.getFreeHeap() ));
             if (configFile) {
                 // DSPL( F("\tconfig file opened ") );
                 size_t size = configFile.size();
