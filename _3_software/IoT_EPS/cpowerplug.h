@@ -127,6 +127,7 @@ class CPowerPlug : public CNano {
         bool _jsonWriteRequest = false;
 
         friend class CJsonIotEps;
+        friend class CServerWeb;
         
 };
 

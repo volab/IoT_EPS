@@ -794,9 +794,99 @@ An other example provided `on Arduino lib github`_
 it works on RAM data too !
 
 
+====================================================================================================
+Free memory analyze
+====================================================================================================
+Special git branch analyseFreeMem.
+
+Commands used::
+
+    #include <ESP.h>
+    //...
+    DSPL( dPrompt + "Free mem : " + String( ESP.getFreeHeap() ));
 
 
 
+Memory analysis::
+
+
+	SDK:2.2.1(cfd48f3)/Core:2.4.1/lwIP:2.0.3(STABLE-2_0_3_RELEASE/glue:arduino-2.4.1)
+	<Volab setUp > >>>>>>   Free mem at start: 15976
+	<Volab setUp > >>>>>>   Free mem before build info: 15960
+	<Volab setUp > >>>>>>   Free mem after build info: 15912
+	<Volab CSystem::init > DS3231 Start date : 15/9/2021 21:41:7
+	<Volab setUp > >>>>>>   Free mem after system init: 13568
+	<Volab setUp > >>>>>>   Free mem after serial init: 13456
+	<Volab setUp > >>>>>>   Free mem before new plugs: 13472
+	<Volab setUp > >>>>>>   Free mem after  new plugs: 11464
+	<Volab setUp > >>>>>>   Free mem after plugs init: 11464
+	<Volab setUp > >>>>>>   Free mem before wifi init: 11464
+	<Volab setUp, Wifilink begin > >>>>>>   Free mem before _wifiRef init: 11400
+	<Volab setUp, Wifilink begin > >>>>>>   Free mem after alls init: 11384
+	<Volab setUp, Wifilink begin > >>>>>>   Free mem before displya wifi mode : 11384
+	<Volab setUp, Wifilink begin > >>>>>>   Free mem before wifiRef.begin : 10920
+	<Volab setUp, Wifilink begin > >>>>>>   Free mem after  wifiRef.begin : 10688
+	<Volab setUp, Wifilink begin > >>>>>>   Free mem before station connect loop : 10656
+	<Volab setUp, Wifilink begin > >>>>>>   Free mem after station connect loop : 10568
+	<Volab setUp, Wifilink begin > >>>>>>   Free mem after station mode start : 10568
+	<Volab setUp > >>>>>>   Free mem after wifi init: 10632
+	<Volab setUp > >>>>>>   Free mem before webserver init: 10632
+	<Volab WEbServer init > >>>>>>   Free mem before new ESP8266WebServer : 10568
+	<Volab WEbServer init > >>>>>>   Free mem before new ESP8266WebServer : 10136
+	<Volab WEbServer init > >>>>>>   Free mem before server begin : 9152
+	<Volab WEbServer init > >>>>>>   Free mem after server begin : 9008 (some unsued pages commented sot save memory)
+	<Volab setUp > >>>>>>   Free mem after webserver init: 9056
+	<Volab setUp > >>>>>>   Free mem after timeserver check: 8808
+	<Volab setUp > >>>>>>   Free mem after initCBITTimer: 8808
+	<Volab setUp > >>>>>>   Free mem at setup end: 8072
+	<Volab CJsonIotEps store json method > *********JSON WRITE REQUESTED***************
+
+	<Volab Handle config html form > >>>>>>   Free mem at handleConfPage start: 7640
+	<Volab Handle config html form > >>>>>>   Free mem after page read: 3280
+	<Volab reading one parameter from config > >>>>>>   Free mem at funct begin: 3088
+	<Volab reading one parameter from config > Config file size : 1413
+	<Volab reading one parameter from config > >>>>>>   Free mem after file read: 1536
+	<Volab reading one parameter from config > >>>>>>   Free mem after json dynamic alloc: 688
+	<Volab reading one parameter from config > Failed to load json config
+	<Volab reading one parameter from config > Free mem after close: 824
+
+	...
+
+	<Volab handleFileRead > >>>>>>   Free mem at handle file read start: 8248
+	handleFileRead _path : /css/style.css
+	handleFileRead _contenttype : text/css
+	<Volab handleFileRead > >>>>>>   Free mem at handle file read juste before file close: 6640
+	<Volab handleFileRead > >>>>>>   Free mem at handle file read end: 6776
+	<Volab handleFileRead > /img/logo_alpha.png
+	<Volab handleFileRead > >>>>>>   Free mem at handle file read start: 8216
+	handleFileRead _path : /img/logo_alpha.png
+	handleFileRead _contenttype : image/png
+	<Volab handleFileRead > >>>>>>   Free mem at handle file read juste before file close: 6608
+	<Volab handleFileRead > >>>>>>   Free mem at handle file read end: 6744
+
+	#Serial command <J0>
+
+	<Volab Display json > Json file: /config4.json
+	<Volab Display json > >>>>>>   Free mem after file is opened: 8128
+	<Volab Display json > Config file size : 1413
+	<Volab Display json > >>>>>>   Free mem after json dynamic alloc: 6680
+	<Volab Display json > >>>>>>   Free mem after json parse: 4808
+	<Volab in the loop > >>>>>>   Free mem at CBIT time: 8552
+
+	#Serial command <J1>
+
+	<Volab Display json > >>>>>>   Free mem after file is opened: 8032
+	<Volab Display json > Config file size : 2170
+	<Volab Display json > >>>>>>   Free mem after json dynamic alloc: 5824
+	<Volab Display json > >>>>>>   Free mem after json parse: 3952
+
+**Conclusions**:
+
+- remove unused web path from server to win 910 bytes
+- remove asscoiated function like : ``void CServerWeb::displayTime()``
+- minifier html page config_tag.htm to win 714 bytes. befor 4214bytes afert 3279 delta 935bytes !
+- rewrite method : void CServerWeb::handelIOTESPConfPage()
+- add : ``friend class CServerWeb;`` to class ConfigParam and to CPowerPlug
 
 
 
@@ -872,9 +962,9 @@ Which is very usefull to debug !
 Html server
 =====================
 
-Exemples ESP html serveurs:
+Exemples ESP html serveurs::
 
-C:\MountWD\Donnees\OneDrive\Donnees\008_iao_wrk\Arduino\Croquis\ESP01\HelloServer
+    C:\MountWD\Donnees\OneDrive\Donnees\008_iao_wrk\Arduino\Croquis\ESP01\HelloServer
 
 Documentation `arduino-esp8266`_
 

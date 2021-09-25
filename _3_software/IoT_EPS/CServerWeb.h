@@ -57,7 +57,7 @@ class CServerWeb
         void init( CRtc * rtc, ConfigParam *cparam, CPowerPlug *plugs
                     , bool *restartTempoLed, ESP8266WiFiClass *pWifiCon );
         void setMPSstVar( int mainPowerSwitchStateVal ){mainPowerSwitchState = mainPowerSwitchStateVal;}
-        void displayTime();
+        // void displayTime();
         void serviceClient();
         void handlePlugOnOff(); //29/08/2020 : why public ?
         static String extractParamFromHtmlReq( String allRecParam, String param );

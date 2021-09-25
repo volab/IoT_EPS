@@ -81,6 +81,7 @@ class ConfigParam{
         bool _jsonWriteRequest = false;
 
         friend class CJsonIotEps;
+        friend class CServerWeb;
         
 
 };

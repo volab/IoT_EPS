@@ -55,20 +55,20 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs
         DSPL( dPrompt + F("******************reg page") );
     }
     server->on("/", HTTP_GET, std::bind(&CServerWeb::handleIndex, this));
-    server->on("/time", std::bind(&CServerWeb::displayTime, this));
-    server->on("/list", HTTP_GET, std::bind(&CServerWeb::handleFileList, this));
+    // server->on("/time", std::bind(&CServerWeb::displayTime, this));
+    // server->on("/list", HTTP_GET, std::bind(&CServerWeb::handleFileList, this));
     server->on("/plugonoff", HTTP_POST, std::bind(&CServerWeb::handlePlugOnOff, this));
     server->on("/help", HTTP_GET, std::bind(&CServerWeb::handleHelp, this));
-    server->on("/edit", HTTP_GET, std::bind(&CServerWeb::handleEdit, this));
-    server->on("/edit", HTTP_PUT, std::bind(&CServerWeb::handleFileCreate, this));
+    // server->on("/edit", HTTP_GET, std::bind(&CServerWeb::handleEdit, this));
+    // server->on("/edit", HTTP_PUT, std::bind(&CServerWeb::handleFileCreate, this));
 
     //server.on with 4 parameters - 2 callbacks
     //first callback is called after the request has ended with all parsed arguments
     //second callback handles file uploads at that location
-    server->on("/edit", HTTP_POST, std::bind(&CServerWeb::htmlOkResponse, this)
-                                 , std::bind(&CServerWeb::handleFileUpload, this));
+    // server->on("/edit", HTTP_POST, std::bind(&CServerWeb::htmlOkResponse, this)
+    //                              , std::bind(&CServerWeb::handleFileUpload, this));
 
-    server->on("/edit", HTTP_DELETE, std::bind(&CServerWeb::handleFileDelete, this));
+    // server->on("/edit", HTTP_DELETE, std::bind(&CServerWeb::handleFileDelete, this));
     server->on("/cfgpage", HTTP_GET, std::bind(&CServerWeb::handelIOTESPConfPage, this));
     server->on("/cfgsend", HTTP_POST, std::bind(&CServerWeb::handleIOTESPConfiguration, this));
     server->on("/ChangeCred", HTTP_POST, std::bind(&CServerWeb::handleNewCred, this) );
@@ -110,28 +110,28 @@ void CServerWeb::serviceClient(){
 
 // can't have parameters like rtc caus it is used as a callback function in
 // server->on
-void CServerWeb::displayTime(){
-    String page;
-    DateTime now;
-    // now = rtc.now();
-    if (_pRtc == NULL)
-        return;
+// void CServerWeb::displayTime(){
+//     String page;
+//     DateTime now;
+//     // now = rtc.now();
+//     if (_pRtc == NULL)
+//         return;
 
-    now = _pRtc->now();
-    page = "<html><head>";
-    page += "<meta http-equiv='refresh' content='5'/>";
-    page += "<title>IoT EPS display Time</title>";
-    page += "<style>";
-    page += "body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }";
-    page += "</style></head><body><h1>IoT EPS time!</h1>";
-    page += "<a href=\"index.html\">Accueil</a><p>";
-    page += (String)now.day() + "/" + (String)now.month() + "/" + (String)now.year() + " ";
-    page += (String)now.hour() + ":" + (String)now.minute() + ":";
-    page += (String)now.second();
-    page += "</p></body></html>";
+//     now = _pRtc->now();
+//     page = "<html><head>";
+//     page += "<meta http-equiv='refresh' content='5'/>";
+//     page += "<title>IoT EPS display Time</title>";
+//     page += "<style>";
+//     page += "body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }";
+//     page += "</style></head><body><h1>IoT EPS time!</h1>";
+//     page += "<a href=\"index.html\">Accueil</a><p>";
+//     page += (String)now.day() + "/" + (String)now.month() + "/" + (String)now.year() + " ";
+//     page += (String)now.hour() + ":" + (String)now.minute() + ":";
+//     page += (String)now.second();
+//     page += "</p></body></html>";
 
-    server->send(200, "text/html", page);
-}
+//     server->send(200, "text/html", page);
+// }
 
 /**
 @fn CServerWeb::handlePlugOnOff()
@@ -466,26 +466,26 @@ There is 2 step in this process display the conf page and compute the conf data.
 This is the purpose of the next method : CServerWeb::handleIOTESPConfiguration to compute the data
 */
 void CServerWeb::handelIOTESPConfPage(){
-    String confParam[] = {
-          HTML_EMPLACEMENT_NAME
-        , HTML_ALLLEDSONTIME_NAME
-        , HTML_LEDLUM_NAME, HTML_HOSTNAME_NAME
-        , HTML_SOFTAPIP_NAME, HTML_SOFTAPPORT_NAME
-        , HTML_STATIONIP_NAME, HTML_STAGATEWAY_NAME
-        , HTML_MAXRETRY_NAME
-    };
+    // String confParam[] = {
+    //       HTML_EMPLACEMENT_NAME
+    //     , HTML_ALLLEDSONTIME_NAME
+    //     , HTML_LEDLUM_NAME, HTML_HOSTNAME_NAME
+    //     , HTML_SOFTAPIP_NAME, HTML_SOFTAPPORT_NAME
+    //     , HTML_STATIONIP_NAME, HTML_STAGATEWAY_NAME
+    //     , HTML_MAXRETRY_NAME
+    // };
     String plugNames[] = {
           HTML_JSON_REDPLUGNAME
         , HTML_JSON_GREENPLUGNAME
         , HTML_JSON_BLUEPLUGNAME
         , HTML_JSON_YELLOWPLUGNAME
     };
-    String checkBox[] = {
-          HTML_STARTINAP_NAME
-        , HTML_DHCPMODE_NAME
-        , HTML_FIRSTBOOT_NAME
-        , HTML_POWERLEDECO_NAME
-    };
+    // String checkBox[] = {
+    //       HTML_STARTINAP_NAME
+    //     , HTML_DHCPMODE_NAME
+    //     , HTML_FIRSTBOOT_NAME
+    //     , HTML_POWERLEDECO_NAME
+    // };
     String phParamTag;
     String param;
     DEFDPROMPT("Handle config html form");
@@ -494,23 +494,41 @@ void CServerWeb::handelIOTESPConfPage(){
     File confFormFile = SPIFFS.open(CONFIGFORMFILENAME, "r");
     if (confFormFile) {
         page = confFormFile.readString();
-        for (String p : confParam) {
-            phParamTag = PALCEHOLDERTAG + p;
-            param = ConfigParam::readFromJsonParam(p, "general");
-            page.replace(phParamTag, param);
-        }
+        // for (String p : confParam) {
+        //     phParamTag = PALCEHOLDERTAG + p;
+        //     param = ConfigParam::readFromJsonParam(p, "general");
+        //     page.replace(phParamTag, param);
+        // }
+        String ph = String(PALCEHOLDERTAG);
+        page.replace( ph + String(HTML_EMPLACEMENT_NAME), _pcParam->_emplacement);
+        page.replace( ph + String(HTML_ALLLEDSONTIME_NAME), String(_pcParam->_allLedsOnTime));  
+        page.replace( ph + String(HTML_LEDLUM_NAME), String(_pcParam->_ledsGlobalLuminosity));     
+        page.replace( ph + String(HTML_HOSTNAME_NAME) , String(_pcParam->_host) );
+        page.replace( ph + String(HTML_SOFTAPIP_NAME) , _pcParam->_addIP.toString() );
+        page.replace( ph + String(HTML_SOFTAPPORT_NAME) , String(_pcParam->_serverPort) );
+        page.replace( ph + String(HTML_STATIONIP_NAME) , _pcParam->_staIP.toString() );
+        page.replace( ph + String(HTML_STAGATEWAY_NAME) ,_pcParam->_staGateway.toString() );
+        page.replace( ph + String(HTML_MAXRETRY_NAME) , String(_pcParam->_STAmaxWifiConnectionRetries) );    
+        int i = 0;    
         for (String p : plugNames) {
             phParamTag = PALCEHOLDERTAG + p;
-            param = ConfigParam::readFromJsonParam("nickName", p);
+            // param = ConfigParam::readFromJsonParam("nickName", p);
+            param = _pPlugs[i]._nickName;   
+            i++;      
             page.replace(phParamTag, param);
         }
-        for (String p : checkBox) {
-            phParamTag = PALCEHOLDERTAG + p;
-            param = ConfigParam::readFromJsonParam(p, "general");
-            DSPL(dPrompt + "p = " + param);
-            param = (param == "ON" ? "checked" : "");
-            page.replace(phParamTag, param);
-        }
+        // for (String p : checkBox) {
+        //     phParamTag = PALCEHOLDERTAG + p;
+        //     //param = ConfigParam::readFromJsonParam(p, "general");
+        //     DSPL(dPrompt + "p = " + param);
+        //     param = (param == "ON" ? "checked" : "");
+        //     page.replace(phParamTag, param);
+        // }
+        ph = String(PALCEHOLDERTAG);
+        page.replace( ph + String(HTML_STARTINAP_NAME), String(_pcParam->_startInApMode?"checked":"") );
+        page.replace( ph + String(HTML_DHCPMODE_NAME), String(_pcParam->_DHCPMode?"checked":"") );
+        page.replace( ph + String(HTML_FIRSTBOOT_NAME), String(_pcParam->_firstBoot==ConfigParam::YES?"checked":"") );
+        page.replace( ph + String(HTML_POWERLEDECO_NAME), String(_pcParam->_powerLedEconomyMode?"checked":"") );
 
         server->send(200, "text/html", page);
     } else {

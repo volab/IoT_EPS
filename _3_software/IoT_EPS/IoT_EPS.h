@@ -273,6 +273,7 @@ if file exist and tag an fsErr if not */
     , "/css/style.css"
     // , "/css/bootstrap.min.css"
     // , "/defConfig.json"
+    //config_tag.htm ?
 };
 
 #endif
