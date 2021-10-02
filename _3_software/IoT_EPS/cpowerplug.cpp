@@ -701,6 +701,7 @@ void CPowerPlug::writeDaysToJson(){
         std::unique_ptr<char[]> buf(new char[size]);
         //read the file
         configFile.readBytes(buf.get(), size);
+        configFile.close();
         DynamicJsonBuffer jsonBuffer;
         JsonObject& json = jsonBuffer.parseObject(buf.get());
         if (json.success()) {
@@ -715,7 +716,7 @@ void CPowerPlug::writeDaysToJson(){
             }
         //and rewrite to the file
             // configFile.seek(0, SeekSet);
-            configFile.close();
+            
             configFile = SPIFFS.open( CONFIGFILENAME , "w");
             // json.prettyPrintTo(configFile);
             json.printTo(configFile);

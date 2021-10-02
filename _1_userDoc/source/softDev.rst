@@ -180,6 +180,7 @@ In progress
 
 ::
 
+#. improve json file managment
 #. Error handling improvement 95% (todo display low error with LED ? Which one : power led ?)
 #. configuration page (see softdev.rst)
 #. exhaustive test of hebdo mode : 95%
@@ -633,6 +634,18 @@ JSON improvements : rewriting stage
 ====================================================================================================
 
 On git branch : json_new
+
+Work Progress
+====================================================================================================
+Last update : 29/09/2021
+
+#. load function : 95%
+#. write function : 1%
+
+To do:
+
+To test write function use configuration html process. CServerWeb::handelIOTESPConfPage and more over
+CServerWeb::handelIOTESPConfPage
 
 Strategy
 ====================================================================================================

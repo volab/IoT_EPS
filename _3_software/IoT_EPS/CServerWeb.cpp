@@ -539,7 +539,7 @@ void CServerWeb::handelIOTESPConfPage(){
 
 void CServerWeb::handleIOTESPConfiguration(){
     DEFDPROMPT("handle configuration")
-    if (!mainPowerSwitchState) {
+    if (!mainPowerSwitchState) { //We consider that the plug not respond :-(
         server->send(404, "text/plain", "Page not found");
         return;
     }
@@ -562,18 +562,18 @@ void CServerWeb::handleIOTESPConfiguration(){
         String val;
     };
 
-    configItem confParam[] = {
-        { HTML_EMPLACEMENT_NAME, "" },
-        { HTML_ALLLEDSONTIME_NAME, "" },
-        { HTML_LEDLUM_NAME, "" },
-        { HTML_HOSTNAME_NAME, "" },
-        { HTML_SOFTAPIP_NAME, "" },
-        { HTML_SOFTAPPORT_NAME, "" },
-        { HTML_STATIONIP_NAME, "" },
-        { HTML_STAGATEWAY_NAME, "" },
-        { HTML_MAXRETRY_NAME, "" },
+    // configItem confParam[] = {
+    //     { HTML_EMPLACEMENT_NAME, "" },
+    //     { HTML_ALLLEDSONTIME_NAME, "" },
+    //     { HTML_LEDLUM_NAME, "" },
+    //     { HTML_HOSTNAME_NAME, "" },
+    //     { HTML_SOFTAPIP_NAME, "" },
+    //     { HTML_SOFTAPPORT_NAME, "" },
+    //     { HTML_STATIONIP_NAME, "" },
+    //     { HTML_STAGATEWAY_NAME, "" },
+    //     { HTML_MAXRETRY_NAME, "" },
 
-    };
+    // };
 
     configItem plugsNickNames[] = {
         { HTML_REDPLUGNICK_NAME, "" },
@@ -584,50 +584,88 @@ void CServerWeb::handleIOTESPConfiguration(){
     //17 parameters
 
     //check box special process
-    configItem checkBoxes[] = {
-        { HTML_POWERLEDECO_NAME, "" },
-        { HTML_FIRSTBOOT_NAME, "" },
-        { HTML_STARTINAP_NAME, "" },
-        { HTML_DHCPMODE_NAME, "" },
-    };
+    // configItem checkBoxes[] = {
+    //     { HTML_POWERLEDECO_NAME, "" },
+    //     { HTML_FIRSTBOOT_NAME, "" },
+    //     { HTML_STARTINAP_NAME, "" },
+    //     { HTML_DHCPMODE_NAME, "" },
+    // };
+    String parameter;
+
+    parameter = extractParamFromHtmlReq(allArgs, HTML_EMPLACEMENT_NAME);
+    if ( parameter != "" )  _pcParam->_emplacement = parameter;
+    parameter = extractParamFromHtmlReq(allArgs, HTML_ALLLEDSONTIME_NAME );
+    if ( parameter != "" )  _pcParam->_allLedsOnTime =  parameter.toInt();
+    parameter = extractParamFromHtmlReq(allArgs, HTML_LEDLUM_NAME );
+    if ( parameter != "" )  _pcParam->_ledsGlobalLuminosity = parameter.toInt();
+    parameter = extractParamFromHtmlReq(allArgs, HTML_HOSTNAME_NAME );
+    if ( parameter != "" )  _pcParam->_host = parameter;
+    parameter = extractParamFromHtmlReq(allArgs, HTML_SOFTAPIP_NAME );
+    if ( parameter != "" ) _pcParam->_addIP.fromString( parameter );
+    parameter = extractParamFromHtmlReq(allArgs, HTML_SOFTAPPORT_NAME );
+    if ( parameter != "" ) _pcParam->_serverPort = parameter.toInt();
+    parameter= extractParamFromHtmlReq(allArgs, HTML_STATIONIP_NAME );
+    if ( parameter != "" ) _pcParam->_staIP.fromString( parameter );
+    parameter= extractParamFromHtmlReq(allArgs, HTML_STAGATEWAY_NAME );
+    if ( parameter != "" ) _pcParam->_staGateway.fromString( parameter );
+    parameter= extractParamFromHtmlReq(allArgs, HTML_MAXRETRY_NAME );
+    if ( parameter != "" ) _pcParam->_STAmaxWifiConnectionRetries = parameter.toInt();
+  
+    
 
     //2 for loop for better debug display ;-)
+    // int cpt = 0;
+    // for (configItem i : confParam)
+    //     confParam[cpt++].val = 
+    // for (configItem i : confParam) {
+    //     if (i.val != "") {
+    //         // DSPL( dPrompt + "Write to json for " + i.name + " value : " + i.val );
+    //         //ConfigParam::write2Json(i.name, i.val, CONFIGFILENAME);
+    //         _pcParam->write2Json(i.name, i.val, CONFIGFILENAME);
+    //     }
+    // }
+
+    _pcParam->_startInApMode = !( extractParamFromHtmlReq(allArgs, HTML_STARTINAP_NAME) == NOT_FOUND );
+    _pcParam->_DHCPMode = !( extractParamFromHtmlReq(allArgs, HTML_DHCPMODE_NAME) == NOT_FOUND );
+    _pcParam->_firstBoot = ( (extractParamFromHtmlReq(allArgs, HTML_FIRSTBOOT_NAME) == NOT_FOUND) ? (ConfigParam::NO):(ConfigParam::YES) );
+    _pcParam->_powerLedEconomyMode = !( extractParamFromHtmlReq(allArgs, HTML_POWERLEDECO_NAME) == NOT_FOUND );
+
+    DSPL( dPrompt + F("Start in AP mode : ") + String(_pcParam->_startInApMode) );
+    DSPL( dPrompt + F("DHCP mode : ") + String(_pcParam->_DHCPMode) );
+    DSPL( dPrompt + "first boot mode : " + ( (_pcParam->_firstBoot==ConfigParam::YES)?"YES":"NO") );
+    DSPL( dPrompt + F("Power Led Economy mode mode : ") + String( _pcParam->_powerLedEconomyMode) );
+
+    // cpt = 0;
+    // for (configItem i : checkBoxes) {
+    //     i.val = extractParamFromHtmlReq(allArgs, i.name);
+    //     checkBoxes[cpt++].val = (i.val == NOT_FOUND ? "OFF" : "ON");
+    // }
+    // for (configItem i : checkBoxes) {
+    //     // DSPL( dPrompt + "Write to json for " + i.name + " value : " + i.val);
+    //     //ConfigParam::write2Json(i.name, i.val, CONFIGFILENAME);
+    //     _pcParam->write2Json(i.name, i.val, CONFIGFILENAME);
+    // }
+
     int cpt = 0;
-    for (configItem i : confParam)
-        confParam[cpt++].val = extractParamFromHtmlReq(allArgs, i.name);
-    for (configItem i : confParam) {
-        if (i.val != "") {
-            // DSPL( dPrompt + "Write to json for " + i.name + " value : " + i.val );
-            //ConfigParam::write2Json(i.name, i.val, CONFIGFILENAME);
-            _pcParam->write2Json(i.name, i.val, CONFIGFILENAME);
-        }
-    }
-    cpt = 0;
-    for (configItem i : checkBoxes) {
-        i.val = extractParamFromHtmlReq(allArgs, i.name);
-        checkBoxes[cpt++].val = (i.val == NOT_FOUND ? "OFF" : "ON");
-    }
-    for (configItem i : checkBoxes) {
-        // DSPL( dPrompt + "Write to json for " + i.name + " value : " + i.val);
-        //ConfigParam::write2Json(i.name, i.val, CONFIGFILENAME);
-        _pcParam->write2Json(i.name, i.val, CONFIGFILENAME);
-    }
-    cpt = 0;
     for (configItem i : plugsNickNames)
         plugsNickNames[cpt++].val = extractParamFromHtmlReq(allArgs, i.name);
     for (configItem i : plugsNickNames) {
         if (i.val != "") {
             String color = i.name.substring(0, i.name.indexOf('_'));
-            // DSPL(dPrompt + "plug name = " + color );
+            DSPL(dPrompt + "plug name = " + color );
             for (int j = 0; j < 4; j++) {
                 // DSPL( dPrompt + "plugName : " + plugs[j].getPlugName() );
                 if (_pPlugs[j].getPlugName() == color) {
-                    // DSPL(dPrompt + "Write to json for " + color + " nickname = " + i.val );
-                    _pPlugs[j].writeToJson("nickName", i.val);
+                    //DSPL(dPrompt + "set nickName " + color + " nickname = " + i.val );
+                    //_pPlugs[j].writeToJson("nickName", i.val);
+                    _pPlugs[j]._nickName = i.val;
+                    DSPL(dPrompt + "get nickName " + color + " nickname = " + _pPlugs[j]._nickName );
                 }
             }
         }
     }
+
+
     String date = extractParamFromHtmlReq(allArgs, "setDate");
     String time = extractParamFromHtmlReq(allArgs, "setTime");
     DSPL(dPrompt + date + " " + time);
@@ -644,6 +682,8 @@ void CServerWeb::handleIOTESPConfiguration(){
         // CRtc::adjust(cstr);
         _pRtc->adjust(cstr);
     }
+
+    _pcParam->_jsonWriteRequest = true; //only one flag is necessary to write all (config and plugs)
 
     /** @todo [NECESSARY]return to config page to confirm that values are taken into account */
     handelIOTESPConfPage();
