@@ -74,12 +74,54 @@ void CJsonIotEps::storeJson(){
     DSPL( dPrompt + F("*********JSON WRITE REQUESTED***************"));
 
 
+
+
     //to remember
     _pcParam->_jsonWriteRequest = false;
     for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
         _pPlugs[i]._jsonWriteRequest = false;
     }
     return;
+}
+
+void CJsonIotEps::_storeJsonOnFile(String file_name){
+
+    DEFDPROMPT( "CJsonIotEps store one json method" );
+
+    File configFile = SPIFFS.open( file_name , "r");
+    // DSPL( dPrompt);
+    if (configFile) {
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
+        configFile.readBytes(buf.get(), size);
+        configFile.close();
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+
+
+
+
+
+
+            // JsonObject& plug = json[_plugName]; 
+            // DSPL( dPrompt + _plugName + " : " + param + " = " + value);
+            // plug[param] = value; 
+            // configFile.seek(0, SeekSet);
+            // configFile.close();
+            configFile = SPIFFS.open( CONFIGFILENAME , "w");
+            json.printTo(configFile);
+            // json.prettyPrintTo(configFile);
+            // plug.prettyPrintTo(Serial);
+            // DSPL();
+        } else {
+            DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+            // return false;
+        }
+        //configFile.close();
+        // return true;        
+    }
 }
 
 /**
