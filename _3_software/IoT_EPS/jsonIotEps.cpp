@@ -99,6 +99,28 @@ void CJsonIotEps::_storeJsonOnFile(String file_name){
         DynamicJsonBuffer jsonBuffer;
         JsonObject& json = jsonBuffer.parseObject(buf.get());
         if (json.success()) {
+            json["general"]["softAP_IP"] = _pcParam->_addIP.toString( );
+            json["general"]["numberOfPlugs"] = String( _pcParam->_numberOfPlugs );
+            json["general"]["softAP_port"] = String( _pcParam->_serverPort );
+            json["general"]["startInAPMode"] = (_pcParam->_wifimode == "softAP") ? "ON":"OFF";
+            if ( _pcParam->_firstBoot == ConfigParam::YES ){
+                json["general"]["firstBoot"] = "ON";
+            } else if( _pcParam->_firstBoot == ConfigParam::NO ){
+                json["general"]["firstBoot"] = "OFF";
+            } else { // ConfigParam::TRY
+                json["general"]["firstBoot"] = "TRYSTA";
+            }
+            json["general"]["STAmaxWifiConnectionRetry"] = String( _pcParam->_STAmaxWifiConnectionRetries );
+            json["general"]["hostName"] = _pcParam->_host;
+            json["general"]["allLedsOnTime"] = String(_pcParam->_allLedsOnTime);
+            json["general"]["ledsGlobalLuminosity"] = String( _pcParam->_ledsGlobalLuminosity );
+            json["general"]["powerLedEconomyMode"] = _pcParam->_powerLedEconomyMode?"ON":"OFF";
+            json["general"]["macAdd"] = String( _pcParam->_macAdd );
+            json["general"]["softAP_macAdd"] = String( _pcParam->_softAPMacAdd );
+            json["general"]["dhcp_mode"] = _pcParam->_DHCPMode?"ON":"OFF";
+            json["general"]["staIP"] = _pcParam->_staIP.toString();
+            json["general"]["staGateway"] = _pcParam->_staGateway.toString( );
+            json["general"]["emplacement"] = String( _pcParam->_emplacement );
 
 
 
