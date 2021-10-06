@@ -150,35 +150,35 @@ Terminated
 
 ::
 
-#. Display single static html page:                                                      ok
-#. Affichage page html fichier SPIFFS :                                                  ok
-#. Affichage de l'heure à partir d'une page en dur dans le code :                        ok
-#. Affichage page avec CSS :                                                             ok
-#. Gestion des mode wifi SoftAP vs client :                                              ok
-#. reception d'une action via un bouton :                                                ok
-#. lecture du fichier de configuration :                                                 ok
-#. intégration MCP23017 :                                                                ok
-#. lecture du fichier de configuration config3.json :                                    ok
-#. gestion bouton poussoir mécanique :                                                   ok
-#. Write json file :                                                                     ok
-#. Traitement de la requete html avec analyze, exécution et écriture json:               ok
-#. manage wif led :                                                                      ok
-#. integrate nano expander with analog inputs :                                          ok
-#. scan I2C response 57 and 58 nano IoExpander !!!! not a bug simply DS3231 board has 2 component DS3231 an EEPROM ! OK
-#. Time managment strategy :                                                             ok
-#. review work without rtc component strategy                                            ok
-#. review work without NTP access strategy                                               ok
-#. define rtc component versus NTP update strategy                                       ok
-#. suppress html replies if main power is off                                            ok
-#. generate a unique server name                                                         ok
-#. rewrite main program setup and loop function with more object oriented structure      ok
-#. add OLED display managment in accordance of its hardware implementation of course     ok
+    #. Display single static html page:                                                      ok
+    #. Affichage page html fichier SPIFFS :                                                  ok
+    #. Affichage de l'heure à partir d'une page en dur dans le code :                        ok
+    #. Affichage page avec CSS :                                                             ok
+    #. Gestion des mode wifi SoftAP vs client :                                              ok
+    #. reception d'une action via un bouton :                                                ok
+    #. lecture du fichier de configuration :                                                 ok
+    #. intégration MCP23017 :                                                                ok
+    #. lecture du fichier de configuration config3.json :                                    ok
+    #. gestion bouton poussoir mécanique :                                                   ok
+    #. Write json file :                                                                     ok
+    #. Traitement de la requete html avec analyze, exécution et écriture json:               ok
+    #. manage wif led :                                                                      ok
+    #. integrate nano expander with analog inputs :                                          ok
+    #. scan I2C response 57 and 58 nano IoExpander !!!! not a bug simply DS3231 board has 2 component DS3231 an EEPROM ! OK
+    #. Time managment strategy :                                                             ok
+    #. review work without rtc component strategy                                            ok
+    #. review work without NTP access strategy                                               ok
+    #. define rtc component versus NTP update strategy                                       ok
+    #. suppress html replies if main power is off                                            ok
+    #. generate a unique server name                                                         ok
+    #. rewrite main program setup and loop function with more object oriented structure      ok
+    #. add OLED display managment in accordance of its hardware implementation of course     ok
 
 
 In progress
 ======================
 
-::
+
 
 #. improve json file managment
 #. Error handling improvement 95% (todo display low error with LED ? Which one : power led ?)
@@ -645,12 +645,12 @@ Last update : 29/09/2021
 To do:
 
 To test write function use configuration html process. CServerWeb::handelIOTESPConfPage and more over
-CServerWeb::handelIOTESPConfPage
+CServerWeb::handelIOTESPConfPage see `Write to json events`_
 
 Strategy
 ====================================================================================================
 
-One json master file : config4.json (no change) and 2 copies
+One json master file : config4.json (no change) and now we introduce 2 copies
 
 Throughout operation, Json data **reside** in RAM : this is the **most important change**.
 
@@ -675,13 +675,28 @@ See the figures below.
     master is good !
     
     To solve this possible bug we decide to had a special field in the json file to check the 
-    readability of the data in the file.
+    readability of the data in the file (jsonTag and jsonVersion).
 
 As we can't compute hash directly on the file but only with data in RAM, the file store strategy 
 presented here is not feasable.
 
 So finaly we made 3 stores, check the 3 hash values if there are not same we retry 3 times. After 
 3 tries, we rise a fatal error.
+
+**REX reflections**:
+
+With json files, we can't compute checksum, crc or hash value and put it directly in the last octets 
+of the file as it is made with binary config files.
+
+We need json for direct send by the html server to the web browser client.
+
+To day we don't have a lib to compute the hash value directly on the SPIFFS file and even if we find
+one wher to store the value ? In an other file ? In this cas e it creat a new pb if power is shut down
+just between the 2 writes. No luck !
+
+A other reflexion where errors came from ? at the write time at the read time ? We suppose at the 
+write time, just after the function open as write of the file and power is shut down before the real
+write process.
 
 ----------------------------------------------------------------------------------------------------
 

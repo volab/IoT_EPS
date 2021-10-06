@@ -62,7 +62,7 @@ class CJsonIotEps{
         String _jsonTag;
 
         uint32_t _hashFile( File jsonFile );
-        void _storeJsonOnFile(String file_name);
+        void _storeOneJsonFile(String file_name);
 
 
 };

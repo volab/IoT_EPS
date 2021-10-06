@@ -74,6 +74,11 @@ void CJsonIotEps::storeJson(){
     DSPL( dPrompt + F("*********JSON WRITE REQUESTED***************"));
 
 
+//What is the logic ?
+//What is the one that this the more efficient ?
+// 3 succesives writes
+// followed by 3 checks and if there is error we restart x times
+
 
 
     //to remember
@@ -84,7 +89,7 @@ void CJsonIotEps::storeJson(){
     return;
 }
 
-void CJsonIotEps::_storeJsonOnFile(String file_name){
+void CJsonIotEps::_storeOneJsonFile(String file_name){
 
     DEFDPROMPT( "CJsonIotEps store one json method" );
 
@@ -206,7 +211,7 @@ bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState ){
                         DSPL( dPrompt + F("Relay on off count = ") + sOnOffCount );
                         DSPL( dPrompt + F("next time to switch = ") + sNextTime2switch );
                         /////////////////////////////////////////////////////////////////////////////
-                        //    plugs member updates                                                  //
+                        //    plugs member updates                                                 //
                         /////////////////////////////////////////////////////////////////////////////
                         _pPlugs[i]._nickName = sNickName;
                         _pPlugs[i]._state = (sState == "ON");
@@ -354,6 +359,7 @@ bool CJsonIotEps::loadJsonConfigParam(){
  
     return returnVal;
 }
+
 /**
  @fn CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity()
  @brief Check the integrity of json file
@@ -397,6 +403,7 @@ CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
     if ( H0 !=0 && H0 == H2 ){ _jsonFileIntegrity = KEEP_MASTER; } //low probability
     //cause it means that copy1 corrupted and not master and copy2
     //sequence of wrtites is master, copy1 and at the end copy2
+    //not only in the best situation, H0 != 0, and H0 == H1 == H2 ie H0 == H2
     if ( H1 !=0 && H1 == H2 ){ _jsonFileIntegrity = KEEP_COPY1; }
     //2 possibilities:
     //master is realy corrupted
@@ -487,6 +494,13 @@ CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
     return _jsonFileIntegrity;
 }
 
+
+/**
+ @fn CJsonIotEps::_hashFile( File jsonFile )
+ @brief compute the pseudo hash value of one json
+ @return hash Value base on data loaded in RAM and usage of a special function in json lib.
+ 0 means open file error
+*/
 uint32_t CJsonIotEps::_hashFile( File jsonFile ){
     HashPrint hashPrint;
     uint32_t hVal = 0;
