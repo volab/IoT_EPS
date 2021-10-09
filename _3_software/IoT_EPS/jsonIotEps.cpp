@@ -50,19 +50,19 @@ void CJsonIotEps::printFileIntegrity(){
     switch (_jsonFileIntegrity){
         case KEEP_MASTER:
             DSPL( dPrompt + F("Keep master"));
-            _fileNameToLoad = CONFIGFILENAME;
+            //_fileNameToLoad = CONFIGFILENAME;
             break;
         case KEEP_COPY1:
-            DSPL( dPrompt + F("Keep copy"));
-            _fileNameToLoad = CONFIGFILENAME_COPY1;
+            DSPL( dPrompt + F("Keep copy 1"));
+            //_fileNameToLoad = CONFIGFILENAME_COPY1;
             break;  
-        case TRY_MASTER:
-            DSPL( dPrompt + F("Try master"));
-            _fileNameToLoad = CONFIGFILENAME;
+        case KEEP_COPY2:
+            DSPL( dPrompt + F("Keep copy 1"));
+            //_fileNameToLoad = CONFIGFILENAME;
             break;
         case FILES_ERROR:
             DSPL( dPrompt + F("Fatal file error"));
-            _fileNameToLoad = "";
+            //_fileNameToLoad = "";
             break;           
         default:
             break;
@@ -364,15 +364,18 @@ bool CJsonIotEps::loadJsonConfigParam(){
  @fn CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity()
  @brief Check the integrity of json file
  @return jsonFileIntegrity Value.
+
+ This method is called in the system init. It sets the _jsonFileIntegrity and 
+ _fileNameToLoad private members.
 */
 CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){ 
-    uint32_t H0 = 0;
-    uint32_t H1 = 0;
-    uint32_t H2 = 0;
+    // uint32_t H0 = 0;
+    // uint32_t H1 = 0;
+    // uint32_t H2 = 0;
     _jsonFileIntegrity = FILES_ERROR;
 
     DEFDPROMPT("Check Json Integrity")
-
+/*
     DSPL( dPrompt +F("Mounting FS..."));
     ///SPIFFS Opning
     if (SPIFFS.begin()) {
@@ -450,58 +453,66 @@ CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
         default:
             break;
     }
-
+*/
     //Check file spacial Tag Values (Version an TAG)
-    if ( _jsonFileIntegrity != FILES_ERROR ){
-        File file = SPIFFS.open( _fileNameToLoad, "r");
-        _jsonVersion = "";
-        _jsonTag = "";
-        if (file){
-            size_t size = file.size();
-            std::unique_ptr<char[]> buf(new char[size]);
-            file.readBytes(buf.get(), size);
-            DynamicJsonBuffer jsonBuffer;
-            JsonObject& json = jsonBuffer.parseObject(buf.get());
-            if (json.success()) {
-                _jsonVersion = json["general"]["jsonVersion"].as<String>();
-                _jsonTag = json["general"]["jsonTag"].as<String>();
-                DSPL( dPrompt + F("JSON file read version : ") + _jsonVersion );
-            }
-        }
-        file.close();
-        if ( ( _jsonVersion != JSON_VERSION ) || ( _jsonTag != JSON_TAG ) ){
-            _jsonFileIntegrity = FILES_ERROR;
-            _fileNameToLoad = "";
-        }
-
-    DSPL( dPrompt + F("after Tag and version check."));
-    switch (_jsonFileIntegrity){
-        case KEEP_MASTER:
-            DSPL( dPrompt + F("Keep master"));
-            _fileNameToLoad = CONFIGFILENAME;
-            break;
-        case KEEP_COPY1:
-            DSPL( dPrompt + F("Keep copy"));
-            _fileNameToLoad = CONFIGFILENAME_COPY1;
-            break;  
-        case TRY_MASTER:
-            DSPL( dPrompt + F("Try master"));
-            _fileNameToLoad = CONFIGFILENAME;
-            break;
-        case FILES_ERROR:
-            DSPL( dPrompt + F("Fatal file error"));
-            _fileNameToLoad = "";
-            break;           
-        default:
-            break;
-    }
-
-
+    if ( _checkJsonOneFileIntegrity(CONFIGFILENAME) ){
+        _fileNameToLoad = CONFIGFILENAME;
+        _jsonFileIntegrity = KEEP_MASTER;
+    } else if ( _checkJsonOneFileIntegrity( CONFIGFILENAME_COPY1 ) ){
+        _fileNameToLoad = CONFIGFILENAME_COPY1;
+        _jsonFileIntegrity = KEEP_COPY1;
+    } else if ( _checkJsonOneFileIntegrity( CONFIGFILENAME_COPY2 )){
+        _fileNameToLoad = CONFIGFILENAME_COPY2;
+        _jsonFileIntegrity = KEEP_COPY2;
+    } else {
+        _fileNameToLoad = "";
+        _jsonFileIntegrity = FILES_ERROR;
     }
 
     return _jsonFileIntegrity;
 }
 
+/**
+ @fn CJsonIotEps::checkJsonOneFileIntegrity( String fileName )
+ @brief Check the integrity of json file
+ @param fileName The file name to check
+ @return true if file is correct.
+
+ This method is called in the system init. It sets the _jsonFileIntegrity and 
+ _fileNameToLoad private members.
+*/
+bool CJsonIotEps::_checkJsonOneFileIntegrity( String fileName ){
+    DEFDPROMPT("Check Json Integrity (one file)")
+    bool returnVal = false;
+    _jsonVersion = "";
+    _jsonTag = "";
+
+    File file = SPIFFS.open( fileName, "r");
+    if (file){
+        size_t size = file.size();
+        std::unique_ptr<char[]> buf(new char[size]);
+        file.readBytes(buf.get(), size);
+        file.close();
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+        if (json.success()) {
+            _jsonVersion = json["jsonVersion"].as<String>();
+            _jsonTag = json["jsonTag"].as<String>();
+            DSPL( dPrompt + F("file : ") + fileName + F(", JSON file read version : ") + _jsonVersion );
+        }
+    }
+    
+    if ( ( _jsonVersion == JSON_VERSION ) && ( _jsonTag == JSON_TAG ) ){
+        // _jsonFileIntegrity = FILES_ERROR;
+        // _fileNameToLoad = "";
+        returnVal = true;        
+    } else {
+        returnVal = false;
+    }
+
+    return returnVal;
+
+}
 
 /**
  @fn CJsonIotEps::_hashFile( File jsonFile )

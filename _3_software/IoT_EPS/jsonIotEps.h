@@ -37,7 +37,7 @@ private:
 class CJsonIotEps{
 
     public:
-        enum jsonFileIntegrity_t { KEEP_MASTER, KEEP_COPY1, TRY_MASTER, FILES_ERROR };
+        enum jsonFileIntegrity_t { KEEP_MASTER, KEEP_COPY1, KEEP_COPY2, FILES_ERROR };
 
         bool init( ConfigParam *pcParam, CPowerPlug *plugs );
 
@@ -63,6 +63,7 @@ class CJsonIotEps{
 
         uint32_t _hashFile( File jsonFile );
         void _storeOneJsonFile(String file_name);
+        bool _checkJsonOneFileIntegrity( String fileName );
 
 
 };

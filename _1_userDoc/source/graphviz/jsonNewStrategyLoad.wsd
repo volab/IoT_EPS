@@ -6,7 +6,7 @@ FontSize 20
 }
 </style>
 
-caption Json New startegy : load file
+caption Json New startegy : load file - obsolete
 
 start
 'skinparam ConditionEndStyle hline

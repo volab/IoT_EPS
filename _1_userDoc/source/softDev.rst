@@ -35,7 +35,7 @@ Software architecture or how does it work
 ====================================================================================================
 Some words on software architecture @13/07/2020
 
-see also `Json file improvments : analyse`_
+see also `Json file improvements : analyse`_
 
 Major points
 ====================================================================================================
@@ -161,7 +161,7 @@ Terminated
     #. lecture du fichier de configuration config3.json :                                    ok
     #. gestion bouton poussoir mécanique :                                                   ok
     #. Write json file :                                                                     ok
-    #. Traitement de la requete html avec analyze, exécution et écriture json:               ok
+    #. Traitement de la requête html avec analyze, exécution et écriture json:               ok
     #. manage wif led :                                                                      ok
     #. integrate nano expander with analog inputs :                                          ok
     #. scan I2C response 57 and 58 nano IoExpander !!!! not a bug simply DS3231 board has 2 component DS3231 an EEPROM ! OK
@@ -181,11 +181,12 @@ In progress
 
 
 #. improve json file managment
+#. Minifier all files if possible of course and reduce the size of the images
 #. Error handling improvement 95% (todo display low error with LED ? Which one : power led ?)
 #. configuration page (see softdev.rst)
 #. exhaustive test of hebdo mode : 95%
 #. write index special page for softAP Mode with local boostrap or other light js.framework 5%
-#. Creat an infography that summarize features and needs 
+#. Create an infography that summarize features and needs 
 #. Write user manual : 1%
 #. Write builder manual
 #. UML and classes documentation 10% - web and json
@@ -198,7 +199,7 @@ Differed to next version
 
 ::
 
-#. power measurement - not in this vesion
+    #. power measurement - not in this vesion
 
 
 ====================================================================================================
@@ -288,12 +289,12 @@ Available method:
     uint8_t getLastInterruptPin();
     uint8_t getLastInterruptPinValue();
   
-Default address: 0x20 (with the 3 adrees pins at ground)
+Default address: 0x20 (with the 3 address pins at ground)
 
 En premier mouture, essai avec la librairie directement mais en deuxième monte, faire une classe
 qui prennent en charge la gestion du temps (classe Flasher dédiée au MCP)
 
-Deuxième mouture clréation de la class CPowerPlug avec utilisation de variable static
+Deuxième mouture création de la class CPowerPlug avec utilisation de variable static
 
 _initDone et _mpc (mpc étant la ressource commune à toutes les instances de la classe)
 
@@ -330,13 +331,13 @@ PBIT : preliminary BIT
 #. File system
 #. Config param (JSON config file)
 #. Credentials file (not in firstboot mode) - check its structure
-#. I2C acces
+#. I2C access
 #. rtc
 #. only in Station mode and after WIFI connection, check NTP access
 
 
 CBIT : Continus BIT every loop cycle, check :
- - I2C acces (only one retry)
+ - I2C access (only one retry)
  - RTC access
  - JSON config file
  - File system 
@@ -518,16 +519,16 @@ I place methods in the CSystem class not very logic. The right way to do it shou
 dedicate dislayMessageClass.
 
 ====================================================================================================
-Json file improvments : analyse
+Json file improvements : analyse
 ====================================================================================================
-Simple improvments
+Simple improvements
 ====================================================================================================
 05/07/2021:
 
 CPowerPlug::readFromJson() : move up configFile.close(); at l253 to l189
 
 readFromJson twice defined. Ontime in CPowerPlug and on time in ConfigParam: not the same method. 
-One for Plug parameters and one for géneral parameter
+One for Plug parameters and one for general parameter
 
 ConfigParam::readFromJsonParam() : move up configFile.close() Too
 
@@ -541,7 +542,7 @@ JSON structure vs variables
 ====================================================================================================
 .. uml:: graphviz/config4jsonVsVariables.wsd
 
-22/07/2021: création of the members of ConfigParam:
+22/07/2021: creation of the members of ConfigParam:
 
 - _emplacement
 - _startInApMode
@@ -549,7 +550,7 @@ JSON structure vs variables
 
 About ntpError json parameter:
 
-- write in the loop at lign 396 in cbit.
+- write in the loop at line 396 in cbit.
 
 - and write in CSystem::timeServerCheck
 
@@ -564,7 +565,7 @@ On power plug class side, creation of new members:
 String nickName, hDebut, hFin, dureeOn, dureeOff, clonedPlug, onOffCount.
 
 
-Write to file improvments
+Write to file improvements
 ====================================================================================================
 **First question**: track all json config file access by tracking all usage of CONFIGFILENAME
 
@@ -584,7 +585,7 @@ There are 6 methods that write to json file:
 - "CPowerPlug::writeDaysToJson()"
 - "CServerWeb::handelIOTESPConfPage()"
 
-**Second question**: after track all usage of write to json méthods
+**Second question**: after track all usage of write to json methods
 
 **third question**: what are the events that trig writes on json file ?
 
@@ -637,17 +638,19 @@ On git branch : json_new
 
 Work Progress
 ====================================================================================================
-Last update : 29/09/2021
+Last update : 10/10/2021
 
-#. load function : 95%
+#. load function : 20% (return to the start change paradigm)
 #. write function : 1%
 
 To do:
 
+minifier json, change read method, change check integrity method, write write method, 
+
 To test write function use configuration html process. CServerWeb::handelIOTESPConfPage and more over
 CServerWeb::handelIOTESPConfPage see `Write to json events`_
 
-Strategy
+Strategy : **obsolete** see REX Reflections
 ====================================================================================================
 
 One json master file : config4.json (no change) and now we introduce 2 copies
@@ -655,11 +658,11 @@ One json master file : config4.json (no change) and now we introduce 2 copies
 Throughout operation, Json data **reside** in RAM : this is the **most important change**.
 
 On web and plug events, write2json methods do not write directly to the file, they change data in RAM
-and after all changes, file is store in SPIFFS and 2 copies are made whith hash verification.
+and after all changes, file is store in SPIFFS and 2 copies are made with hash verification.
 
-At startup, hash of the 3 files are checked to determin what file is good and what file is corrupted.
+At startup, hash of the 3 files are checked to determine what file is good and what file is corrupted.
 After this check, the good file is loaded or none if all 3 files are corrupted. In this situation a
-new system error is rised.
+new system error is risen.
 
 See the figures below.
 
@@ -671,32 +674,44 @@ See the figures below.
     Pb: in the write procedure, if power is shut down just after first json write, the master file 
     is good but the file has a different hash value of copy1 and copy2
 
-    Pb2: if power is shut down just after the write of copy 1, 3 hash values are differents but
+    Pb2: if power is shut down just after the write of copy 1, 3 hash values are different but
     master is good !
     
     To solve this possible bug we decide to had a special field in the json file to check the 
     readability of the data in the file (jsonTag and jsonVersion).
 
 As we can't compute hash directly on the file but only with data in RAM, the file store strategy 
-presented here is not feasable.
+presented here is not feasible.
 
-So finaly we made 3 stores, check the 3 hash values if there are not same we retry 3 times. After 
+So finally we made 3 stores, check the 3 hash values if there are not same we retry 3 times. After 
 3 tries, we rise a fatal error.
 
-**REX reflections**:
+**REX reflections**::
 
-With json files, we can't compute checksum, crc or hash value and put it directly in the last octets 
-of the file as it is made with binary config files.
+    With json files, we can't compute checksum, crc or hash value and put it directly in the last octets 
+    of the file as it is made with binary config files.
 
-We need json for direct send by the html server to the web browser client.
+    We need json for direct send by the html server to the web browser client.
 
-To day we don't have a lib to compute the hash value directly on the SPIFFS file and even if we find
-one wher to store the value ? In an other file ? In this cas e it creat a new pb if power is shut down
-just between the 2 writes. No luck !
+    To day we don't have a lib to compute the hash value directly on the SPIFFS file and even if we find
+    one where to store the value ? In an other file ? In this case it creates a new pb if power is shut down
+    just between the 2 writes. No luck !
 
-A other reflexion where errors came from ? at the write time at the read time ? We suppose at the 
-write time, just after the function open as write of the file and power is shut down before the real
-write process.
+    An other reflection where errors came from ? at the write time or at the read time ? We suppose at the 
+    write time, just after the function open as write of the file and power is shut down before the real
+    write process.
+
+    The technique of the hash in 3 files is not enough robust. Example: if a write error arrives just 
+    at the second write, we have 3 different hashes and we can't conclude. In the same way, we have an 
+    error on the first write, a right write on the second and just after a power shut down, here we have
+    3 different hashes values.
+
+    To correct this we had some tags in the file, so if we put a tag at the beginning of the file and one
+    at the end, if this 2 tags are good there is great chances that file is correct.
+
+    Finally we decide to write only 2 files and keep the third as a template to restaure a default
+    situation if the 2 others files are corrupts. This Third file is only writes when the user 
+    change the configuration.
 
 ----------------------------------------------------------------------------------------------------
 
@@ -827,12 +842,13 @@ Free memory analyze
 ====================================================================================================
 Special git branch analyseFreeMem.
 
+Due to a bug when I want to test the write function, I am forced to conduct this analyze.
+
 Commands used::
 
     #include <ESP.h>
     //...
     DSPL( dPrompt + "Free mem : " + String( ESP.getFreeHeap() ));
-
 
 
 Memory analysis::
@@ -909,6 +925,11 @@ Memory analysis::
 	<Volab Display json > >>>>>>   Free mem after json parse: 3952
 
 **Conclusions**:
+The bug is due to a lack of memory when in the method that compute the html page that load json, 
+for a 1k file it takes more than 2K in memory, one for the txt buffer that receive raw data and 
+one for the json object.
+ 
+Corrections:
 
 - remove unused web path from server to win 910 bytes
 - remove asscoiated function like : ``void CServerWeb::displayTime()``

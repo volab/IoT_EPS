@@ -79,7 +79,7 @@ there is 3 pull-up on the board.
 #define CONFIGFILENAME_COPY1 "/config4copie1.json"
 #define CONFIGFILENAME_COPY2 "/config4copie2.json"
 #define JSON_TAG "IoTEps"
-#define JSON_VERSION "v5.0"
+#define JSON_VERSION "v5.1"
 
 
 #include "SerialCommand.h"
