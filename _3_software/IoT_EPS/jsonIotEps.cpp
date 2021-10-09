@@ -399,21 +399,29 @@ CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
         }        
     }
 
-    if ( H0 !=0 && H0 == H1 ){ _jsonFileIntegrity = KEEP_MASTER; } //best situation
-    if ( H0 !=0 && H0 == H2 ){ _jsonFileIntegrity = KEEP_MASTER; } //low probability
-    //cause it means that copy1 corrupted and not master and copy2
-    //sequence of wrtites is master, copy1 and at the end copy2
-    //not only in the best situation, H0 != 0, and H0 == H1 == H2 ie H0 == H2
-    if ( H1 !=0 && H1 == H2 ){ _jsonFileIntegrity = KEEP_COPY1; }
-    //2 possibilities:
-    //master is realy corrupted
-    //master is good and there was a shut down just before the first copy
+    if ( H0 !=0 ){
+        if ( H0 == H1 ){ _jsonFileIntegrity = KEEP_MASTER; }//best situation
+        else if ( H0 == H2 ){ _jsonFileIntegrity = KEEP_MASTER; } //low probability
+        //cause it means that copy1 corrupted and not master and copy2
+        //sequence of wrtites is master, copy1 and at the end copy2
+        //not only in the best situation, H0 != 0, and H0 == H1 == H2 ie H0 == H2 but this case
+        //is already take into account with nested if
+        else if (H1 !=0 ){//H1 could be equal to H2 if H1 and H2 are eqal to 0: H1 !=0 added
+            if ( H1 == H2){ _jsonFileIntegrity = KEEP_COPY1; }
+                //master H0 corrupted but !=0 never saw but... possible due to this risk keep copy
+                //master good but previous write process stopped between write 0 and 1
+        } else { //H1 == 0
+            _jsonFileIntegrity = TRY_MASTER;
+        }
+
+        
+    }
 
     //if (H0, H1 and H2 !=0) and H0 != H1 != H2 (all hash values are differents)
     //this situation corresponds to a good master write but wrong write at the time of first copy
     //In this case master is good and has a hash value, copy1 is wrong and has a diffrent hash value
     //regardless of master and copy2 and copy2 is good but is out of date and has a third hash value
-    if ( H0 != H1 && H0 != H1 && H1 != H2 ){ _jsonFileIntegrity = TRY_MASTER; }
+    if ( H0 != H1 && H0 != H2 && H1 != H2 ){  }
     // could be KEEP_MASTER
 
     //if only H0 != 0 we can try to use it
