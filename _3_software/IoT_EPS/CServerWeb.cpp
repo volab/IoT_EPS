@@ -659,7 +659,7 @@ void CServerWeb::handleIOTESPConfiguration(){
                     //DSPL(dPrompt + "set nickName " + color + " nickname = " + i.val );
                     //_pPlugs[j].writeToJson("nickName", i.val);
                     _pPlugs[j]._nickName = i.val;
-                    DSPL(dPrompt + "get nickName " + color + " nickname = " + _pPlugs[j]._nickName );
+                    DSPL(dPrompt + F("set nickName of ") + color + F(" to : ") + _pPlugs[j]._nickName );
                 }
             }
         }

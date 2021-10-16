@@ -308,33 +308,33 @@ void ConfigParam::displayWifiMode(){
 The file nema parameter has a default valeur (see in configParam.h)
 */
 void ConfigParam::write2Json( String param, String value, String file ){
-    DEFDPROMPT( "write  param to jSon file");
+    DEFDPROMPT( "write  param to jSon file (obsolete)");
 
     _jsonWriteRequest = true;
-    /** @todo [ECESSARY] remove below code*/
+    /** done [NECESSARY] remove below code*/
 
     // File configFile = SPIFFS.open( CONFIGFILENAME , "r");
-    File configFile = SPIFFS.open( file , "r");
-    DSPL( dPrompt + file);
-    if (configFile) {
-        size_t size = configFile.size();
-        // Allocate a buffer to store contents of the file.
-        std::unique_ptr<char[]> buf(new char[size]);
-        configFile.readBytes(buf.get(), size);
-        DynamicJsonBuffer jsonBuffer;
-        JsonObject& json = jsonBuffer.parseObject(buf.get());
-        if (json.success()) {
-            JsonObject& plug = json["general"]; // main level
-            DSPL( dPrompt + " general : " + param + " = " + value);
-            plug[param] = value; 
-            configFile.close();
-            configFile = SPIFFS.open( file , "w");
-            json.printTo(configFile);
-        } else {
-            DEBUGPORT.println(dPrompt + F("Failed to load json config"));
-        }
-        configFile.close();
-    }     
+    // File configFile = SPIFFS.open( file , "r");
+    // DSPL( dPrompt + file);
+    // if (configFile) {
+    //     size_t size = configFile.size();
+    //     // Allocate a buffer to store contents of the file.
+    //     std::unique_ptr<char[]> buf(new char[size]);
+    //     configFile.readBytes(buf.get(), size);
+    //     DynamicJsonBuffer jsonBuffer;
+    //     JsonObject& json = jsonBuffer.parseObject(buf.get());
+    //     if (json.success()) {
+    //         JsonObject& plug = json["general"]; // main level
+    //         DSPL( dPrompt + " general : " + param + " = " + value);
+    //         plug[param] = value; 
+    //         configFile.close();
+    //         configFile = SPIFFS.open( file , "w");
+    //         json.printTo(configFile);
+    //     } else {
+    //         DEBUGPORT.println(dPrompt + F("Failed to load json config"));
+    //     }
+    //     configFile.close();
+    // }     
 }
 
 /** 

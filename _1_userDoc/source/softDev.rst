@@ -181,18 +181,48 @@ In progress
 
 
 #. improve json file managment
+    - write process
+        - for one
+            - config : ok
+            - plugs : ok
+            - compile : ok
+        - for 3 files
+            - Write ok
+            - compile ok 
+        - test
+    - treat todo (error rise)
+        - regen list
+        - treat one by one
+    - clean the code
+    - comit
+    - push
+    - merge
+    - push
 #. Minifier all files if possible of course and reduce the size of the images
+    - minifier picture
+    - minifier css
+    - minifier html
 #. Error handling improvement 95% (todo display low error with LED ? Which one : power led ?)
 #. configuration page (see softdev.rst)
 #. exhaustive test of hebdo mode : 95%
 #. write index special page for softAP Mode with local boostrap or other light js.framework 5%
 #. Create an infography that summarize features and needs 
+    - choose tool
+    - choose Size
+    - choose colors
 #. Write user manual : 1%
 #. Write builder manual
+    - mechanical parts
+    - buy and groups components
+    - oder pcb
+
 #. UML and classes documentation 10% - web and json
 
 
-Don't forget the todo list of the **doxygen documentation** and **git history**
+Don't forget the todo list of the **doxygen documentation** and **git history**:
+
+    - before regen todo list
+
 
 Differed to next version
 ====================================================================================================
@@ -638,14 +668,20 @@ On git branch : json_new
 
 Work Progress
 ====================================================================================================
-Last update : 10/10/2021
+Last update : 13/10/2021
 
-#. load function : 20% (return to the start change paradigm)
-#. write function : 1%
+#. load function : 98% 
+#. write function : 20%
+
+minifier json ok , change read method ok, change check integrity method ok ,  
+
 
 To do:
 
-minifier json, change read method, change check integrity method, write write method, 
+12/10/2021 : finish write of CJsonIotEps::_storeOneJsonFile (plugs values)
+
+write store method, finish storOneFileMethod for plugs array
+
 
 To test write function use configuration html process. CServerWeb::handelIOTESPConfPage and more over
 CServerWeb::handelIOTESPConfPage see `Write to json events`_
@@ -712,6 +748,9 @@ So finally we made 3 stores, check the 3 hash values if there are not same we re
     Finally we decide to write only 2 files and keep the third as a template to restaure a default
     situation if the 2 others files are corrupts. This Third file is only writes when the user 
     change the configuration.
+
+    An other way, would be to store hash value somewhere in a file or in the nano eeprom and in the 
+    load process we keep the first couple hash,file that is correct !
 
 ----------------------------------------------------------------------------------------------------
 

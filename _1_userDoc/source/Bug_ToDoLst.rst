@@ -34,16 +34,36 @@ Model Type
 
 ----------------------------------------------------------------------------------------------------
 
+Bug : cfgpage / cfgsend
+==================
+
+    :Detection date:   23/10/21
+    :Resolution date:  
+    :Target:           firmware
+    :Status:           open
+    :Problem:         /cfgpage after cfgpage send the link in browser turn to /cfgsend du to usage 
+                      of send button. This behavior is normal. But we refresh the page with new
+                      values and if user use the resend button from the browser he resend the same
+                      page. Not realy a bug but no very clean.
+                      **More** Add to this page, there is no return to home button
+    :Traitement:
+    
+
+
+----------------------------------------------------------------------------------------------------
 Bug : cfgpage
 ==================
 
-    :Date de saisie:        210821
-    :Date de traitemant:    
+    :Date de saisie:        21/08/21
+    :Date de traitemant:    16/10/21
     :Cible:                 firmware
-    :Status:                open
-    :Problematique:         /cfgpage : faile to loag json param!
+    :Status:                closed
+    :Problematique:         /cfgpage : faile to load json param!
     :Traitement:
     
+    ::
+
+        Free memory analyse was conducted. memory managment improvment was intruduced.
 
 ----------------------------------------------------------------------------------------------------
 

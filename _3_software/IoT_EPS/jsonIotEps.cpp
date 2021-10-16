@@ -69,31 +69,96 @@ void CJsonIotEps::printFileIntegrity(){
     }
 }
 
-void CJsonIotEps::storeJson(){
+bool CJsonIotEps::storeJson(){
     DEFDPROMPT( "CJsonIotEps store json method" );
     DSPL( dPrompt + F("*********JSON WRITE REQUESTED***************"));
-
+    bool retVal = false;
+    
 
 //What is the logic ?
 //What is the one that this the more efficient ?
 // 3 succesives writes
 // followed by 3 checks and if there is error we restart x times
 
+//from softdev.rst REX:
+//Finally we decide to write only 2 files and keep the third as a template to restaure a default
+//situation if the 2 others files are corrupts. This Third file is only writes when the user
+//change the configuration.
 
-
-    //to remember
-    _pcParam->_jsonWriteRequest = false;
-    for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
-        _pPlugs[i]._jsonWriteRequest = false;
+//try to write conf1: _checkJsonOneFileIntegrity file1
+// if ok : 
+    // first write
+    if ( _checkJsonOneFileIntegrity( CONFIGFILENAME ) ){
+        _storeOneJsonFile( CONFIGFILENAME, CONFIGFILENAME );
+        DSPL( dPrompt + F("store master config file with himself as model"));
+        retVal = true;
+    } else if ( _checkJsonOneFileIntegrity( CONFIGFILENAME_COPY1 )) {
+        _storeOneJsonFile( CONFIGFILENAME_COPY1, CONFIGFILENAME );
+        DSPL( dPrompt + F("store master config file with copy1 as model"));
+        /** @todo [NECESSARY] rise error write config file 1 */
+        retVal = true;
+    } else if ( _checkJsonOneFileIntegrity( CONFIGFILENAME_COPY2 )) {
+        _storeOneJsonFile( CONFIGFILENAME_COPY2, CONFIGFILENAME );
+        DSPL( dPrompt + F("store master config file with copy2 as model"));
+        /** @todo [NECESSARY] rise error write config file 1 with rescue values*/
+        retVal = true; // or false ??? the plugs value maybe not up todate
+    } else {
+        /** @todo [NECESSARY] rise fatal error write config file 1 */
     }
-    return;
+
+    //second write
+    if ( _checkJsonOneFileIntegrity( CONFIGFILENAME ) ){
+        _storeOneJsonFile( CONFIGFILENAME, CONFIGFILENAME_COPY1 );
+        DSPL( dPrompt + F("store config file copy 1 with master as model"));
+    } else if ( _checkJsonOneFileIntegrity( CONFIGFILENAME_COPY1 )) {
+        _storeOneJsonFile( CONFIGFILENAME_COPY1, CONFIGFILENAME_COPY1 );
+        DSPL( dPrompt + F("store config file copy 1 with himself as model"));
+        //not an error
+    } else if ( _checkJsonOneFileIntegrity( CONFIGFILENAME_COPY2 )) {
+        _storeOneJsonFile( CONFIGFILENAME_COPY2, CONFIGFILENAME_COPY1 );
+        DSPL( dPrompt + F("store config file copy 1 with copy 2 as model"));
+    } else {
+        /** @todo [NECESSARY] rise low error write config file 2 */
+    }
+
+    //third write only when config paramters has changed
+    if ( _pcParam->_jsonWriteRequest ){
+        if ( _checkJsonOneFileIntegrity( CONFIGFILENAME ) ){
+            _storeOneJsonFile( CONFIGFILENAME, CONFIGFILENAME_COPY2 );
+            DSPL( dPrompt + F("store config file copy 2 with master as model"));
+        } else if ( _checkJsonOneFileIntegrity( CONFIGFILENAME_COPY1 )) {
+            _storeOneJsonFile( CONFIGFILENAME_COPY1, CONFIGFILENAME_COPY2 );
+            DSPL( dPrompt + F("store config file copy 2 with copy 1 as model"));
+            //not an error
+        } else if ( _checkJsonOneFileIntegrity( CONFIGFILENAME_COPY2 )) {
+            _storeOneJsonFile( CONFIGFILENAME_COPY2, CONFIGFILENAME_COPY2 );
+            DSPL( dPrompt + F("store config file copy 2 with himself as model"));
+        } else {
+            /** @todo [NECESSARY] rise low error write config file 3 */
+        }
+    }
+
+    //clear json write request
+    if ( retVal ){
+        _pcParam->_jsonWriteRequest = false;
+        for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
+            _pPlugs[i]._jsonWriteRequest = false;
+        }
+        _retryStoreCpt = 0;
+    } else if (_retryStoreCpt < 4 ){ // next retry at next main loop
+        _retryStoreCpt++;
+    } else {
+        /** @todo rise fatal error 3 retry on store config files */
+    }
+
+    return retVal;
 }
 
-void CJsonIotEps::_storeOneJsonFile(String file_name){
+void CJsonIotEps::_storeOneJsonFile(String file_name_model, String file_name_to_store){
 
     DEFDPROMPT( "CJsonIotEps store one json method" );
 
-    File configFile = SPIFFS.open( file_name , "r");
+    File configFile = SPIFFS.open( file_name_model , "r");
     // DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -126,8 +191,35 @@ void CJsonIotEps::_storeOneJsonFile(String file_name){
             json["general"]["staIP"] = _pcParam->_staIP.toString();
             json["general"]["staGateway"] = _pcParam->_staGateway.toString( );
             json["general"]["emplacement"] = String( _pcParam->_emplacement );
+            for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
+                JsonObject& plug = json[_pPlugs[i].getPlugName()];
+                plug["nickName"] = _pPlugs[i]._nickName;
+            }
 
+            for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
+                if ( _pPlugs[i]._jsonWriteRequest ){
+                    JsonObject& plug = json[_pPlugs[i].getPlugName()];
+                    
+                    plug["State"] = _pPlugs[i]._state?"ON":"OFF";
+                    plug[JSON_PARAMNAME_PAUSE] = _pPlugs[i]._pause?"ON":"OFF";
+                    plug["Mode"] = _pPlugs[i].getStringMode();
+                    plug["hDebut"] = _pPlugs[i]._hDebut.getStringVal();
+                    plug["hFin"] =  _pPlugs[i]._hFin.getStringVal();
+                    plug["dureeOn"] = _pPlugs[i]._dureeOn.getStringVal();
+                    plug["dureeOff"] = _pPlugs[i]._dureeOff.getStringVal();
+                    plug["clonedPlug"] = _pPlugs[i]._clonedPlug;
+                    plug["onOffCount"] = String(_pPlugs[i]._onOffCount);
+                    plug[JSON_PARAMNAME_NEXTSWITCH] = String(_pPlugs[i]._nextTimeToSwitch);
 
+                    //Special for day of week
+                    JsonArray& plugJours = plug["Jours"];
+                    for (int i = 0; i<7; i++){
+                        if ( bitRead( _pPlugs[i]._daysOnWeek, i ) ) plugJours[ i ]="ON";
+                        else plugJours[ i ] = "OFF";
+                    }  
+
+                }
+            }
 
 
 
@@ -137,7 +229,7 @@ void CJsonIotEps::_storeOneJsonFile(String file_name){
             // plug[param] = value; 
             // configFile.seek(0, SeekSet);
             // configFile.close();
-            configFile = SPIFFS.open( CONFIGFILENAME , "w");
+            configFile = SPIFFS.open( file_name_to_store , "w");
             json.printTo(configFile);
             // json.prettyPrintTo(configFile);
             // plug.prettyPrintTo(Serial);
@@ -455,7 +547,7 @@ CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
     }
 */
     //Check file spacial Tag Values (Version an TAG)
-    if ( _checkJsonOneFileIntegrity(CONFIGFILENAME) ){
+    if ( _checkJsonOneFileIntegrity( CONFIGFILENAME)  ){
         _fileNameToLoad = CONFIGFILENAME;
         _jsonFileIntegrity = KEEP_MASTER;
     } else if ( _checkJsonOneFileIntegrity( CONFIGFILENAME_COPY1 ) ){
@@ -486,7 +578,7 @@ bool CJsonIotEps::_checkJsonOneFileIntegrity( String fileName ){
     bool returnVal = false;
     _jsonVersion = "";
     _jsonTag = "";
-
+    // DSPL( dPrompt );
     File file = SPIFFS.open( fileName, "r");
     if (file){
         size_t size = file.size();

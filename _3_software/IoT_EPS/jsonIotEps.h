@@ -42,7 +42,7 @@ class CJsonIotEps{
         bool init( ConfigParam *pcParam, CPowerPlug *plugs );
 
         jsonFileIntegrity_t checkJsonFilesIntegrity();
-        void storeJson();
+        bool storeJson();
         bool loadJsonConfigParam();
         bool loadJsonPlugParam( int plugNumber, int mainPowerSwitchState );
         void printFileIntegrity();
@@ -62,8 +62,9 @@ class CJsonIotEps{
         String _jsonTag;
 
         uint32_t _hashFile( File jsonFile );
-        void _storeOneJsonFile(String file_name);
-        bool _checkJsonOneFileIntegrity( String fileName );
+        void _storeOneJsonFile( String file_name_model, String file_name_to_store );
+        bool _checkJsonOneFileIntegrity(String file_name);
+        int _retryStoreCpt = 0;
 
 
 };
