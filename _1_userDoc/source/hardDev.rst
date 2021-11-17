@@ -115,20 +115,54 @@ Terminated
 #. implement an I2C watch dog component [ as an option onto the PCB ] **OK**
 #. choix curent sensor: 75% - **discarded** in the first version
 #. pcb study **OK**
+#. OLED screen intefgartion **OK**
 
 In progress
 ======================
 
-::
+
 
 #. Alimentation du module relais en 5V (choix du conver.) : 60%
 #. packaging study
 #. integartion
-#. add a MOSFET on general power relay to switch them all in one time on power off
-#. OLED screen intefgartion : 99%
+#. replace relais by MOSFET on general power relay to switch them all in one time on power off
+    - choose components (irf530 and irf9530, 2x 10k resistor see personnal notes public ``hardware/analog``) 
+        - IRF9530 : ok buy to mouser on 21 june 
+        - but no irf530 test with 2N7000 ok
+    - buy or find the components ok
+    - store components in safe place : a box
+    - prototype this solution
+        - cut vero board
+        - solder components
+        - prepare test
+        - conduct the test
+    - integrate the solution into the plugs
+    - test it
+#. solve the usb vs main 5v power on esp8266
+    - search and eval shottky diode solution (1N5820 has a typical vf of 0.5V its to high)
+    - aop and mos solution
+        - from the arduino model
+            - list component : LM358, FDN340P, 2x 10k
+            - buy or find components
+                - LM358 ok mouse cde OK
+                - FDN340P : **nok** MOSFET canal P 20V 2A SOT23 cdés sur AliExp arrivée prévue **Dec03**
+                - 2x 10k ok
+            - group and store components
+            - prototype it
+                - define the solution veroboard/pcb/cnc machining
+                - solder components
+                - prepare the test
+                - conduct the test
+            - IF it is the choosen solution add it to the schematic
+#. new pcb
+    - add above solution
+    - replace through hole component by cms version every time it's possible
+    - brainstorm connector solutions: reduce the number of pins
+    - reroute pcb to maximum rude the size
 
 
 ####
+
 
 
 ====================
@@ -166,7 +200,8 @@ a DS1307 or 1302 similar to DS3231 SQW/out only 1Hz
 .. _`Arduino library for DS1374 here` : https://github.com/SpellFoundry/DS1374RTC
 
 An other idea : use an Attiny85 as an I2C watch dog component. Library already exists ! 
-`ATTiny85 I2C watchdog experiment`_ Wonderful !
+`ATTiny85 I2C watchdog experiment`_ Wonderful ! But no documentation is provided except the code 
+comments
 
 .. _`ATTiny85 I2C watchdog experiment` : https://github.com/letscontrolit/ESPEasySlaves
 
@@ -196,9 +231,11 @@ This design works perfectly ! but what is the user license of this code ? Perhap
 
 The only missing in this design is an ESP user library. So I write it !    
 
-Power ATtiny with 3.3V and don't forget pullup on D3 and on reset (15k)
+Power ATtiny with 3.3V and don't forget pullup on D3 and on reset (15k) ATTiny85 support 5V or 3.3V
+power supplies
 
 .. _`proto shield` : https://www.banggood.com/Arduino-Compatible-328-ProtoShield-Prototype-Expansion-Board-p-926451.html?rmmds=search&cur_warehouse=CN
+
 .. _`Heliox' Youtube video` : https://www.youtube.com/watch?v=S-oBujsoe-Q&t=247s
 
 **Pinout**
@@ -213,10 +250,19 @@ Power ATtiny with 3.3V and don't forget pullup on D3 and on reset (15k)
     //                    GND  4|    |5  I2C-SDA to ESP
     //                          +----+ 
 
+ATTiny85 programming tips
+====================================================================================================
+Don't forget to choose clock 8MHz for ATTiny when programming with ARDOUINO UNO as IoT_EPS
+This is not specify in the documentation
+
 
 ATiny85 watchdog test tips
 ============================
-There is a TX debug serial on pin 3  speed is 1200
+There is a TX debug serial on pin 3  speed is en théorie 1200 but on my maquette 9600 !!!
+
+facteur 8 => fuse atiny85 ???? 11/11/2021 NO I test the 3 speed 1, 8 and 16MHz and the com speed is 
+always 1200 bauds !!!!
+
 
 The name of the project of the Atiny code is ESPEasySlaves.
 

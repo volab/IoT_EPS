@@ -10,8 +10,8 @@
 #define  IOT_EPS_HEADER
 
 #define NTPSERVER "fr.pool.ntp.org"
-#define OFFSET_HEURE 2 //ETE
-//#define OFFSET_HEURE 1 //Hiver
+//#define OFFSET_HEURE 2 //ETE
+#define OFFSET_HEURE 1 //Hiver
 /** @todo [NECESSARY]Passage heure d'hiver/été : soit automatique soit configurable via l'interface */
 #define DEFAULT_PREFIX_NAME "ESP_IOT"
 #define FIRSTBOOTFORMFILENAME "/firstboot.htm"

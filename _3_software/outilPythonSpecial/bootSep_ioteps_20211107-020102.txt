@@ -1,0 +1,336 @@
+
+<Volab CSystem::init > Sketch start...
+<Volab CSystem::init >  Build : Oct 16 2021 @ 23:37:36
+<Volab CSystem::init > File system correctly Open @ setup level
+<Volab CSystem::init > File check !
+<Volab CSystem::init > file : /index.html is present
+<Volab CSystem::init > file : /config4.json is present
+<Volab CSystem::init > file : /config4copie1.json is present
+<Volab CSystem::init > file : /config4copie2.json is present
+<Volab CSystem::init > file : /firstboot.html is present
+<Volab CSystem::init > file : /js/main.js is present
+<Volab CSystem::init > file : /js/plug.js is present
+<Volab CSystem::init > file : /js/regExPatern.js is present
+<Volab CSystem::init > file : /js/table.js is present
+<Volab CSystem::init > file : /css/sidebar.css is present
+<Volab CSystem::init > file : /css/style.css is present
+<Volab CSystem::init > Result all files are present ? OK
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJson Config Param Loading > Config param loaded : 
+<Volab CJson Config Param Loading >  - emplacement : Chambre
+<Volab CJson Config Param Loading >  - Number of plugs : 4
+<Volab CJson Config Param Loading >  - All Led On Time : -1
+<Volab CJson Config Param Loading >  - LEDs Global illum : 5
+<Volab CJson Config Param Loading >  - Power Led economy mode : 0
+<Volab CJson Config Param Loading >  - First boot : NO
+<Volab CJson Config Param Loading >  - Host name : PowerSript02
+<Volab CJson Config Param Loading >  - Strat in AP mode (_wifiMode) : Station
+<Volab CJson Config Param Loading >  - Soft AP IP add (_addIP) : 192.168.95.42
+<Volab CJson Config Param Loading >  - Soft AP port (_serverPort): 80
+<Volab CJson Config Param Loading >  - DHCP mode  : ON
+<Volab CJson Config Param Loading >  - Station IP address  : 192.168.1.25
+<Volab CJson Config Param Loading >  - Station gateway IP address  : 192.168.1.254
+<Volab CJson Config Param Loading >  - MAC address  : A0:20:A6:17:3F:B1
+<Volab CJson Config Param Loading >  - Soft AP MAC address  : A2:20:A6:17:3F:B1
+<Volab CJson Config Param Loading >  - MAX Wifi connexion retry  : 30
+<Volab CSystem::init > json mac add : A0:20:A6:17:3F:B1
+<Volab CSystem::init > Board Sation MAC add = A0:20:A6:17:3F:B1
+<Volab CSystem::init > Station equal add
+<Volab CSystem::init > json Soft AP mac add : A2:20:A6:17:3F:B1
+<Volab CSystem::init > Board Soft AP MAC add = A2:20:A6:17:3F:B1
+<Volab CSystem::init > AP equal add
+<Volab CSystem::init > I2C test start
+Write 0x10 to 1
+Write 0x12 to 2
+Read of reg 1 = 10
+Read of reg 2 = 12
+<Volab CSystem::init > Nano test ok
+<Volab CSystem::init > Display oled Logo
+<Volab CSystem::init:Stratup Messages > OLED Logo pause
+<Volab CSystem::init:Stratup Messages > OLED startup message pause
+<Volab CSystem::init > DS3231 Start date : 7/11/2021 3:1:10
+<Volab setUp > Check json integrity after System init 
+<Volab Json file integrity print function > Keep master
+<Volab setUp > watchdog test 
+<Volab System error handler > watchdog error
+<Volab setUp > watchdog set to 30s.
+<Volab setUp > Main power state : ON
+<Volab setUp > number of plugs : 4
+<Volab Load Json Plugs Data > Enter in the fonction. 
+<Volab Load Json Plugs Data > File open /config4.json
+<Volab Load Json Plugs Data > Plug name : redPlug
+<Volab Load Json Plugs Data > Nick name : Piscine
+<Volab Load Json Plugs Data > Etat = ON
+<Volab Load Json Plugs Data > Pause state = OFF
+<Volab Load Json Plugs Data > Mode = Cyclique
+<Volab Load Json Plugs Data > Start time = 
+<Volab Load Json Plugs Data > End time = 
+<Volab Load Json Plugs Data > on duration = 1
+<Volab Load Json Plugs Data > off duration = 1
+<Volab Load Json Plugs Data > Cloned plug = 
+<Volab Load Json Plugs Data > Relay on off count = 594
+<Volab Load Json Plugs Data > next time to switch = 1636254090
+<Volab CEpsStrTime::checkValidity > MMM mode check
+<Volab CEpsStrTime::checkValidity > After duraction check
+<Volab CEpsStrTime::checkValidity > MMM mode check
+<Volab CEpsStrTime::checkValidity > After duraction check
+<Volab Load Json Plugs Data > Jours : 
+Jours 0 est OFF. 
+Jours 1 est OFF. 
+Jours 2 est OFF. 
+Jours 3 est OFF. 
+Jours 4 est OFF. 
+Jours 5 est ON. 
+Jours 6 est OFF. 
+
+<Volab Load Json Plugs Data > Plug name : greenPlug
+<Volab Load Json Plugs Data > Nick name : cafetiÃ¨re
+<Volab Load Json Plugs Data > Etat = ON
+<Volab Load Json Plugs Data > Pause state = OFF
+<Volab Load Json Plugs Data > Mode = Manuel
+<Volab Load Json Plugs Data > Start time = 
+<Volab Load Json Plugs Data > End time = 
+<Volab Load Json Plugs Data > on duration = 
+<Volab Load Json Plugs Data > off duration = 
+<Volab Load Json Plugs Data > Cloned plug = 
+<Volab Load Json Plugs Data > Relay on off count = 116
+<Volab Load Json Plugs Data > next time to switch = 0
+<Volab Load Json Plugs Data > Jours : 
+Jours 0 est OFF. 
+Jours 1 est OFF. 
+Jours 2 est OFF. 
+Jours 3 est OFF. 
+Jours 4 est OFF. 
+Jours 5 est OFF. 
+Jours 6 est OFF. 
+
+<Volab Load Json Plugs Data > Plug name : bluePlug
+<Volab Load Json Plugs Data > Nick name : jardin
+<Volab Load Json Plugs Data > Etat = OFF
+<Volab Load Json Plugs Data > Pause state = OFF
+<Volab Load Json Plugs Data > Mode = Cyclique
+<Volab Load Json Plugs Data > Start time = 
+<Volab Load Json Plugs Data > End time = 
+<Volab Load Json Plugs Data > on duration = 1
+<Volab Load Json Plugs Data > off duration = 2
+<Volab Load Json Plugs Data > Cloned plug = 
+<Volab Load Json Plugs Data > Relay on off count = 36
+<Volab Load Json Plugs Data > next time to switch = 1636254091
+<Volab CEpsStrTime::checkValidity > MMM mode check
+<Volab CEpsStrTime::checkValidity > After duraction check
+<Volab CEpsStrTime::checkValidity > MMM mode check
+<Volab CEpsStrTime::checkValidity > After duraction check
+<Volab Load Json Plugs Data > Jours : 
+Jours 0 est OFF. 
+Jours 1 est OFF. 
+Jours 2 est OFF. 
+Jours 3 est OFF. 
+Jours 4 est OFF. 
+Jours 5 est ON. 
+Jours 6 est OFF. 
+
+<Volab Load Json Plugs Data > Plug name : yellowPlug
+<Volab Load Json Plugs Data > Nick name : liseuse
+<Volab Load Json Plugs Data > Etat = OFF
+<Volab Load Json Plugs Data > Pause state = OFF
+<Volab Load Json Plugs Data > Mode = Manuel
+<Volab Load Json Plugs Data > Start time = 
+<Volab Load Json Plugs Data > End time = 
+<Volab Load Json Plugs Data > on duration = 
+<Volab Load Json Plugs Data > off duration = 
+<Volab Load Json Plugs Data > Cloned plug = 
+<Volab Load Json Plugs Data > Relay on off count = 9
+<Volab Load Json Plugs Data > next time to switch = 0
+<Volab Load Json Plugs Data > Jours : 
+Jours 0 est OFF. 
+Jours 1 est OFF. 
+Jours 2 est OFF. 
+Jours 3 est OFF. 
+Jours 4 est OFF. 
+Jours 5 est OFF. 
+Jours 6 est OFF. 
+
+<Volab setUp > Main power ON
+<Volab reading credentials > mounting FS...
+<Volab reading credentials > File system mounted
+<Volab reading credentials > Reading credit. file
+	Credit. file is opened
+<Volab setUp, Wifilink begin > Wifi mode in json = Station
+<Volab setUp, Wifilink begin > try to set autoconnect to off
+<Volab setUp, Wifilink begin > Mode autoconnect read from ESP : disabled
+<Volab setUp, Wifilink begin > Wifi is connected ? No
+<Volab setUp, Wifilink begin > Wifi def mode in FLASH : 3
+<Volab setUp, Wifilink begin > Stored Wifi default soft AP param in the ESP Flash: 
+<Volab setUp, Wifilink begin >     SSID len : 14
+<Volab setUp, Wifilink begin >     Stored SSID :PowerStrip_mac.
+<Volab setUp, Wifilink begin >     Stored password :123456789@„]ÿ? „]ÿ?p@È @…•þ?.
+<Volab WiFi mode > WIFI_STA and AP
+<Volab setUp, Wifilink begin > Try softAccess
+<Volab setUp, Wifilink begin > SoftAP IP address red from Json= 192.168.95.42
+<Volab setUp, Wifilink begin > Config soft AP IP : Succeded
+<Volab setUp, Wifilink begin > Try soft AP with : powerStrip01_mac and plusDe8c
+<Volab setUp, Wifilink begin > softAP : Ready
+<Volab setUp, Wifilink begin > SoftAP returned IP address = 192.168.95.42
+<Volab setUp, Wifilink begin > Host name which does not work with Android is : PowerSript02
+<Volab setUp, Wifilink begin > Try to join : VoLab
+.........
+<Volab setUp, Wifilink begin > Number of Station wifi try : 9, max was : 30
+<Volab setUp, Wifilink begin > NTP enabled
+<Volab setUp, Wifilink begin > Adresse Wifi.localIP Station mode : 192.168.1.23
+<Volab write  param to jSon file > /config4.json
+<Volab write  param to jSon file >  general : staIP = 192.168.1.23
+<Volab setUp > NTP enable ? TRUE
+<Volab CSystem::timeServerCheck > check started
+<Volab CSystem::timeServerCheck > NTP Time : 7/11/2021 3:1:25
+<Volab write  param to jSon file > /config4.json
+<Volab write  param to jSon file >  general : ntpError = OFF
+Serial Command list :
+<h> ou <H> display this list
+<E> display status
+<C> Check DS3231 date
+<S JJ/MM/AAAA HH:MM:SS> returns code <O>
+<T HH:MM:SS> returns code <O>
+<s> set DS3231 by NTP server
+<J _jsonFileNumber 0..2> for display config.json or one of its copy
+<W> display WIFI mode
+<P key value> write config parameter in json WARNING
+<I _newSSID> write SSID in credentials WARNING
+<i _wifiPass> write password in credentials WARNING
+<t various_param> for code test
+<N> nano IO expander test
+<O> nano out test HIGH
+<o> nano out test low
+<F> Find I2C device I2C scan
+<R> I2C recovery
+<c> I2C crash
+<a> for Ip address
+<w> for WiFi.printDig function
+<z> display credetial file
+<L> _newSoftAP_SSID> write SoftAP SSID in credentials WARNING
+<l> _wifiPass> write soft AP password in credentials WARNING
+<D> SPIFFS dir
+<j> display general part of main config json file
+<d _filename> erase a file WARNING
+<e> display system status
+<p> display main power state
+<Volab setUp > Leds On config : -1
+<Volab setUp > Leds On lumi : 5
+<Volab setUp > [HTTP] begin...
+<Volab setUp > [HTTP] GET... http://www.google.fr/
+<Volab setUp > [HTTP] GET... code: 200
+<Volab setUp > Watchdog set to 10s with a refresh period to 5s
+<Volab setUp > Loop start
+<Volab CJsonIotEps store json method > *********JSON WRITE REQUESTED***************
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store master config file with himself as model
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store config file copy 1 with master as model
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store config file copy 2 with master as model
+<Volab in the loop > It is time for : redPlug
+<Volab updateOutputs > nouvelle valeur du compteur : 595
+<Volab write to jSon > redPlug : onOffCount = 595
+<Volab write to jSon > redPlug : State = OFF
+<Volab CEpsStrTime::checkValidity > MMM:SS mode check
+<Volab CEpsStrTime::checkValidity > Secondes converties : 60
+<Volab disp. time :  > Dimanche 7/11/2021 3:1:31
+<Volab CEpsStrTime::computeNextTime > future = Dimanche 7/11/2021 3:2:30
+<Volab write to jSon > redPlug : nextTimeToSwitch = 1636254150
+<Volab CJsonIotEps store json method > *********JSON WRITE REQUESTED***************
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store master config file with himself as model
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store config file copy 1 with master as model
+<Volab in the loop > It is time for : bluePlug
+<Volab updateOutputs > nouvelle valeur du compteur : 37
+<Volab write to jSon > bluePlug : onOffCount = 37
+<Volab write to jSon > bluePlug : State = ON
+<Volab CEpsStrTime::checkValidity > MMM:SS mode check
+<Volab CEpsStrTime::checkValidity > Secondes converties : 60
+<Volab disp. time :  > Dimanche 7/11/2021 3:1:32
+<Volab CEpsStrTime::computeNextTime > future = Dimanche 7/11/2021 3:2:31
+<Volab write to jSon > bluePlug : nextTimeToSwitch = 1636254151
+<Volab CJsonIotEps store json method > *********JSON WRITE REQUESTED***************
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store master config file with himself as model
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store config file copy 1 with master as model
+<Volab in the loop > It is time to check necessary file accessibility !
+<Volab in the loop > It is time to check Internet health !
+<Volab in the loop > Check NTP access : OK
+<Volab in the loop > It is time for : redPlug
+<Volab updateOutputs > nouvelle valeur du compteur : 596
+<Volab write to jSon > redPlug : onOffCount = 596
+<Volab write to jSon > redPlug : State = ON
+<Volab CEpsStrTime::checkValidity > MMM:SS mode check
+<Volab CEpsStrTime::checkValidity > Secondes converties : 60
+<Volab disp. time :  > Dimanche 7/11/2021 3:2:31
+<Volab CEpsStrTime::computeNextTime > future = Dimanche 7/11/2021 3:3:30
+<Volab write to jSon > redPlug : nextTimeToSwitch = 1636254210
+<Volab CJsonIotEps store json method > *********JSON WRITE REQUESTED***************
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store master config file with himself as model
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store config file copy 1 with master as model
+<Volab in the loop > It is time for : bluePlug
+<Volab updateOutputs > nouvelle valeur du compteur : 38
+<Volab write to jSon > bluePlug : onOffCount = 38
+<Volab write to jSon > bluePlug : State = OFF
+<Volab CEpsStrTime::checkValidity > MMM:SS mode check
+<Volab CEpsStrTime::checkValidity > Secondes converties : 120
+<Volab disp. time :  > Dimanche 7/11/2021 3:2:32
+<Volab CEpsStrTime::computeNextTime > future = Dimanche 7/11/2021 3:4:31
+<Volab write to jSon > bluePlug : nextTimeToSwitch = 1636254271
+<Volab CJsonIotEps store json method > *********JSON WRITE REQUESTED***************
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store master config file with himself as model
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store config file copy 1 with master as model
+<Volab in the loop > It is time to check necessary file accessibility !
+<Volab in the loop > It is time to check Internet health !
+<Volab in the loop > Check NTP access : OK
+<Volab in the loop > It is time for : redPlug
+<Volab updateOutputs > nouvelle valeur du compteur : 597
+<Volab write to jSon > redPlug : onOffCount = 597
+<Volab write to jSon > redPlug : State = OFF
+<Volab CEpsStrTime::checkValidity > MMM:SS mode check
+<Volab CEpsStrTime::checkValidity > Secondes converties : 60
+<Volab disp. time :  > Dimanche 7/11/2021 3:3:31
+<Volab CEpsStrTime::computeNextTime > future = Dimanche 7/11/2021 3:4:30
+<Volab write to jSon > redPlug : nextTimeToSwitch = 1636254270
+<Volab CJsonIotEps store json method > *********JSON WRITE REQUESTED***************
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store master config file with himself as model
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store config file copy 1 with master as model
+<Volab in the loop > It is time to check necessary file accessibility !
+<Volab in the loop > It is time to check Internet health !
+<Volab in the loop > Check NTP access : OK
+<Volab in the loop > It is time for : redPlug
+<Volab updateOutputs > nouvelle valeur du compteur : 598
+<Volab write to jSon > redPlug : onOffCount = 598
+<Volab write to jSon > redPlug : State = ON
+<Volab CEpsStrTime::checkValidity > MMM:SS mode check
+<Volab CEpsStrTime::checkValidity > Secondes converties : 60
+<Volab disp. time :  > Dimanche 7/11/2021 3:4:31
+<Volab CEpsStrTime::computeNextTime > future = Dimanche 7/11/2021 3:5:30
+<Volab write to jSon > redPlug : nextTimeToSwitch = 1636254330
+<Volab CJsonIotEps store json method > *********JSON WRITE REQUESTED***************
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store master config file with himself as model
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store config file copy 1 with master as model
+<Volab in the loop > It is time for : bluePlug
+<Volab updateOutputs > nouvelle valeur du compteur : 39
+<Volab write to jSon > bluePlug : onOffCount = 39
+<Volab write to jSon > bluePlug : State = ON
+<Volab CEpsStrTime::checkValidity > MMM:SS mode check
+<Volab CEpsStrTime::checkValidity > Secondes converties : 60
+<Volab disp. time :  > Dimanche 7/11/2021 3:4:32
+<Volab CEpsStrTime::computeNextTime > future = Dimanche 7/11/2021 3:5:31
+<Volab write to jSon > bluePlug : nextTimeToSwitch = 1636254331
+<Volab CJsonIotEps store json method > *********JSON WRITE REQUESTED***************
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store master config file with himself as model
+<Volab Check Json Integrity (one file) > file : /config4.json, JSON file read version : v5.1
+<Volab CJsonIotEps store json method > store config file copy 1 with master as model

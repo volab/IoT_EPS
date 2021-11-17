@@ -182,14 +182,18 @@ In progress
 
 #. improve json file managment
     - write process
-        - for one
-            - config : ok
-            - plugs : ok
-            - compile : ok
-        - for 3 files
-            - Write ok
-            - compile ok 
+        - for one       **ok**
+            - config :  **ok**
+            - plugs :   **ok**
+            - compile : **ok**
+        - for 3 files   **ok**
+            - Write     **ok**
+            - compile   **ok** 
         - test
+            - environnement conda test
+            - write python script to log boot sequence to a file: in progress ``projet\_3_software\outilPythonSpecial``
+            - record some boot sequence
+            - check boots sequence
     - treat todo (error rise)
         - regen list
         - treat one by one
@@ -340,6 +344,7 @@ an I2C IO expander (see :ref:`Hardware dev doc<nanoI2CIoExpander>` )
 
 .. index::
     single: Error handling
+
     
 ==================================
 Error handling

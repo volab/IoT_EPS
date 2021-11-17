@@ -19,11 +19,13 @@
 This method test only I2C accessibility to WD not the timer nor the reset founction.
 */
 bool CATtinyI2CWatchdog::test(){
-    //DEFDPROMPT( "wd test");
+    DEFDPROMPT( "wd test");
     _writeRegister( SETREADPOINTER, PID );
     int val0 = _readRegister( 0 );
+    DSPL( dPrompt + String( val0 ) ) ;
     _writeRegister( SETREADPOINTER, PID+1 );
     int val1 = _readRegister( 0 );
+    DSPL( dPrompt + String( val1 ) ) ;
     _writeRegister( SETREADPOINTER, PID+2 );
     int val2 = _readRegister( 0 );    
     _writeRegister( SETREADPOINTER, PID+3 );
