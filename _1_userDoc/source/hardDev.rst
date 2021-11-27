@@ -181,7 +181,7 @@ It can't be activate after setup for example. And if we use it, we need to drive
 but all our outputs are used !
 
 Use a I2C watchdog component as DS1371. If using this component we need to implement
-a 32kHz oscillator ! `DS1374U-3+`_ (power sup 3V) or -33+ in 3.3V available on MOUSER site for 3€23
+a 32kHz oscillator ! `DS1374U-3+`_ (power sup 3V) or -33+ reference suffix in 3.3V available on MOUSER site for 3€23
 Don't forget to buy oscillator : `32k quatz chez Mouser`_ 0.68€ !
 
 Warning U denote a uSOP package with à 0.5mm pitch!
@@ -191,7 +191,8 @@ Perhaps DS1374 could replace MAX1232 but its VPF level is very low about 2.3V re
 
 `Arduino library for DS1374 here`_
 
-Use the our NANOI2CIOExpander it is not implented on the library (perhaps a future function).
+An other possibility would be the usage of our NANOI2CIOExpander but watch dog function 
+is not already implemented on the library (perhaps a future function).
 
 a DS1307 or 1302 similar to DS3231 SQW/out only 1Hz
 
@@ -219,7 +220,7 @@ The only changes that i made in the code of the ATtiny85 watchdog are :
  - Settings.TimeOut          = 20;
  - Settings.Sleep            = 20;
 
- An other change : I was obliged to move files in TinyWireS_Custom directory to one upper level !
+An other change : I was obliged to move files in TinyWireS_Custom directory to one upper level !
  
 This design works perfectly ! but what is the user license of this code ? Perhaps GNU Public 2.1
 
@@ -252,8 +253,11 @@ power supplies
 
 ATTiny85 programming tips
 ====================================================================================================
-Don't forget to choose clock 8MHz for ATTiny when programming with ARDOUINO UNO as IoT_EPS
+Don't forget to choose clock 1MHz for ATTiny when programming with ARDOUINO UNO as IoT_EPS
 This is not specify in the documentation
+
+14/11/2021 : try the best result was internal clock 1MHz : times1s give 1s but com speed always 1200
+not 9600
 
 
 ATiny85 watchdog test tips
@@ -271,8 +275,70 @@ Only for my eyes the code sits in ::
     0044-Iot_ESP_PPlug\projet\_3_software\etudeDeCode (not pushed in github).
 
 
-MAX1232 integration aborted
-=============================
+ATTiny watchdog expertise
+====================================================================================================
+Date: 20/11/2021: I can't reproduce watchdog component with the data that I have.
+
+On the maquette there is an ATTiny programmed. It run perfectly @ 9600 bauds on debug COM.
+
+But when I program a new component with the design that site on my hard drive, I can't obtain a 
+functional one.
+
+The ATtniy programmed work @1200bds when I set 1MHz for ATTiny in ARDUINO IDE
+
+I decide to conduct more test en check the size of the bit on serial. Short explain: in the design
+there is a special lib for serial that it is more lower than the official one but manually tuned.
+
+fisrt test : with the functional one (the master) check on oscillo the serial bit duration.
+
+bit size 102us (putty @9600 bd works perfectly)
+
+Test program with  8MHz as cpu clock in ADUINO IDE : Serial comm is at 1200 bauds but timer1s is about 6s duration !
+
+Test @ 1MHz : rs 1200 timer1s = 1s
+
+**ATTiny hex dump**
+
+With what tools ? Visual Atmel, AVRdude
+
+- Atmel Studio 
+
+- avrdude : in ``C:\Program Files (x86)\Arduino\hardware\tools\avr\bin``
+
+Sonde::
+
+    AVRMKII
+    USBasp
+
+Video ressource : `#002|English - avrdude, USBasp, Atmel Studio, Arduino IDE, fuses, lockbits, hex, ...`_
+
+.. _`#002|English - avrdude, USBasp, Atmel Studio, Arduino IDE, fuses, lockbits, hex, ...` : https://www.youtube.com/watch?v=lxUmaW9M4EI
+
+.. image:: image/usbasp_pinning.jpg 
+   :width: 200 px
+
+.. image:: image/attiny85pinout.jpg 
+
+Command avrdude::
+
+    avrdude -c usbasp -p t85 -t : enter terminal mode
+    avrdude -c usbasp -p t85 -U flash:r:m128_read.hex:i
+
+http://undindoncurieux.blogspot.com/2015/12/charger-un-driver-usbasp-sur-windows-10.html
+
+Micro task:
+
+- install driver usbasp_pinning : necessary ? nothing in  "Le journal de manip" **OK**
+- wire it on a breadboard
+-  componentread wrong
+    - read hex file composant
+    - read fuses 
+- read the right component
+
+**avrdude and its conf file on e:** !!!!
+
+MAX1232 integration (aborted)
+====================================================================================================
 
 MAX1232 is a uP supervisor. It features bp and watchdog
 

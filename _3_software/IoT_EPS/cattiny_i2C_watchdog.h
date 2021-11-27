@@ -92,8 +92,8 @@ Commands starting at 0x80 are special commands:
 #define LASTRESETCAUSE   18
 
 
-#define PIDVAL0 0x9D
-#define PIDVAL1 0x56
+#define PIDVAL0 0x9D //157d
+#define PIDVAL1 0x56 //86d
 #define PIDVAL2 0x1C
 #define PIDVAL3 0X78
 

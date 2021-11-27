@@ -1,0 +1,70 @@
+E:\avrdude>avrdude -v -pattiny85 -cstk500v1 -PCOM12 -b19200 -Uflash:r:TinyI2CWatchdog_rightComponent.hex:i
+
+avrdude: Version 6.3-20171130
+         Copyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/
+         Copyright (c) 2007-2014 Joerg Wunsch
+
+         System wide configuration file is "E:\avrdude\avrdude.conf"
+
+         Using Port                    : COM12
+         Using Programmer              : stk500v1
+         Overriding Baud Rate          : 19200
+         AVR Part                      : ATtiny85
+         Chip Erase delay              : 400000 us
+         PAGEL                         : P00
+         BS2                           : P00
+         RESET disposition             : possible i/o
+         RETRY pulse                   : SCK
+         serial program mode           : yes
+         parallel program mode         : yes
+         Timeout                       : 200
+         StabDelay                     : 100
+         CmdexeDelay                   : 25
+         SyncLoops                     : 32
+         ByteDelay                     : 0
+         PollIndex                     : 3
+         PollValue                     : 0x53
+         Memory Detail                 :
+
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           eeprom        65    12     4    0 no        512    4      0  4000  4500 0xff 0xff
+           flash         65     6    32    0 yes      8192   64    128 30000 30000 0xff 0xff
+           signature      0     0     0    0 no          3    0      0     0     0 0x00 0x00
+           lock           0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+           lfuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+           hfuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+           efuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+           calibration    0     0     0    0 no          1    0      0     0     0 0x00 0x00
+
+         Programmer Type : STK500
+         Description     : Atmel STK500 Version 1.x firmware
+         Hardware Version: 2
+         Firmware Version: 1.18
+         Topcard         : Unknown
+         Vtarget         : 0.0 V
+         Varef           : 0.0 V
+         Oscillator      : Off
+         SCK period      : 0.1 us
+
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | ################################################## | 100% 0.05s
+
+avrdude: Device signature = 0x1e930b (probably t85)
+avrdude: safemode: lfuse reads as E2
+avrdude: safemode: hfuse reads as DF
+avrdude: safemode: efuse reads as FF
+avrdude: reading flash memory:
+
+Reading | ################################################## | 100% 6.29s
+
+avrdude: writing output file "TinyI2CWatchdog_rightComponent.hex"
+
+avrdude: safemode: lfuse reads as E2
+avrdude: safemode: hfuse reads as DF
+avrdude: safemode: efuse reads as FF
+avrdude: safemode: Fuses OK (E:FF, H:DF, L:E2)
+
+avrdude done.  Thank you.
