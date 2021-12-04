@@ -23,7 +23,7 @@ Déscription
     `<codeDoc\\html\\index.html>`_
 
 Model Type
-==========
+====================================================================================================
 
     :Date de saisie:        Date à laquelle la problématique à été identifiée
     :Date de traitemant:    Date du traitement de la probélmatique
@@ -34,25 +34,86 @@ Model Type
 
 ----------------------------------------------------------------------------------------------------
 
-Bug : cfgpage / cfgsend
-==================
+**BUG** : watchdog ok
+====================================================================================================
+
+    :Detection date:   05/12/21
+    :Resolution date:  
+    :Target:           firmware
+    :Status:           **OPEN**
+    :Problem:         There is no  watchdog component in the system and system always displays 
+                      watchdog ok !!!
+                      
+    :Traitement:
+    
+
+
+----------------------------------------------------------------------------------------------------
+
+**BUG** : cfgpage / cfgsend
+====================================================================================================
 
     :Detection date:   23/10/21
     :Resolution date:  
     :Target:           firmware
-    :Status:           open
+    :Status:           **OPEN**
     :Problem:         /cfgpage after cfgpage send the link in browser turn to /cfgsend du to usage 
                       of send button. This behavior is normal. But we refresh the page with new
                       values and if user use the resend button from the browser he resend the same
-                      page. Not realy a bug but no very clean.
+                      page. Not realy a bug but not very clean.
                       **More** Add to this page, there is no return to home button
     :Traitement:
     
 
 
 ----------------------------------------------------------------------------------------------------
-Bug : cfgpage
-==================
+
+**BUG** : clone pause
+====================================================================================================
+
+    :Date de saisie:        210718
+    :Date de traitemant:    
+    :Cible:                 firmware
+    :Status:                **OPEN**
+    :Problematique:         Bug not confirmed but in CPowerPlug::handleHtmlReq in mode cloned
+    :Traitement:
+    
+    ::
+
+        test pause before to call on or off method (about line 601) write
+        if (_state && !_pause) but move line ``_pause = clonedPlug.getPause();``
+        before
+
+----------------------------------------------------------------------------------------------------
+
+**BUG** : wrong global table refresh
+====================================================================================================
+
+    :Date de saisie:    191225    
+    :Date de traitemant:    
+    :Cible:             software / IHM
+    :Status:            **OPEN**    
+    :Problematique:     le tableau de synthèse ne se met pas à jour quand il y a un changement d'état d'une prise    
+    :Traitement:        Le touche F5 n'est pas une solution, renvoie également la dernière commande !
+                        
+    
+------------------------------------------------------------------------------------------
+
+**BUG** : Allumage intempestif 
+====================================================================================================
+
+    :Date de saisie:        191225     
+    :Date de traitemant:    
+    :Cible:                 firmware
+    :Status:                **OPEN**
+    :Problematique:         Au cours des essais 2 prises bleu et jaune se sont retrouvé allumées alors
+                            que dans le json elles étaient off !
+    :Traitement:            
+
+------------------------------------------------------------------------------------------
+
+**BUG** : cfgpage
+====================================================================================================
 
     :Date de saisie:        21/08/21
     :Date de traitemant:    16/10/21
@@ -63,32 +124,12 @@ Bug : cfgpage
     
     ::
 
-        Free memory analyse was conducted. memory managment improvment was intruduced.
+        Free memory analyse was conducted. memory managment improvement was introduced.
 
 ----------------------------------------------------------------------------------------------------
 
-Bug : clone pause
-==================
-
-    :Date de saisie:        210718
-    :Date de traitemant:    
-    :Cible:                 firmware
-    :Status:                open
-    :Problematique:         Bug not confirmed but in CPowerPlug::handleHtmlReq in mode cloned
-    :Traitement:
-    
-    ::
-
-        test pause before to call on or off method (about line 601) write
-        if (_state && !_pause) but move line ``_pause = clonedPlug.getPause();``
-        before
-
-                
-
-----------------------------------------------------------------------------------------------------
-
-Bug soft AP fail
-=================
+**BUG** soft AP fail
+====================================================================================================
 
     :Date de saisie:        210627      
     :Date de traitemant:    210630
@@ -99,39 +140,13 @@ Bug soft AP fail
     
 ------------------------------------------------------------------------------------------
 
-Bug : wrong global table refresh
-==================================
-
-    :Date de saisie:    191225    
-    :Date de traitemant:    
-    :Cible:             software / IHM
-    :Status:            open    
-    :Problematique:     le tableau de synthèse ne se met pas à jour quand il y a un changement d'état d'une prise    
-    :Traitement:        Le touche F5 n'est pas une solution, renvoie également la dernière commande !
-                        
-    
-------------------------------------------------------------------------------------------
-
-Bug : Allumage intempestif 
-============================
-
-    :Date de saisie:        191225     
-    :Date de traitemant:    
-    :Cible:                 firmware
-    :Status:                open
-    :Problematique:         Au cours des essais 2 prises bleu et jaune se sont retrouvé allumées alors
-                            que dans le json elles étaient off !
-    :Traitement:            
-
-------------------------------------------------------------------------------------------
-
 ToDo : minify javascripts
 ===========================
 
     :Date de saisie:        210821
     :Date de traitemant:    
     :Cible:                 Data/javascript
-    :Status:                
+    :Status:                **OPEN**
     :Problematique:         reduce the size of the web files. Reduce the size of the logo.
     :Traitement:            
             
@@ -144,8 +159,8 @@ ToDo : doxy HTML js
     :Date de saisie:        181214
     :Date de traitemant:    
     :Cible:                 software
-    :Status:                
-    :Problematique:         Implémenter Doxigen sur les codes HTML et JS.
+    :Status:                **OPEN**
+    :Problematique:         Use Doxigen on HTML et JS codes.
     :Traitement:            
     
 ------------------------------------------------------------------------------------------
@@ -156,7 +171,7 @@ ToDo : file names coherence
     :Date de saisie:        181214
     :Date de traitemant:    
     :Cible:                 software
-    :Status:                open
+    :Status:                **OPEN**
     :Problematique:         Faire correspondre dans index.html, style.css et dans IoT_EPS2.js les
                             noms utilisés avec ceux définis dans configFile3.json.
     :Traitement:            
@@ -169,7 +184,7 @@ ToDo : online gh-page
     :Date de saisie:        181214
     :Date de traitemant:    
     :Cible:                 autre
-    :Status:                open
+    :Status:                closed
     :Problematique:         Créer la Branch 'gh-pages' pour y intégrer la documentation générer par
                             Sphinx et par Doxigen.
     :Traitement:            
@@ -182,9 +197,9 @@ ToDo : config.h
     :Date de saisie:        200703        
     :Date de traitemant:    
     :Cible:                 firmware
-    :Status:                open
-    :Problematique:         Créer un fichier de config.h regroupant tous les #define
-    :Traitement:  
+    :Status:                **OPEN**
+    :Problematique:         Create config.h file with only #define
+    :Traitement:            To separate from include files. To doy there is only one file IoT_EPS.h
 
 ----------------------------------------------------------------------------------------------------
 

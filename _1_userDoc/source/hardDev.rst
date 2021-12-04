@@ -337,6 +337,14 @@ Micro task:
 
 **avrdude and its conf file on e:** !!!!
 
+avrdude command send by Arduino IDE to the ARDUINO as ISP::
+
+    avrdude -v -pattiny85 -cstk500v1 -PCOM12 -b19200 -Uflash:r:TinyI2CWatchdog_nonFonctionnel.hex:i
+
+Command clean of the fullpath
+
+First diff right component Lfuse = E2 wrong one Lfuse = 62 meaning thet right comp is clock at 8Mhz
+
 MAX1232 integration (aborted)
 ====================================================================================================
 
