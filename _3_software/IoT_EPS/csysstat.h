@@ -42,7 +42,7 @@ class CSysStatus {
          @brief CSysSattus constructor...
          @return no return value and no parameter
 
-        Allow to creat and initialize erros variables
+        Allow to creat and initialize errors variables
         */
         CSysStatus():
 /* Message max lenght 20c for oled display */

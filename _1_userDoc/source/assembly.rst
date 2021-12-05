@@ -54,7 +54,7 @@ right clic anc copy/paste in Arduino preferences
 
 Test it : com speed 1200
 
-If ATtiny is wright programmed it shuld display  at powerup::
+If ATtiny is wright programmed it should display  at power up::
 
     boot
     RC1I1
