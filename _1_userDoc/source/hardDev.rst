@@ -4,7 +4,7 @@ Hardware development documentation
 
 :Auteur: J.Soranzo
 :Date: Octobre 2018
-:update: 05/04/2021
+:update: 08/12/2021
 :version: git versionning
 
 
@@ -122,14 +122,14 @@ In progress
 
 
 
-#. Alimentation du module relais en 5V (choix du conver.) : 60%
+#. Alimentation du module relais en 5V (choix du conver.) : **OK**
 #. packaging study
-#. integartion
+#. integration
 #. replace relais by MOSFET on general power relay to switch them all in one time on power off
-    - choose components (irf530 and irf9530, 2x 10k resistor see personnal notes public ``hardware/analog``) 
-        - IRF9530 : ok buy to mouser on 21 june 
-        - but no irf530 test with 2N7000 ok
-    - buy or find the components ok
+    - choose components (irf530 and irf9530, 2x 10k resistor see personal notes public ``hardware/analog``) 
+        - IRF9530 : ok buy to mouser on 21 june  **OK**
+        - but no irf530 test with 2N7000  **OK**
+    - buy or find the components  **OK**
     - store components in safe place : a box
     - prototype this solution
         - cut vero board
@@ -800,7 +800,6 @@ A great question : what is the realistic usage ?
   25k hours /12 <=> 2083 days <=> more than 5 years
  
 
-    
 ----------------------------------------------------------------------------------------------------
 
 .. index:: Pining, IO connections
@@ -897,7 +896,6 @@ Nano pining :
 
     
 
-    
 ####
 
 ==========================================

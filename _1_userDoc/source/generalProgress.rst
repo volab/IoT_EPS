@@ -14,7 +14,8 @@ General progress of IOT Electrical Power Strip
 ====================================================================================================
 General
 ====================================================================================================
-03/12/2021: connexion to github impossible.
+03/12/2021: connexion to github impossible. Repaired ssh config with git hub. 
+But with the help of tortoise git to configure 
 
 ====================================================================================================
 PCB equipment

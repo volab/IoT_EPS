@@ -179,29 +179,22 @@ In progress
 ======================
 
 
-
-#. improve json file managment
+# Correct watdog bug
+#. improve json file managment **ok**
     - write process
-        - for one       **ok**
-            - config :  **ok**
-            - plugs :   **ok**
-            - compile : **ok**
-        - for 3 files   **ok**
-            - Write     **ok**
-            - compile   **ok** 
-        - test
-            - environnement conda test
-            - write python script to log boot sequence to a file: in progress ``projet\_3_software\outilPythonSpecial``
-            - record some boot sequence
-            - check boots sequence
+        - test **ok**
+            - environnement conda test **ok**
+            - write python script to log boot sequence to a file: in progress ``projet\_3_software\outilPythonSpecial`` **ok**
+            - record some boot sequence **ok**
+            - check boots sequence **ok**
     - treat todo (error rise)
         - regen list
         - treat one by one
     - clean the code
-    - comit
-    - push
-    - merge
-    - push
+    - comit **ok**
+    - push **ok**
+    - merge **ok**
+    - push **ok**
 #. Minifier all files if possible of course and reduce the size of the images
     - minifier picture
     - minifier css
@@ -220,6 +213,8 @@ In progress
     - buy and groups components
     - oder pcb
 
+
+
 #. UML and classes documentation 10% - web and json
 
 
@@ -235,6 +230,18 @@ Differed to next version
 
     #. power measurement - not in this vesion
 
+====================================================================================================
+Watchdog bug 
+====================================================================================================
+There is no  watchdog component in the system and system always displays watchdog ok !!!
+
+Detection date :5/12/2021
+
+Start of traitement : 08/12/2021
+
+Dev branch : watch_dog_bug :
+
+Code analyze: 
 
 ====================================================================================================
 More object oriented rewriting (August 2020)
@@ -345,7 +352,7 @@ an I2C IO expander (see :ref:`Hardware dev doc<nanoI2CIoExpander>` )
 .. index::
     single: Error handling
 
-    
+
 ==================================
 Error handling
 ==================================
@@ -577,6 +584,18 @@ JSON structure vs variables
 ====================================================================================================
 .. uml:: graphviz/config4jsonVsVariables.wsd
 
+Lines in green tag differences between json and class members.
+
+emplacement, startInAPMode and ntpError exist in json but not in the ConfigParam class.
+
+_wifiMode exists in ConfigParam class but not in json
+
+In the same maner for plug structures:
+
+hDebut, hFin, dureeOn, dureeOff, clonePlug and onOffCount are in json but not in the class.
+
+
+
 22/07/2021: creation of the members of ConfigParam:
 
 - _emplacement
@@ -669,27 +688,8 @@ Write to json events
 JSON improvements : rewriting stage
 ====================================================================================================
 
-On git branch : json_new
+On git branch : json_new : terminated on 2021 november
 
-Work Progress
-====================================================================================================
-Last update : 13/10/2021
-
-#. load function : 98% 
-#. write function : 20%
-
-minifier json ok , change read method ok, change check integrity method ok ,  
-
-
-To do:
-
-12/10/2021 : finish write of CJsonIotEps::_storeOneJsonFile (plugs values)
-
-write store method, finish storOneFileMethod for plugs array
-
-
-To test write function use configuration html process. CServerWeb::handelIOTESPConfPage and more over
-CServerWeb::handelIOTESPConfPage see `Write to json events`_
 
 Strategy : **obsolete** see REX Reflections
 ====================================================================================================
@@ -795,23 +795,6 @@ It is not a good idea to keep Json object in memory see `Arduinojsondoc Why is i
     The new class needs only 2 pointers to acces to this data.
 
 
-JSON structure
-====================================================================================================
-.. uml:: graphviz/config4json.wsd
-
-JSON structure vs variables
-====================================================================================================
-.. uml:: graphviz/config4jsonVsVariables.wsd
-
-Lines in green tag differences between json and class members.
-
-emplacement, startInAPMode and ntpError exist in json but not in the ConfigParam class.
-
-_wifiMode exists in ConfigParam class but not in json
-
-In the same maner for plug structures:
-
-hDebut, hFin, dureeOn, dureeOff, clonePlug and onOffCount are in json but not in the class.
 
 Modifications
 ====================================================================================================
