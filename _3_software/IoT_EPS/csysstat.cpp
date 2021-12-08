@@ -110,7 +110,7 @@ bool CSysStatus::isSystemok(){
  @fn int8_t CSysStatus::howManyError()
  @return The number of error.
 
-Method developped specialy for oled display
+Method developped specially for oled display
 */
 int8_t CSysStatus::howManyError(){
     int8_t cpt = 0;
