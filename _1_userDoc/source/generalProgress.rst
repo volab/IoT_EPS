@@ -15,7 +15,7 @@ General progress of IOT Electrical Power Strip
 General
 ====================================================================================================
 03/12/2021: connexion to github impossible. Repaired ssh config with git hub. 
-But with the help of tortoise git to configure 
+But with the help of tortoise git to configure **CORRECTED**
 
 ====================================================================================================
 PCB equipment
@@ -56,12 +56,12 @@ Juin 2021: UML the return: after the discovert of `Graphviz`_ and `plantUML`_ !!
 
 ====================================================================================================
 Hardware
-===========================
+====================================================================================================
 See :ref:`Hardware pogress<hardProgress>`
 
 ====================================================================================================
 software
-============================
+====================================================================================================
 See :ref:`Software progress page<devProgress>`
 
 

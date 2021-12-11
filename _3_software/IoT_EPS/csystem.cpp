@@ -8,6 +8,7 @@
 */
 
 #include "csystem.h"
+#include "config_advanced.h"
 
 // VoLAB Logo (1kB size : 128*64 /8 - 8 bytes/line)
 //generated with http://en.radzio.dxp.pl/bitmap_converter/

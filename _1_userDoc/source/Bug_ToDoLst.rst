@@ -2,6 +2,8 @@
 Bug et ToDo-list
 ================
 
+
+
 Déscription
 ===========
 
@@ -190,6 +192,9 @@ ToDo : online gh-page
     :Traitement:            
 
 ------------------------------------------------------------------------------------------
+
+.. _todocreateconfigfile:
+
 
 ToDo : config.h
 ================

@@ -35,14 +35,16 @@ Software architecture or how does it work
 ====================================================================================================
 Some words on software architecture @13/07/2020
 
-see also `Json file improvements : analyse`_
+see also `Json file improvements : analyze`_
 
 Major points
 ====================================================================================================
 
 One main .ino file with its .h : IoT_EPS.
-In the header file we can find include and config informations. (to be changed - see project
-todo list)
+In the header file we can find include and config informations. (to be changed - 
+:ref:`see project todo list<todocreateconfigfile>` ) 
+
+
 
 A lot of usage of global variables and objects (not very optimal). :ref:`See variables list<refVariableList>`
 
@@ -178,9 +180,9 @@ Terminated
 In progress
 ======================
 
-
-# Correct watdog bug
-#. improve json file managment **ok**
+#. creation of config.h and config-advenced.h (see :ref:`see project todo list<todocreateconfigfile>`) 
+#. Correct watdog bug
+#. improve json file managment **2 points need work**
     - write process
         - test **ok**
             - environnement conda test **ok**
@@ -203,7 +205,7 @@ In progress
 #. configuration page (see softdev.rst)
 #. exhaustive test of hebdo mode : 95%
 #. write index special page for softAP Mode with local boostrap or other light js.framework 5%
-#. Create an infography that summarize features and needs 
+#. Create an infographic that summarize features and needs 
     - choose tool
     - choose Size
     - choose colors
@@ -231,6 +233,15 @@ Differed to next version
     #. power measurement - not in this vesion
 
 ====================================================================================================
+Config.h and config_advenced.h
+====================================================================================================
+config.h include all user define macro.
+
+config_advenced.h group all others interesting parameters
+
+
+
+====================================================================================================
 Watchdog bug 
 ====================================================================================================
 There is no  watchdog component in the system and system always displays watchdog ok !!!
@@ -241,7 +252,26 @@ Start of traitement : 08/12/2021
 
 Dev branch : watch_dog_bug :
 
-Code analyze: 
+Code analyze::
+
+    Method : void CSysStatus::display() do not display wd error ! Why ! An oversight ?
+    This method display 9 errors
+
+    But the class CSysStatus() is declared with 11 error !
+
+    CSysStatus::isSystemok()
+
+    CSysStatus::howManyError()
+
+    String CSysStatus::getMsg( int8_t n)
+
+In the setup sequence::
+
+    <Volab setUp > watchdog test 
+    <Volab System error handler > watchdog error
+    <Volab setUp > watchdog set to 30s.
+
+Creation of config.h et de config_advenced.h
 
 ====================================================================================================
 More object oriented rewriting (August 2020)
@@ -561,7 +591,7 @@ I place methods in the CSystem class not very logic. The right way to do it shou
 dedicate dislayMessageClass.
 
 ====================================================================================================
-Json file improvements : analyse
+Json file improvements : analyze
 ====================================================================================================
 Simple improvements
 ====================================================================================================

@@ -10,6 +10,7 @@
 #ifndef CSYSSTAT_H
 #define CSYSSTAT_H
 #include <FastLED.h>
+#include "config_advanced.h"
 
 class sysError {
     public:
@@ -75,7 +76,10 @@ class CSysStatus {
         sysError watchdogErr;
         sysError wifiSoftApErr;
         /** @todo [NECESSARY] creat wifiSoftSoftAPErr and wifiErr */
-
+        
+        sysError sysErrorTable[NBR_OF_SYSTEM_ERROR] = { 
+                    fsErr, nanoErr, rtcErr, confFileErr, credFileErr, filesErr, plugParamErr, 
+                    ntpErr, internetErr, watchdogErr, wifiSoftApErr };
 
         // sysError *nanoErr = new sysError( sysError::fatal, CRGB::RoyalBlue, CRGB::Black);
         
