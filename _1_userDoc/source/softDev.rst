@@ -175,12 +175,14 @@ Terminated
     #. generate a unique server name                                                         ok
     #. rewrite main program setup and loop function with more object oriented structure      ok
     #. add OLED display managment in accordance of its hardware implementation of course     ok
-
+    #. creation of config.h and config-advenced.h (see :ref:`see project todo list<todocreateconfigfile>`) **OK**
 
 In progress
 ======================
 
-#. creation of config.h and config-advenced.h (see :ref:`see project todo list<todocreateconfigfile>`) 
+#. Error handling improvement **95%** (todo display low error with LED ? Which one : power led ?)
+   A lot of work : change behavior on fatal error : do not sabord system but enable debug only 
+   with serial
 #. Correct watdog bug
 #. improve json file managment **2 points need work**
     - write process
@@ -201,15 +203,15 @@ In progress
     - minifier picture
     - minifier css
     - minifier html
-#. Error handling improvement 95% (todo display low error with LED ? Which one : power led ?)
+
 #. configuration page (see softdev.rst)
-#. exhaustive test of hebdo mode : 95%
-#. write index special page for softAP Mode with local boostrap or other light js.framework 5%
+#. exhaustive test of hebdo mode : **95%**
+#. write index special page for softAP Mode with local boostrap or other light js.framework **5%**
 #. Create an infographic that summarize features and needs 
     - choose tool
     - choose Size
     - choose colors
-#. Write user manual : 1%
+#. Write user manual : **1%**
 #. Write builder manual
     - mechanical parts
     - buy and groups components
@@ -275,7 +277,29 @@ Creation of ``config.h`` et de ``config_advenced.h`` **OK**
 
 define : ``#define NBR_OF_SYSTEM_ERROR 11`` in ``config_advenced.h``
 
-The purpose of this is to create a table of system error in the class.
+The purpose of this is to create a table of system error in the class. **OK**
+
+<e> command that displays system error display ``<Volab System status > watchdog error : no error``
+but some line above at boot time system displays ::
+
+    <Volab setUp > watchdog test 
+    <Volab wd test > -1
+    <Volab wd test > -1
+    <Volab System error handler > watchdog error
+
+
+.. code:: cpp
+
+    watchdog.begin();
+    DSPL( dPrompt + F("watchdog test ") );
+    sysStatus.watchdogErr.err( !watchdog.test() );
+    if ( !sysStatus.watchdogErr.isErr() ) DSPL( "watchdog OK"); //normaly if error we did not reach
+    //this point unless _forceSystemStartOnFatalError is true for debug
+    watchdog.setTimeout( cParam.getSTAMaxRetries() );
+    watchdog.setRefreshPeriod( cParam.getSTAMaxRetries()/3 );  
+    DSPL( dPrompt + F("watchdog set to ") + String( cParam.getSTAMaxRetries() ) + F("s.") );
+    //oled message
+
 
 ====================================================================================================
 More object oriented rewriting (August 2020)

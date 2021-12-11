@@ -22,14 +22,16 @@ bool CATtinyI2CWatchdog::test(){
     DEFDPROMPT( "wd test");
     _writeRegister( SETREADPOINTER, PID );
     int val0 = _readRegister( 0 );
-    DSPL( dPrompt + String( val0 ) ) ;
+    DSPL( dPrompt + "read val0 : " + String( val0, HEX ) ) ;
     _writeRegister( SETREADPOINTER, PID+1 );
     int val1 = _readRegister( 0 );
-    DSPL( dPrompt + String( val1 ) ) ;
+    DSPL( dPrompt + "read val1 : " + String( val1, HEX ) ) ;
     _writeRegister( SETREADPOINTER, PID+2 );
-    int val2 = _readRegister( 0 );    
+    int val2 = _readRegister( 0 );
+    DSPL( dPrompt + "read val2 : " + String( val2, HEX ) ) ;   
     _writeRegister( SETREADPOINTER, PID+3 );
     int val3 = _readRegister( 0 ); 
+    DSPL( dPrompt + "read val3 : " + String( val3, HEX ) ) ;
     if (   ( val0 == PIDVAL0 )
         && ( val1 == PIDVAL1 )
         && ( val2 == PIDVAL2 )

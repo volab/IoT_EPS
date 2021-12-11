@@ -221,6 +221,20 @@ Todo : Complete the CSystem class
 
 ----------------------------------------------------------------------------------------------------
 
+Todo : change behavior on fatal error
+==========================================
+
+    :creation date:         11/12/2021
+    :Date of treatment :    
+    :Cible:                 [software]
+    :Status:                **OPEN**
+    :Problem:               System sabord on fatal error and only blink led. This behavior prevent
+                            us to diagnose problem.
+    :Traitement:            Change this to only permit serial diag on fatal error.
+
+
+----------------------------------------------------------------------------------------------------
+
 ToDo-list
 =========
 
