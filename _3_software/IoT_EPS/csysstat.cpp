@@ -80,16 +80,22 @@ Call by SerialComand
 */
 void CSysStatus::display(){
     DEFDPROMPT( "System status" );
-    DSPL( dPrompt + fsErr.getMsg() + " : " + (fsErr.isErr()?"ERROR":"no error") );
-    DSPL( dPrompt + nanoErr.getMsg() + " : " + (nanoErr.isErr()?"ERROR":"no error") );
-    DSPL( dPrompt + rtcErr.getMsg() + " : " + (rtcErr.isErr()?"ERROR":"no error") );
-    DSPL( dPrompt + confFileErr.getMsg() + " : " + (confFileErr.isErr()?"ERROR":"no error") );
-    DSPL( dPrompt + credFileErr.getMsg() + " : " + (credFileErr.isErr()?"ERROR":"no error") );
-    DSPL( dPrompt + filesErr.getMsg() + " : " + (filesErr.isErr()?"ERROR":"no error") );
-    DSPL( dPrompt + plugParamErr.getMsg() + " : " + (plugParamErr.isErr()?"ERROR":"no error") );
-    DSPL( dPrompt + ntpErr.getMsg() + " : " + (ntpErr.isErr()?"ERROR":"no error") );
-    DSPL( dPrompt + wifiSoftApErr.getMsg() + " : " + (wifiSoftApErr.isErr()?"ERROR":"no error") );
+    // DSPL( dPrompt + fsErr.getMsg() + " : " + (fsErr.isErr()?"ERROR":"no error") );
+    // DSPL( dPrompt + nanoErr.getMsg() + " : " + (nanoErr.isErr()?"ERROR":"no error") );
+    // DSPL( dPrompt + rtcErr.getMsg() + " : " + (rtcErr.isErr()?"ERROR":"no error") );
+    // DSPL( dPrompt + confFileErr.getMsg() + " : " + (confFileErr.isErr()?"ERROR":"no error") );
+    // DSPL( dPrompt + credFileErr.getMsg() + " : " + (credFileErr.isErr()?"ERROR":"no error") );
+    // DSPL( dPrompt + filesErr.getMsg() + " : " + (filesErr.isErr()?"ERROR":"no error") );
+    // DSPL( dPrompt + plugParamErr.getMsg() + " : " + (plugParamErr.isErr()?"ERROR":"no error") );
+    // DSPL( dPrompt + ntpErr.getMsg() + " : " + (ntpErr.isErr()?"ERROR":"no error") );
+    // DSPL( dPrompt + wifiSoftApErr.getMsg() + " : " + (wifiSoftApErr.isErr()?"ERROR":"no error") );
     /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr */
+
+    sysError sError;
+    for ( int i; i < NBR_OF_SYSTEM_ERROR; i++){
+        sError = sysErrorTable[i];
+        DSPL( dPrompt + sError.getMsg() + " : " + (sError.isErr()?"ERROR":"no error") );
+    }
 }
 
 

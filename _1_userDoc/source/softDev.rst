@@ -255,9 +255,9 @@ Dev branch : watch_dog_bug :
 Code analyze::
 
     Method : void CSysStatus::display() do not display wd error ! Why ! An oversight ?
-    This method display 9 errors
+    This method display **9 errors**
 
-    But the class CSysStatus() is declared with 11 error !
+    But the class CSysStatus() is declared with **11 error** !
 
     CSysStatus::isSystemok()
 
@@ -271,7 +271,11 @@ In the setup sequence::
     <Volab System error handler > watchdog error
     <Volab setUp > watchdog set to 30s.
 
-Creation of config.h et de config_advenced.h
+Creation of ``config.h`` et de ``config_advenced.h`` **OK**
+
+define : ``#define NBR_OF_SYSTEM_ERROR 11`` in ``config_advenced.h``
+
+The purpose of this is to create a table of system error in the class.
 
 ====================================================================================================
 More object oriented rewriting (August 2020)
