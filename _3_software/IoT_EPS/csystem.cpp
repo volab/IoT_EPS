@@ -195,10 +195,11 @@ void CSystem::oledDisplaySate(){
         // how to display many errors
         // cpt = _psysStat->howManyError
         // display oneError and cpt--
-        //if cpt = 0 reload
-        if ( _oledCptErrToDisplay == 0 ) _oledCptErrToDisplay = _psysStat->howManyError();
+        // //if cpt = 0 reload
+        // DSPL( dPrompt + "error here");
+        // if ( _oledCptErrToDisplay == 0 ) _oledCptErrToDisplay = _psysStat->howManyError();
         //DSPL( dPrompt + "Nomber of error :" + (String)_oledCptErrToDisplay );
-        message = _psysStat->getMsg( _oledCptErrToDisplay-- );
+        // message = _psysStat->getMsg( _oledCptErrToDisplay-- );
 
     }
     _pDisplay->println(message);

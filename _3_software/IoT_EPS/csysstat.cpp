@@ -80,22 +80,18 @@ Call by SerialComand
 */
 void CSysStatus::display(){
     DEFDPROMPT( "System status" );
-    // DSPL( dPrompt + fsErr.getMsg() + " : " + (fsErr.isErr()?"ERROR":"no error") );
-    // DSPL( dPrompt + nanoErr.getMsg() + " : " + (nanoErr.isErr()?"ERROR":"no error") );
-    // DSPL( dPrompt + rtcErr.getMsg() + " : " + (rtcErr.isErr()?"ERROR":"no error") );
-    // DSPL( dPrompt + confFileErr.getMsg() + " : " + (confFileErr.isErr()?"ERROR":"no error") );
-    // DSPL( dPrompt + credFileErr.getMsg() + " : " + (credFileErr.isErr()?"ERROR":"no error") );
-    // DSPL( dPrompt + filesErr.getMsg() + " : " + (filesErr.isErr()?"ERROR":"no error") );
-    // DSPL( dPrompt + plugParamErr.getMsg() + " : " + (plugParamErr.isErr()?"ERROR":"no error") );
-    // DSPL( dPrompt + ntpErr.getMsg() + " : " + (ntpErr.isErr()?"ERROR":"no error") );
-    // DSPL( dPrompt + wifiSoftApErr.getMsg() + " : " + (wifiSoftApErr.isErr()?"ERROR":"no error") );
-    /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr */
 
-    sysError sError;
-    for ( int i; i < NBR_OF_SYSTEM_ERROR; i++){
+    /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr with the new sysErrorTable usage
+     * it si not necessary to modify this method.
+    */
+    DSPL( dPrompt + F("display") );
+    sysError *sError;
+
+    for ( int i=0; i < NBR_OF_SYSTEM_ERROR; i++){
         sError = sysErrorTable[i];
-        DSPL( dPrompt + sError.getMsg() + " : " + (sError.isErr()?"ERROR":"no error") );
+        DSPL( dPrompt + sError->getMsg() + " : " + (sError->isErr()?"ERROR":"no error") );
     }
+    DSPL( dPrompt + F("System global error : ") + (isSystemok()?"OK":"ErrOr") );
 }
 
 
@@ -105,10 +101,17 @@ void CSysStatus::display(){
 
 */
 bool CSysStatus::isSystemok(){
-    return ( !fsErr.isErr() && !nanoErr.isErr() && !rtcErr.isErr() && !confFileErr.isErr()
-               && !credFileErr.isErr() && !filesErr.isErr() && ! plugParamErr.isErr() 
-               && !ntpErr.isErr() && !wifiSoftApErr.isErr() );
-               /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr */
+    bool result = true;
+    sysError *sError;
+    
+    for ( int i=0; i < NBR_OF_SYSTEM_ERROR; i++){
+        sError = sysErrorTable[i];
+        result = result && !( sError->isErr() );
+    }  
+
+    /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr (not necessary with sysErrorTable*/
+    return result;
+    // return (false);
 }
 
 

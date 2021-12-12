@@ -77,9 +77,9 @@ class CSysStatus {
         sysError wifiSoftApErr;
         /** @todo [NECESSARY] creat wifiSoftSoftAPErr and wifiErr */
         
-        sysError sysErrorTable[NBR_OF_SYSTEM_ERROR] = { 
-                    fsErr, nanoErr, rtcErr, confFileErr, credFileErr, filesErr, plugParamErr, 
-                    ntpErr, internetErr, watchdogErr, wifiSoftApErr };
+        sysError* sysErrorTable[NBR_OF_SYSTEM_ERROR] = { 
+                    &fsErr, &nanoErr, &rtcErr, &confFileErr, &credFileErr, &filesErr, &plugParamErr, 
+                    &ntpErr, &internetErr, &watchdogErr, &wifiSoftApErr };
 
         // sysError *nanoErr = new sysError( sysError::fatal, CRGB::RoyalBlue, CRGB::Black);
         
@@ -103,6 +103,8 @@ class CSysStatus {
         int8_t howManyError();
 
         String getMsg( int8_t n);
+
+
        
     private:
         unsigned long _prevMillisCbit;

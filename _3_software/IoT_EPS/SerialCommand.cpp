@@ -268,7 +268,7 @@ FSInfo filseSystemInfo;
                 INTERFACE.println( F("Warning this command riquires only ONE parameter !" ) );
             }            
             break;
-        case 'e': //etat         
+        case 'e': //etat 
             sysStatus.display();
             break;            
         case 'i': //i for wifi pass

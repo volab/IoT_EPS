@@ -331,11 +331,15 @@ void setup(){
     
     /////////////////////////////////////////////////////////////////////////////
     //  Setup watchdog                                                         //
-    /////////////////////////////////////////////////////////////////////////////    
+    /////////////////////////////////////////////////////////////////////////////
+    String err = sysStatus.watchdogErr.isErr()?"Erreur":"tout va bien";
+    DSPL( dPrompt + "track WD sis wd error state chaged : " + err);
     watchdog.setTimeout( 10 );
     watchdog.setRefreshPeriod( 5 );
-    DSPL( dPrompt + "Watchdog set to 10s with a refresh period to 5s");
-    DSPL( dPrompt + "Loop start");
+    DSPL( dPrompt + F("Watchdog set to 10s with a refresh period to 5s") );
+    DSPL( dPrompt + F("Loop start") );
+
+
 }
 
 /////////////////////////////////////////////////////////////////////////////
