@@ -248,7 +248,7 @@ Watchdog bug
 ====================================================================================================
 There is no  watchdog component in the system and system always displays watchdog ok !!!
 
-Detection date :5/12/2021
+Detection date : 5/12/2021
 
 Start of traitement : 08/12/2021
 
@@ -301,7 +301,12 @@ but some line above at boot time system displays ::
     //oled message
 
 
-NEW BUG in CSystem::oledDisplaySate when system error !!!!!
+
+
+NEW BUG in CSystem::oledDisplaySate when system error !!!!! what
+
+
+
 
 ====================================================================================================
 More object oriented rewriting (August 2020)

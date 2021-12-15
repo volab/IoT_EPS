@@ -152,14 +152,20 @@ void setup(){
     watchdog.begin();
     DSPL( dPrompt + F("watchdog test ") );
     sysStatus.watchdogErr.err( !watchdog.test() );
-    if ( !sysStatus.watchdogErr.isErr() ) DSPL( "watchdog OK"); //normaly if error we did not reach
-    //this point unless _forceSystemStartOnFatalError is true for debug
-    watchdog.setTimeout( cParam.getSTAMaxRetries() );
-    watchdog.setRefreshPeriod( cParam.getSTAMaxRetries()/3 );  
-    DSPL( dPrompt + F("watchdog set to ") + String( cParam.getSTAMaxRetries() ) + F("s.") );
-    //oled message
-    display.println("* watchdog ok");
-    display.display();
+    if ( !sysStatus.watchdogErr.isErr() ){
+        DSPL( "watchdog OK"); //normaly if error we did not reach
+        //this point unless _forceSystemStartOnFatalError is true for debug
+        watchdog.setTimeout( cParam.getSTAMaxRetries() );
+        watchdog.setRefreshPeriod( cParam.getSTAMaxRetries()/3 );  
+        DSPL( dPrompt + F("watchdog set to ") + String( cParam.getSTAMaxRetries() ) + F("s.") );
+        //oled message
+        display.println("* watchdog ok");
+        display.display();
+    } else {
+        DSPL( dPrompt + F("watchdog is not set due to errors."));
+        display.println("* watchdog error");
+        display.display();
+    }
 
     /////////////////////////////////////////////////////////////////////////////
     //     Main power first check                                              //
