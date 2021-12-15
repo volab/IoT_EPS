@@ -36,19 +36,33 @@ Model Type
 
 ----------------------------------------------------------------------------------------------------
 
+**BUG** : oled do not display system error
+====================================================================================================
+
+    :Detection date:   11/12/21
+    :Resolution date:  
+    :Target:           firmware
+    :Status:           **OPEN**
+    :Problem:         When system error oled display blank line
+                      
+    :Traitement:      local branch oled-display-error
+
+----------------------------------------------------------------------------------------------------
+
 **BUG** : watchdog ok
 ====================================================================================================
 
     :Detection date:   05/12/21
-    :Resolution date:  
+    :Resolution date:  15/12/2021
     :Target:           firmware
-    :Status:           **OPEN**
+    :Status:           [closed]
     :Problem:         There is no  watchdog component in the system and system always displays 
                       watchdog ok !!!
                       
-    :Traitement:
-    
-
+    :Traitement:        Watch dog display ok on oled cause  normaly wd error is a fatal error that
+                        sabord the system and it does not reach the line where it is displayed but
+                        with the no_sabord option system reach the line.
+                        insert a new parameter NBR_OF_SYSTEM_ERROR and a new table of error
 
 ----------------------------------------------------------------------------------------------------
 
