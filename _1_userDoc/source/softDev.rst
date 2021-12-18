@@ -305,8 +305,12 @@ but some line above at boot time system displays ::
 
 NEW BUG in CSystem::oledDisplaySate when system error !!!!! what
 
+====================================================================================================
+Oled error display bug
+====================================================================================================
+branch : faire un git branch ;-)
 
-
+En cours de réso voir dans void CSystem::oledDisplaySate() et String CSysStatus::getMsg( int8_t n )
 
 ====================================================================================================
 More object oriented rewriting (August 2020)

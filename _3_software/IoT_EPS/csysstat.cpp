@@ -123,39 +123,54 @@ Method developped specially for oled display
 */
 int8_t CSysStatus::howManyError(){
     int8_t cpt = 0;
-    if ( fsErr.isErr() ) cpt++;
-    if ( nanoErr.isErr() ) cpt++;
-    if ( rtcErr.isErr() ) cpt++;
-    if ( confFileErr.isErr() ) cpt++;
-    if ( credFileErr.isErr() ) cpt++;
-    if ( filesErr.isErr() ) cpt++;
-    if ( plugParamErr.isErr() ) cpt++;
-    if ( ntpErr.isErr() ) cpt++;
-    if ( wifiSoftApErr.isErr() ) cpt++;
+    // if ( fsErr.isErr() ) cpt++;
+    // if ( nanoErr.isErr() ) cpt++;
+    // if ( rtcErr.isErr() ) cpt++;
+    // if ( confFileErr.isErr() ) cpt++;
+    // if ( credFileErr.isErr() ) cpt++;
+    // if ( filesErr.isErr() ) cpt++;
+    // if ( plugParamErr.isErr() ) cpt++;
+    // if ( ntpErr.isErr() ) cpt++;
+    // if ( wifiSoftApErr.isErr() ) cpt++;
     /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr */
+    sysError *sError;
+    for ( int i=0; i < NBR_OF_SYSTEM_ERROR; i++){
+        sError = sysErrorTable[i];
+        if (sError->isErr() ) cpt++;
+    } 
     return cpt;
 }
 
 String CSysStatus::getMsg( int8_t n){
+    DEFDPROMPT("Csystatus getMsg")
     int8_t cpt = 0;
-    if ( fsErr.isErr() ) cpt++;
-    if ( cpt == n ) return fsErr.getMsg();
-    if ( nanoErr.isErr() ) cpt++;
-    if ( cpt == n ) return nanoErr.getMsg();
-    if ( rtcErr.isErr() ) cpt++;
-    if ( cpt == n ) return rtcErr.getMsg();
-    if ( confFileErr.isErr() ) cpt++;
-    if ( cpt == n ) return confFileErr.getMsg();
-    if ( credFileErr.isErr() ) cpt++;
-    if ( cpt == n ) return credFileErr.getMsg();
-    if ( filesErr.isErr() ) cpt++;
-    if ( cpt == n ) return filesErr.getMsg();
-    if ( plugParamErr.isErr() ) cpt++;
-    if ( cpt == n ) return plugParamErr.getMsg();
-    if ( ntpErr.isErr() ) cpt++;
-    if ( cpt == n ) return ntpErr.getMsg();
-    if ( wifiSoftApErr.isErr() ) cpt++;
-    if ( cpt == n ) return wifiSoftApErr.getMsg();
+    // if ( fsErr.isErr() ) cpt++;
+    // if ( cpt == n ) return fsErr.getMsg();
+    // if ( nanoErr.isErr() ) cpt++;
+    // if ( cpt == n ) return nanoErr.getMsg();
+    // if ( rtcErr.isErr() ) cpt++;
+    // if ( cpt == n ) return rtcErr.getMsg();
+    // if ( confFileErr.isErr() ) cpt++;
+    // if ( cpt == n ) return confFileErr.getMsg();
+    // if ( credFileErr.isErr() ) cpt++;
+    // if ( cpt == n ) return credFileErr.getMsg();
+    // if ( filesErr.isErr() ) cpt++;
+    // if ( cpt == n ) return filesErr.getMsg();
+    // if ( plugParamErr.isErr() ) cpt++;
+    // if ( cpt == n ) return plugParamErr.getMsg();
+    // if ( ntpErr.isErr() ) cpt++;
+    // if ( cpt == n ) return ntpErr.getMsg();
+    // if ( wifiSoftApErr.isErr() ) cpt++;
+    // if ( cpt == n ) return wifiSoftApErr.getMsg();
+    sysError *sError;
+    int i;
+    for ( i=0; i < NBR_OF_SYSTEM_ERROR; i++){
+        sError = sysErrorTable[i];
+        if (sError->isErr() ) cpt++;
+        if (cpt == n) break;
+    }
+    // DSPL( dPrompt  + F("En erreur: ") + String(i) );
+    return sysErrorTable[i]->getMsg();
     /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr */
 
     /** @todo [NECESSARY] best way to return error message will be to creat an array in howmanyError

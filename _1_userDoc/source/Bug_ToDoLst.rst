@@ -45,7 +45,7 @@ Model Type
     :Status:           **OPEN**
     :Problem:         When system error oled display blank line
                       
-    :Traitement:      local branch oled-display-error
+    :Traitement:      local branch oled-display-error-bug
 
 ----------------------------------------------------------------------------------------------------
 
