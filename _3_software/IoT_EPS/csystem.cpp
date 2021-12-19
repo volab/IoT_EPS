@@ -246,6 +246,11 @@ void CSystem::oledLoopChangeDispayIf(){
     }   
 }
 
+void CSystem::oledDsiplayShutDown(){
+    _pDisplay->clearDisplay();
+    _pDisplay->println( F(OLED_SHUTDOWN_MESSAGE) );
+    _pDisplay->display();
+}
 
 
 /**

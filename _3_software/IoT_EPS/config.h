@@ -11,10 +11,7 @@
 
 /** @todo [NECESSARY]Passage heure d'hiver/été : soit automatique soit configurable via l'interface */
 #define DEFAULT_PREFIX_NAME "ESP_IOT"
-#define FIRSTBOOTFORMFILENAME "/firstboot.htm"
-#define CONFIGFORMFILENAME "/config_tag.htm"
-#define APMODEINDEXPAGENAME "/apmodeindex.htm"
-/** @todo [NECESSARY] (integration) replace config_tag.htm by the right file name and or the right file */
+
 
 #define JSON_TAG "IoTEps"
 #define JSON_VERSION "v5.1"
@@ -61,6 +58,6 @@ there is 3 pull-up on the board.
 #define NBRPLUGS 4
 #define NUM_LEDS NBRPLUGS /**< for fastLED class */
 
-
+#define OLED_SHUTDOWN_MESSAGE "Shutdown Started !"
 
 #endif

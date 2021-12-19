@@ -17,6 +17,11 @@
 #define CONFIGFILENAME_COPY1 "/config4copie1.json"
 #define CONFIGFILENAME_COPY2 "/config4copie2.json"
 
+#define FIRSTBOOTFORMFILENAME "/firstboot.htm"
+#define CONFIGFORMFILENAME "/config_tag.htm"
+#define APMODEINDEXPAGENAME "/apmodeindex.htm"
+/** @todo [NECESSARY] (integration) replace config_tag.htm by the right file name and or the right file */
+
 #define HTML_ALLARGS_SEPARATOR "|"
 #define SECPERHOURS (int)3600
 

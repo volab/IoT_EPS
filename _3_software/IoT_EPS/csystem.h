@@ -44,6 +44,7 @@ class CSystem
 
         void oledDisplaySate();
         void oledDisplayIps();
+        void oledDsiplayShutDown();
 
         /**
          @fn void CSystem::oledLoopChangeDispayIf()

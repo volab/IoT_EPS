@@ -547,6 +547,7 @@ void loop(){
             FastLED.show();
             wifiLed.low();
             //watchdog.enableRefresh( false ); //doesn't work crash json file
+            sysIoteps.oledDsiplayShutDown();
             watchdog.setTimeout( 2 );
             while( 1 )yield(); //another way to stop AtinyWD refresh.
             //ESP.restart();
