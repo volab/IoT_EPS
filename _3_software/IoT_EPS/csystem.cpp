@@ -182,23 +182,28 @@ void CSystem::oledDisplaySate(){
     DEFDPROMPT( "CSystem::oledDisplatState" )
     if ( _psysStat->isSystemok() ){
         // display one plug state
-        message = _pPlugs[_oledCptPlugToDisplay].getPlugName();
-        message += " mode ";
-        message += (String)_pPlugs[_oledCptPlugToDisplay++].getMode();
-        // _pDisplay->println(message);
-        //cpt++
-        //if cpt >= plug Number => cpt =0
+        // message = _pPlugs[_oledCptPlugToDisplay].getPlugName();
+        // message += " mode ";
+        // message += (String)_pPlugs[_oledCptPlugToDisplay++].getMode();
+
+        message = "Mode ";
+        message += (String)_pPlugs[_oledCptPlugToDisplay].getMode();
+        message += " : ";
+        message += _pPlugs[_oledCptPlugToDisplay].getPlugName();
+
+        _oledDivSysState--; //to slow down the display speed
+        if ( _oledDivSysState == 0 ){
+            _oledDivSysState = (uint8_t)OLED_SYSTEM_STATE_DISPLAY_DIV;
+            _oledCptPlugToDisplay++;
+        }
+
         if ( _oledCptPlugToDisplay >= _pcParam->getNumberOfPlugs() ){
-            _oledCptPlugToDisplay =0;
+            _oledCptPlugToDisplay = 0;
         }
     } else { // if here _psysStat->howManyError() > 0
-       
+        //dsiplay only one error in one cycle
         if ( _oledCptErrToDisplay == 0 ) _oledCptErrToDisplay = _psysStat->howManyError();
-        // DSPL( dPrompt + "error to display now = " + String(_oledCptErrToDisplay) );
-        //DSPL( dPrompt + "Nomber of error :" + (String)_oledCptErrToDisplay );
         message = _psysStat->getMsg( _oledCptErrToDisplay-- );
-        
-        // DSPL (dPrompt + message );
 
     }
     _pDisplay->println(message);

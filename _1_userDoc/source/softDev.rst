@@ -183,7 +183,7 @@ In progress
 #. Error handling improvement (todo display low error with LED ? Which one : power led ?)
    A lot of work : change behavior on fatal error : do not sabord system but enable debug only 
    with serial
-#. Correct watdog bug
+#. Correct watchdog bug **70%**
 #. improve json file managment **2 points need work**
     - write process
         - test **ok**
@@ -300,17 +300,6 @@ but some line above at boot time system displays ::
     DSPL( dPrompt + F("watchdog set to ") + String( cParam.getSTAMaxRetries() ) + F("s.") );
     //oled message
 
-
-
-
-NEW BUG in CSystem::oledDisplaySate when system error !!!!! what
-
-====================================================================================================
-Oled error display bug
-====================================================================================================
-branch : faire un git branch ;-)
-
-En cours de réso voir dans void CSystem::oledDisplaySate() et String CSysStatus::getMsg( int8_t n )
 
 ====================================================================================================
 More object oriented rewriting (August 2020)

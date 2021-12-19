@@ -46,6 +46,7 @@ there is 3 pull-up on the board.
 */
 
 #define OLED_REFRESH_PERIOD 1 //in seconds
+#define OLED_SYSTEM_STATE_DISPLAY_DIV 2 //example 2*1s
 
 
 #define RTC_UPDATE_PERIOD 15 //every 15mn

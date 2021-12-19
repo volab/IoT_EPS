@@ -88,6 +88,7 @@ class CSystem
         unsigned long _oledRefreshPeriod; //in seconds
         uint8_t _oledCptPlugToDisplay;
         uint8_t _oledCptErrToDisplay=0;
+        uint8_t _oledDivSysState = (uint8_t)OLED_SYSTEM_STATE_DISPLAY_DIV;
         CJsonIotEps* _pJsonData;
 
 		
