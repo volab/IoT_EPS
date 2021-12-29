@@ -15,10 +15,10 @@
 
 
 /** 
-@fn CEpsStrTime::CEpsStrTime( String val )
-@brief second constructor that set the value, check validity and convert to seconds
-@param val Time value as String
-@return nothing of course
+ @fn CEpsStrTime::CEpsStrTime( String val )
+ @brief second constructor that set the value, check validity and convert to seconds
+ @param val Time value as String
+ @return nothing of course
 */
 CEpsStrTime::CEpsStrTime( String val ){
     setValue( val );
@@ -123,13 +123,13 @@ bool CEpsStrTime::checkValidity(){
 }
 
 /** 
-@fn uint32_t  CEpsStrTime::computeNextTime()
-@brief calculate next time to switch the plug
-
-@return unix time form
-
+ @fn uint32_t  CEpsStrTime::computeNextTime( uint8_t CheckedDays)
+ @brief calculate next time to switch the plug
+ @param CheckedDays a byte that's represents checked day (one bit/day start at bit0 for sunday)
+ @return unix time form
+ 
 */
-/** @todo [NECESSARY] document checkedDays parameter */
+/** closed [NECESSARY] document checkedDays parameter */
 /**
  @bug duration takes 1s at each switch time. Cause: delay between detection time 
  by plug.isItTimeToSwitch and nextTime computation here
@@ -225,7 +225,7 @@ String CEpsStrTime::unixTime2String( uint32_t time2Display ){
 /** 
  @fn uint8_t CEpsStrTime::nextCheckedDay( uint8_t days, uint8_t day )
  @brief a private methode to find the first next checked day...
- @param days a byte that's represente checked day (one bit/day start at bit0 for sunday)
+ @param days a byte that's represents checked day (one bit/day start at bit0 for sunday)
  @param day The number of the current day (Sunday = 0)
  @return number of days between current day and the next checked day in the week.
  0 meens that is the same day

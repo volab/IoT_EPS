@@ -41,35 +41,34 @@ Major points
 ====================================================================================================
 
 One main .ino file with its .h : IoT_EPS.
-In the header file we can find include and config informations. (to be changed - 
-:ref:`see project todo list<todocreateconfigfile>` ) 
-
-
+In the header file we can find include and config informations. (to changed - 
+:ref:`see project todo list<todocreateconfigfile>` ) Now we have the IoT_EPS.h with includes and 
+config.h for parameters and config_advanced.h for advanced parameters.
 
 A lot of usage of global variables and objects (not very optimal). :ref:`See variables list<refVariableList>`
 
 Usage of one big json file (except for credentials) to store plugs information and 
 application parameters. Not optimal (a better choice would be one file for general informations and
-one file for flugs parameters and perhaps one file by plug).
+one file for plugs parameters and perhaps one file by plug).
 
-Usage of static functions in some object like Crtc du to usage of external library.
+Usage of static functions in some classes like *Crtc* due to usage of external library.
 
-Usage of a pseudo object in SerialCommand (just a struct) due to reuse of code from an other project.
+Usage of a pseudo object in **SerialCommand** (just a struct) due to reuse of code from an other project.
 
-The embedded html server is based on ESP8266webserver class 
+The embedded html server is based on **ESP8266webserver** class 
 
-Global File system SPIFFS is based on ESP8266 core
+Global File system SPIFFS is based on **ESP8266 core**
 
 Operations
 ====================================================================================================
-An array of 4 plugs object manage the behavior of the plug. Events from wifi trigs 
+An array of 4 plug objects manage the behavior of the plugs. Events from wifi trigs 
 web server functions. The main part of the jobs is to write data in the json file that it is resend
-to the user's navigator.
+to the user's web browser.
 
 Timing are managed by CRtc a derived class from rtc from RTClib.
 
 The wifi : after a long expectation where I navigate between station mode or softAP mode. Finally,
-i activate the 2 modes simultaneously.
+I activate the 2 modes simultaneously.
 
 ====================================================================================================
 How does it work
