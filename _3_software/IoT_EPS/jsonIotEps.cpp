@@ -30,7 +30,7 @@ bool CJsonIotEps::checkIfStoreNeeded(){
     } else { //if true no need to test plug causeonly one json file
         for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
             retVal |= _pPlugs[i]._jsonWriteRequest;
-            _pPlugs[i]._jsonWriteRequest = false; //to be remove after test
+            //_pPlugs[i]._jsonWriteRequest = false; //to be remove after test
         }
     }
 
@@ -88,6 +88,7 @@ bool CJsonIotEps::storeJson(){
 //try to write conf1: _checkJsonOneFileIntegrity file1
 // if ok : 
     // first write
+    DSPL( dPrompt + F("Master json file write") );
     if ( _checkJsonOneFileIntegrity( CONFIGFILENAME ) ){
         _storeOneJsonFile( CONFIGFILENAME, CONFIGFILENAME );
         DSPL( dPrompt + F("store master config file with himself as model"));
@@ -107,6 +108,7 @@ bool CJsonIotEps::storeJson(){
     }
 
     //second write
+    DSPL( dPrompt + F("Copy 1 Json file write") );
     if ( _checkJsonOneFileIntegrity( CONFIGFILENAME ) ){
         _storeOneJsonFile( CONFIGFILENAME, CONFIGFILENAME_COPY1 );
         DSPL( dPrompt + F("store config file copy 1 with master as model"));
@@ -159,16 +161,18 @@ void CJsonIotEps::_storeOneJsonFile(String file_name_model, String file_name_to_
     DEFDPROMPT( "CJsonIotEps store one json method" );
 
     File configFile = SPIFFS.open( file_name_model , "r");
-    // DSPL( dPrompt);
+    DSPL( dPrompt + "file = "+ file_name_to_store + " with model = " + file_name_model);
     if (configFile) {
         size_t size = configFile.size();
         // Allocate a buffer to store contents of the file.
         std::unique_ptr<char[]> buf(new char[size]);
         configFile.readBytes(buf.get(), size);
         configFile.close();
+        DSPL( dPrompt + F("Config File loaded") );
         DynamicJsonBuffer jsonBuffer;
         JsonObject& json = jsonBuffer.parseObject(buf.get());
         if (json.success()) {
+            DSPL( dPrompt + F("populate json general parm") );
             json["general"]["softAP_IP"] = _pcParam->_addIP.toString( );
             json["general"]["numberOfPlugs"] = String( _pcParam->_numberOfPlugs );
             json["general"]["softAP_port"] = String( _pcParam->_serverPort );
@@ -193,13 +197,14 @@ void CJsonIotEps::_storeOneJsonFile(String file_name_model, String file_name_to_
             json["general"]["emplacement"] = String( _pcParam->_emplacement );
             for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
                 JsonObject& plug = json[_pPlugs[i].getPlugName()];
+                DSPL( dPrompt + _pPlugs[i].getPlugName() + " write req = " + _pPlugs[i]._jsonWriteRequest );
                 plug["nickName"] = _pPlugs[i]._nickName;
             }
 
             for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
                 if ( _pPlugs[i]._jsonWriteRequest ){
                     JsonObject& plug = json[_pPlugs[i].getPlugName()];
-                    
+                    DSPL( dPrompt + _pPlugs[i].getPlugName() );
                     plug["State"] = _pPlugs[i]._state?"ON":"OFF";
                     plug[JSON_PARAMNAME_PAUSE] = _pPlugs[i]._pause?"ON":"OFF";
                     plug["Mode"] = _pPlugs[i].getStringMode();

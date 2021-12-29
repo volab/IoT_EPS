@@ -646,12 +646,12 @@ String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
 Writes value on parma for _plugName plug of course !
 */
 void CPowerPlug::writeToJson( String param, String value ){
-    DEFDPROMPT( "write to jSon");
-
+    DEFDPROMPT( "CPower plug write to jSo (not real write)");
+DSPL( dPrompt + param + " with " + value );
     _jsonWriteRequest = true;
     /** @todo [NECESSARY] remove below code 29/12/2021 */
 
-    File configFile = SPIFFS.open( CONFIGFILENAME , "r");
+/*     File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     // DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -677,7 +677,7 @@ void CPowerPlug::writeToJson( String param, String value ){
         }
         configFile.close();
         // return true;        
-    }    
+    }     */
 }
 
 /** 
@@ -689,6 +689,7 @@ It works on _dayOfWeek member
 */
 void CPowerPlug::writeDaysToJson(){
     DEFDPROMPT( "write days to jSon");
+    DSPL( dPrompt + "write needed set to true");
 
     _jsonWriteRequest = true;
 
