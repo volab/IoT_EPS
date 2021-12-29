@@ -649,7 +649,7 @@ void CPowerPlug::writeToJson( String param, String value ){
     DEFDPROMPT( "write to jSon");
 
     _jsonWriteRequest = true;
-    /** @todo [ECESSARY] remove below code*/
+    /** @todo [NECESSARY] remove below code 29/12/2021 */
 
     File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     // DSPL( dPrompt);
@@ -691,9 +691,10 @@ void CPowerPlug::writeDaysToJson(){
     DEFDPROMPT( "write days to jSon");
 
     _jsonWriteRequest = true;
-    /** @todo [ECESSARY] remove below code*/
 
-    File configFile = SPIFFS.open( CONFIGFILENAME , "r");
+    /** @todo [NECESSARY] remove below code 29/12/2021*/
+
+    /* File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     // DSPL( dPrompt);
     if (configFile) {
         size_t size = configFile.size();
@@ -728,7 +729,7 @@ void CPowerPlug::writeDaysToJson(){
         }
         configFile.close();
         // return true;         
-    }    
+    }     */
 }
 
 /** 

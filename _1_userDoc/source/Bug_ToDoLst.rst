@@ -155,7 +155,7 @@ Todo : change behavior on fatal error
 ==========================================
 
     :creation date:         11/12/2021
-    :Date of treatment :    
+    :Date of treatment:    
     :Cible:                 [software]
     :Status:                **OPEN**
     :Problem:               System sabord on fatal error and only blink led. This behavior prevent

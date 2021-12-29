@@ -454,7 +454,7 @@ bool CJsonIotEps::loadJsonConfigParam(){
 
 /**
  @fn CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity()
- @brief Check the integrity of json file
+ @brief Check the integrity of json files
  @return jsonFileIntegrity Value.
 
  This method is called in the system init. It sets the _jsonFileIntegrity and 
@@ -566,12 +566,12 @@ CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
 
 /**
  @fn CJsonIotEps::checkJsonOneFileIntegrity( String fileName )
- @brief Check the integrity of json file
+ @brief Check the integrity of one json file
  @param fileName The file name to check
  @return true if file is correct.
 
  This method is called in the system init. It sets the _jsonFileIntegrity and 
- _fileNameToLoad private members.
+ _fileNameToLoad private members if json_version and tag are correct.
 */
 bool CJsonIotEps::_checkJsonOneFileIntegrity( String fileName ){
     DEFDPROMPT("Check Json Integrity (one file)")
@@ -612,6 +612,8 @@ bool CJsonIotEps::_checkJsonOneFileIntegrity( String fileName ){
  @return hash Value base on data loaded in RAM and usage of a special function in json lib.
  0 means open file error
 */
+/** @todo [NECESSARY] check if this method is always usefull (29/12/2021) */
+
 uint32_t CJsonIotEps::_hashFile( File jsonFile ){
     HashPrint hashPrint;
     uint32_t hVal = 0;
