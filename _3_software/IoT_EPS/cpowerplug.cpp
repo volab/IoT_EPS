@@ -135,10 +135,10 @@ bool CPowerPlug::isItTimeToSwitch(){
 }
 
 /** 
-@fn void CPowerPlug::updateOutputs()
-@brief update the state of the physical outputs...
-@param writeToJsonCount a booleen to enable onOff counter to be inc in json (for begin purpose)
-@return no return value 
+ @fn void CPowerPlug::updateOutputs()
+ @brief update the state of the physical outputs...
+ @param writeToJsonCount a boolean to enable onOff counter to be inc in json (for begin purpose)
+ @return no return value 
 
 This function read and write onoffcount in the json file
 */
@@ -147,10 +147,12 @@ void CPowerPlug::updateOutputs( bool writeToJsonCount ){
     _nano.digitalWrite( _pin, _state );
     if ( _ledOn ) _nano.digitalWrite( _onOffLedPin, _state );
     if ( writeToJsonCount ){
-        String strCount = readFromJson( (String)JSON_PARAMNAME_ONOFCOUNT );
-        strCount = String( strCount.toInt() + 1 );
-        DSPL(dPrompt + "nouvelle valeur du compteur : " + strCount);
-        writeToJson( JSON_PARAMNAME_ONOFCOUNT, strCount );        
+        // String strCount = readFromJson( (String)JSON_PARAMNAME_ONOFCOUNT );
+        // strCount = String( strCount.toInt() + 1 );
+        _onOffCount++;
+        DSPL(dPrompt + F("Nouvelle valeur du compteur ON/OFF: ") + _onOffCount );
+        writeToJson( JSON_PARAMNAME_ONOFCOUNT, "" ); //to set the flag
+        
     }
 
    
@@ -370,6 +372,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                     DSPL( dPrompt + _plugName + " : extracted dureeoff en secondes = " + \
                         (String)dureeOff.getSeconds() );
                     writeToJson( param, dureeOff.getStringVal() );
+                    _dureeOff.setValue( dureeOff.getStringVal() );
                     _nextTimeToSwitch = dureeOff.computeNextTime();
                 } else writeToJson( param, "" );
                 /////////////////////////////////////////////////////////////////////////////
@@ -385,6 +388,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 if ( hFin.isValid && !dureeOff.isValid ){
                     _nextTimeToSwitch = hFin.computeNextTime();
                     writeToJson( param, hFin.getStringVal() );
+                    _hFin.setValue( hFin.getStringVal() );
                     DSPL( dPrompt + _plugName + F(" : extracted hFin as String = ") + \
                         (String)hFin.getStringVal() ); 
                 }
@@ -393,11 +397,14 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 
             }else { //state == "OFF"
                 _nextTimeToSwitch = 0;
-                writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
-                writeToJson( JSON_PARAMNAME_ENDTIME, "" );
-                writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
-                writeToJson( JSON_PARAMNAME_ONDURATION, "" );
-                writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+                _hFin.setValue( "" );
+                _dureeOn.setValue("");
+                _dureeOff.setValue("");
+                // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+                // writeToJson( JSON_PARAMNAME_ENDTIME, "" );
+                // writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
+                // writeToJson( JSON_PARAMNAME_ONDURATION, "" );
+                writeToJson( JSON_PARAMNAME_STARTTIME, "" ); //just for boolean set
                 _daysOnWeek = 0;
                 writeDaysToJson();
                 off();
@@ -420,7 +427,9 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         if (dureeOn.isValid){
             DSPL( dPrompt + _plugName + " : extracted dureeOn en secondes = " + \
                 (String)dureeOn.getSeconds() );
-            writeToJson( param, dureeOn.getStringVal() );
+            writeToJson( param, "" ); //kept only for _jsonWriteRequest set to true
+            _dureeOn.setValue( dureeOn.getStringVal() );
+            _dureeOff.setValue( "" );
             _nextTimeToSwitch = dureeOn.computeNextTime();
             // param = JSON_PARAMNAME_STATE;
             state = CServerWeb::extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STATE );
@@ -432,6 +441,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 } else {
                     off();
                     writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
+                    _nextTimeToSwitch = 0;
                 }
             }
             _mode = modeId( mode );
@@ -451,7 +461,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         if ( pauseRequested == "ON" ){
             if (_state) {
                 off();
-                writeToJson( JSON_PARAMNAME_PAUSE, "ON" );
+                writeToJson( JSON_PARAMNAME_PAUSE, "ON" ); // only kept to set _jsonWriteRequest to true
                 _pause = true;
                 DSPL( dPrompt + F("mise en pause HTML")  );
                 return;
@@ -486,9 +496,12 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 writeToJson( JSON_PARAMNAME_STARTTIME, "" );
                 _nextTimeToSwitch = dureeOn.computeNextTime();
             }
-            writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
-            writeToJson( JSON_PARAMNAME_ONDURATION, dureeOn.getStringVal() );
-            writeToJson( JSON_PARAMNAME_OFFDURATION, dureeOff.getStringVal() );
+            /** @todo [NECESSARY] keep only one writeToJson Call to set _jsonWriteRequest */
+            //writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+            //writeToJson( JSON_PARAMNAME_ONDURATION, dureeOn.getStringVal() );
+            _dureeOn.setValue( dureeOn.getStringVal() );
+            //writeToJson( JSON_PARAMNAME_OFFDURATION, dureeOff.getStringVal() );
+            _dureeOff.setValue( dureeOff.getStringVal() ) ;
             _mode = modeId( mode );
             writeToJson( JSON_PARAMNAME_MODE, mode );            
         } else { //onDuration and/or offDuration not valid
@@ -647,7 +660,7 @@ Writes value on parma for _plugName plug of course !
 */
 void CPowerPlug::writeToJson( String param, String value ){
     DEFDPROMPT( "CPower plug write to jSo (not real write)");
-DSPL( dPrompt + param + " with " + value );
+DSPL( dPrompt + _plugName + " : " + param + " with " + value );
     _jsonWriteRequest = true;
     /** @todo [NECESSARY] remove below code 29/12/2021 */
 

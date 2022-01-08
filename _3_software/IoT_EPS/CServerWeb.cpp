@@ -444,6 +444,8 @@ void CServerWeb::handleIndex(){
     // bool requestAP;
     IPAddress clientIP = server->client().remoteIP();
     IPAddress modeAPIP = _pcParam->getIPAdd();
+    DSPL( dPrompt + F("Client_IP = ") + clientIP.toString() );
+    DSPL( dPrompt + F("ModeAP_IP = ") + modeAPIP.toString() );
     modeAPIP[3] = 0;
     clientIP[3] = 0;
     if (clientIP == modeAPIP) {

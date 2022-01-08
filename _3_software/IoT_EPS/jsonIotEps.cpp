@@ -204,7 +204,7 @@ void CJsonIotEps::_storeOneJsonFile(String file_name_model, String file_name_to_
             for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
                 if ( _pPlugs[i]._jsonWriteRequest ){
                     JsonObject& plug = json[_pPlugs[i].getPlugName()];
-                    DSPL( dPrompt + _pPlugs[i].getPlugName() );
+                    DSPL( dPrompt + F("plug to be writed") + _pPlugs[i].getPlugName() );
                     plug["State"] = _pPlugs[i]._state?"ON":"OFF";
                     plug[JSON_PARAMNAME_PAUSE] = _pPlugs[i]._pause?"ON":"OFF";
                     plug["Mode"] = _pPlugs[i].getStringMode();

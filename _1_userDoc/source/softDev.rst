@@ -180,10 +180,13 @@ Terminated
 In progress
 ======================
 
+#. new bug in 2022 : json writes incorrect : ex : cycle hdebut and hfin ="" !!!
+   detect 05/1/2022
+
 #. Error handling improvement (todo display low error with LED ? Which one : power led ?)
    A lot of work : change behavior on fatal error : do not sabord system but enable debug only 
    with serial
-#. Correct watchdog bug **70%**
+#. Correct watchdog bug see ? **70%**
 #. improve json file managment **2 points need work**
     - write process
         - test **ok**
