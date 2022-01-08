@@ -369,11 +369,12 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 DSPL( dPrompt + "dureeOff validity : " + \
                     (dureeOff.isValid?"valid":"invalid") );
                 if (dureeOff.isValid){
-                    DSPL( dPrompt + _plugName + " : extracted dureeoff en secondes = " + \
+                    DSPL( dPrompt + _plugName + " : extracted dureeoff in seconds = " + \
                         (String)dureeOff.getSeconds() );
-                    writeToJson( param, dureeOff.getStringVal() );
+                    //writeToJson( param, dureeOff.getStringVal() );
                     _dureeOff.setValue( dureeOff.getStringVal() );
                     _nextTimeToSwitch = dureeOff.computeNextTime();
+                    _jsonWriteRequest = true;
                 } else writeToJson( param, "" );
                 /////////////////////////////////////////////////////////////////////////////
                 //    Compute MANUAL MODE  : hFin                                          //
@@ -400,11 +401,8 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 _hFin.setValue( "" );
                 _dureeOn.setValue("");
                 _dureeOff.setValue("");
-                // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
-                // writeToJson( JSON_PARAMNAME_ENDTIME, "" );
-                // writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
-                // writeToJson( JSON_PARAMNAME_ONDURATION, "" );
-                writeToJson( JSON_PARAMNAME_STARTTIME, "" ); //just for boolean set
+                //writeToJson( JSON_PARAMNAME_STARTTIME, "" ); //just for boolean set
+                _jsonWriteRequest = true;
                 _daysOnWeek = 0;
                 writeDaysToJson();
                 off();
@@ -662,35 +660,8 @@ void CPowerPlug::writeToJson( String param, String value ){
     DEFDPROMPT( "CPower plug write to jSo (not real write)");
 DSPL( dPrompt + _plugName + " : " + param + " with " + value );
     _jsonWriteRequest = true;
-    /** @todo [NECESSARY] remove below code 29/12/2021 */
+    /** done remove below code 29/12/2021 */
 
-/*     File configFile = SPIFFS.open( CONFIGFILENAME , "r");
-    // DSPL( dPrompt);
-    if (configFile) {
-        size_t size = configFile.size();
-        // Allocate a buffer to store contents of the file.
-        std::unique_ptr<char[]> buf(new char[size]);
-        configFile.readBytes(buf.get(), size);
-        DynamicJsonBuffer jsonBuffer;
-        JsonObject& json = jsonBuffer.parseObject(buf.get());
-        if (json.success()) {
-            JsonObject& plug = json[_plugName]; 
-            DSPL( dPrompt + _plugName + " : " + param + " = " + value);
-            plug[param] = value; 
-            // configFile.seek(0, SeekSet);
-            configFile.close();
-            configFile = SPIFFS.open( CONFIGFILENAME , "w");
-            json.printTo(configFile);
-            // json.prettyPrintTo(configFile);
-            // plug.prettyPrintTo(Serial);
-            // DSPL();
-        } else {
-            DEBUGPORT.println(dPrompt + F("Failed to load json config"));
-            // return false;
-        }
-        configFile.close();
-        // return true;        
-    }     */
 }
 
 /** 
@@ -702,48 +673,11 @@ It works on _dayOfWeek member
 */
 void CPowerPlug::writeDaysToJson(){
     DEFDPROMPT( "write days to jSon");
-    DSPL( dPrompt + "write needed set to true");
+    DSPL( dPrompt + F("write needed set to true") );
 
     _jsonWriteRequest = true;
 
-    /** @todo [NECESSARY] remove below code 29/12/2021*/
-
-    /* File configFile = SPIFFS.open( CONFIGFILENAME , "r");
-    // DSPL( dPrompt);
-    if (configFile) {
-        size_t size = configFile.size();
-        // Allocate a buffer to store contents of the file.
-        std::unique_ptr<char[]> buf(new char[size]);
-        //read the file
-        configFile.readBytes(buf.get(), size);
-        configFile.close();
-        DynamicJsonBuffer jsonBuffer;
-        JsonObject& json = jsonBuffer.parseObject(buf.get());
-        if (json.success()) {
-            JsonObject& plug = json[_plugName]; 
-            // DSPL( dPrompt + _plugName + " : " + param + " = " + value);
-            // plug[param] = value; 
-            JsonArray& plugJours = plug["Jours"];
-        //set values
-            for (int i = 0; i<7; i++){
-                if ( bitRead( _daysOnWeek, i ) ) plugJours[ i ]="ON";
-                else plugJours[ i ] = "OFF";
-            }
-        //and rewrite to the file
-            // configFile.seek(0, SeekSet);
-            
-            configFile = SPIFFS.open( CONFIGFILENAME , "w");
-            // json.prettyPrintTo(configFile);
-            json.printTo(configFile);
-            // plug.prettyPrintTo(Serial);
-            // DSPL();
-        } else {
-            DEBUGPORT.println(dPrompt + F("Failed to load json config"));
-            // return false;
-        }
-        configFile.close();
-        // return true;         
-    }     */
+    /** done remove below code 29/12/2021*/
 }
 
 /** 
@@ -760,14 +694,20 @@ void CPowerPlug::switchAtTime(){
         off();
         _nextTimeToSwitch = 0;
         // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
-        writeToJson( JSON_PARAMNAME_ENDTIME, "" );
-        writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
-        writeToJson( JSON_PARAMNAME_ONDURATION, "" );
-        writeToJson( JSON_PARAMNAME_STARTTIME, "" );   
+        _dureeOff.setValue("");
+        _dureeOn.setValue("");
+        _hDebut.setValue("");
+        _hFin.setValue("");
+        // writeToJson( JSON_PARAMNAME_ENDTIME, "" );
+        // writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
+        // writeToJson( JSON_PARAMNAME_ONDURATION, "" );
+        // writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+        _jsonWriteRequest = true;
     } else if ( sMode == TIMER_MODE ){
         off();
         _nextTimeToSwitch = 0;
-        // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );      
+        _jsonWriteRequest = true;
+        // writeToJson( JSON_PARAMNAME_NEXTSWITCH,writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );      
     } else if ( sMode == CYCLIC_MODE ){
         CEpsStrTime duree;
         if (_state){
@@ -809,7 +749,8 @@ void CPowerPlug::switchAtTime(){
         };
         _nextTimeToSwitch =  nextHour.computeNextTime( _daysOnWeek ); 
     }
-    writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );    
+    //writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+    _jsonWriteRequest = true;
 }
 
 /** 

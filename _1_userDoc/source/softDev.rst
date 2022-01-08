@@ -13,6 +13,7 @@ Software development documentation
    wifiwebinternet   
    curentSensing
    variable
+   testToBeConducted
    jsonImprovment
 
 .. contents:: Table of Contents
@@ -36,7 +37,8 @@ Software architecture or how does it work
 ====================================================================================================
 Some words on software architecture @13/07/2020
 
-see also `Json file improvements : analyze`_
+see also :ref:`Json file improvements : analyze<jsonFileImprovementsAnalyze>`
+
 
 Major points
 ====================================================================================================

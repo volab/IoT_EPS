@@ -218,8 +218,8 @@ void CJsonIotEps::_storeOneJsonFile(String file_name_model, String file_name_to_
 
                     //Special for day of week
                     JsonArray& plugJours = plug["Jours"];
-                    for (int i = 0; i<7; i++){
-                        if ( bitRead( _pPlugs[i]._daysOnWeek, i ) ) plugJours[ i ]="ON";
+                    for (int j = 0; j<7; i++){ //7 bits for 7 days
+                        if ( bitRead( _pPlugs[i]._daysOnWeek, j ) ) plugJours[ i ]="ON";
                         else plugJours[ i ] = "OFF";
                     }  
 
