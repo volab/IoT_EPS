@@ -49,6 +49,8 @@ The list
 - power switch off 
 - power switch on
 
+- master json corruption
+
 - ... TBC
 
 ----------------------------------------------------------------------------------------------------

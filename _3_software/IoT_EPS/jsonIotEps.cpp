@@ -204,7 +204,7 @@ void CJsonIotEps::_storeOneJsonFile(String file_name_model, String file_name_to_
             for (int i = 0; i < _pcParam->getNumberOfPlugs(); i++ ){
                 if ( _pPlugs[i]._jsonWriteRequest ){
                     JsonObject& plug = json[_pPlugs[i].getPlugName()];
-                    DSPL( dPrompt + F("plug to be writed") + _pPlugs[i].getPlugName() );
+                    DSPL( dPrompt + F("plug to be writed : ") + _pPlugs[i].getPlugName() );
                     plug["State"] = _pPlugs[i]._state?"ON":"OFF";
                     plug[JSON_PARAMNAME_PAUSE] = _pPlugs[i]._pause?"ON":"OFF";
                     plug["Mode"] = _pPlugs[i].getStringMode();
@@ -218,27 +218,17 @@ void CJsonIotEps::_storeOneJsonFile(String file_name_model, String file_name_to_
 
                     //Special for day of week
                     JsonArray& plugJours = plug["Jours"];
-                    for (int j = 0; j<7; i++){ //7 bits for 7 days
-                        if ( bitRead( _pPlugs[i]._daysOnWeek, j ) ) plugJours[ i ]="ON";
-                        else plugJours[ i ] = "OFF";
+                    for (int j = 0; j<7; j++){ //7 bits for 7 days
+                        if ( bitRead( _pPlugs[i]._daysOnWeek, j ) ) plugJours[ j ]="ON";
+                        else plugJours[ j ] = "OFF";
+                        String jourEtat = plugJours[ j ];
+                        DSPL(dPrompt + F("Jour : ") + String(j) + " = " + jourEtat );
                     }  
-
                 }
             }
-
-
-
-
-            // JsonObject& plug = json[_plugName]; 
-            // DSPL( dPrompt + _plugName + " : " + param + " = " + value);
-            // plug[param] = value; 
-            // configFile.seek(0, SeekSet);
-            // configFile.close();
             configFile = SPIFFS.open( file_name_to_store , "w");
             json.printTo(configFile);
-            // json.prettyPrintTo(configFile);
-            // plug.prettyPrintTo(Serial);
-            // DSPL();
+
         } else {
             DEBUGPORT.println(dPrompt + F("Failed to load json config"));
             // return false;
