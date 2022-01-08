@@ -79,6 +79,7 @@ void CPowerPlug::on(){
     _state = ON ;
     updateOutputs( prevState != _state ); //to count only real plug switch
     writeToJson( JSON_PARAMNAME_STATE, "ON" );
+    /** @todo [NECESSARY]replace above by __jsonWriteRequest  */
     
 
 }
@@ -102,6 +103,7 @@ void CPowerPlug::off(){
     _state = OFF ;
     updateOutputs( prevState != _state ); //to count only real plug switch
     writeToJson( JSON_PARAMNAME_STATE, "OFF" );
+    /** @todo [NECESSARY]replace above by __jsonWriteRequest  */
 }
 
 /** 
@@ -118,6 +120,7 @@ void CPowerPlug::toggle(){
     _state = !_state ;
     updateOutputs();
     writeToJson( JSON_PARAMNAME_STATE, _state?"ON":"OFF" );
+    /** @todo [NECESSARY]replace above by __jsonWriteRequest  */
 }
 
 /** 
@@ -147,11 +150,10 @@ void CPowerPlug::updateOutputs( bool writeToJsonCount ){
     _nano.digitalWrite( _pin, _state );
     if ( _ledOn ) _nano.digitalWrite( _onOffLedPin, _state );
     if ( writeToJsonCount ){
-        // String strCount = readFromJson( (String)JSON_PARAMNAME_ONOFCOUNT );
-        // strCount = String( strCount.toInt() + 1 );
         _onOffCount++;
         DSPL(dPrompt + F("Nouvelle valeur du compteur ON/OFF: ") + _onOffCount );
         writeToJson( JSON_PARAMNAME_ONOFCOUNT, "" ); //to set the flag
+        /** @todo [NECESSARY]replace above by __jsonWriteRequest  */
         
     }
 
@@ -168,6 +170,9 @@ Search are made in the file on the name of the plug as redPlug for exemple
  @return a booleen true if all is ok
 */
 // bool CPowerPlug::readFromJson(){
+
+/** @todo [NECESSARY] check if this method is alway needed */
+
 bool CPowerPlug::readFromJson( bool restaurePhyState ){
     String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
     String sClonedPlug, sOnOffCount, sNextTime2switch, sPause;
@@ -280,6 +285,9 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
 @param param the parameter to retrieve
 @return the value of the parameter or "nf" if not found
 */
+
+/** @todo [NECESSARY] check if this method is alway needed */
+
 String CPowerPlug::readFromJson( String param ){
     String sRetValue;
     DEFDPROMPT("reading from Json for " + getPlugName() + "pamameter : " + param )

@@ -311,6 +311,11 @@ bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState ){
                         _pPlugs[i]._clonedPlug = sClonedPlug;
                         _pPlugs[i]._onOffCount = sOnOffCount.toInt();             
                         _pPlugs[i]._nextTimeToSwitch = sNextTime2switch.toInt();
+
+                        //restaure physical state of the plug
+                        // 8/01/2022
+                        // from CPowerPlug::readFromJson line 222
+                        if ( _pPlugs[i]._state && (!_pPlugs[i]._pause) ) _pPlugs[i].on(); else _pPlugs[i].off();
                         
                         /////////////////////////////////////////////////////////////////////////////
                         //    special for days of Hebdo mode                                       //
