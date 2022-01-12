@@ -309,7 +309,7 @@ bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState ){
                         _pPlugs[i]._dureeOn = CEpsStrTime( sDureeOn, CEpsStrTime::MMM );
                         _pPlugs[i]._dureeOff = CEpsStrTime( sDureeOff, CEpsStrTime::MMM );
                         _pPlugs[i]._clonedPlug = sClonedPlug;
-                        _pPlugs[i]._onOffCount = sOnOffCount.toInt();             
+                        _pPlugs[i]._onOffCount = sOnOffCount.toInt();
                         _pPlugs[i]._nextTimeToSwitch = sNextTime2switch.toInt();
 
                         //restaure physical state of the plug

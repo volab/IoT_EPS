@@ -32,13 +32,19 @@ The list
         - manual mode with hfin
         - manual mode with on duration
         - timer mode
+        - timer mode restart with bp
         - timer mode differed start with button
         - cycle mode
         - cycle mode with diff start HH:Memory
-        - cycle mode pause
+        - cycle mode pause from web interface
+        - cycle mode pause with push button
         - hebdo mode few days (first and last day)
         - hebdo all days
-        - hebdo pause
+        - hebdo pause from web interface
+        - hebdo pause with push button
+
+- power loosing / restaure state
+
 
 - with push Button
     - basic on/offs
@@ -61,6 +67,38 @@ The list
     We need to find a solution
 
 
+====================================================================================================
+08/01/2022 test
+====================================================================================================
+Basic test in ap mode from web interface only conducted on green plug only
+
+- station mode
+    - ...
+
+    - only on one plug (plug test)
+        - manual mode on / off /on /off **OK**
+        - manual mode with hfin **OK**
+        - manual mode with on duration
+        - timer mode stay in mode and keep time after elapsed time **OK**
+        - timer mode restart with bp on green plug **OK**
+        - timer mode differed start with button
+        - cycle mode
+        - cycle mode with diff start HH:Memory
+        - cycle mode pause from web interface
+        - cycle mode pause with push button
+        - hebdo mode few days (first and last day)
+        - hebdo all days
+        - hebdo pause from web interface
+        - hebdo pause with push button
+
+- power loosing / restaure state
+
+- with push Button
+    - basic on/offs
+        - green **OK**
+        - red **NOT WORK**
+        -yelow and bleu **PERMUTED**
+    - push button to force manual mode
 
 
 ====================================================================================================

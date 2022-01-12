@@ -41,6 +41,33 @@ Model Type
 Open bugs
 ====================================================================================================
 
+**BUG** : push button permutted on yellow and green
+====================================================================================================
+
+    :Date de saisie:    08/01/2022    
+    :Date de traitemant:    
+    :Cible:             firmware
+    :Status:            **OPEN**    
+    :Problematique:     cabling is good !
+
+    :Traitement:        
+                        
+----------------------------------------------------------------------------------------------------
+
+**BUG** : corrupted value of on/off counter
+====================================================================================================
+
+    :Date de saisie:    08/01/2022    
+    :Date de traitemant:    
+    :Cible:             firmware
+    :Status:            **OPEN**    
+    :Problematique:     after somme tests values of all counter are very stranges. only those in the configFile3
+                        seams to be right. I don't know exactly when.
+    :Traitement:        
+                        
+
+------------------------------------------------------------------------------------------
+
 **BUG** : wrong global table refresh
 ====================================================================================================
 
@@ -112,6 +139,19 @@ Open bugs
 ====================================================================================================
 Open todo
 ====================================================================================================
+
+ToDo : Pause display
+===========================
+
+    :Date de saisie:        08/01/2022
+    :Date de traitemant:    
+    :Cible:                 firmware
+    :Status:                **OPEN**
+    :Problematique:         display pause on oled screen. 
+    :Traitement:            
+            
+
+------------------------------------------------------------------------------------------
 
 ToDo : minify javascripts
 ===========================
