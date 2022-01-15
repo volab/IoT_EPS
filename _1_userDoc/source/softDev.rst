@@ -32,6 +32,97 @@ Source code documentation provide a lot of informations
  
  `<codeDoc\\html\\index.html>`_
 
+
+===========================
+Progress of development
+===========================
+
+Terminated
+==============================
+
+::
+
+    #. Display single static html page:                                                      ok
+    #. Affichage page html fichier SPIFFS :                                                  ok
+    #. Affichage de l'heure à partir d'une page en dur dans le code :                        ok
+    #. Affichage page avec CSS :                                                             ok
+    #. Gestion des mode wifi SoftAP vs client :                                              ok
+    #. reception d'une action via un bouton :                                                ok
+    #. lecture du fichier de configuration :                                                 ok
+    #. intégration MCP23017 :                                                                ok
+    #. lecture du fichier de configuration config3.json :                                    ok
+    #. gestion bouton poussoir mécanique :                                                   ok
+    #. Write json file :                                                                     ok
+    #. Traitement de la requête html avec analyze, exécution et écriture json:               ok
+    #. manage wif led :                                                                      ok
+    #. integrate nano expander with analog inputs :                                          ok
+    #. scan I2C response 57 and 58 nano IoExpander !!!! not a bug simply DS3231 board has 2 component DS3231 an EEPROM ! OK
+    #. Time managment strategy :                                                             ok
+    #. review work without rtc component strategy                                            ok
+    #. review work without NTP access strategy                                               ok
+    #. define rtc component versus NTP update strategy                                       ok
+    #. suppress html replies if main power is off                                            ok
+    #. generate a unique server name                                                         ok
+    #. rewrite main program setup and loop function with more object oriented structure      ok
+    #. add OLED display managment in accordance of its hardware implementation of course     ok
+    #. creation of config.h and config-advenced.h (see :ref:`see project todo list<todocreateconfigfile>`) **OK**
+    #. new bug in 2022 : json writes incorrect : ex : cycle hdebut and hfin ="" !!! **OK**
+       detect 05/1/2022 correcte 8/01/2022
+    #. Correct watchdog bug  **OK**
+
+In progress
+======================
+
+#. Correct corrupted on/off compt bug see bug and todo list
+#. Correct internet error bug see bug and todo list
+
+#. Error handling improvement (todo display low error with LED ? Which one : power led ?)
+   A lot of work : change behavior on fatal error : do not sabord system but enable debug only 
+   with serial
+
+#. improve json file managment **2 points need work**
+    - write process
+        - test **ok**
+            - environnement conda test **ok**
+            - write python script to log boot sequence to a file: in progress ``projet\_3_software\outilPythonSpecial`` **ok**
+            - record some boot sequence **ok**
+            - check boots sequence **ok**
+    - treat todo (error rise)
+        - regen list
+        - treat one by one
+    - clean the code
+    - comit **ok**
+    - push **ok**
+    - merge **ok**
+    - push **ok**
+#. Minifier all files if possible of course and reduce the size of the images
+    - minifier picture
+    - minifier css
+    - minifier html
+
+#. configuration page (see softdev.rst)
+#. exhaustive test of hebdo mode : **95%**
+#. write index special page for softAP Mode with local boostrap or other light js.framework **5%**
+#. Create an infographic that summarize features and needs 
+    - choose tool
+    - choose Size
+    - choose colors
+#. Write user manual : **1%**
+#. Write builder manual
+    - mechanical parts
+    - buy and groups components
+    - oder pcb
+
+
+
+#. UML and classes documentation 10% - web and json
+
+
+Don't forget the todo list of the **doxygen documentation** and **git history**:
+
+    - before regen todo list
+
+
 ====================================================================================================
 Software architecture or how does it work
 ====================================================================================================
@@ -145,91 +236,6 @@ json file and do the jobs.
 
 .. _devProgress:
 
-===========================
-Progress of development
-===========================
-
-Terminated
-==============================
-
-::
-
-    #. Display single static html page:                                                      ok
-    #. Affichage page html fichier SPIFFS :                                                  ok
-    #. Affichage de l'heure à partir d'une page en dur dans le code :                        ok
-    #. Affichage page avec CSS :                                                             ok
-    #. Gestion des mode wifi SoftAP vs client :                                              ok
-    #. reception d'une action via un bouton :                                                ok
-    #. lecture du fichier de configuration :                                                 ok
-    #. intégration MCP23017 :                                                                ok
-    #. lecture du fichier de configuration config3.json :                                    ok
-    #. gestion bouton poussoir mécanique :                                                   ok
-    #. Write json file :                                                                     ok
-    #. Traitement de la requête html avec analyze, exécution et écriture json:               ok
-    #. manage wif led :                                                                      ok
-    #. integrate nano expander with analog inputs :                                          ok
-    #. scan I2C response 57 and 58 nano IoExpander !!!! not a bug simply DS3231 board has 2 component DS3231 an EEPROM ! OK
-    #. Time managment strategy :                                                             ok
-    #. review work without rtc component strategy                                            ok
-    #. review work without NTP access strategy                                               ok
-    #. define rtc component versus NTP update strategy                                       ok
-    #. suppress html replies if main power is off                                            ok
-    #. generate a unique server name                                                         ok
-    #. rewrite main program setup and loop function with more object oriented structure      ok
-    #. add OLED display managment in accordance of its hardware implementation of course     ok
-    #. creation of config.h and config-advenced.h (see :ref:`see project todo list<todocreateconfigfile>`) **OK**
-
-In progress
-======================
-
-#. new bug in 2022 : json writes incorrect : ex : cycle hdebut and hfin ="" !!!
-   detect 05/1/2022
-
-#. Error handling improvement (todo display low error with LED ? Which one : power led ?)
-   A lot of work : change behavior on fatal error : do not sabord system but enable debug only 
-   with serial
-#. Correct watchdog bug see ? **70%**
-#. improve json file managment **2 points need work**
-    - write process
-        - test **ok**
-            - environnement conda test **ok**
-            - write python script to log boot sequence to a file: in progress ``projet\_3_software\outilPythonSpecial`` **ok**
-            - record some boot sequence **ok**
-            - check boots sequence **ok**
-    - treat todo (error rise)
-        - regen list
-        - treat one by one
-    - clean the code
-    - comit **ok**
-    - push **ok**
-    - merge **ok**
-    - push **ok**
-#. Minifier all files if possible of course and reduce the size of the images
-    - minifier picture
-    - minifier css
-    - minifier html
-
-#. configuration page (see softdev.rst)
-#. exhaustive test of hebdo mode : **95%**
-#. write index special page for softAP Mode with local boostrap or other light js.framework **5%**
-#. Create an infographic that summarize features and needs 
-    - choose tool
-    - choose Size
-    - choose colors
-#. Write user manual : **1%**
-#. Write builder manual
-    - mechanical parts
-    - buy and groups components
-    - oder pcb
-
-
-
-#. UML and classes documentation 10% - web and json
-
-
-Don't forget the todo list of the **doxygen documentation** and **git history**:
-
-    - before regen todo list
 
 
 Differed to next version

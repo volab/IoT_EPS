@@ -23,9 +23,10 @@ The list
     - change ssid
     - change password
     - plug test
+    - dhcp vs ip fixe test
 
 - station mode
-    - ...
+    - Check json file after each test below
 
     - only on one plug (plug test)
         - manual mode on / off /on /off
@@ -48,7 +49,7 @@ The list
 
 - with push Button
     - basic on/offs
-    - push button to force manual mode
+    - push button to force manual mode (handleBpLongClic)
 
 - special push button test
 
@@ -96,8 +97,8 @@ Basic test in ap mode from web interface only conducted on green plug only
 - with push Button
     - basic on/offs
         - green **OK**
-        - red **NOT WORK**
-        -yelow and bleu **PERMUTED**
+        - red **repared**
+        - yelow and bleu **PERMUTED**
     - push button to force manual mode
 
 

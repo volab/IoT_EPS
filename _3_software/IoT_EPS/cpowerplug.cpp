@@ -151,7 +151,7 @@ void CPowerPlug::updateOutputs( bool writeToJsonCount ){
     if ( _ledOn ) _nano.digitalWrite( _onOffLedPin, _state );
     if ( writeToJsonCount ){
         _onOffCount++;
-        DSPL(dPrompt + F("Nouvelle valeur du compteur ON/OFF: ") + _onOffCount );
+        DSPL(dPrompt + F("Nouvelle valeur du compteur ON/OFF: ") + _onOffCount + " de : " + _plugName );
         writeToJson( JSON_PARAMNAME_ONOFCOUNT, "" ); //to set the flag
         /** @todo [NECESSARY]replace above by __jsonWriteRequest  */
         
@@ -818,7 +818,7 @@ void CPowerPlug::handleBpLongClic(){
     DSPL( dPrompt );
     // off();
 
-    /** @todo [ECESSARY] be shure to reset all members*/
+    /** @todo [NECESSARY] be sure to reset all members*/
 
     bool prevState = _state;
     _state = OFF ;
@@ -831,9 +831,9 @@ void CPowerPlug::handleBpLongClic(){
     _daysOnWeek = 0;    
 
     _jsonWriteRequest = true;
-    /** @todo [ECESSARY] remove below code*/
+    /** @todo [NECESSARY] remove below code*/
    
-    File configFile = SPIFFS.open( CONFIGFILENAME , "r");
+/*     File configFile = SPIFFS.open( CONFIGFILENAME , "r");
     if (configFile) {
         size_t size = configFile.size();
         // Allocate a buffer to store contents of the file.
@@ -874,7 +874,7 @@ void CPowerPlug::handleBpLongClic(){
         }
         configFile.close();
         // return true;         
-    }    
+    }  */   
     // writeDaysToJson(); 
     bp.acquit();    
 }

@@ -214,6 +214,7 @@ void CJsonIotEps::_storeOneJsonFile(String file_name_model, String file_name_to_
                     plug["dureeOff"] = _pPlugs[i]._dureeOff.getStringVal();
                     plug["clonedPlug"] = _pPlugs[i]._clonedPlug;
                     plug["onOffCount"] = String(_pPlugs[i]._onOffCount);
+                    // plug["onOffCount"] = String(0);
                     plug[JSON_PARAMNAME_NEXTSWITCH] = String(_pPlugs[i]._nextTimeToSwitch);
 
                     //Special for day of week
@@ -269,8 +270,9 @@ bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState ){
             JsonObject& json = jsonBuffer.parseObject(buf.get());
             if (json.success()){
                 for (int i = 0; i < plugNumber; i++ ){
+                    JsonObject& plug = json[_pPlugs[i].getPlugName()]; // bug on/off count 15/01/2022
                     if ( mainPowerSwitchState == 1 ){ // 1 if switch is on
-                        JsonObject& plug = json[_pPlugs[i].getPlugName()];
+                        // JsonObject& plug = json[_pPlugs[i].getPlugName()];
                         sNickName = plug["nickName"].as<String>();
                         sState = plug["State"].as<String>();
                         sPause = plug[JSON_PARAMNAME_PAUSE].as<String>();
@@ -336,6 +338,8 @@ bool CJsonIotEps::loadJsonPlugParam( int plugNumber, int mainPowerSwitchState ){
                         DSPL("");                        
                     } else { // main power switch is off stop all plugs
                     //plugs return to manual mode OFF state.
+                        sOnOffCount = plug["onOffCount"].as<String>();
+                        _pPlugs[i]._onOffCount = sOnOffCount.toInt(); // bug on/off count 15/01/2022
                         _pPlugs[i].handleBpLongClic();
                         writeReq = writeReq | _pPlugs[i]._jsonWriteRequest;
                         _pPlugs[i]._jsonWriteRequest = false;

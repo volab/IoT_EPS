@@ -537,10 +537,10 @@ void loop(){
     webServeur.setMPSstVar( mainPowerSwitchState );
 /** @todo [OPTION] recover debounce function */    
     if ( !mainPowerSwitchState) { //main power switch change state
-            DSPL( dPrompt + F("main power switched OFF and all plugs are in manual state.") );
+            DSPL( dPrompt + F("main power switched OFF and all plugs return in manual state.") );
             for ( int i = 0; i < NBRPLUGS ; i++ ){
                 plugs[i].off();
-                plugs[i].handleBpLongClic();
+                plugs[i].handleBpLongClic(); // to set all plug in manual state
                 plugs[i].setMainPow( false );
                 colorLeds[i] = CRGB::Black;
             }            

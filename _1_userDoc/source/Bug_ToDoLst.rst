@@ -41,7 +41,22 @@ Model Type
 Open bugs
 ====================================================================================================
 
-**BUG** : push button permutted on yellow and green
+**BUG** : internet error
+====================================================================================================
+
+    :Date de saisie:    15/01/2022    
+    :Date de traitemant:    
+    :Cible:             firmware
+    :Status:            **OPEN**    
+    :Problematique:     When internet error is rise, it stay true even if internet connection 
+                        return good
+
+    :Traitement:           
+
+
+----------------------------------------------------------------------------------------------------
+
+**BUG** : push button permuted on yellow and green
 ====================================================================================================
 
     :Date de saisie:    08/01/2022    
@@ -50,8 +65,9 @@ Open bugs
     :Status:            **OPEN**    
     :Problematique:     cabling is good !
 
-    :Traitement:        
-                        
+    :Traitement:           
+
+
 ----------------------------------------------------------------------------------------------------
 
 **BUG** : corrupted value of on/off counter
@@ -63,8 +79,12 @@ Open bugs
     :Status:            **OPEN**    
     :Problematique:     after somme tests values of all counter are very stranges. only those in the configFile3
                         seams to be right. I don't know exactly when.
-    :Traitement:        
-                        
+    :Traitement:        git branch "bug_on_off_count"
+                        bug is in handlebpclic when main power switch is off CJsonIotEps::loadJsonPlugParam 
+                        does not load counter value and handlebpclic request a write to json so an
+                        uninitialized value is write in the file.
+                        There is a huge complicated action suite.
+                        Tips : rethink the whole sequence. 
 
 ------------------------------------------------------------------------------------------
 
@@ -139,6 +159,23 @@ Open bugs
 ====================================================================================================
 Open todo
 ====================================================================================================
+
+ToDo : web caching
+===========================
+
+    :Date de saisie:        12/01/2022
+    :Date de traitemant:    
+    :Cible:                 firmware
+    :Status:                **OPEN**
+    :Problematique:         caching file on browser. 
+    :Traitement:            
+            
+https://github.com/esp8266/Arduino/issues/999
+
+https://werner.rothschopf.net/microcontroller/202011_arduino_webserver_caching_en.htm
+
+------------------------------------------------------------------------------------------
+
 
 ToDo : Pause display
 ===========================
@@ -254,7 +291,7 @@ Closed bug
 **BUG** : watchdog ok
 ====================================================================================================
 
-    :Detection date:   05/12/21
+    :Detection date:   05/12/2021
     :Resolution date:  15/12/2021
     :Target:           firmware
     :Status:           [closed]
