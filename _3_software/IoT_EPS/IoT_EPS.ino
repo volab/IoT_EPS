@@ -408,6 +408,8 @@ void loop(){
             if(httpCode < 0) {
                 DSPL(dPrompt + "[HTTP] GET... failed, error: " + http.errorToString(httpCode) );
                 sysStatus.internetErr.err( true );
+            } else {
+                sysStatus.internetErr.err( false ); //bug internet error correction
             }
             http.end();
         }

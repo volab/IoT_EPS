@@ -161,6 +161,7 @@ In progress
     - reroute pcb to reduce the size
     - don't forget to switch D2 and D3 on U1
 
+#. add the 3Dprinted or CNC crafted logo
 
 ####
 

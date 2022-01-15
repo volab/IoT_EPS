@@ -41,20 +41,7 @@ Model Type
 Open bugs
 ====================================================================================================
 
-**BUG** : internet error
-====================================================================================================
 
-    :Date de saisie:    15/01/2022    
-    :Date de traitemant:    
-    :Cible:             firmware
-    :Status:            **OPEN**    
-    :Problematique:     When internet error is rise, it stay true even if internet connection 
-                        return good
-
-    :Traitement:         include in a large brainstorming about error  
-
-
-----------------------------------------------------------------------------------------------------
 
 **BUG** : push button permuted on yellow and green
 ====================================================================================================
@@ -62,10 +49,10 @@ Open bugs
     :Date de saisie:    08/01/2022    
     :Date de traitemant: 15/01/2022
     :Cible:             hardware
-    :Status:            **OPEN**    
+    :Status:            **OPEN** almost closed   
     :Problematique:     cabling is good !
 
-    :Traitement:        reroute the board  
+    :Traitement:        **reroute the board ** 
 
 
 ----------------------------------------------------------------------------------------------------
@@ -158,6 +145,21 @@ https://werner.rothschopf.net/microcontroller/202011_arduino_webserver_caching_e
 
 ------------------------------------------------------------------------------------------
 
+ToDo : oled display error
+===========================
+
+    :Date de saisie:        15/01/2022
+    :Date de traitemant:    
+    :Cible:                 firmware
+    :Status:                **OPEN**
+    :Problematique:         roll through errors AND plugs mode not only on errors. 
+    :Traitement:            
+
+------------------------------------------------------------------------------------------
+
+
+
+
 
 ToDo : Pause display
 ===========================
@@ -227,6 +229,22 @@ Todo : change behavior on fatal error
 ====================================================================================================
 Closed bug
 ====================================================================================================
+
+**BUG** : internet error
+====================================================================================================
+
+    :Date de saisie:    15/01/2022    
+    :Date de traitemant:    15/01/2022
+    :Cible:             firmware
+    :Status:            [CLOSED]    
+    :Problematique:     When internet error is rise, it stay true even if internet connection 
+                        return good
+
+    :Traitement:         include in a large brainstorming about error but for now just else added 
+                         in the main loop  
+
+
+----------------------------------------------------------------------------------------------------
 
 **BUG** : corrupted value of on/off counter
 ====================================================================================================

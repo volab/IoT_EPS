@@ -69,16 +69,18 @@ Terminated
     #. new bug in 2022 : json writes incorrect : ex : cycle hdebut and hfin ="" !!! **OK**
        detect 05/1/2022 correcte 8/01/2022
     #. Correct watchdog bug  **OK**
+    #. Correct corrupted on/off compt bug see bug and todo list
+    #. Correct internet error bug see bug and todo list
 
 In progress
 ======================
 
-#. Correct corrupted on/off compt bug see bug and todo list
-#. Correct internet error bug see bug and todo list
 
 #. Error handling improvement (todo display low error with LED ? Which one : power led ?)
    A lot of work : change behavior on fatal error : do not sabord system but enable debug only 
    with serial
+
+#. oled display error : roll through errors AND plugs mode not only on errors
 
 #. improve json file managment **2 points need work**
     - write process
