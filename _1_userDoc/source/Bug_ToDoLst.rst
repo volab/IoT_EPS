@@ -51,7 +51,7 @@ Open bugs
     :Problematique:     When internet error is rise, it stay true even if internet connection 
                         return good
 
-    :Traitement:           
+    :Traitement:         include in a large brainstorming about error  
 
 
 ----------------------------------------------------------------------------------------------------
@@ -60,33 +60,15 @@ Open bugs
 ====================================================================================================
 
     :Date de saisie:    08/01/2022    
-    :Date de traitemant:    
-    :Cible:             firmware
+    :Date de traitemant: 15/01/2022
+    :Cible:             hardware
     :Status:            **OPEN**    
     :Problematique:     cabling is good !
 
-    :Traitement:           
+    :Traitement:        reroute the board  
 
 
 ----------------------------------------------------------------------------------------------------
-
-**BUG** : corrupted value of on/off counter
-====================================================================================================
-
-    :Date de saisie:    08/01/2022    
-    :Date de traitemant:    
-    :Cible:             firmware
-    :Status:            **OPEN**    
-    :Problematique:     after somme tests values of all counter are very stranges. only those in the configFile3
-                        seams to be right. I don't know exactly when.
-    :Traitement:        git branch "bug_on_off_count"
-                        bug is in handlebpclic when main power switch is off CJsonIotEps::loadJsonPlugParam 
-                        does not load counter value and handlebpclic request a write to json so an
-                        uninitialized value is write in the file.
-                        There is a huge complicated action suite.
-                        Tips : rethink the whole sequence. 
-
-------------------------------------------------------------------------------------------
 
 **BUG** : wrong global table refresh
 ====================================================================================================
@@ -245,6 +227,24 @@ Todo : change behavior on fatal error
 ====================================================================================================
 Closed bug
 ====================================================================================================
+
+**BUG** : corrupted value of on/off counter
+====================================================================================================
+
+    :Date de saisie:    08/01/2022    
+    :Date de traitemant: 15/01/2022
+    :Cible:             firmware
+    :Status:            [CLOSED<<<<)>>>>   
+    :Problematique:     after somme tests values of all counter are very stranges. only those in the configFile3
+                        seams to be right. I don't know exactly when.
+    :Traitement:        git branch "bug_on_off_count"
+                        bug is in handlebpclic when main power switch is off CJsonIotEps::loadJsonPlugParam 
+                        does not load counter value and handlebpclic request a write to json so an
+                        uninitialized value is write in the file.
+                        There is a huge complicated action suite.
+                        Tips : rethink the whole sequence. 
+
+------------------------------------------------------------------------------------------
 
 **BUG** : cfgpage
 ====================================================================================================

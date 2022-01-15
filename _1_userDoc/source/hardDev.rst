@@ -116,13 +116,13 @@ Terminated
 #. choix curent sensor: 75% - **discarded** in the first version
 #. pcb study **OK**
 #. OLED screen intefgartion **OK**
+#. 5V relais board power supply  (choix du conver.) : **OK**
+
+
 
 In progress
 ======================
 
-
-
-#. Alimentation du module relais en 5V (choix du conver.) : **OK**
 #. packaging study
 #. integration
 #. replace relais by MOSFET on general power relay to switch them all in one time on power off
@@ -157,12 +157,25 @@ In progress
 #. new pcb
     - add above solution
     - replace through hole component by cms version every time it's possible
-    - brainstorm connector solutions: reduce the number of pins
-    - reroute pcb to maximum rude the size
+    - brainstorm connector solutions: reduce the number of pins and best placement
+    - reroute pcb to reduce the size
+    - don't forget to switch D2 and D3 on U1
 
 
 ####
 
+====================================================================================================
+PCB bug BP2 and 3
+====================================================================================================
+
+.. image:: image/pcbBugBP2BP3.jpg 
+   :width: 300 px
+
+
+BP2 should be on D4 and BP3 on D3 see `Input / output assignment`_
+
+.. WARNING:: Waiting for the new version of the pcb, I swith the 2 wire on H1 female connector
+   :class: without-title
 
 
 ====================
