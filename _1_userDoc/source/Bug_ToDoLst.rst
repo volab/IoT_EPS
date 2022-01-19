@@ -41,21 +41,21 @@ Model Type
 Open bugs
 ====================================================================================================
 
-
-
-**BUG** : push button permuted on yellow and green
+**BUG** : untimely switching
 ====================================================================================================
 
-    :Date de saisie:    08/01/2022    
-    :Date de traitemant: 15/01/2022
-    :Cible:             hardware
-    :Status:            **OPEN** almost closed   
-    :Problematique:     cabling is good !
+    :Date de saisie:    18/01/2022    
+    :Date de traitemant:    
+    :Cible:             firmware
+    :Status:            **OPEN**    
+    :Problematique:     during a long test blue plug cycle on/off 3mn sudenly yellow and green 
+                        switch on but in JSON there are in manual off state
+    :Traitement:        Le touche F5 n'est pas une solution, renvoie également la dernière commande !
+                        
 
-    :Traitement:        **reroute the board** 
+------------------------------------------------------------------------------------------
 
 
-----------------------------------------------------------------------------------------------------
 
 **BUG** : wrong global table refresh
 ====================================================================================================
@@ -70,20 +70,7 @@ Open bugs
 
 ------------------------------------------------------------------------------------------
 
-**BUG** : Allumage intempestif 
-====================================================================================================
 
-    :Date de saisie:        191225     
-    :Date de traitemant:    
-    :Cible:                 firmware
-    :Status:                **OPEN**
-    :Problematique:         Au cours des essais 2 prises bleu et jaune se sont retrouvé allumées alors
-                            que dans le json elles étaient off !
-    :Traitement:            
-
-
-
-------------------------------------------------------------------------------------------
 
 
 
@@ -123,27 +110,23 @@ Open bugs
 
 ----------------------------------------------------------------------------------------------------
 
+**BUG** : push button permuted on yellow and green
+====================================================================================================
 
+    :Date de saisie:    08/01/2022    
+    :Date de traitemant: 15/01/2022
+    :Cible:             hardware
+    :Status:            **OPEN** almost closed   
+    :Problematique:     cabling is good !
+
+    :Traitement:        **reroute the board** 
+
+
+----------------------------------------------------------------------------------------------------
 
 ====================================================================================================
 Open todo
 ====================================================================================================
-
-ToDo : web caching
-===========================
-
-    :Date de saisie:        12/01/2022
-    :Date de traitemant:    
-    :Cible:                 firmware
-    :Status:                **OPEN**
-    :Problematique:         caching file on browser. 
-    :Traitement:            on local branch webCatching
-            
-https://github.com/esp8266/Arduino/issues/999
-
-https://werner.rothschopf.net/microcontroller/202011_arduino_webserver_caching_en.htm
-
-------------------------------------------------------------------------------------------
 
 ToDo : oled display error
 ===========================
@@ -157,7 +140,19 @@ ToDo : oled display error
 
 ------------------------------------------------------------------------------------------
 
+Todo : change behavior on fatal error
+==========================================
 
+    :creation date:         11/12/2021
+    :Date of treatment:    
+    :Cible:                 [software]
+    :Status:                **OPEN**
+    :Problem:               System sabord on fatal error and only blink led. This behavior prevent
+                            us to diagnose problem.
+    :Traitement:            Change this to only permit serial diag on fatal error.
+
+
+----------------------------------------------------------------------------------------------------
 
 
 
@@ -212,23 +207,26 @@ ToDo : file names coherence
 
 ------------------------------------------------------------------------------------------
 
-Todo : change behavior on fatal error
-==========================================
 
-    :creation date:         11/12/2021
-    :Date of treatment:    
-    :Cible:                 [software]
-    :Status:                **OPEN**
-    :Problem:               System sabord on fatal error and only blink led. This behavior prevent
-                            us to diagnose problem.
-    :Traitement:            Change this to only permit serial diag on fatal error.
-
-
-----------------------------------------------------------------------------------------------------
 
 ====================================================================================================
 Closed bug
 ====================================================================================================
+
+**BUG** : Allumage intempestif 
+====================================================================================================
+
+    :Date de saisie:        191225     
+    :Date de traitemant:    
+    :Cible:                 firmware
+    :Status:                [CLOSED]
+    :Problematique:         Au cours des essais 2 prises bleu et jaune se sont retrouvé allumées alors
+                            que dans le json elles étaient off !
+    :Traitement:            closed with no suite - not reproduced
+
+
+
+------------------------------------------------------------------------------------------
 
 **BUG** : internet error
 ====================================================================================================
@@ -327,6 +325,21 @@ Closed bug
 ====================================================================================================
 Closed todo
 ====================================================================================================
+ToDo : web caching
+===========================
+
+    :Date de saisie:        12/01/2022
+    :Date de traitemant:    
+    :Cible:                 firmware
+    :Status:                closed
+    :Problematique:         caching file on browser. 
+    :Traitement:            on local branch webCatching
+            
+https://github.com/esp8266/Arduino/issues/999
+
+https://werner.rothschopf.net/microcontroller/202011_arduino_webserver_caching_en.htm
+
+------------------------------------------------------------------------------------------
 
 ToDo : online gh-page
 ========================

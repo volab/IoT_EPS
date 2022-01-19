@@ -77,50 +77,6 @@ In progress
 
 Transferred :ref:`here<mainTodoList>`
 
-
-
-
-
-#. improve json file managment **2 points need work**
-    - write process
-        - test **ok**
-            - environnement conda test **ok**
-            - write python script to log boot sequence to a file: in progress ``projet\_3_software\outilPythonSpecial`` **ok**
-            - record some boot sequence **ok**
-            - check boots sequence **ok**
-    - treat todo (error rise)
-        - regen list
-        - treat one by one
-    - clean the code
-    - comit **ok**
-    - push **ok**
-    - merge **ok**
-    - push **ok**
-
-
-#. configuration page (see softdev.rst)
-#. exhaustive test of hebdo mode : **95%**
-#. write index special page for softAP Mode with local boostrap or other light js.framework **5%**
-#. Create an infographic that summarize features and needs 
-    - choose tool
-    - choose Size
-    - choose colors
-#. Write user manual : **1%**
-#. Write builder manual
-    - mechanical parts
-    - buy and groups components
-    - oder pcb
-
-
-
-#. UML and classes documentation 10% - web and json
-
-
-Don't forget the todo list of the **doxygen documentation** and **git history**:
-
-    - before regen todo list
-
-
 ====================================================================================================
 Software architecture or how does it work
 ====================================================================================================
@@ -267,7 +223,7 @@ function prototype::
 
     void serveStatic(const char* uri, fs::FS& fs, const char* path, const char* cache_header = NULL );
 
-An other example::
+Another example::
 
     // Serve a file with no cache so every tile It's downloaded
     httpServer.serveStatic("/configuration.json", SPIFFS, "/configuration.json","no-cache, no-store, must-revalidate");

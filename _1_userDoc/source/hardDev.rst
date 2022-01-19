@@ -123,45 +123,7 @@ Terminated
 In progress
 ======================
 
-#. packaging study
-#. integration
-#. replace relais by MOSFET on general power relay to switch them all in one time on power off
-    - choose components (irf530 and irf9530, 2x 10k resistor see personal notes public ``hardware/analog``) 
-        - IRF9530 : ok buy to mouser on 21 june  **OK**
-        - but no irf530 test with 2N7000  **OK**
-    - buy or find the components  **OK**
-    - store components in safe place : a box
-    - prototype this solution
-        - cut vero board
-        - solder components
-        - prepare test
-        - conduct the test
-    - integrate the solution into the plugs
-    - test it
-#. solve the usb vs main 5v power on esp8266
-    - search and eval shottky diode solution (1N5820 has a typical vf of 0.5V its to high)
-    - aop and mos solution
-        - from the arduino model
-            - list component : LM358, FDN340P, 2x 10k
-            - buy or find components
-                - LM358 ok mouse cde OK
-                - FDN340P : **nok** MOSFET canal P 20V 2A SOT23 cdés sur AliExp arrivée prévue **Dec03**
-                - 2x 10k ok
-            - group and store components
-            - prototype it
-                - define the solution veroboard/pcb/cnc machining
-                - solder components
-                - prepare the test
-                - conduct the test
-            - IF it is the choosen solution add it to the schematic
-#. new pcb
-    - add above solution
-    - replace through hole component by cms version every time it's possible
-    - brainstorm connector solutions: reduce the number of pins and best placement
-    - reroute pcb to reduce the size
-    - don't forget to switch D2 and D3 on U1
-
-#. add the 3Dprinted or CNC crafted logo
+transfered
 
 ####
 
