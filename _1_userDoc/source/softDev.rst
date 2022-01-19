@@ -278,7 +278,6 @@ An other example::
 
 .. _`Web server with esp8266 and esp32` : https://www.mischianti.org/2020/11/02/web-server-with-esp8266-and-esp32-multi-purpose-generic-web-server-3/
 
-try gz files.
 
 
 ====================================================================================================

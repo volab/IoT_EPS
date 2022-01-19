@@ -74,7 +74,8 @@ void CServerWeb::init(CRtc* prtc, ConfigParam* pcParam, CPowerPlug* pPlugs
     server->on("/ChangeCred", HTTP_POST, std::bind(&CServerWeb::handleNewCred, this) );
     server->onNotFound(std::bind(&CServerWeb::notFoundHandler, this));
     server->on("/firstBoot", HTTP_POST, std::bind(&CServerWeb::handleFirstBoot, this) );
-
+    server->serveStatic("/config4.json", SPIFFS, "/config4.json","no-cache, no-store, must-revalidate");
+    server->serveStatic("/", SPIFFS, "/","max-age=31536000");
     server->begin();
 }
 
