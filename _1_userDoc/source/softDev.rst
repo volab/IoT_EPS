@@ -75,12 +75,11 @@ Terminated
 In progress
 ======================
 
+Transferred :ref:`here<mainTodoList>`
 
-#. Error handling improvement (todo display low error with LED ? Which one : power led ?)
-   A lot of work : change behavior on fatal error : do not sabord system but enable debug only 
-   with serial
 
-#. oled display error : roll through errors AND plugs mode not only on errors
+
+
 
 #. improve json file managment **2 points need work**
     - write process
@@ -97,10 +96,7 @@ In progress
     - push **ok**
     - merge **ok**
     - push **ok**
-#. Minifier all files if possible of course and reduce the size of the images
-    - minifier picture
-    - minifier css
-    - minifier html
+
 
 #. configuration page (see softdev.rst)
 #. exhaustive test of hebdo mode : **95%**
@@ -247,6 +243,9 @@ Differed to next version
 
     #. power measurement - not in this vesion
 
+
+
+
 ====================================================================================================
 Config.h and config_advenced.h
 ====================================================================================================
@@ -254,6 +253,32 @@ config.h include all user define macro.
 
 config_advenced.h group all others interesting parameters
 
+.. _webBrowserCaching:
+
+====================================================================================================
+web caching
+====================================================================================================
+see to do list.
+Perhaps use following method but i don't find how to use it
+
+server->serveStatic("/", SPIFFS, "/index.html");
+
+function prototype::
+
+    void serveStatic(const char* uri, fs::FS& fs, const char* path, const char* cache_header = NULL );
+
+An other example::
+
+    // Serve a file with no cache so every tile It's downloaded
+    httpServer.serveStatic("/configuration.json", SPIFFS, "/configuration.json","no-cache, no-store, must-revalidate");
+    // Server all other page with long cache so browser chaching they
+     httpServer.serveStatic("/", SPIFFS, "/","max-age=31536000");
+
+`Web server with esp8266 and esp32`_
+
+.. _`Web server with esp8266 and esp32` : https://www.mischianti.org/2020/11/02/web-server-with-esp8266-and-esp32-multi-purpose-generic-web-server-3/
+
+try gz files.
 
 
 ====================================================================================================
@@ -803,6 +828,14 @@ Containt function and class and struct like::
         uint16 beacon_interval;  // 100 ~ 60000 ms, default 100 };
 
 Which is very usefull to debug !
+
+ESP8266WebServer
+====================================================================================================
+only `github documentation for ESP8266Webserver`_
+
+.. _`github documentation for ESP8266Webserver` : https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer
+
+
 
 Html server
 =====================

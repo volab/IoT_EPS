@@ -11,6 +11,32 @@ General progress of IOT Electrical Power Strip
 .. contents::
     :backlinks: top
 
+.. _mainTodoList:
+
+====================================================================================================
+Task list (merged todo list hard and soft : preferred order)
+====================================================================================================
+- cache files on web browser : see :ref:`here<webBrowserCaching>`
+
+
+- Error handling improvement (todo display low error with LED ? Which one : power led ?)
+  A lot of work : change behavior on fatal error : do not sabord system but enable debug only 
+  with serial
+
+- Minifier all files if possible of course and reduce the size of the images
+    - minifier picture
+    - minifier css
+    - minifier html
+
+- try gz files
+
+.. WARNING:: To be completed
+   :class: without-title
+
+====================================================================================================
+Task done (for memory)
+====================================================================================================
+
 ====================================================================================================
 General
 ====================================================================================================

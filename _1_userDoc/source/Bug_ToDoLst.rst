@@ -52,7 +52,7 @@ Open bugs
     :Status:            **OPEN** almost closed   
     :Problematique:     cabling is good !
 
-    :Traitement:        **reroute the board ** 
+    :Traitement:        **reroute the board** 
 
 
 ----------------------------------------------------------------------------------------------------
@@ -137,7 +137,7 @@ ToDo : web caching
     :Cible:                 firmware
     :Status:                **OPEN**
     :Problematique:         caching file on browser. 
-    :Traitement:            
+    :Traitement:            on local branch webCatching
             
 https://github.com/esp8266/Arduino/issues/999
 
