@@ -569,7 +569,7 @@ CJsonIotEps::jsonFileIntegrity_t CJsonIotEps::checkJsonFilesIntegrity(){
 }
 
 /**
- @fn CJsonIotEps::checkJsonOneFileIntegrity( String fileName )
+ @fn bool CJsonIotEps::_checkJsonOneFileIntegrity( String fileName )
  @brief Check the integrity of one json file
  @param fileName The file name to check
  @return true if file is correct.
