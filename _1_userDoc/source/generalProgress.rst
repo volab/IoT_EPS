@@ -22,12 +22,12 @@ Don't forget the todo list of the **doxygen documentation** and **git history**:
     - 5 parameters not documented on csystem.cpp **CORRECTED**
     - count software todo 32 NECESSARY and 11 options **OK**
         - from doxy export docboock and on web docbook to txt **OK**
-    - try to ordre them 
+    - try to ordre them **OK**
         - Excel file created **OK**
-        - Check if there are all uptodate
+        - Check if there are all uptodate rest 22 of 32 **OK**
 
-- doxygen gen doc pb avec:: **OK**
-
+- doxygen gen doc pb avec **REPAIRED**::
+- 
     0044-Iot_ESP_PPlug/projet/_3_software/IoT_EPS/doc/logo_alpha2_reduced.png perdu !
 
 - Tracking bug ``untimely switching``

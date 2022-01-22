@@ -58,7 +58,7 @@ class CSysStatus {
             , internetErr( sysError::fatal, CRGB::RoyalBlue, CRGB::OrangeRed, "Internet error" )
             , watchdogErr( sysError::fatal, CRGB::Snow, CRGB::Black, "watchdog error")
             , wifiSoftApErr(sysError::medium, CRGB::Snow, CRGB::Black, "SoftAp error")
-            /** @todo [NECESSARY] creat wifiSoftSoftAPErr and wifiErr and wifiStaModeErr (choose a color) */
+            /** @todo [NECESSARY] creat wifiErr and wifiStaModeErr (choose a color) */
             {
             
         }
@@ -80,13 +80,6 @@ class CSysStatus {
         sysError* sysErrorTable[NBR_OF_SYSTEM_ERROR] = { 
                     &fsErr, &nanoErr, &rtcErr, &confFileErr, &credFileErr, &filesErr, &plugParamErr, 
                     &ntpErr, &internetErr, &watchdogErr, &wifiSoftApErr };
-
-        // sysError *nanoErr = new sysError( sysError::fatal, CRGB::RoyalBlue, CRGB::Black);
-        
-        
-        // bool ntpErr = false;
-        // bool jsonFileErr = false;
-        // bool credFileErr = false;
         
         bool ntpEnabled = false; //set to true when Station mode is ok
         bool wifiErr = false;

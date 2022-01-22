@@ -81,7 +81,7 @@ Call by SerialComand
 void CSysStatus::display(){
     DEFDPROMPT( "System status" );
 
-    /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr with the new sysErrorTable usage
+    /** DONE [NECESSARY] add wifiSoftSoftAPErr and wifiErr with the new sysErrorTable usage
      * it si not necessary to modify this method.
     */
     DSPL( dPrompt + F("display") );
@@ -109,9 +109,8 @@ bool CSysStatus::isSystemok(){
         result = result && !( sError->isErr() );
     }  
 
-    /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr (not necessary with sysErrorTable*/
+    /** DONE [NECESSARY] add wifiSoftSoftAPErr and wifiErr (not necessary with sysErrorTable*/
     return result;
-    // return (false);
 }
 
 
@@ -144,7 +143,7 @@ String CSysStatus::getMsg( int8_t n){
     }
     // DSPL( dPrompt  + F("En erreur: ") + String(i) );
     return sysErrorTable[i]->getMsg();
-    /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr */
+    /** DONE [NECESSARY] add wifiSoftSoftAPErr and wifiErr  not necessayr with new sysErrorTable */
 
     /** DONE [NECESSARY] best way to return error message will be to creat an array in howmanyError
      * method and find it here */
