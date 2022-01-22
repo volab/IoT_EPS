@@ -48,6 +48,10 @@ The list
 
 - power loosing / restaure state
 
+- leds switch off time
+
+- errors
+
 
 - with push Button
     - basic on/offs

@@ -323,7 +323,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
         DSPL( dPrompt + F("Special action take place..." ) );
         // place special actions here
         // example sysStatus._forceSystemStartOnFatalError = true;
-        /** @todo [NECESSARY] check creatDefaultJson with new class jsonIoTEps */
+        /** @todo [NECESSARY] creatDefaultJson with new class jsonIoTEps */
         _pcParam->creatDefaultJson();
     }
 

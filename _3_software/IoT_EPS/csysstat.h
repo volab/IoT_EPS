@@ -26,6 +26,7 @@ class sysError {
         String getMsg(){ return _errMsg; }
         bool _forceSystemStartOnFatalError; /**< @brief for debug purpose only, prevent system
         to blink big led and stay in this loop indefinitly        */
+        errGravity_t getGravity(){ return _gravity; }
         
     private:
         bool _err = false;
@@ -91,6 +92,7 @@ class CSysStatus {
 
         /** @brief Return anded global system state */
         bool isSystemok();
+        int8_t isThereFatalError(){ return _fatalErrorCpt; } // call isSystemok before
 
         /** @brief  return the number of error for oled display */
         int8_t howManyError();
@@ -101,6 +103,7 @@ class CSysStatus {
        
     private:
         unsigned long _prevMillisCbit;
+        uint8_t _fatalErrorCpt = 0;
 };
 
 extern CSysStatus sysStatus;

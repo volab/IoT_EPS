@@ -103,10 +103,12 @@ void CSysStatus::display(){
 bool CSysStatus::isSystemok(){
     bool result = true;
     sysError *sError;
+    _fatalErrorCpt = 0;
     
     for ( int i=0; i < NBR_OF_SYSTEM_ERROR; i++){
         sError = sysErrorTable[i];
         result = result && !( sError->isErr() );
+        if ( sError->getGravity() == sysError::fatal ) _fatalErrorCpt++;
     }  
 
     /** DONE [NECESSARY] add wifiSoftSoftAPErr and wifiErr (not necessary with sysErrorTable*/

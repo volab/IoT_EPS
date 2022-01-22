@@ -41,6 +41,19 @@ Model Type
 Open bugs
 ====================================================================================================
 
+**BUG** : Manual after cycle ON Hfin 
+====================================================================================================
+
+    :Date de saisie:    22/01/2022    
+    :Date de traitemant:    
+    :Cible:             firmware
+    :Status:            **OPEN**    
+    :Problematique:     Set manual mode ON after a cycle mode Hfin param not set to 0 or the right 
+                        value
+                        
+    :Traitement:        
+
+
 **BUG** : untimely switching
 ====================================================================================================
 

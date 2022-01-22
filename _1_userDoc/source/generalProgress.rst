@@ -18,17 +18,20 @@ Task list (merged todo list hard and soft : preferred order)
 ====================================================================================================
 Don't forget the todo list of the **doxygen documentation** and **git history**:
 
-- before regen todo list **OK**
-    - 5 parameters not documented on csystem.cpp **CORRECTED**
-    - count software todo 32 NECESSARY and 11 options **OK**
-        - from doxy export docboock and on web docbook to txt **OK**
-    - try to ordre them **OK**
-        - Excel file created **OK**
-        - Check if there are all uptodate rest 22 of 32 **OK**
+- two of the 6 todo From Bug_ToDoLst file
+    - change behavior on fatal error
+        - analyze :  :ref:`see sofDev.rst<newErrorHandling2022>`
+        
+    - oled display error
 
-- doxygen gen doc pb avec **REPAIRED**::
-- 
-    0044-Iot_ESP_PPlug/projet/_3_software/IoT_EPS/doc/logo_alpha2_reduced.png perdu !
+
+- Error handling improvement (todo display low error with LED ? Which one : power led ?)
+  A lot of work : change behavior on fatal error : do not sabord system but enable debug only with serial
+  - switch to special branch : newErrorHandling **OK**
+
+- add the 3Dprinted or CNC crafted logo
+
+
 
 - Tracking bug ``untimely switching``
     - reset all counter **OK**
@@ -45,15 +48,13 @@ Don't forget the todo list of the **doxygen documentation** and **git history**:
 
 - treat 6 TODO From Bug_ToDoLst file
     - oled display error
-    - change behavior on fatal error
+
     - Pause display
     - minify javascripts
     - doxy HTML js
     - file names coherence
 
-- Error handling improvement (todo display low error with LED ? Which one : power led ?)
-  A lot of work : change behavior on fatal error : do not sabord system but enable debug only 
-  with serial
+
 
 - complete testToBeConduted see :ref:`here<testToBeConducted>`
     - exhaustive test of hebdo mode : **95%**
@@ -90,10 +91,10 @@ Don't forget the todo list of the **doxygen documentation** and **git history**:
             - write python script to log boot sequence to a file: in progress ``projet\_3_software\outilPythonSpecial`` **ok**
             - record some boot sequence **ok**
             - check boots sequence **ok**
-    - treat todo (error rise)
+    - treat todo (error rise) 
         - regen list
         - treat one by one
-    - clean the code
+    - clean the code **OK**
     - comit **ok**
     - push **ok**
     - merge **ok**
@@ -138,7 +139,7 @@ Don't forget the todo list of the **doxygen documentation** and **git history**:
     - reroute pcb to reduce the size
     - don't forget to switch D2 and D3 on U1
 
-- add the 3Dprinted or CNC crafted logo
+
 
 
 - continue this list ;-)
@@ -151,8 +152,17 @@ Task done (for memory)
 ====================================================================================================
 - cache files on web browser : see :ref:`here<webBrowserCaching>` **OK**
 
+- before regen todo list **OK**
+    - 5 parameters not documented on csystem.cpp **CORRECTED**
+    - count software todo 32 NECESSARY and 11 options **OK**
+        - from doxy export docboock and on web docbook to txt **OK**
+    - try to ordre them **OK**
+        - Excel file created **OK**
+        - Check if there are all uptodate rest 22 of 32 **OK**
 
+- doxygen gen doc pb avec **REPAIRED**::
 
+    0044-Iot_ESP_PPlug/projet/_3_software/IoT_EPS/doc/logo_alpha2_reduced.png perdu !
 
 
 ====================================================================================================

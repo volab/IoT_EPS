@@ -294,6 +294,34 @@ but some line above at boot time system displays ::
     //oled message
 
 
+.. _newErrorHandling2022:
+
+====================================================================================================
+New error handling 01/2022
+====================================================================================================
+- Analyze : 
+
+
+
+
+
+Analyze
+====================================================================================================
+sysError::err method that sabord system
+
+each time a fatal error rise, sysError class sabord the system just when the error is raise.
+
+But with the boolean _forceSystemStartOnFatalError sysError::err can't sabord the system but all 
+functions continues to try to work.
+
+if only one fatal error rise functions should not all try to work
+
+Question how error are they clean ?
+
+
+
+
+
 ====================================================================================================
 More object oriented rewriting (August 2020)
 ====================================================================================================
