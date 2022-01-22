@@ -618,7 +618,7 @@ bool CJsonIotEps::_checkJsonOneFileIntegrity( String fileName ){
 */
 /** @todo [NECESSARY] check if this method is always usefull (29/12/2021) */
 
-uint32_t CJsonIotEps::_hashFile( File jsonFile ){
+/* uint32_t CJsonIotEps::_hashFile( File jsonFile ){
     HashPrint hashPrint;
     uint32_t hVal = 0;
     DEFDPROMPT("Hasfile")
@@ -638,4 +638,4 @@ uint32_t CJsonIotEps::_hashFile( File jsonFile ){
     }
     jsonFile.close();
     return hVal;  
-}
+} */

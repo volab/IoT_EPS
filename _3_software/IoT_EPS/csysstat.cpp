@@ -146,7 +146,7 @@ String CSysStatus::getMsg( int8_t n){
     return sysErrorTable[i]->getMsg();
     /** @todo [NECESSARY] add wifiSoftSoftAPErr and wifiErr */
 
-    /** @todo [NECESSARY] best way to return error message will be to creat an array in howmanyError
+    /** DONE [NECESSARY] best way to return error message will be to creat an array in howmanyError
      * method and find it here */
 
 

@@ -61,7 +61,7 @@ class CJsonIotEps{
         String _jsonVersion;
         String _jsonTag;
 
-        uint32_t _hashFile( File jsonFile );
+        //uint32_t _hashFile( File jsonFile );
         void _storeOneJsonFile( String file_name_model, String file_name_to_store );
         bool _checkJsonOneFileIntegrity(String file_name);
         int _retryStoreCpt = 0;

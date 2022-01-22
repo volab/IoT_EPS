@@ -287,6 +287,8 @@ bool CPowerPlug::readFromJson( bool restaurePhyState ){
 */
 
 /** @todo [NECESSARY] check if this method is alway needed */
+// use by CPowerPlug::handleHtmlReq 22/01/2022
+// use by CPowerPlug::switchAtTime() it should use members no ?
 
 String CPowerPlug::readFromJson( String param ){
     String sRetValue;
@@ -698,24 +700,22 @@ Compute next time to switch if necessary regardless of _mode
 void CPowerPlug::switchAtTime(){
     DEFDPROMPT( "switch at Time");
     String sMode = modes[ _mode ];
+    /** @todo this method should use class members intead of readFromJson link to readFromJson usefullness */
     if ( sMode == MANUAL_MODE ){
         off();
         _nextTimeToSwitch = 0;
-        // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+
         _dureeOff.setValue("");
         _dureeOn.setValue("");
         _hDebut.setValue("");
         _hFin.setValue("");
-        // writeToJson( JSON_PARAMNAME_ENDTIME, "" );
-        // writeToJson( JSON_PARAMNAME_OFFDURATION, "" );
-        // writeToJson( JSON_PARAMNAME_ONDURATION, "" );
-        // writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+
         _jsonWriteRequest = true;
     } else if ( sMode == TIMER_MODE ){
         off();
         _nextTimeToSwitch = 0;
         _jsonWriteRequest = true;
-        // writeToJson( JSON_PARAMNAME_NEXTSWITCH,writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );      
+    
     } else if ( sMode == CYCLIC_MODE ){
         CEpsStrTime duree;
         if (_state){
@@ -733,7 +733,7 @@ void CPowerPlug::switchAtTime(){
             }
         }
         _nextTimeToSwitch = duree.computeNextTime();
-        // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+
     } else if ( sMode == HEBDO_MODE ){
         DSP( dPrompt + F("Hebdo mise") );
         CEpsStrTime nextHour;
@@ -757,7 +757,7 @@ void CPowerPlug::switchAtTime(){
         };
         _nextTimeToSwitch =  nextHour.computeNextTime( _daysOnWeek ); 
     }
-    //writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+
     _jsonWriteRequest = true;
 }
 
