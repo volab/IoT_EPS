@@ -24,7 +24,7 @@ class CSystem
 	public:
 		void init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
 					const String *necessaryFileList, int necessaryFileNbr, String buildInfo
-					, ESP8266WiFiClass *wifi, CNanoI2CIOExpander *pNanoExp, Adafruit_SSD1306 *pdisplay
+					, ESP8266WiFiClass *pWifi, CNanoI2CIOExpander *pNanoioExp, Adafruit_SSD1306 *pdisplay
                     , CJsonIotEps *pjsonData
                       );
 		NTPClient *_pTimeclient;

@@ -265,18 +265,18 @@ void CSystem::oledDsiplayShutDown(){
  @param pcParam a pointer on the cParm class instance
  @param necessaryFileList a pointer on the necessary list files
  @param necessaryFileNbr a many necessary files
- @param buildinfo as ti says
+ @param buildInfo as ti says
  @param pWifi a pointer on the wifi class connection
  @param pNanoioExp a pointer on the instance of nano io expension
  @param pdisplay a pointer on the oled display
- @param jsonData a ref to jsonData
+ @param pjsonData a ref to jsonData
  @return no return val
 
 Start RTc DS3231 and nothing else @25/09/2020. With all this pointers Csysteminstance can inteeract
 with almost all components in the system.
 */
 void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
-                    const String *necessaryFileList, int necessaryFileNbr, String buildinfo
+                    const String *necessaryFileList, int necessaryFileNbr, String buildInfo
                     , ESP8266WiFiClass *pWifi, CNanoI2CIOExpander *pNanoioExp
                     , Adafruit_SSD1306 *pdisplay
                     , CJsonIotEps *pjsonData
@@ -312,7 +312,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     /////////////////////////////////////////////////////////////////////////////
     //     file system check                                                   //
     /////////////////////////////////////////////////////////////////////////////
-    DSPL( dPrompt + " Build : " + buildinfo );
+    DSPL( dPrompt + " Build : " + buildInfo );
     _psysStat->fsErr.err( !_pFileSystem->begin() ); 
     DSPL( dPrompt + F("File system correctly Open @ setup level") );
 
