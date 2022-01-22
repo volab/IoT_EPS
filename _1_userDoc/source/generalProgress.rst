@@ -18,10 +18,15 @@ Task list (merged todo list hard and soft : preferred order)
 ====================================================================================================
 Don't forget the todo list of the **doxygen documentation** and **git history**:
 
-- before regen todo list
-    - 5 parameters not documented on csystem.cpp
+- before regen todo list **OK**
+    - 5 parameters not documented on csystem.cpp **CORRECTED**
+    - count software todo 32 NECESSARY and 11 options **OK**
+        - from doxy export docboock and on web docbook to txt **OK**
+    - try to ordre them 
+        - Excel file created **OK**
+        - Check if there are all uptodate
 
-- doxygen gen doc pb avec:: 
+- doxygen gen doc pb avec:: **OK**
 
     0044-Iot_ESP_PPlug/projet/_3_software/IoT_EPS/doc/logo_alpha2_reduced.png perdu !
 
@@ -34,7 +39,7 @@ Don't forget the todo list of the **doxygen documentation** and **git history**:
     - wrong global table refresh
     - cfgpage / cfgsend : configuration page (see Bug_ToDOList.rst)
     - clone pause
-    - untimely switching
+    - untimely switching **10%**
     - push button permuted on yellow and green
 
 

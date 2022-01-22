@@ -115,10 +115,11 @@ int mainPowerPrevState = 0;
 CTempo allLeds;
 bool restartTempoLed = false;
 
-/** @todo
- - [OPTION 1] see for add colorLEd array in the class CPowerPlug as a static member
- - [NECESSARY for 1 and 2 plug strip] convert colorLeds array in dynamic version as for plugs array */
+/* - [OPTION 1] see for add colorLEd array in the class CPowerPlug as a static member : NO */
 
+/** DONE 22/01/2022 but not tested  
+ 
+ - [OPTION for 1 and 2 plug strip] convert colorLeds array in dynamic version as for plugs array */
 
 
 
@@ -247,7 +248,7 @@ void setup(){
     ///////////////////////////////////////////////////////////////////////////// 
     if ( !mainPowerSwitchState ){
         DSPL( dPrompt + "Wait main power switch ON");
-        for ( int i = 0; i < 4 ; i++ ) colorLeds[i] = CRGB::Black;
+        for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
         FastLED.show();
         do {
             mainPowerSwitchState = !digitalRead( MAINSWITCHPIN ); //open circuit = plug OFF

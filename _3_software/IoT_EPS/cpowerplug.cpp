@@ -816,14 +816,10 @@ void CPowerPlug::handleBpLongClic(){
     String mode;
     DEFDPROMPT("handleLongClic");
     DSPL( dPrompt );
-    // off();
-
-    /** @todo [NECESSARY] be sure to reset all members*/
 
     bool prevState = _state;
     _state = OFF ;
-    updateOutputs( prevState != _state ); //to count only real plug switch
-// writeToJson( JSON_PARAMNAME_STATE, "OFF" );    
+    updateOutputs( prevState != _state ); //to count only real plug switch  
     _nextTimeToSwitch = 0;
     _pause = false;
     mode = MANUAL_MODE;
@@ -831,51 +827,6 @@ void CPowerPlug::handleBpLongClic(){
     _daysOnWeek = 0;    
 
     _jsonWriteRequest = true;
-    /** @todo [NECESSARY] remove below code*/
-   
-/*     File configFile = SPIFFS.open( CONFIGFILENAME , "r");
-    if (configFile) {
-        size_t size = configFile.size();
-        // Allocate a buffer to store contents of the file.
-        std::unique_ptr<char[]> buf(new char[size]);
-        configFile.readBytes(buf.get(), size);
-        //a place to close the file without waiting
-        DynamicJsonBuffer jsonBuffer;
-        JsonObject& json = jsonBuffer.parseObject(buf.get());
-
-        // set all members to reset values
-        // set _jsonWriteRequest to true;
-        
-        if (json.success()) {
-            JsonObject& plug = json[_plugName]; 
-            JsonArray& plugJours = plug["Jours"];
-            plug[JSON_PARAMNAME_NEXTSWITCH] = (String)_nextTimeToSwitch;
-            plug[JSON_PARAMNAME_ENDTIME] = "";
-            plug[JSON_PARAMNAME_OFFDURATION] = "";
-            plug[JSON_PARAMNAME_ONDURATION] = "";
-            plug[JSON_PARAMNAME_STARTTIME] = "";
-            plug[JSON_PARAMNAME_CLONEDPLUG] = "";
-            plug[JSON_PARAMNAME_MODE] = mode;
-            plug[JSON_PARAMNAME_PAUSE] = "OFF";
-            plug[JSON_PARAMNAME_STATE] = "OFF";         
-            for (int i = 0; i<7; i++){
-                plugJours[ i ] = "OFF";
-            }
-            // configFile.seek(0, SeekSet);
-            // json.prettyPrintTo(configFile);
-            configFile.close();
-            configFile = SPIFFS.open( CONFIGFILENAME , "w");
-            json.printTo(configFile);
-            // plug.prettyPrintTo(Serial);
-            // DSPL();
-        } else {
-            DEBUGPORT.println(dPrompt + F("Failed to load json config"));
-            // return false;
-        }
-        configFile.close();
-        // return true;         
-    }  */   
-    // writeDaysToJson(); 
     bp.acquit();    
 }
 
