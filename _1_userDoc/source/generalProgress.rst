@@ -16,9 +16,19 @@ General progress of IOT Electrical Power Strip
 ====================================================================================================
 Task list (merged todo list hard and soft : preferred order)
 ====================================================================================================
-- doxygen gen doc pb avec::
+Don't forget the todo list of the **doxygen documentation** and **git history**:
 
-    0044-Iot_ESP_PPlug/projet/_3_software/IoT_EPS/doc/logo_alpha2_reduced.png perdu
+- before regen todo list
+    - 5 parameters not documented on csystem.cpp
+
+- doxygen gen doc pb avec:: 
+
+    0044-Iot_ESP_PPlug/projet/_3_software/IoT_EPS/doc/logo_alpha2_reduced.png perdu !
+
+- Tracking bug ``untimely switching``
+    - reset all counter **OK**
+    - activate red and bleu cycle and manual off on yellow and green (never switch this 2 plugs) **OK**
+    - Check after long period of time if yellow and green counter stay at 0 
 
 - treat 5 BUG From Bug_ToDoLst file
     - wrong global table refresh
@@ -58,9 +68,7 @@ Task list (merged todo list hard and soft : preferred order)
 - UML and classes documentation 10% - web and json **ABORTED**
 
 
-Don't forget the todo list of the **doxygen documentation** and **git history**:
 
-    - before regen todo list
 
 
 - Minifier all files if possible of course and reduce the size of the images

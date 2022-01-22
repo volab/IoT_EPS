@@ -255,7 +255,7 @@ void CSystem::oledDsiplayShutDown(){
 
 /**
  @fn void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
-                    const String *necessaryFlLst, int necessaryFileNbr, String buildinfo
+                    const String *necessaryFileList, int necessaryFileNbr, String buildinfo
                     , ESP8266WiFiClass *pWifi, CNanoI2CIOExpander *pNanoioExp
                     , Adafruit_SSD1306 *pdisplay )
  @brief IoT_EPS system init method
@@ -263,7 +263,7 @@ void CSystem::oledDsiplayShutDown(){
  @param psysStat a pointer on global variable sysStatus
  @param pFileSyst a pointer on the file system
  @param pcParam a pointer on the cParm class instance
- @param necessaryFlLst a pointer on the necessary list files
+ @param necessaryFileList a pointer on the necessary list files
  @param necessaryFileNbr a many necessary files
  @param buildinfo as ti says
  @param pWifi a pointer on the wifi class connection
@@ -276,7 +276,7 @@ Start RTc DS3231 and nothing else @25/09/2020. With all this pointers Csystemins
 with almost all components in the system.
 */
 void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, ConfigParam *pcParam,
-                    const String *necessaryFlLst, int necessaryFileNbr, String buildinfo
+                    const String *necessaryFileList, int necessaryFileNbr, String buildinfo
                     , ESP8266WiFiClass *pWifi, CNanoI2CIOExpander *pNanoioExp
                     , Adafruit_SSD1306 *pdisplay
                     , CJsonIotEps *pjsonData
@@ -333,7 +333,7 @@ void CSystem::init( WiFiUDP &ntpUDP, CSysStatus *psysStat, FS *pFileSyst, Config
     DSPL(dPrompt + F("File check !") );
     bool fileExist = true;
     for ( int i = 0; i < necessaryFileNbr; i++){
-        String s = necessaryFlLst[i];
+        String s = necessaryFileList[i];
         bool b = _pFileSystem->exists(s);
         fileExist &= b;
         DSPL( dPrompt + F("file : ") + s + F(" is ") + (b?F("present"):F("not found")) );
