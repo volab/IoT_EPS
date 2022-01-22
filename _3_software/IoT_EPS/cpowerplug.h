@@ -79,7 +79,7 @@ class CPowerPlug : public CNano {
         // bool readFromJson();
         bool readFromJson( bool restaurePhyState );
         String readFromJson( String param );
-        void writeToJson( String param, String val );
+        // void writeToJson( String param, String val );
         void writeDaysToJson();
         void handleHtmlReq( String allRecParam );
         

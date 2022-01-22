@@ -609,33 +609,3 @@ bool CJsonIotEps::_checkJsonOneFileIntegrity( String fileName ){
     return returnVal;
 
 }
-
-/**
- @fn CJsonIotEps::_hashFile( File jsonFile )
- @brief compute the pseudo hash value of one json
- @return hash Value base on data loaded in RAM and usage of a special function in json lib.
- 0 means open file error
-*/
-/** @todo [NECESSARY] check if this method is always usefull (29/12/2021) */
-
-/* uint32_t CJsonIotEps::_hashFile( File jsonFile ){
-    HashPrint hashPrint;
-    uint32_t hVal = 0;
-    DEFDPROMPT("Hasfile")
-    DSPL( F("\tJson file opened ") );
-    size_t size = jsonFile.size();
-    DSPL( dPrompt + "json file size : " + (String)size ) ;
-    // Allocate a buffer to store contents of the file.
-    std::unique_ptr<char[]> buf(new char[size]);
-    jsonFile.readBytes(buf.get(), size);
-    DynamicJsonBuffer jsonBuffer;
-    JsonObject& json = jsonBuffer.parseObject(buf.get());
-    // json.printTo(DEBUGPORT);
-    if (json.success()) {
-        json.printTo(hashPrint);
-        hVal = hashPrint.hash();
-        //DSPL(dPrompt + "H0 =" +String(H0));
-    }
-    jsonFile.close();
-    return hVal;  
-} */

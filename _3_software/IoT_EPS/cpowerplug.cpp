@@ -78,7 +78,8 @@ void CPowerPlug::on(){
     bool prevState = _state;
     _state = ON ;
     updateOutputs( prevState != _state ); //to count only real plug switch
-    writeToJson( JSON_PARAMNAME_STATE, "ON" );
+    // writeToJson( JSON_PARAMNAME_STATE, "ON" );
+    _jsonWriteRequest = true ;
     /** @todo [NECESSARY]replace above by __jsonWriteRequest  */
     
 
@@ -102,8 +103,9 @@ void CPowerPlug::off(){
     bool prevState = _state;
     _state = OFF ;
     updateOutputs( prevState != _state ); //to count only real plug switch
-    writeToJson( JSON_PARAMNAME_STATE, "OFF" );
+    // writeToJson( JSON_PARAMNAME_STATE, "OFF" );
     /** @todo [NECESSARY]replace above by __jsonWriteRequest  */
+    _jsonWriteRequest = true;
 }
 
 /** 
@@ -119,7 +121,8 @@ void CPowerPlug::toggle(){
     }
     _state = !_state ;
     updateOutputs();
-    writeToJson( JSON_PARAMNAME_STATE, _state?"ON":"OFF" );
+    // writeToJson( JSON_PARAMNAME_STATE, _state?"ON":"OFF" );
+    _jsonWriteRequest = true;
     /** @todo [NECESSARY]replace above by __jsonWriteRequest  */
 }
 
@@ -152,7 +155,8 @@ void CPowerPlug::updateOutputs( bool writeToJsonCount ){
     if ( writeToJsonCount ){
         _onOffCount++;
         DSPL(dPrompt + F("Nouvelle valeur du compteur ON/OFF: ") + _onOffCount + " de : " + _plugName );
-        writeToJson( JSON_PARAMNAME_ONOFCOUNT, "" ); //to set the flag
+        // writeToJson( JSON_PARAMNAME_ONOFCOUNT, "" ); //to set the flag
+        _jsonWriteRequest = true;
         /** @todo [NECESSARY]replace above by __jsonWriteRequest  */
         
     }
@@ -171,7 +175,8 @@ Search are made in the file on the name of the plug as redPlug for exemple
 */
 // bool CPowerPlug::readFromJson(){
 
-/** @todo [NECESSARY] check if this method is alway needed */
+/** @todo [NECESSARY] check if this method is alway needed ? yes in to clone in handleHtmlReq 22/01/2022 */
+
 
 bool CPowerPlug::readFromJson( bool restaurePhyState ){
     String sState, sMode, sHDebut, sHFin, sDureeOn, sDureeOff;
@@ -344,7 +349,6 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     DSPL( dPrompt + allRecParam);
     DSPL( dPrompt + F("Traitements pour : ") + _plugName );
     param = JSON_PARAMNAME_MODE;
-    //mode = extractParamFromHtmlReq( allRecParam, param );
     mode = CServerWeb::extractParamFromHtmlReq( allRecParam, param );
     DSPL( dPrompt + "Mode = " + mode );
     
@@ -352,7 +356,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
     prevMode = readFromJson( param ); //why ? For bp acquit
     // do not change if all is not valid
     // _mode = modeId( mode );
-    // writeToJson( param, mode );
+
     /** DONE in the html navigator by javascript test all case invalid parameter entered */
     if ( mode == MANUAL_MODE){
         /////////////////////////////////////////////////////////////////////////////
@@ -381,44 +385,44 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                 if (dureeOff.isValid){
                     DSPL( dPrompt + _plugName + " : extracted dureeoff in seconds = " + \
                         (String)dureeOff.getSeconds() );
-                    //writeToJson( param, dureeOff.getStringVal() );
+
                     _dureeOff.setValue( dureeOff.getStringVal() );
                     _nextTimeToSwitch = dureeOff.computeNextTime();
                     _jsonWriteRequest = true;
-                } else writeToJson( param, "" );
+                } else _jsonWriteRequest = true;
                 /////////////////////////////////////////////////////////////////////////////
                 //    Compute MANUAL MODE  : hFin                                          //
                 /////////////////////////////////////////////////////////////////////////////
-                param = JSON_PARAMNAME_ENDTIME;
-                // String hFin = CServerWeb::extractParamFromHtmlReq( allRecParam, param );    
+                param = JSON_PARAMNAME_ENDTIME;  
                 CEpsStrTime hFin;
-                // hFin.setMode( CEpsStrTime::HHMM );
                 hFin = CEpsStrTime(CServerWeb::extractParamFromHtmlReq( allRecParam, param ),\
                     CEpsStrTime::HHMM );
                 DSPL( dPrompt + "hFin validity : " + (hFin.isValid?"valid":"invalid") );
                 if ( hFin.isValid && !dureeOff.isValid ){
                     _nextTimeToSwitch = hFin.computeNextTime();
-                    writeToJson( param, hFin.getStringVal() );
+                    // writeToJson( param, hFin.getStringVal() );
+                    _jsonWriteRequest = true;
                     _hFin.setValue( hFin.getStringVal() );
                     DSPL( dPrompt + _plugName + F(" : extracted hFin as String = ") + \
                         (String)hFin.getStringVal() ); 
                 }
                 DSPL( dPrompt + "nt2s : " + CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
-                writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+                // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+                _jsonWriteRequest = true;
                 
             }else { //state == "OFF"
                 _nextTimeToSwitch = 0;
                 _hFin.setValue( "" );
                 _dureeOn.setValue("");
                 _dureeOff.setValue("");
-                //writeToJson( JSON_PARAMNAME_STARTTIME, "" ); //just for boolean set
                 _jsonWriteRequest = true;
                 _daysOnWeek = 0;
                 writeDaysToJson();
                 off();
             }
             _mode = modeId( mode );
-            writeToJson( JSON_PARAMNAME_MODE, mode );
+            // writeToJson( JSON_PARAMNAME_MODE, mode );
+            _jsonWriteRequest = true;
         }
     } else if ( mode == TIMER_MODE ){
         /////////////////////////////////////////////////////////////////////////////
@@ -435,25 +439,28 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         if (dureeOn.isValid){
             DSPL( dPrompt + _plugName + " : extracted dureeOn en secondes = " + \
                 (String)dureeOn.getSeconds() );
-            writeToJson( param, "" ); //kept only for _jsonWriteRequest set to true
+            // writeToJson( param, "" ); //kept only for _jsonWriteRequest set to true
+            _jsonWriteRequest = true;
             _dureeOn.setValue( dureeOn.getStringVal() );
             _dureeOff.setValue( "" );
             _nextTimeToSwitch = dureeOn.computeNextTime();
-            // param = JSON_PARAMNAME_STATE;
+
             state = CServerWeb::extractParamFromHtmlReq( allRecParam, JSON_PARAMNAME_STATE );
             DSPL( dPrompt + _plugName + F(" : extracted state = ") + state);
             if (state != NOT_FOUND ){
                 if (state == "ON") {
-                    on();
-                    writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch ); 
+                    on(); // _jsonWriteRequest = true; included
+                    // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch ); 
+
                 } else {
-                    off();
-                    writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
+                    off(); // _jsonWriteRequest = true; included
+                    // writeToJson( JSON_PARAMNAME_NEXTSWITCH, "0" );
                     _nextTimeToSwitch = 0;
                 }
             }
             _mode = modeId( mode );
-            writeToJson( JSON_PARAMNAME_MODE, mode );            
+            // writeToJson( JSON_PARAMNAME_MODE, mode );   
+            _jsonWriteRequest = true;         
         } else { //onDuration not valid
             DSPL( dPrompt + "TIMER mode : an invalid parameter was entered, no change made");
 
@@ -469,14 +476,14 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         if ( pauseRequested == "ON" ){
             if (_state) {
                 off();
-                writeToJson( JSON_PARAMNAME_PAUSE, "ON" ); // only kept to set _jsonWriteRequest to true
+                // writeToJson( JSON_PARAMNAME_PAUSE, "ON" ); // only kept to set _jsonWriteRequest to true
                 _pause = true;
                 DSPL( dPrompt + F("mise en pause HTML")  );
                 return;
             }     
         } else if (_pause){
             on();
-            writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+            // writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
             _pause = false;
             DSPL( dPrompt + F("sortie de pause par HTML") );
             return;
@@ -497,11 +504,11 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         if ( dureeOn.isValid && dureeOff.isValid ){
             if ( hDebut.isValid ){
                 off();
-                writeToJson( JSON_PARAMNAME_STARTTIME, hDebut.getStringVal() );
+                // writeToJson( JSON_PARAMNAME_STARTTIME, hDebut.getStringVal() );
                 _nextTimeToSwitch = hDebut.computeNextTime();
             } else {
                 on();
-                writeToJson( JSON_PARAMNAME_STARTTIME, "" );
+                // writeToJson( JSON_PARAMNAME_STARTTIME, "" );
                 _nextTimeToSwitch = dureeOn.computeNextTime();
             }
             /** @todo [NECESSARY] keep only one writeToJson Call to set _jsonWriteRequest */
@@ -511,7 +518,8 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
             //writeToJson( JSON_PARAMNAME_OFFDURATION, dureeOff.getStringVal() );
             _dureeOff.setValue( dureeOff.getStringVal() ) ;
             _mode = modeId( mode );
-            writeToJson( JSON_PARAMNAME_MODE, mode );            
+            // writeToJson( JSON_PARAMNAME_MODE, mode );    
+            _jsonWriteRequest = true;        
         } else { //onDuration and/or offDuration not valid
             DSPL( dPrompt + "CYCLIC mode : an invalid parameter was found, no change made");
         } 
@@ -526,14 +534,14 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         if ( pauseRequested == "ON" ){
             if (_state) {
                 off();
-                writeToJson( JSON_PARAMNAME_PAUSE, "ON" );
+                // writeToJson( JSON_PARAMNAME_PAUSE, "ON" );
                 _pause = true;
                 DSPL( dPrompt + F("mise en pause HTML")  );
                 return;
             }     
         } else if (_pause){
             on();
-            writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+            // writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
             _pause = false;
             DSPL( dPrompt + F("sortie de pause par HTML") );
             return;
@@ -558,10 +566,11 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                     bitSet ( newDayOfWeek, i );
             }
             //if all is valid
-            writeToJson( JSON_PARAMNAME_STARTTIME, hDebut.getStringVal() );
-            writeToJson( JSON_PARAMNAME_ENDTIME, hFin.getStringVal() );
+            // writeToJson( JSON_PARAMNAME_STARTTIME, hDebut.getStringVal() );
+            // writeToJson( JSON_PARAMNAME_ENDTIME, hFin.getStringVal() );
+            _jsonWriteRequest = true;
             _daysOnWeek = newDayOfWeek;
-            writeDaysToJson();
+            // writeDaysToJson();
             // prepare data for in or out of bounds test
             DateTime now = CRtc::now();
             int h, m;
@@ -589,9 +598,10 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
                     CEpsStrTime::unixTime2String( _nextTimeToSwitch ) );
                 if ( _state) off(); // confirme off 
             }
-            writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+            // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
             _mode = modeId( mode );
-            writeToJson( JSON_PARAMNAME_MODE, mode );             
+            // writeToJson( JSON_PARAMNAME_MODE, mode );         
+            _jsonWriteRequest = true;    
         } //not all valid
         else {
             DSPL( dPrompt + "HEBDO mode : an invalid parameter was found, no change made");
@@ -627,11 +637,13 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         _nextTimeToSwitch = clonedPlug.getNextT2Switch();
         _daysOnWeek = clonedPlug.getDays();
         _pause = clonedPlug.getPause();
-        for (int i = 0; i < CLONEDPARAMNUMBER; i++){
-            writeToJson(  clonedParamsNames[i], clonedParamsVal[i] );
+/*         for (int i = 0; i < CLONEDPARAMNUMBER; i++){
+            // writeToJson(  clonedParamsNames[i], clonedParamsVal[i] );
+            _jsonWriteRequest = true;
         }        
         writeDaysToJson();
-        writeToJson(  JSON_PARAMNAME_CLONEDPLUG, clonedPlugName );
+        writeToJson(  JSON_PARAMNAME_CLONEDPLUG, clonedPlugName ); */
+        _jsonWriteRequest = true;
     } 
 }
 /** 
@@ -666,13 +678,13 @@ String CPowerPlug::extractParamFromHtmlReq( String allRecParam, String param ){
 
 Writes value on parma for _plugName plug of course !
 */
-void CPowerPlug::writeToJson( String param, String value ){
+/* void CPowerPlug::writeToJson( String param, String value ){
     DEFDPROMPT( "CPower plug write to jSo (not real write)");
 DSPL( dPrompt + _plugName + " : " + param + " with " + value );
     _jsonWriteRequest = true;
     /** done remove below code 29/12/2021 */
 
-}
+/*} */
 
 /** 
  @fn void CPowerPlug::writeDaysToJson()
@@ -728,7 +740,8 @@ void CPowerPlug::switchAtTime(){
             } else { //in pause
                 duree = (CEpsStrTime)readFromJson( (String)JSON_PARAMNAME_OFFDURATION );
                 _pause = false;
-                writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+                // writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+                _jsonWriteRequest = true;
                 DSPL( dPrompt + F("sortie de pause sur mise off") );
             }
         }
@@ -751,7 +764,8 @@ void CPowerPlug::switchAtTime(){
                 nextHour = CEpsStrTime(readFromJson( (String)JSON_PARAMNAME_STARTTIME ),\
                     CEpsStrTime::HHMM ); 
                 _pause = false;
-                writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+                // writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+                _jsonWriteRequest = true;
                 DSPL( dPrompt + F("sortie de pause sur mise off") );                    
             }
         };
@@ -784,21 +798,24 @@ void CPowerPlug::handleBpClic(){
         CEpsStrTime dureeOn;
         dureeOn = (CEpsStrTime)readFromJson( (String)JSON_PARAMNAME_ONDURATION );
         _nextTimeToSwitch = dureeOn.computeNextTime();
-        writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+        // writeToJson( JSON_PARAMNAME_NEXTSWITCH, (String)_nextTimeToSwitch );
+        _jsonWriteRequest = true;
         on();
     } else if ( sMode == CYCLIC_MODE || sMode == HEBDO_MODE){
         //when on, a short bp action put plug to off but stay in mode for next time to switch
         //a second action on push button 
         if (_state) {
             off();
-            writeToJson( JSON_PARAMNAME_PAUSE, "ON" );
+            // writeToJson( JSON_PARAMNAME_PAUSE, "ON" );
             _pause = true;
+            _jsonWriteRequest = true;
             DSPL( dPrompt + F("mise en pause BP")  );
         } else if (_pause){
             on();
-            writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
+            // writeToJson( JSON_PARAMNAME_PAUSE, "OFF" );
             _pause = false;
             DSPL( dPrompt + F("sortie de pause par BP") );
+            _jsonWriteRequest = true;
         }
     } else {
         DSPL( dPrompt + F("WARNING aucun mode valid !") );
