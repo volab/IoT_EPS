@@ -31,7 +31,7 @@
     #define WW_HLP_MSG "<W> display WIFI mode\n"
     //X
     //Y
-    //Z
+    #define ZZ_HLP_MSG "<Z> set WD to 4mn and 15s to upload a new firmware\n"
     
     
     #define A_HLP_MSG "<a> for Ip address\n"  

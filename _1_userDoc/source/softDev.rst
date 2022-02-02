@@ -389,8 +389,12 @@ I2C bus
 For ntp, wd and ap mode error display them on OLED cycling with normal display of plugs
 
 - create new help commande to force and clear error
-- rearrange help commande list in alphabetic order
+- create a new help cmd to stop WD set WD to 4mn and 15s (maximum) **OK**
+    - merge it on devFirmware 
+- rearrange help commande list in alphabetic order **OK**
+    - merge it on devFirmware **OK**
 
+Stop wD ? set timeout to 255seconds ie 4mn and 15s is enough to upload firmware ?
 
 ==============================m======================================================================
 More object oriented rewriting (August 2020)

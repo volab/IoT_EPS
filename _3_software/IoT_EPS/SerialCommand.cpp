@@ -54,6 +54,8 @@ return see in the code for all informations.
 // #include <TimeLib.h>
 #define SECPERHOURS (int)3600
 
+#include "cattiny_i2c_watchdog.h"
+
 extern int __heap_start, *__brkval;
 extern ConfigParam cParam; /**< @brief to display wifi mode non static member ! */
 // extern CNanoI2CIOExpander ioexp;
@@ -248,7 +250,10 @@ FSInfo filseSystemInfo;
         case 'W':
             cParam.displayWifiMode();
             break;
-            
+        case 'Z':
+            INTERFACE.println("WD set to 4 mn and 15s, upload firmware now");
+            watchdog.setTimeout( 255 );
+            break;            
         case 'a': //a for address (IP)  
             INTERFACE.print("IP add = ");
             INTERFACE.println( WiFi.localIP().toString() );
@@ -375,7 +380,7 @@ void SerialCommand::displayCommandsList(){
     list += F(WW_HLP_MSG);
     //X
     //Y
-    //Z
+    list += F(ZZ_HLP_MSG);
     
     
     list += F(A_HLP_MSG);  
@@ -423,6 +428,7 @@ void SerialCommand::displayCommandsThematicList(){
     list += F(P_HLP_MSG);
     list += F(T_HLP_MSG);
     list += F(Z_HLP_MSG);
+    list += F(ZZ_HLP_MSG);
 
 
     list += F("\n");
