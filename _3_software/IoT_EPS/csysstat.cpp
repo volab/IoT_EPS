@@ -44,20 +44,21 @@ void sysError::err( bool errorState ){
     DEFDPROMPT( "System error handler")
     _err = errorState;
     if (_err) DSPL( dPrompt + _errMsg );
-    if ( _gravity == fatal && _err && !_forceSystemStartOnFatalError ){
-        for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
-        FastLED.show();
-        delay(500);
-        while (1){ 
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = _displayColor1;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);	
-            for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = _displayColor2;
-            FastLED.show();
-            delay(FLASH_ERROR_PERIODE/2);			
-            yield();
-        }
-    }
+    /** @todo [NECESSARY] and easy : comment cleaning */
+    // if ( _gravity == fatal && _err && !_forceSystemStartOnFatalError ){
+    //     for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+    //     FastLED.show();
+    //     delay(500);
+    //     while (1){ 
+    //         for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = _displayColor1;
+    //         FastLED.show();
+    //         delay(FLASH_ERROR_PERIODE/2);	
+    //         for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = _displayColor2;
+    //         FastLED.show();
+    //         delay(FLASH_ERROR_PERIODE/2);			
+    //         yield();
+    //     }
+    // }
 }
 
 void CSysStatus::initCBITTimer(){
@@ -99,7 +100,10 @@ void CSysStatus::display(){
  @fn bool CSysStatus::isSystemok()
  @return true if system has no error at all.
 
+
 */
+
+/* [NECESSARY] obsolete method same as howManyError but keep for now...*/
 bool CSysStatus::isSystemok(){
     bool result = true;
     sysError *sError;

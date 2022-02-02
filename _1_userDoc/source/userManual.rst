@@ -76,7 +76,7 @@ In csysstat.cpp et csysstat.h files, variable _forceSystemStartOnFatalError allo
 sabordage behavior.
 
 Special html pages
-================================
+----------------------------------------------------------------------------------------------------
 .. code::
 
     /time

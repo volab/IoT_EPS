@@ -40,7 +40,7 @@ Action name : cfgsend (all in lowercase)
 Action name to get json value updated page : cfgpage
 
 Set time and date parameter names
-=====================================
+----------------------------------------------------------------------------------------------------
 setTime, setDate
 
 

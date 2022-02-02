@@ -57,14 +57,14 @@ Not directly listed in autogenerate doxygen documentation:
 
 
 dprompt
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 dprompt is very useful to display message prompt in debug serial monitor.
 It is declared in macro DEFDPROMPT(X) in debugSerialPort.h file
 
 It is a local variable in the bloc where DEFDPROMTP is used
 
 sysStatus
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 Auto declared global Instance of the CSysStatus classe in csysstat.cpp file
 
 Its usage:
@@ -79,7 +79,7 @@ This class stores system status and managed them.
 28 references in 5 files
 
 cParam
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 52 references in 3 files
 
 - loT_EPS.ino 44
@@ -89,7 +89,7 @@ cParam
 This instance hold all configuration parameters
 
 FastLED
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 .. image:: image/FastLEDVariable.jpg 
    :width: 600 px
 
@@ -122,7 +122,7 @@ After OOnew orientation
 ====================================================================================================
 
 CSystem class
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 sysIoteps of **CSystem** class. This class should surround all system servitudes.
 
 It should be possible and/or necessary to hold in this class the following features:
@@ -150,7 +150,7 @@ It is a deal between effort and improvement result the improvement doesn't resid
 only but in the piece of code that it can simplify
 
 CRtc and its usage
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 it is used by::
 
    into .ino file rtc global instance
@@ -167,7 +167,7 @@ it is used by::
 After OO refactoring, it is CSystem that initialize rtc instance.
 
 FastLed and colorLeds case
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 2 different usages:
 
 - to display plugs colors each plug holds its own color in its _couleur attirbut

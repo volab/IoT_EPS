@@ -1,6 +1,6 @@
-=============
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Interface WEB
-=============
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 Prestation des différents comportement de l'interface WEB
 
@@ -9,12 +9,12 @@ Prestation des différents comportement de l'interface WEB
 
 ####
 
-------------
+====================================================================================================
 Comportement
-------------
+====================================================================================================
 
 Comportement par défaut
-=======================
+----------------------------------------------------------------------------------------------------
 
 Deux type de présentation par défaut sont envisager :
 
@@ -23,7 +23,7 @@ Deux type de présentation par défaut sont envisager :
     * Résumer globale
 
 Résumer par prise
------------------
+----------------------------------------------------------------------------------------------------
 
 Lors de l'accès à la page, en cas de rafraichissement ou lors d'une action sur un bouton 'Envoyer',
 chaque prise présente un résumé de son état et du mode dans lequel elle est configurée. Ces
@@ -32,7 +32,7 @@ informations sont directement lue depuis le fichiers 'config3.json'.
     **N.B: Ce mode ne sera pas retenu**
 
 Résumer global
---------------
+----------------------------------------------------------------------------------------------------
 
 Lors de l'accès à la page, en cas de rafraichissement ou lors d'une action sur un bouton 'Envoyer',
 seul un résumer global de l'état et de la configuration de chaque prise est présenté à 
@@ -42,7 +42,7 @@ faut cliquer sur nom dans la barre (ou le menu) de navigation.
     **N.B: Ce mode sera utilisé**
 
 Comportement responcive
-=======================
+----------------------------------------------------------------------------------------------------
 
 Sur les petites résolution d'écran (tablette et mobile):
 
@@ -55,44 +55,45 @@ Sur les petites résolution d'écran (tablette et mobile):
 
 ####
 
------------------------
+====================================================================================================
 Sélection et navigation
------------------------
+====================================================================================================
+
 
 Accès à une prise spécifique
-============================
+----------------------------------------------------------------------------------------------------
 
 L'accès à une prise spécifique se fait soit depuis la barre de navigation, soit en navigant (avec la
 barre de navigation verticale ou avec le bouton centrale de la souris).
 
 Sélection d'un mode
-===================
+----------------------------------------------------------------------------------------------------
 
 La sélection des mode se fait au niveau de chaque prise par un menu spécifique
 
 ####
 
----------------------------------------------
+====================================================================================================
 Action et validation des formulaires par mode
----------------------------------------------
+====================================================================================================
 
 Mode Manuel
-===========
+----------------------------------------------------------------------------------------------------
 
 [TODO] A renseigner [TODO]
 
 Mode Minuterie
-==============
+----------------------------------------------------------------------------------------------------
 
 [TODO] A renseigner [TODO]
 
 Mode Cyclique
-=============
+----------------------------------------------------------------------------------------------------
 
 [TODO] A renseigner [TODO]
 
 Mode Hebdomadaire
-=================
+----------------------------------------------------------------------------------------------------
 
     * La case à cocher "Sélectionner tous les jours" permet de sélectionner tous les jours d'un
       seule coup. Cet élément n'est pas obligatoire.
@@ -120,15 +121,15 @@ Mode Hebdomadaire
           jusqu'au prochain cycle de fonctionnement.
 
 Mode Clone
-==========
+----------------------------------------------------------------------------------------------------
 
 [TODO] A renseigner [TODO]
 
 ####
 
------------
+====================================================================================================
 Webographie
------------
+====================================================================================================
 
 .. target-notes::
 

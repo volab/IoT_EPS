@@ -16,7 +16,7 @@ Curent Sensing aborted for now  :doc:`see hardware documentation  <hardDev>`
     Current sensing was aborted due to sensor choice
 
 AC mesurement
-======================================
+----------------------------------------------------------------------------------------------------
 `Module AC on AliExpress`_ with voltage lower transformer
 
 Usage example on `Youtube chanel of SurtrTech`_

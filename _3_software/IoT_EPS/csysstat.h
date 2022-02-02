@@ -57,9 +57,12 @@ class CSysStatus {
             , plugParamErr( sysError::fatal, CRGB::Red, CRGB::Snow,    "Plug's file error"  )
             , ntpErr( sysError::low, "NTP error")
             , internetErr( sysError::fatal, CRGB::RoyalBlue, CRGB::OrangeRed, "Internet error" )
-            , watchdogErr( sysError::fatal, CRGB::Snow, CRGB::Black, "watchdog error")
+            , watchdogErr( sysError::medium, CRGB::Snow, CRGB::Black, "watchdog error")
             , wifiSoftApErr(sysError::medium, CRGB::Snow, CRGB::Black, "SoftAp error")
             /** @todo [NECESSARY] creat wifiErr and wifiStaModeErr (choose a color) */
+            // what diff between this 2 errors ? fatal or not 
+            // wifi station mode is medium error  wifi too 
+            // with this 2 error no web browser access i think we should merge
             {
             
         }
@@ -76,7 +79,7 @@ class CSysStatus {
         sysError internetErr;
         sysError watchdogErr;
         sysError wifiSoftApErr;
-        /** @todo [NECESSARY] creat wifiSoftSoftAPErr and wifiErr */
+        /** @todo [NECESSARY] creat wifiSoftSoftAPErr and wifiErr don't forget to increase NBR_OF_SYSTEM_ERROR*/
         
         sysError* sysErrorTable[NBR_OF_SYSTEM_ERROR] = { 
                     &fsErr, &nanoErr, &rtcErr, &confFileErr, &credFileErr, &filesErr, &plugParamErr, 

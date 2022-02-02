@@ -32,7 +32,7 @@ WIFI Modes
 In Json config file, it is configured with: "startInAPMode" value,
 
 No WiFi
-==========
+----------------------------------------------------------------------------------------------------
 Also called simpleManualMode
 
 When power on (by the wall plug not by the power switch) the powerStrip, maintain Push button plug 1
@@ -44,7 +44,7 @@ Power strip start in this mode independently of Json configured mode.
 In this very simple poor mode, powerstrip works only in manual mode with BP actions ON/OFF.
 
 SoftAP
-=========
+----------------------------------------------------------------------------------------------------
 EPS starts in this mode when value of "startInAPMode" parameter is "ON".
 
 No acces to NTP server but all other functions work.
@@ -52,13 +52,13 @@ No acces to NTP server but all other functions work.
 After 20 false tries of station mode, power Strip automaticly switch in this mode
 
 Station
-=========
+----------------------------------------------------------------------------------------------------
 EPS starts in this mode when value of "startInAPMode" parameter is "OFF".
 
 The best functionnal mode ! With full web interface and others functions.
 
 both mode STA and AP
-=======================
+----------------------------------------------------------------------------------------------------
 July 2019 : reflexion when we start in DHCP station mode we don't know IP address of the IoT EPS.
 One way to know it is to use a tool to scan the local network !
 So why do not connect systematically in both mode !!!
@@ -196,7 +196,7 @@ We can `find this on Arduino`_  forum::
 .. _`Arduino ESP8266 example readthedoc` : https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/server-examples.html
 
 Bind to a method 
-====================================
+----------------------------------------------------------------------------------------------------
 
 `Explication sur Stackoverflow`_
 
@@ -218,7 +218,7 @@ https://www.bootstrapcdn.com/
     single: Html Request
 
 html requests
-=====================
+----------------------------------------------------------------------------------------------------
 
 ipaddr/plugonoff?plug=redPlug...
 
@@ -245,7 +245,7 @@ Other request:
 
 
 NTP server name
-=================
+----------------------------------------------------------------------------------------------------
 The name reside in the IoT_EPS.h file and is not a config param through web config page
 
 ====================
@@ -256,7 +256,7 @@ Copy from example provided in ARDUINO IDE : ESP8266WebServer/FSBrowser
 This example provide a lot of functions that managed file sending as css, jpg and so on
 
 edit page
-==============
+----------------------------------------------------------------------------------------------------
 Strange behavior with html extension
 
 Le bouton parcourir tronc en htm et le visualisateur ne montre que les fichier htm

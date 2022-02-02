@@ -36,26 +36,26 @@ Winning Pitch
 ====================
 
 Why 
-====================
+----------------------------------------------------------------------------------------------------
 #. aspirationnel
 #. quantitatif
 
 What
-====================
+----------------------------------------------------------------------------------------------------
 #. what extérieur : nom du projet, ce qu'il fait ou va faire
 #. what intérieur : proposition de b=valeur innovante
 
 Attention à la définition de innovant ne veut pas dire nouveau
 
 Who
-====================
+----------------------------------------------------------------------------------------------------
 #. Par qui est porté
 #. pour qui
 
 Ci-dessus : le Warm-up pour créer l'envie
 
 Projection pour créer l'adhésion
-==================================
+----------------------------------------------------------------------------------------------------
 
 Projeter son auditoire dans l'utilisation du projet (vendre du rêve)
 

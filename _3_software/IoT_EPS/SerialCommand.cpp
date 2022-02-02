@@ -38,6 +38,7 @@ return see in the code for all informations.
 // See SerialCommand::parse() below for defined text commands.
 
 #include "SerialCommand.h"
+#include "SerialCommandHelpMessages.h"
 #include "CRtc.h"
 #include "configParam.h"
 #include "cEpsStrTime.h"
@@ -126,21 +127,11 @@ ConfigParam cParam; //juste to call writeToJson
 String str = "";
 Dir dir;	
 FSInfo filseSystemInfo;
- //ABGKMQUVXYZ
- //bfgkmnqruvxy 
+ 
     switch(com[0]){
         case 'C':   
             // INTERFACE.println("display time : Crtc disable for now");
             CRtc::displayTime();
-            break;
-        case 'E':      // 
-            INTERFACE.print("<iElectrical Power Strip ");
-            // INTERFACE.print(ARDUINO_TYPE);
-            INTERFACE.print(": BUILD ");
-            INTERFACE.print(__DATE__);
-            INTERFACE.print(" ");
-            INTERFACE.print(__TIME__);
-            INTERFACE.println(", COM TYPE : SERIAL >");
             break;
         case 'D': // for dir  
             dir = SPIFFS.openDir("/");
@@ -158,13 +149,24 @@ FSInfo filseSystemInfo;
             INTERFACE.println( str + F("used bytes : ") + (String)filseSystemInfo.usedBytes );
             INTERFACE.println( str + F("max open files : ") + (String)filseSystemInfo.maxOpenFiles );
             INTERFACE.println( str + F("max path lenght : ") + (String)filseSystemInfo.maxPathLength );			
-            break;            
+            break;
+        case 'E':      // 
+            INTERFACE.print("<iElectrical Power Strip ");
+            // INTERFACE.print(ARDUINO_TYPE);
+            INTERFACE.print(": BUILD ");
+            INTERFACE.print(__DATE__);
+            INTERFACE.print(" ");
+            INTERFACE.print(__TIME__);
+            INTERFACE.println(", COM TYPE : SERIAL >");
+            break;          
         case 'F': //Find I2C
             i2c_scan();
             break; 
-        case 'h': 
         case 'H':
-            displayCommandsList();
+            displayCommandsList(); //alphabetic order
+            break;
+        case 'h':
+            displayCommandsThematicList();
             break;
          case 'I': //I for wifi Id
             n = sscanf( com+1,"%s", v );
@@ -345,35 +347,122 @@ FSInfo filseSystemInfo;
 ///////////////////////////////////////////////////////////////////////////////
 
 void SerialCommand::displayCommandsList(){
-    String list = "Serial Command list :\n";
-    list += F("<h> ou <H> display this list\n");
-    list += F("<E> display status\n");
-    list += F("<C> Check DS3231 date\n");
-    list += F("<S JJ/MM/AAAA HH:MM:SS> returns code <O>\n");
-    list += F("<T HH:MM:SS> returns code <O>\n");
-    list += F("<s> set DS3231 by NTP server\n");
-    list += F("<J _jsonFileNumber 0..2> for display config.json or one of its copy\n");
-    list += F("<W> display WIFI mode\n");
-    list += F("<P key value> write config parameter in json WARNING\n");
-    list += F("<I _newSSID> write SSID in credentials WARNING\n");
-    list += F("<i _wifiPass> write password in credentials WARNING\n");
-    list += F("<t various_param> for code test\n");
-    list += F("<N> nano IO expander test\n");
-    list += F("<O> nano out test HIGH\n");
-    list += F("<o> nano out test low\n");
-    list += F("<F> Find I2C device I2C scan\n");
-    list += F("<R> I2C recovery\n");
-    list += F("<c> I2C crash\n");
-    list += F("<a> for Ip address\n");
-    list += F("<w> for WiFi.printDig function\n");
-    list += F("<z> display credetial file\n");
-    list += F("<L> _newSoftAP_SSID> write SoftAP SSID in credentials WARNING\n");
-    list += F("<l> _wifiPass> write soft AP password in credentials WARNING\n");
-    list += F("<D> SPIFFS dir\n");
-    list += F("<j> display general part of main config json file\n");
-    list += F("<d _filename> erase a file WARNING\n");
-    list += F("<e> display system status\n");
-    list += F("<p> display main power state\n");
+    String list = "\nSerial Command alphabetic order list :\n";
+    list += F(H_HLP_MSG);
+    list += F("\n");
+    //A
+    //B
+    list += F(CC_HLP_MSG);
+    list += F(DD_HLP_MSG);   
+    list += F(EE_HLP_MSG);
+    list += F(FF_HLP_MSG);
+    //G
+    //H
+    list += F(II_HLP_MSG);
+    list += F(JJ_HLP_MSG);
+    //K
+    list += F(LL_HLP_MSG);
+    //M
+    list += F(NN_HLP_MSG);
+    list += F(OO_HLP_MSG);   
+    list += F(PP_HLP_MSG);
+    //Q
+    list += F(RR_HLP_MSG);
+    list += F(SS_HLP_MSG);
+    list += F(TT_HLP_MSG);
+    //U
+    //V
+    list += F(WW_HLP_MSG);
+    //X
+    //Y
+    //Z
+    
+    
+    list += F(A_HLP_MSG);  
+    //b
+    list += F(C_HLP_MSG);    
+    list += F(D_HLP_MSG);
+    list += F(E_HLP_MSG);
+    //f
+    //g
+    //h
+    list += F(I_HLP_MSG);
+    list += F(J_HLP_MSG);
+    //k
+    list += F(L_HLP_MSG);
+    //m
+    //n
+    list += F(O_HLP_MSG);
+    list += F(P_HLP_MSG);
+    //q
+    list += F(S_HLP_MSG);
+    list += F(T_HLP_MSG);
+    //u
+    //v
+    list += F(W_HLP_MSG);
+    //x
+    //y
+    list += F(Z_HLP_MSG);
+    list += F("\n");
+
+
+
+
+
+    INTERFACE.print( list );
+}
+
+void SerialCommand::displayCommandsThematicList(){
+    String list = "\nSerial Command Thematic order list :\n";
+    list += F(HH_HLP_MSG);
+
+    list += F("\n");
+    list += F("System cmds\n");
+    list += F(EE_HLP_MSG);
+    list += F(E_HLP_MSG);
+    list += F(P_HLP_MSG);
+    list += F(T_HLP_MSG);
+    list += F(Z_HLP_MSG);
+
+
+    list += F("\n");
+    list += F("I2C cmds\n");
+    list += F(FF_HLP_MSG);
+    list += F(NN_HLP_MSG);
+    list += F(OO_HLP_MSG);
+    list += F(RR_HLP_MSG);
+    list += F(C_HLP_MSG);
+    list += F(O_HLP_MSG);
+
+    list += F("\n");
+    list += F("Time cmds\n");
+    list += F(CC_HLP_MSG);
+    list += F(SS_HLP_MSG);
+    list += F(TT_HLP_MSG);
+    list += F(S_HLP_MSG);
+
+
+    list += F("\n");
+    list += F("Network cmds\n");
+    list += F(II_HLP_MSG);
+    list += F(LL_HLP_MSG);
+    list += F(WW_HLP_MSG);
+    list += F(A_HLP_MSG);
+    list += F(I_HLP_MSG);
+    list += F(L_HLP_MSG);
+    list += F(W_HLP_MSG);
+
+
+    list += F("\n");
+    list += F("Files and file system cmds\n");
+    list += F(DD_HLP_MSG);
+    list += F(JJ_HLP_MSG);
+    list += F(PP_HLP_MSG);
+    list += F(D_HLP_MSG);
+    list += F(J_HLP_MSG);
+
+    list += F("\n");
+
     INTERFACE.print( list );
 }
 

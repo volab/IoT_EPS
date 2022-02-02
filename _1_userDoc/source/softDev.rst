@@ -38,7 +38,7 @@ Progress of development
 ===========================
 
 Terminated
-==============================
+----------------------------------------------------------------------------------------------------
 
 ::
 
@@ -73,7 +73,7 @@ Terminated
     #. Correct internet error bug see bug and todo list
 
 In progress
-======================
+----------------------------------------------------------------------------------------------------
 
 Transferred :ref:`here<mainTodoList>`
 
@@ -86,7 +86,7 @@ see also :ref:`Json file improvements : analyze<jsonFileImprovementsAnalyze>`
 
 
 Major points
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 One main .ino file with its .h : IoT_EPS.
 In the header file we can find include and config informations. (to changed - 
@@ -108,7 +108,7 @@ The embedded html server is based on **ESP8266webserver** class
 Global File system SPIFFS is based on **ESP8266 core**
 
 Operations
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 An array of 4 plug objects manage the behavior of the plugs. Events from wifi trigs 
 web server functions. The main part of the jobs is to write data in the json file that it is resend
 to the user's web browser.
@@ -126,7 +126,7 @@ There is 2 worlds
 The Plugs world and the Web world.
 
 The Plug world
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 It is although the hardware or physical world
 
 **Setup sequence**
@@ -151,23 +151,23 @@ It is although the hardware or physical world
 - main power switch actions
 
 The Web world
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 Server event (HTTP GET requests). They are mapped to callback C functions (CServerWeb methods)
 
-============== ===================================================================================
-Event          Binded functions
-============== ===================================================================================
- /             firstBootHtmlForm, handleSoftAPIndex or handleIndex
- /time         displayTime
- /list         handleFileList
- /plugonoff    handlePlugOnOff
- /help         handleHelp
- /edit         handleEdit, handleFileCreate, htmlOkResponse, handleFileUpload, handleFileDelete
- /cfgpage      handelIOTESPConfPage
- /cfgsend      handleIOTESPConfiguration
- /changeCred   handleNewCred
- /firstBoot    handleFirstBoot
-============== ===================================================================================
+  ============== ===================================================================================
+  Event          Binded functions
+  ============== ===================================================================================
+   /             firstBootHtmlForm, handleSoftAPIndex or handleIndex
+   /time         displayTime
+   /list         handleFileList
+   /plugonoff    handlePlugOnOff
+   /help         handleHelp
+   /edit         handleEdit, handleFileCreate, htmlOkResponse, handleFileUpload, handleFileDelete
+   /cfgpage      handelIOTESPConfPage
+   /cfgsend      handleIOTESPConfiguration
+   /changeCred   handleNewCred
+   /firstBoot    handleFirstBoot
+  ============== ===================================================================================
 
 Theses events are triggered by HTTP requests from user's Web browser. Some of these above request are
 not implemented in http pages and are only for debug and should be send directly in the uri like 
@@ -176,7 +176,7 @@ not implemented in http pages and are only for debug and should be send directly
 Html pages are stored in the data folder of the SPIFFS in the ESP8266 flash.
 
 Links between the 2 worlds
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 These 2 worlds live their lives almost independent of each other.
 
 There are 2 links between them:
@@ -193,7 +193,7 @@ json file and do the jobs.
 
 
 Differed to next version
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 ::
 
@@ -306,7 +306,7 @@ New error handling 01/2022
 
 
 Analyze
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 sysError::err method that sabord system
 
 each time a fatal error rise, sysError class sabord the system just when the error is raise.
@@ -314,15 +314,85 @@ each time a fatal error rise, sysError class sabord the system just when the err
 But with the boolean _forceSystemStartOnFatalError sysError::err can't sabord the system but all 
 functions continues to try to work.
 
-if only one fatal error rise functions should not all try to work
+if only one fatal error rise, all functions should not  try to work
 
-Question how error are they clean ?
+Question: how errors are they clean ? at this time, there is no way to clean errors.
+
+Due to the new paradigm flash colors for errors are no longer useful.
+
+As almost all errors are fatal, is there a way to consider a commun behavior when a fatal error rise ?
+
+To day (on 22/01/2022), Error list::
+
+    fsErr( sysError::fatal, CRGB::Red, CRGB::Black, "File system error" )
+    , nanoErr( sysError::fatal, CRGB::Red, CRGB::Blue, "Nano error" )
+    , rtcErr( sysError::fatal, CRGB::Brown, CRGB::Black, "DS3231 error" ) 
+    , confFileErr( sysError::fatal, CRGB::Red, CRGB::Yellow, "Config file error" )
+    , credFileErr( sysError::medium, "Credential error" )
+    , filesErr( sysError::fatal, CRGB::OrangeRed, CRGB::Black, "Needed files error" )
+    , plugParamErr( sysError::fatal, CRGB::Red, CRGB::Snow,    "Plug's file error"  )
+    , ntpErr( sysError::low, "NTP error")
+    , internetErr( sysError::fatal, CRGB::RoyalBlue, CRGB::OrangeRed, "Internet error" )
+    , watchdogErr( sysError::fatal, CRGB::Snow, CRGB::Black, "watchdog error")
+    , wifiSoftApErr(sysError::medium, CRGB::Snow, CRGB::Black, "SoftAp error")
+    /** @todo [NECESSARY] creat wifiErr and wifiStaModeErr (choose a color) */
+
+ 
+
+.. NOTE:: **About rtc and ntp errors** 
+   :class: without-title
+
+   The time is important to switch plugs. It is **rtc** that is used to check time
+
+   Ntp is only use to adjust RTC when it is necessary in one method and is not a fatal error
+
+.. NOTE:: **fs, nano, confFile,other files, plugs param**
+   :class: without-title
+
+   reals fatal errors
+
+.. NOTE:: **Watchdog**
+   :class: without-title
+
+   Perhaps not a fatal error : if wd doesn't work only one function is break : main switch off
+
+.. NOTE:: **Credentials and wifi station mode errors**
+   :class: without-title
+
+   Only prevent ntp clock update and Bootstrap cdn access. Plugs continue to work in AP mode
+
+.. CAUTION:: Most of this error are hardware failures
+   :class: without-title
+
+   Only ntp and AP mode are auto-repaired errors. During normal operations for ntp and generally 
+   a restart is necessary for AP mode error.
+
+.. SEEALSO:: The only feature to maintain when fatal error is risen, is the manual push button switching
+   :class: without-title
+
+   To simplify dev, we decide to lock all features except above one. 
+
+Implementation
+----------------------------------------------------------------------------------------------------
+When fatal error is risen, potentially there is no web (no user browser to display error) nor oled.
+
+Only bp and color led are direct connected to ESP8266. Relay commands are through nanoI2CIoExpander and 
+I2C bus
+
+.. WARNING:: **DECISION** 
+   :class: without-title
+
+   - Display first fatal error on color LED blinking between their normal color and error color.
+   - Keep push button active to try to drive relay (not guaranteed)
+   - watchdog changed to medium error
+
+For ntp, wd and ap mode error display them on OLED cycling with normal display of plugs
+
+- create new help commande to force and clear error
+- rearrange help commande list in alphabetic order
 
 
-
-
-
-====================================================================================================
+==============================m======================================================================
 More object oriented rewriting (August 2020)
 ====================================================================================================
 
@@ -359,7 +429,7 @@ wifi access point
 Html pages are in the file system SPIFFS
 
 Why do not use wifi manager ?
-=========================================
+----------------------------------------------------------------------------------------------------
 A good question and i have no answers today !
 
 ======================================
@@ -593,7 +663,7 @@ Size 2 : 4 lign of 10 char
 Size 3 : 2 lign of 5 char
 
 Screen definitions
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 Screen are created with GIMP and converted with `LCD Assistant from radzio.dxp.pl`_
 
 .. _`LCD Assistant from radzio.dxp.pl` : http://en.radzio.dxp.pl/bitmap_converter/
@@ -793,7 +863,7 @@ Usefull Documentation
 ===============================
 
 Espressif
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 :download:`ESP8266 Non-OS SDK<fichiersJoints/2c-esp8266_non_os_sdk_api_reference_en.pdf>` pdf file
 
 Containt function and class and struct like::
@@ -813,7 +883,7 @@ Containt function and class and struct like::
 Which is very usefull to debug !
 
 ESP8266WebServer
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 only `github documentation for ESP8266Webserver`_
 
 .. _`github documentation for ESP8266Webserver` : https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer
@@ -821,7 +891,7 @@ only `github documentation for ESP8266Webserver`_
 
 
 Html server
-=====================
+----------------------------------------------------------------------------------------------------
 
 Exemples ESP html serveurs::
 
@@ -842,14 +912,14 @@ Demonstrate using an http server and an HTML form to `control an LED`_. The http
 jQery slim : 70ko
 
 fastLed
-=============
+----------------------------------------------------------------------------------------------------
 
 `FastLed lib`_
 
 .. _`FastLed lib` : https://gi thub.com/FastLED/FastLED
 
 json (lectures / écritures)
-==============================
+----------------------------------------------------------------------------------------------------
 
 La librairie utilisée: `ArduinoJson`_ version 5.13.2 
 
@@ -867,7 +937,7 @@ Json genrator sur `ObjGen.com`_
     single: SPIFFS; Documentation
 
 SPIFFS 
-========================
+----------------------------------------------------------------------------------------------------
 
 `Official documentation for SPIFFS on Espressif`_
 
@@ -879,7 +949,7 @@ Eccueils et autres difficultés
 ===============================
 
 Limite des longueurs de nom de fichier SPIFFS
-===============================================
+----------------------------------------------------------------------------------------------------
 
 Les noms de fichiers dans SPIFFS sont limités par défaut à 32 caractères chemin compris.
 
@@ -890,12 +960,12 @@ C'est court! voir `github issue #34 mkspiffs`_
 .. _`github issue #34 mkspiffs` : https://github.com/igrr/mkspiffs/issues/34
 
 Prise en main de la librairie JSON
-======================================
+----------------------------------------------------------------------------------------------------
 
 Nécessite un investissement personnel important.
 
 DS3231 stuck I2C bus
-======================
+----------------------------------------------------------------------------------------------------
 
 It is a known problem with DS3231 see `method for recovering I2C bus #1025`_
 

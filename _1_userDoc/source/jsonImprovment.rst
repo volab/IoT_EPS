@@ -16,7 +16,7 @@ JSON Improvements
 Json file improvements : analyze
 ====================================================================================================
 Simple improvements
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 05/07/2021:
 
 CPowerPlug::readFromJson() : move up configFile.close(); at l253 to l189
@@ -29,11 +29,11 @@ ConfigParam::readFromJsonParam() : move up configFile.close() Too
 CpowerPlug::on, off toggle, updateOutputs could be private
 
 JSON structure
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 .. uml:: graphviz/config4json.wsd
 
 JSON structure vs variables
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 .. uml:: graphviz/config4jsonVsVariables.wsd
 
 Lines in green tag differences between json and class members.
@@ -54,13 +54,18 @@ hDebut, hFin, dureeOn, dureeOff, clonePlug and onOffCount are in json but not in
 - _startInApMode
 - ``_clé à créer 1_`` : becomes wifimode in config4.json
 
-About ntpError json parameter:
 
-- write in the loop at line 396 in cbit.
+.. CAUTION::
 
-- and write in CSystem::timeServerCheck
+    About ntpError json parameter
 
-but what is its usage ??? in the system ?
+    - write in the loop at line 396 in cbit.
+    - and write in CSystem::timeServerCheck
+
+    but what is its usage ??? in the system ?
+
+
+----------------------------------------------------------------------------------------------------
 
 .. WARNING::
 
@@ -71,8 +76,10 @@ On power plug class side, creation of new members:
 String nickName, hDebut, hFin, dureeOn, dureeOff, clonedPlug, onOffCount.
 
 
+
+
 Write to file improvements
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 **First question**: track all json config file access by tracking all usage of CONFIGFILENAME
 
 See GraphViz diagram : IoTEps config4.json access
@@ -96,7 +103,7 @@ There are 6 methods that write to json file:
 **third question**: what are the events that trig writes on json file ?
 
 handleBpLongClic
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 This method is used 3 times in the ino file. One time in the setup and 2 times in the loop.
 The purpose of this function is to force plugs modes to manual. After power off switching or
 after a long press on the plug's button
@@ -105,7 +112,7 @@ after a long press on the plug's button
 
 
 CPowerPlug::writeToJson(p,v) and writeDaysToJson
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 .. graphviz:: graphviz/CPowerPlugWrites.gv
 
@@ -113,14 +120,14 @@ CPowerPlug::writeToJson(p,v) and writeDaysToJson
 The second one could be a private method
 
 From configParam classe
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 In configParam class there is only 2 methods that directly write to config4.json file.
 
 - writeTOJson( p,v,f ) : the MAIN function
 - creatDefaultJson() : to restaure a fresh file when corrupted
 
 Write to json events
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 .. uml:: graphviz/writeEventsGlobal.wsd
 
@@ -144,7 +151,7 @@ On git branch : json_new : terminated on 2021 november
 
 
 Strategy : **obsolete** see REX Reflections
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 One json master file : config4.json (no change) and now we introduce 2 copies
 
@@ -219,7 +226,7 @@ So finally we made 3 stores, check the 3 hash values if there are not same we re
 |clearer|
 
 Json data in RAM (obsolete)
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 How to create ? A check at `ArduinoJson documentation`_
 
@@ -249,7 +256,7 @@ write or load time. Not to keep the json object throughout operations.
 
 
 Modifications
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 Class CJsonIotEps created. Instance jsonData in .ino file created.
 
@@ -301,7 +308,7 @@ but what is its usage ??? in the system ?
 
 
 Hash lib (obsolete)
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 There is a class example on arduinojson.org to compute CRC32 of json object or array. 
 `See arduinojson.org/v5/doc/tricks`_ §Compute hash of JSON output
 

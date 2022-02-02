@@ -27,14 +27,14 @@ First boot configuration
  
 
 Restaure factory parameters 
-=====================================
+----------------------------------------------------------------------------------------------------
 firstBoot after check box in config page.
 
 Restaure defConfig.json
  
  
 What are hypothesis, when boot for the first time ?
-=====================================================
+----------------------------------------------------------------------------------------------------
 Is a config json exist ? What is inside it ? Yes and it contain FirstBoot ON and other stuff.
 
 Same questions with credentials ? No, we generate it
@@ -51,7 +51,7 @@ When we receive the following form:
    IOT_EPS_HHHH
 
 First boot process
-=========================
+----------------------------------------------------------------------------------------------------
 #. check firstBoot param in config.json if ON
 #. start in AP mode with page firstboot.html only if main power is on
 #. if firstboot param is ON or TRY, we start the server with a special index page (firstboot.htm)
@@ -65,7 +65,7 @@ First boot process
 page when we received /
 
 Behavior when user move EPS from one physical site to another
-===============================================================
+----------------------------------------------------------------------------------------------------
 It is not a first boot
 
 EPS will search its WiFi station and will not find it so it restart in AP mode then user can acces
@@ -116,7 +116,7 @@ Restart ESP in ARDUINO loop when power is switch to OFF.
 .. index:: Special push buttons
 
 Special push button behaviors @startup
-===========================================
+----------------------------------------------------------------------------------------------------
 PB0 : @power on (not by power switch but by wall plug) start in simple manual mode see 
 :ref:`WIFI Modes<refWifiModes>`
 

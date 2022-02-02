@@ -18,7 +18,7 @@ This timing chronogram was made with a **special version of the firmaware** that
 the ESP8266 input redefined as output. 
 
 Shortest loop cycle
-====================================================================================================
+----------------------------------------------------------------------------------------------------
   
 .. figure:: image/bestCycleTime5ms.JPG
     :width: 500 px
@@ -30,7 +30,7 @@ Shortest loop cycle
 The shortest loop cycle in idle stade is 5.6ms
 
 A strange cycle
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 .. figure:: image/136msCycleEvery1s.JPG
     :width: 500 px
@@ -42,7 +42,7 @@ A strange cycle
 Probably web server check. Plug is in idle state (nothing to do). No 1s period timer in our code.
 
 Push button cycle
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 .. figure:: image/pushButon300msCycle.JPG
     :width: 500 px
@@ -54,7 +54,7 @@ Push button cycle
 This operation take 300ms.
 
 Plug on/off handler duration
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 .. figure:: image/plugOnOff_53ms.JPG
     :width: 500 px
@@ -81,7 +81,7 @@ Without debug prints on serial it take only 33ms.
 
 
 A complete web exchange
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 .. figure:: image/completeWebExchange.JPG
     :width: 500 px
@@ -129,7 +129,7 @@ Only the function handlehtmlReq (tag pin toggle move in the function)
 Probably the transfert of index.html
 
 Handel html param in manual mode - example
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 .. figure:: image/handleHtmlParamManualMode443ms.JPG
     :width: 500 px

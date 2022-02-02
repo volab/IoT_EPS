@@ -33,12 +33,16 @@ sys.path.insert(0, os.path.abspath("../../"))
 # ones.
 extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.githubpages', 'sphinx.ext.intersphinx', 'sphinx.ext.graphviz',
-    'sphinxcontrib.plantuml' ]
+    'sphinxcontrib.plantuml', 'sphinx.ext.todo' ]
+
+
+todo_include_todos = True
 
 plantuml = 'java -jar C:\plantUML\plantuml.jar'
 
 graphviz_output_format = "svg"
 plantuml_output_format = "svg_obj"
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -54,8 +58,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'IoT_EPS'
-copyright = '2018, Poltergeist42'
-author = 'Poltergeist42'
+copyright = '2018, Poltergeist42 and Major LEE 6695'
+author = 'Poltergeist42 and MajorLEE6695'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -82,7 +86,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 pygments_style = 'sphinx'
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
-todo_include_todos = False
+# todo_include_todos = False
 
 
 # -- Options for HTML output ----------------------------------------------
@@ -90,29 +94,37 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'classic'
+# html_theme = 'classic'
 
-html_theme_options = {
-    "body_max_width" : "70%"
-}
+# html_theme_options = {
+#     "body_max_width" : "70%"
+# }
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #
 # html_theme_options = {}
-html_theme_options = {
-    # 'stickysidebar ': True, # pas supportee par nature
-    'body_max_width' : '90%'
-    
-}
-
-# html_theme = 'cloud'
-# #Options clood theme:
 # html_theme_options = {
-#     'max_width' : '70%',
-#     'borderless_decor' : 'true'
+#     # 'stickysidebar ': True, # pas supportee par nature
+#     'body_max_width' : '90%'
+    
 # }
+
+html_theme = 'greencloud'
+html_theme_options = {
+    #'stickysidebar ': True, # pas supportee par nature
+    'externalrefs' : 'false',
+    'highlighttoc' : 'true',
+    'lighter_header_decor' : 'false',
+    'borderless_decor' : 'false',
+    'default_layout_text_size' : '100%',
+    'sidebar_master_title' : 'master title',
+    'sidebar_root_title' : 'root_titer',
+    'sidebar_prev_title' : 'Page précédente',
+    'sidebar_next_title' : 'Page suivante',
+    'max_width' : '80%'
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

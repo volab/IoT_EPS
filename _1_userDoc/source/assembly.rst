@@ -117,7 +117,7 @@ Program ESP8266 data
 Programm sktech
 
 In serial monitor you should see
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 .. code::
 
     Volab CSystem::init > Sketch start...
@@ -442,7 +442,7 @@ Données de mise au point:
 Dernier point inutile en fonctionnement mais pratique pour la mise au point.
 
 Mise au point en juin 2020
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 Changement de pc de développement. Probblème avec la branche dev_jojo détecté grâce à gitKraken
 
 Creation de la nouvelle branche devFirmware.

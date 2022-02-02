@@ -93,7 +93,7 @@ Progres
 ============
 
 Terminated
-==============================
+----------------------------------------------------------------------------------------------------
 
 ::
 
@@ -121,7 +121,7 @@ Terminated
 
 
 In progress
-======================
+----------------------------------------------------------------------------------------------------
 
 transfered
 
@@ -183,7 +183,7 @@ comments
 .. _`ATTiny85 I2C watchdog experiment` : https://github.com/letscontrolit/ESPEasySlaves
 
 ATtiny85 watchdog
-=====================
+----------------------------------------------------------------------------------------------------
 After some tests, I decided to use it.
 
 I build a ATtiny programmer with a ARDUINO UNO and a `proto shield`_ from Banggood
@@ -228,7 +228,7 @@ power supplies
     //                          +----+ 
 
 ATTiny85 programming tips
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 Don't forget to choose clock 1MHz for ATTiny when programming with ARDOUINO UNO as IoT_EPS
 This is not specify in the documentation
 
@@ -237,7 +237,7 @@ not 9600
 
 
 ATiny85 watchdog test tips
-============================
+----------------------------------------------------------------------------------------------------
 There is a TX debug serial on pin 3  speed is en théorie 1200 but on my maquette 9600 !!!
 
 facteur 8 => fuse atiny85 ???? 11/11/2021 NO I test the 3 speed 1, 8 and 16MHz and the com speed is 
@@ -252,7 +252,7 @@ Only for my eyes the code sits in ::
 
 
 ATTiny watchdog expertise
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 Date: 20/11/2021: I can't reproduce watchdog component with the data that I have.
 
 On the maquette there is an ATTiny programmed. It run perfectly @ 9600 bauds on debug COM.
@@ -322,7 +322,7 @@ Command clean of the fullpath
 First diff right component Lfuse = E2 wrong one Lfuse = 62 meaning thet right comp is clock at 8Mhz
 
 MAX1232 integration (aborted)
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 
 MAX1232 is a uP supervisor. It features bp and watchdog
 
@@ -479,12 +479,12 @@ Great youtube video on this subject from Andreas Spiess (the guy with the swiss 
 
 
 INA219 et INA220
-=================
+----------------------------------------------------------------------------------------------------
 
 - impossible "bus voltage 0-26V"
 
 ACS712
-======
+----------------------------------------------------------------------------------------------------
 
 - "Output voltage proportional to AC or DC currents"
 
@@ -514,7 +514,7 @@ On Banggood there are :
     mesurement for small curent values. for exemple: for a 100mA we need to mesure 10mV.
 
 ACS764
-======
+----------------------------------------------------------------------------------------------------
 I can't find rail to rail max  voltage
 
 - I2C
@@ -522,7 +522,7 @@ I can't find rail to rail max  voltage
 - but Unidirectional DC current sensing and reporting : KO
 
 Internet search
-==================
+----------------------------------------------------------------------------------------------------
 
 "AC isolated current sensor I2C"
 
@@ -594,7 +594,7 @@ on pcb to connect directly large wires for 30A curent. the size oh this holes is
 .. _`another one` : https://fr.aliexpress.com/item/32649182582.html?spm=a2g0o.productlist.0.0.66ea5b1eF7t2X4&algo_pvid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc&algo_expid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc-26&btsid=b1b106c8-8af6-4248-a717-bc9083416f7d&ws_ab_test=searchweb0_0,searchweb201602_1,searchweb201603_52   
 
 First test
-======================================
+----------------------------------------------------------------------------------------------------
 With my new received ACS712 5A breakout board, i made a first test with oscilloscope, multimeter
 and a motor as a charge ( with the drill press of the lab).
 
@@ -621,7 +621,7 @@ For 5A it give 5x185 = 925mV above and under 2.5V
 
    
 New ASC723
-==============
+----------------------------------------------------------------------------------------------------
 Replacement part for ACS712 find on the Allegro web site
 
 "The Allegro™ ACS723 current sensor IC is an economical and
@@ -653,7 +653,7 @@ An other improvment there is a +/-10A version ACS723LLCTR-10AB-T but it is very 
 .. _`on Radiospares site` : https://fr.rs-online.com/web/p/capteurs-de-courant/8660760/
 
 TMCS1100 from ti
-===================
+----------------------------------------------------------------------------------------------------
 
 No breakout board on the net !
 
@@ -662,7 +662,7 @@ ACS70331
 .. current sensing aborted:
 
 Current Sensing Aborted
-======================================
+----------------------------------------------------------------------------------------------------
 For now, we abort the idea of sensing the curent in each chanel of the IoT EPS because we can't find
 a goog solution that match the main criteria:
 
@@ -694,7 +694,7 @@ requires interrupt pin that we don't have here ! We have only analog pin on the 
 .. _`Electrical Engineering forum` : https://electronics.stackexchange.com/questions/17008/how-can-i-detect-a-power-outage-with-a-microcontroller
 
 MAX71020A a new hope 
-======================================
+----------------------------------------------------------------------------------------------------
 In february 2020, I find a new component to measure AC curent circuit spécialisé sur bus SPI.
 
 Pb seems to be obsolescence in a near future... Dommage 4.11€ `at Mouser.com`_
@@ -706,7 +706,7 @@ A very short time new hope :-(
 .. _`at Mouser.com` : https://www.mouser.fr/ProductDetail/Maxim-Integrated/MAX71020AETI%2b?qs=%2Fha2pyFaduhbncrMXO3FSjhx%252BjRn69riAjwSGzocCvw%252Bj%2FNqq3%2F7JvLM9vZohPbP
 
 MCP3911
-====================================================================================================
+----------------------------------------------------------------------------------------------------
 In Linky !
 
  1€64 @MOUSER
@@ -752,7 +752,7 @@ AC/DC capable de délivrer 3.2W
 
 
 Livetime of the relays
-====================================
+----------------------------------------------------------------------------------------------------
  10^7 time 
 
 ===================================

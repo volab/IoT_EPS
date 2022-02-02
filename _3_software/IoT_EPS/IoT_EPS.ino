@@ -368,7 +368,7 @@ void loop(){
     //I2C
     // 3 CBIT times defined in IoT_ESP.h:
     //      RTC_UPDATE_PERIOD 15 //every 15mn
-    //      I2C_CBIT_TEST_PERIOD 60 * 1000 //ms it smells millis() ;-)
+    //      I2C_CBIT_TEST_PERIOD 60 * 1000 //ms ie 1mn
     //      CBIT_TIME 60000 // period of CBIt in ms
     if ( millis() - prevMillis > I2C_CBIT_TEST_PERIOD){
         prevMillis = millis();
@@ -381,7 +381,7 @@ void loop(){
             
             cpt++;
         } while (cpt < I2C_RETRIES );
-        if (cpt != 10) sysStatus.nanoErr.err( true ); 
+        if (cpt != 10) sysStatus.nanoErr.err( true );
     }
 
 
@@ -415,6 +415,9 @@ void loop(){
             http.end();
         }
 
+        //wd test
+        /** @todo [NECESSARY] add wd test in cbit */
+
         if (sysStatus.ntpEnabled){
             bool rtcPreviousErr = sysStatus.ntpErr.isErr();
             rtc.update(); //this check NTP access and update sysStatus
@@ -424,7 +427,7 @@ void loop(){
             }
             DSPL( sysStatus.ntpErr.isErr()?"ERROR":"OK" );
             /** @todo: check the use of configjson param : ntperror see softDev.rst 
-             * JSON structure vs variables chapter
+             * JSON structure vs variables chapter. Why this error is written in json file ???
             */
         }
     }
@@ -433,10 +436,13 @@ void loop(){
     //  CBIT : Continus Built In Test End                                      //
     /////////////////////////////////////////////////////////////////////////////
 
+    sysStatus.isSystemok(); // to update fatal error count
+
     /////////////////////////////////////////////////////////////////////////////
     //  watchdog refresh                                                       //
     /////////////////////////////////////////////////////////////////////////////
-    if ( watchdog.isItTimeTo() ) {
+    // if ( watchdog.isItTimeTo() ) {
+    if ( watchdog.isItTimeTo() && !sysStatus.watchdogErr.isErr() ) {
         //DSPL( dPrompt + F("TimeToRefresh wd") ) ;
         watchdog.refresh();
     }
@@ -444,7 +450,8 @@ void loop(){
     /////////////////////////////////////////////////////////////////////////////
     //  oled refresh display if necessary                                      //
     /////////////////////////////////////////////////////////////////////////////
-    sysIoteps.oledLoopChangeDispayIf();
+
+    sysIoteps.oledLoopChangeDispayIf(); //even if there is fatal error try to display !
     
     /////////////////////////////////////////////////////////////////////////////
     //  Some little jobs : specialBp, ftp, SerialProcess...                    //

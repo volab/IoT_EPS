@@ -3,8 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
++++++++++++++++++++++++++++++++++++++++++++
 Welcome to IoT_EPS's documentation!
-===================================
++++++++++++++++++++++++++++++++++++++++++++
 
 .. toctree::
    :maxdepth: 2
@@ -21,8 +22,41 @@ Welcome to IoT_EPS's documentation!
    pitch
    chronogram
 
+.. CAUTION::
+
+   texte
+
+.. NOTE::
+
+   notation
 
 
+
+.. todo:: test de todo
+   :class: without-title
+
+
+.. DANGER::
+
+   texte
+
+
+.. WARNING::
+
+   texte
+
+
+.. SEEALSO::
+
+   texte
+
+.. SEEALSO:: on s'en fou royalement
+   :class: without-title
+
+
+
+
+==================
 Indices and tables
 ==================
 
