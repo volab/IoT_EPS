@@ -7,7 +7,7 @@
     #define H_HLP_MSG "<h> display this list in thematic order\n"
 
     //A
-    //B
+    #define BB_HLP_MSG "<B0 to ?> B as bind un error to the system\n"
     #define CC_HLP_MSG "<C> Check DS3231 date\n"
     #define DD_HLP_MSG "<D> SPIFFS dir\n"   
     #define EE_HLP_MSG "<E> display code status\n"
@@ -35,7 +35,7 @@
     
     
     #define A_HLP_MSG "<a> for Ip address\n"  
-    //b
+    #define B_HLP_MSG "<b0 to ? unbind error to the system\n"
     #define C_HLP_MSG "<c> I2C crash\n"    
     #define D_HLP_MSG "<d _filename> erase a file WARNING\n"
     #define E_HLP_MSG "<e> display system status\n"
@@ -45,7 +45,7 @@
     #define I_HLP_MSG "<i _wifiPass> write password in credentials WARNING\n"
     #define J_HLP_MSG "<j> display general part of main config json file\n"
     //k
-    #define L_HLP_MSG "<l> _wifiPass> write soft AP password in credentials WARNING\n"
+    #define L_HLP_MSG "<l _wifiPass> write soft AP password in credentials WARNING\n"
     //m
     //n
     #define O_HLP_MSG "<o> nano out test low\n"

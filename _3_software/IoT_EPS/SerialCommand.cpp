@@ -131,6 +131,9 @@ Dir dir;
 FSInfo filseSystemInfo;
  
     switch(com[0]){
+        case 'B':
+            
+            break;
         case 'C':   
             // INTERFACE.println("display time : Crtc disable for now");
             CRtc::displayTime();
@@ -259,7 +262,10 @@ FSInfo filseSystemInfo;
             INTERFACE.println( WiFi.localIP().toString() );
             INTERFACE.print("softAP IP add = ");
             INTERFACE.println( WiFi.softAPIP().toString() );
-            break; 
+            break;
+        case 'b':
+            
+            break;
         case 'c': //recovery I2C         
             i2c_plantoir();
             break;
@@ -356,7 +362,7 @@ void SerialCommand::displayCommandsList(){
     list += F(H_HLP_MSG);
     list += F("\n");
     //A
-    //B
+    list += F(BB_HLP_MSG);
     list += F(CC_HLP_MSG);
     list += F(DD_HLP_MSG);   
     list += F(EE_HLP_MSG);
@@ -384,7 +390,7 @@ void SerialCommand::displayCommandsList(){
     
     
     list += F(A_HLP_MSG);  
-    //b
+    list += F(B_HLP_MSG);
     list += F(C_HLP_MSG);    
     list += F(D_HLP_MSG);
     list += F(E_HLP_MSG);
@@ -429,6 +435,8 @@ void SerialCommand::displayCommandsThematicList(){
     list += F(T_HLP_MSG);
     list += F(Z_HLP_MSG);
     list += F(ZZ_HLP_MSG);
+    list += F(BB_HLP_MSG);
+    list += F(B_HLP_MSG);
 
 
     list += F("\n");

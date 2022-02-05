@@ -389,8 +389,11 @@ I2C bus
 For ntp, wd and ap mode error display them on OLED cycling with normal display of plugs
 
 - create new help commande to force and clear error
+    - Choose letter for commands B and b ( there are few letters left ) **OK**
+    - add letters to the help system
 - create a new help cmd to stop WD set WD to 4mn and 15s (maximum) **OK**
-    - merge it on devFirmware 
+    - merge it on devFirmware **OK**
+    - pb with git and devfirmware with a lowaer case f !!! **CORRECTED**
 - rearrange help commande list in alphabetic order **OK**
     - merge it on devFirmware **OK**
 

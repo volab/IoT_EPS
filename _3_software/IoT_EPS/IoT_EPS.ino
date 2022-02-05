@@ -142,6 +142,10 @@ void setup(){
 
     FastLED.addLeds<WS2801, DATA_PIN, CLOCK_PIN, RGB>(colorLeds, NUM_LEDS);
     FastLED.setBrightness( DEFAULT_LED_LUMINOSITY ); //default value for error display
+    // Prepartion see todo : clear all led at the beginning of setup() in Bug_TodoList.rst
+    // for ( int i = 0; i < NBRPLUGS ; i++ ) colorLeds[i] = CRGB::Black;
+    // FastLED.show();
+    // wifiLed.low();
     
     ftpSrv.begin("esp8266","esp8266");
     

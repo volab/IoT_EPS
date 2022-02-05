@@ -79,7 +79,7 @@ class CSysStatus {
         sysError internetErr;
         sysError watchdogErr;
         sysError wifiSoftApErr;
-        /** @todo [NECESSARY] creat wifiSoftSoftAPErr and wifiErr don't forget to increase NBR_OF_SYSTEM_ERROR*/
+        /** @todo [NECESSARY] creat wifiSoftAPErr and wifiErr don't forget to increase NBR_OF_SYSTEM_ERROR*/
         
         sysError* sysErrorTable[NBR_OF_SYSTEM_ERROR] = { 
                     &fsErr, &nanoErr, &rtcErr, &confFileErr, &credFileErr, &filesErr, &plugParamErr, 
