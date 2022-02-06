@@ -132,7 +132,7 @@ FSInfo filseSystemInfo;
  
     switch(com[0]){
         case 'B':
-            
+            sysStatus.sysErrorTable[0]->isErr();
             break;
         case 'C':   
             // INTERFACE.println("display time : Crtc disable for now");

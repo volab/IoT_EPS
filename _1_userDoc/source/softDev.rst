@@ -337,7 +337,19 @@ To day (on 22/01/2022), Error list::
     , wifiSoftApErr(sysError::medium, CRGB::Snow, CRGB::Black, "SoftAp error")
     /** @todo [NECESSARY] creat wifiErr and wifiStaModeErr (choose a color) */
 
- 
+And where these errors are raised ?:
+
+- fsErr : at setup only in CSystem::init
+- nanoErr : at setup and in **loop** @ ic2_time 1mn 
+- rtcErr : at setup in CSystem::init (equivalent to a i2c test)
+- confFileErr : setup in CSystem::init
+- credFileErr : wifi begin 
+- filesErr : setup + in the **loop** @ cbit time 1mn
+- plugParamErr : setup by CJsonIotEps::loadJsonPlugParam
+- ntpErr : in the **loop** @ cbit time
+- internetErr : in the **loop** @ cbit time
+- watchdogErr : only in setup
+- wifiSoftApErr :  wifi begin
 
 .. NOTE:: **About rtc and ntp errors** 
    :class: without-title
@@ -411,11 +423,11 @@ Number of the error, as in the code::
 .. NOTE:: To Remember
    :class: without-title
 
-    int8_t CSysStatus::howManyError()
-    bool CSysStatus::isSystemok()
-    int8_t isThereFatalError(){ return _fatalErrorCpt; } // call isSystemok before
+    - int8_t CSysStatus::howManyError()
+    - bool CSysStatus::isSystemok()
+    - int8_t isThereFatalError()
 
-==============================m======================================================================
+====================================================================================================
 More object oriented rewriting (August 2020)
 ====================================================================================================
 

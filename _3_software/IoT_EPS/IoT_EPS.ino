@@ -426,6 +426,7 @@ void loop(){
             bool rtcPreviousErr = sysStatus.ntpErr.isErr();
             rtc.update(); //this check NTP access and update sysStatus
             DSP( dPrompt + F("Check NTP access : " ) );
+            //if error is already store in the file it is not necessary to rewrite it
             if ( sysStatus.ntpErr.isErr() != rtcPreviousErr ){
                 cParam.write2Json( "ntpError", ( sysStatus.ntpErr.isErr()?"ON":"OFF") );
             }
@@ -440,7 +441,7 @@ void loop(){
     //  CBIT : Continus Built In Test End                                      //
     /////////////////////////////////////////////////////////////////////////////
 
-    sysStatus.isSystemok(); // to update fatal error count
+    // sysStatus.isSystemok(); // to update fatal error count
 
     /////////////////////////////////////////////////////////////////////////////
     //  watchdog refresh                                                       //
