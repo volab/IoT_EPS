@@ -93,6 +93,7 @@ void CSysStatus::display(){
         DSPL( dPrompt + sError->getMsg() + " : " + (sError->isErr()?"ERROR":"no error") );
     }
     DSPL( dPrompt + F("System global error : ") + (isSystemok()?"OK":"ErrOr") );
+    DSPL( dPrompt + F("Number of fatal error : ") + String( isThereFatalError() ));
 }
 
 
@@ -112,13 +113,17 @@ bool CSysStatus::isSystemok(){
     for ( int i=0; i < NBR_OF_SYSTEM_ERROR; i++){
         sError = sysErrorTable[i];
         result = result && !( sError->isErr() );
-        if ( sError->getGravity() == sysError::fatal ) _fatalErrorCpt++;
+        if ( sError->isErr() && sError->getGravity() == sysError::fatal ) _fatalErrorCpt++;
     }  
 
     /** DONE [NECESSARY] add wifiSoftSoftAPErr and wifiErr (not necessary with sysErrorTable*/
     return result;
 }
 
+int8_t CSysStatus::isThereFatalError(){ 
+    isSystemok(); // to update the counter
+    return _fatalErrorCpt; 
+}
 
 /** 
  @fn int8_t CSysStatus::howManyError()

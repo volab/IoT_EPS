@@ -390,7 +390,8 @@ For ntp, wd and ap mode error display them on OLED cycling with normal display o
 
 - create new help commande to force and clear error
     - Choose letter for commands B and b ( there are few letters left ) **OK**
-    - add letters to the help system
+    - add letters to the help system **OK**
+    - decide number of errors (see below)
 - create a new help cmd to stop WD set WD to 4mn and 15s (maximum) **OK**
     - merge it on devFirmware **OK**
     - pb with git and devfirmware with a lowaer case f !!! **CORRECTED**
@@ -398,6 +399,21 @@ For ntp, wd and ap mode error display them on OLED cycling with normal display o
     - merge it on devFirmware **OK**
 
 Stop wD ? set timeout to 255seconds ie 4mn and 15s is enough to upload firmware ?
+
+Number of the error, as in the code::
+
+        sysError* sysErrorTable[NBR_OF_SYSTEM_ERROR] = { 
+                    &fsErr, &nanoErr, &rtcErr, &confFileErr, &credFileErr, &filesErr, &plugParamErr, 
+                    &ntpErr, &internetErr, &watchdogErr, &wifiSoftApErr };
+
+        in csysstat.h
+
+.. NOTE:: To Remember
+   :class: without-title
+
+    int8_t CSysStatus::howManyError()
+    bool CSysStatus::isSystemok()
+    int8_t isThereFatalError(){ return _fatalErrorCpt; } // call isSystemok before
 
 ==============================m======================================================================
 More object oriented rewriting (August 2020)

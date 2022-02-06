@@ -95,8 +95,8 @@ class CSysStatus {
 
         /** @brief Return anded global system state */
         bool isSystemok();
-        int8_t isThereFatalError(){ return _fatalErrorCpt; } // call isSystemok before
-
+        int8_t isThereFatalError(); 
+        
         /** @brief  return the number of error for oled display */
         int8_t howManyError();
 
