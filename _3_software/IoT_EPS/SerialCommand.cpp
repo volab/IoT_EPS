@@ -133,6 +133,19 @@ FSInfo filseSystemInfo;
     switch(com[0]){
         case 'B':
             sysStatus.sysErrorTable[0]->isErr();
+            n = sscanf( com+1,"%s", v );
+            value = String(v);
+            if ( n == 1 ){
+                if ( value.toInt() < NBR_OF_SYSTEM_ERROR ){
+                    INTERFACE.println( "Set error n° " + value );
+                    sysStatus.sysErrorTable[value.toInt()]->err( true );
+                } else {
+                    INTERFACE.println( "Parameters must be strictly lesser than " + (String)NBR_OF_SYSTEM_ERROR );
+                }   
+            } else {
+                INTERFACE.println( F("Warning this command requires only ONE parameter !") );
+            }
+            
             break;
         case 'C':   
             // INTERFACE.println("display time : Crtc disable for now");
@@ -181,7 +194,7 @@ FSInfo filseSystemInfo;
                 // ConfigParam::chgSSID( value );
                 cParam.chgSSID( value );
             } else {
-                INTERFACE.println("Warning this command riquires only ONE parameter !");
+                INTERFACE.println( F("Warning this command requires only ONE parameter !") );
             }
             break;
         case 'J': //display config.json
@@ -264,7 +277,18 @@ FSInfo filseSystemInfo;
             INTERFACE.println( WiFi.softAPIP().toString() );
             break;
         case 'b':
-            
+            n = sscanf( com+1,"%s", v );
+            value = String(v);
+            if ( n == 1 ){
+                if ( value.toInt() < NBR_OF_SYSTEM_ERROR ){
+                    INTERFACE.println( "remove error n° " + value );
+                    sysStatus.sysErrorTable[value.toInt()]->err( false );
+                } else {
+                    INTERFACE.println( "Parameters must be strictly lesser than " + (String)NBR_OF_SYSTEM_ERROR );
+                }   
+            } else {
+                INTERFACE.println( F("Warning this command requires only ONE parameter !") );
+            }
             break;
         case 'c': //recovery I2C         
             i2c_plantoir();

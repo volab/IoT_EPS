@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 +++++++++++++++++++++++++++++++++++++++++++
-Welcome to IoT_EPS's documentation!
+IoT_EPS's documentation!
 +++++++++++++++++++++++++++++++++++++++++++
 
 .. toctree::

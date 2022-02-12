@@ -299,11 +299,6 @@ but some line above at boot time system displays ::
 ====================================================================================================
 New error handling 01/2022
 ====================================================================================================
-- Analyze : 
-
-
-
-
 
 Analyze
 ----------------------------------------------------------------------------------------------------
@@ -337,7 +332,7 @@ To day (on 22/01/2022), Error list::
     , wifiSoftApErr(sysError::medium, CRGB::Snow, CRGB::Black, "SoftAp error")
     /** @todo [NECESSARY] creat wifiErr and wifiStaModeErr (choose a color) */
 
-And where these errors are raised ?:
+And where these errors are raised ?::
 
 - fsErr : at setup only in CSystem::init
 - nanoErr : at setup and in **loop** @ ic2_time 1mn 
@@ -403,10 +398,11 @@ For ntp, wd and ap mode error display them on OLED cycling with normal display o
 - create new help commande to force and clear error
     - Choose letter for commands B and b ( there are few letters left ) **OK**
     - add letters to the help system **OK**
-    - decide number of errors (see below)
+    - decide number of each errors (see below) to give as parameter of the command **OK**
+    - create help force commande
 - create a new help cmd to stop WD set WD to 4mn and 15s (maximum) **OK**
     - merge it on devFirmware **OK**
-    - pb with git and devfirmware with a lowaer case f !!! **CORRECTED**
+    - pb with git and devfirmware with a lower case f !!! **CORRECTED**
 - rearrange help commande list in alphabetic order **OK**
     - merge it on devFirmware **OK**
 
@@ -426,6 +422,9 @@ Number of the error, as in the code::
     - int8_t CSysStatus::howManyError()
     - bool CSysStatus::isSystemok()
     - int8_t isThereFatalError()
+
+
+
 
 ====================================================================================================
 More object oriented rewriting (August 2020)

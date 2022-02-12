@@ -7,7 +7,7 @@
     #define H_HLP_MSG "<h> display this list in thematic order\n"
 
     //A
-    #define BB_HLP_MSG "<B0 to ?> B as bind un error to the system\n"
+    #define BB_HLP_MSG "<B0 to 10> B as bind un error to the system (11 errors)\n"
     #define CC_HLP_MSG "<C> Check DS3231 date\n"
     #define DD_HLP_MSG "<D> SPIFFS dir\n"   
     #define EE_HLP_MSG "<E> display code status\n"
@@ -35,7 +35,7 @@
     
     
     #define A_HLP_MSG "<a> for Ip address\n"  
-    #define B_HLP_MSG "<b0 to ? unbind error to the system\n"
+    #define B_HLP_MSG "<b0 to x unbind error to the system\n x : see B command\n"
     #define C_HLP_MSG "<c> I2C crash\n"    
     #define D_HLP_MSG "<d _filename> erase a file WARNING\n"
     #define E_HLP_MSG "<e> display system status\n"
