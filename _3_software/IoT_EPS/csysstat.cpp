@@ -164,4 +164,14 @@ String CSysStatus::getMsg( int8_t n){
 
 }
 
+bool CSysStatus::isTimeToSwitchColorLed(){
+    bool retVal = false;
+
+    if ( millis() - _prevMillisForColorLed > COLOR_LED_ERROR_PERIOD ){
+        _prevMillisForColorLed = millis();
+        return true;
+    }
+    return retVal;
+}
+
 CSysStatus sysStatus;

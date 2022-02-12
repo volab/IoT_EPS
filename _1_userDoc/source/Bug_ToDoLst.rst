@@ -154,8 +154,6 @@ ToDo : clear all led at the beginning of setup()
 ------------------------------------------------------------------------------------------
 
 
-
-
 ToDo : oled display error
 ----------------------------------------------------------------------------------------------------
 
@@ -164,7 +162,7 @@ ToDo : oled display error
     :Cible:                 firmware
     :Status:                **OPEN**
     :Problematique:         roll through errors AND plugs mode not only on errors. 
-    :Traitement:            
+    :Traitement:            Use the lign AP to display Error
 
 ------------------------------------------------------------------------------------------
 

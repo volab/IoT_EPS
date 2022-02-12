@@ -58,6 +58,8 @@ there is 3 pull-up on the board.
 #define NBRPLUGS 4
 #define NUM_LEDS NBRPLUGS /**< for fastLED class */
 
+#define COLOR_LED_ERROR_PERIOD 300 //ms
+
 #define OLED_SHUTDOWN_MESSAGE "Shutdown Started !"
 
 #endif

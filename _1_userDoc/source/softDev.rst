@@ -386,6 +386,8 @@ When fatal error is risen, potentially there is no web (no user browser to displ
 Only bp and color led are direct connected to ESP8266. Relay commands are through nanoI2CIoExpander and 
 I2C bus
 
+Only the Serial line can work.
+
 .. WARNING:: **DECISION** 
    :class: without-title
 
@@ -395,11 +397,11 @@ I2C bus
 
 For ntp, wd and ap mode error display them on OLED cycling with normal display of plugs
 
-- create new help commande to force and clear error
+- create new help commande to force and clear error **OK**
     - Choose letter for commands B and b ( there are few letters left ) **OK**
     - add letters to the help system **OK**
     - decide number of each errors (see below) to give as parameter of the command **OK**
-    - create help force commande
+    - create help force commande **OK**
 - create a new help cmd to stop WD set WD to 4mn and 15s (maximum) **OK**
     - merge it on devFirmware **OK**
     - pb with git and devfirmware with a lower case f !!! **CORRECTED**
@@ -415,6 +417,18 @@ Number of the error, as in the code::
                     &ntpErr, &internetErr, &watchdogErr, &wifiSoftApErr };
 
         in csysstat.h
+
+    0 : file system
+    1 : nano
+    2 : rtc
+    3 : config file
+    4 : credential file
+    5 : Needed files
+    6 : plugs params
+    7 : ntp
+    8 : internet
+    9 : Watchdog
+    10 : soft app
 
 .. NOTE:: To Remember
    :class: without-title

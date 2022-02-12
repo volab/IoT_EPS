@@ -27,6 +27,7 @@ class sysError {
         bool _forceSystemStartOnFatalError; /**< @brief for debug purpose only, prevent system
         to blink big led and stay in this loop indefinitly        */
         errGravity_t getGravity(){ return _gravity; }
+        gColor_t getDisplayColor( bool c ){ return (c  ? _displayColor1 : _displayColor2 ); }
         
     private:
         bool _err = false;
@@ -102,10 +103,11 @@ class CSysStatus {
 
         String getMsg( int8_t n);
 
-
+        bool isTimeToSwitchColorLed();
        
     private:
         unsigned long _prevMillisCbit;
+        unsigned long _prevMillisForColorLed = 0;
         uint8_t _fatalErrorCpt = 0;
 };
 

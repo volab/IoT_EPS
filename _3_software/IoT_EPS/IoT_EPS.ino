@@ -360,6 +360,8 @@ bool cycleState = false;
 
 void loop(){
     static unsigned long prevMillis = millis();
+    static bool colorLedSwitchState = false;
+    static CRGB errorColor = CRGB::Black;  
 
     //CRtc rtc; // why a new local instance ?
     //Commented on 30/09/2020 to force global variable rtc usage on top of this file
@@ -447,6 +449,7 @@ void loop(){
     //  watchdog refresh                                                       //
     /////////////////////////////////////////////////////////////////////////////
     // if ( watchdog.isItTimeTo() ) {
+    // try to refresh event if a fatal error is risen
     if ( watchdog.isItTimeTo() && !sysStatus.watchdogErr.isErr() ) {
         //DSPL( dPrompt + F("TimeToRefresh wd") ) ;
         watchdog.refresh();
@@ -456,6 +459,7 @@ void loop(){
     //  oled refresh display if necessary                                      //
     /////////////////////////////////////////////////////////////////////////////
 
+    // try to display event if there is a system error
     sysIoteps.oledLoopChangeDispayIf(); //even if there is fatal error try to display !
     
     /////////////////////////////////////////////////////////////////////////////
@@ -501,6 +505,30 @@ void loop(){
             nanoioExp.digitalWrite( MAINPOWLED, mainPowerSwitchState );
             restartTempoLed = false;
         }
+    }
+
+    if ( sysStatus.isThereFatalError () ){        
+        if ( sysStatus.isTimeToSwitchColorLed() ){
+            // DSPL( dPrompt + F("Fatal Error switch led"));
+            errorColor = CRGB::Brown;
+            int err = 0;
+            //find first fatal error
+            for ( err = 0; err < NBR_OF_SYSTEM_ERROR; err++ ){
+                sysError *tmpErr = sysStatus.sysErrorTable[err];
+                if ( tmpErr->isErr() && tmpErr->getGravity() == sysError::fatal ){
+                    break;
+                }
+            }
+            for ( int i = 0; i < NBRPLUGS ; i++ ){
+                colorLeds[i] =  sysStatus.sysErrorTable[err]->getDisplayColor( colorLedSwitchState );   
+            }   
+            colorLedSwitchState = !colorLedSwitchState;        
+        }
+        FastLED.show();
+    } else { //if no fatal error restaure LED color : in 99% of the time it is not necessary !
+        for ( int i = 0; i < NBRPLUGS ; i++ ){
+            colorLeds[i] =  plugs[i].getColor();  
+        } 
     }
     
     /////////////////////////////////////////////////////////////////////////////

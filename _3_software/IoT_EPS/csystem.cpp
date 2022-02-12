@@ -180,48 +180,45 @@ void CSystem::oledDisplaySate(){
     _pDisplay->setCursor(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_STATE);
     String message;
     DEFDPROMPT( "CSystem::oledDisplatState" )
-    if ( _psysStat->isSystemok() ){
+    // if ( _psysStat->isSystemok() ){
         // display one plug state
         // message = _pPlugs[_oledCptPlugToDisplay].getPlugName();
         // message += " mode ";
         // message += (String)_pPlugs[_oledCptPlugToDisplay++].getMode();
 
-        message = "Mode ";
-        message += (String)_pPlugs[_oledCptPlugToDisplay].getMode();
-        message += " : ";
-        message += _pPlugs[_oledCptPlugToDisplay].getPlugName();
+    message = "Mode ";
+    message += (String)_pPlugs[_oledCptPlugToDisplay].getMode();
+    message += " : ";
+    message += _pPlugs[_oledCptPlugToDisplay].getPlugName();
 
-        _oledDivSysState--; //to slow down the display speed
-        if ( _oledDivSysState == 0 ){
-            _oledDivSysState = (uint8_t)OLED_SYSTEM_STATE_DISPLAY_DIV;
-            _oledCptPlugToDisplay++;
-        }
-
-        if ( _oledCptPlugToDisplay >= _pcParam->getNumberOfPlugs() ){
-            _oledCptPlugToDisplay = 0;
-        }
-    } else { // if here _psysStat->howManyError() > 0
-        //dsiplay only one error in one cycle
-        if ( _oledCptErrToDisplay == 0 ) _oledCptErrToDisplay = _psysStat->howManyError();
-        message = _psysStat->getMsg( _oledCptErrToDisplay-- );
-
+    _oledDivSysState--; //to slow down the display speed
+    if ( _oledDivSysState == 0 ){
+        _oledDivSysState = (uint8_t)OLED_SYSTEM_STATE_DISPLAY_DIV;
+        _oledCptPlugToDisplay++;
     }
-    _pDisplay->println(message);
 
-    
+    if ( _oledCptPlugToDisplay >= _pcParam->getNumberOfPlugs() ){
+        _oledCptPlugToDisplay = 0;
+    }
+
+    _pDisplay->println(message);   
 }
+
 void CSystem::oledDisplayIps(){
     // _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_LAN_IPADD);
     _pDisplay->setCursor(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_LAN_IPADD);
     _pDisplay->println("LAN:" + WiFi.localIP().toString() );
     // _oledBlankLine(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_AP_IPADD);
     _pDisplay->setCursor(OLED_XPOS_STARTLIGN, OLED_YPOS_FOR_AP_IPADD);
-    if ( !_psysStat->wifiSoftApErr.isErr() ){
+    // if ( !_psysStat->wifiSoftApErr.isErr() ){
+    if ( _psysStat->isSystemok() ){
         _pDisplay->println(" AP:" + WiFi.softAPIP().toString() );
     } else {
-        _pDisplay->println(" AP:error" );
+        // _pDisplay->println(" AP:error" );
+        if ( _oledCptErrToDisplay == 0 ) _oledCptErrToDisplay = _psysStat->howManyError();
+        _pDisplay->println( _psysStat->getMsg( _oledCptErrToDisplay-- ) );
     }
-    
+   
      
 }
 
