@@ -127,6 +127,14 @@ transfered
 
 ####
 
+.. _3dLogoDesign:
+
+====================================================================================================
+3D printed Logo Desing
+====================================================================================================
+
+
+
 ====================================================================================================
 PCB bug BP2 and 3
 ====================================================================================================
@@ -137,9 +145,148 @@ PCB bug BP2 and 3
 
 BP2 should be on D4 and BP3 on D3 see `Input / output assignment`_
 
-.. WARNING:: Waiting for the new version of the pcb, I swith the 2 wire on H1 female connector
+.. WARNING:: Waiting for the new version of the pcb, I switch the 2 wires on H1 female connector
    :class: without-title
 
+
+.. _refRelayMainPowerSwitch:
+
+====================================================================================================
+Relais main power switching
+====================================================================================================
+
+IRF9530
+
+.. |aliasIRF1| image:: image/irf9530_sc.JPG
+
+|clearer|
+
+.. |aliasIRF2| image:: image/irf9530pinout.JPG 
+   :width: 400 px
+
+
+.. list-table::
+   :widths: 27 27 
+   :header-rows: 1
+
+   * - IRF9530 pinout
+     - Package
+
+   * - |aliasIRF1|
+     - |aliasIRF2|
+
+|clearer|
+
+.. figure:: image/highSideRefDesign.png
+    :width: 300 px
+    :figwidth: 100%
+    :align: center
+
+    High side switching 
+
+2N7000 : N-CHANEL MOS_FET Exist in SOT-23 package ref 2N7002 :download:`datasheet<fichiersJoints/2N7002.pdf>`
+
+
+Radiospares code : 671-0312 (0.30€/pcs by 20pcs)
+
+.. WARNING:: Commande RS du 12/3/2022 7082399 this is the only reference that it was available in 50pcs.
+   :class: without-title
+
+.. WARNING:: Litige TNT
+
+    file recorded on 26/3 : n° 8693043
+
+.. figure:: image/preuveDepotTntFaausse.jpg
+    :width: 300 px
+    :figwidth: 100%
+    :align: center
+
+    false prouf of deposit 
+
+   
+
+.. image:: image/sch2N7000.svg 
+   :width: 400 px
+
+.. figure:: image/iLYpg.png
+    :width: 300 px
+    :figwidth: 100%
+    :align: center
+
+    Another one 
+
+
+IRF9530 is too big replace it by a FDN340P in SOT-23 package 20V 2A
+
+FDN340 pinout :download:`datasheet<fichiersJoints/FDN340P-1007907.pdf>`
+
+
+.. image:: image/fdn340pinout.jpg 
+
+
+Main relais switch conclusion
+----------------------------------------------------------------------------------------------------
+::
+
+    Due to the direct main switch connection, there is no need of 2N7000 ! FDN340P is directly connected
+    to the main switch
+
+
+====================================================================================================
+USB 5V switching
+====================================================================================================
+Solution with mosfet
+----------------------------------------------------------------------------------------------------
+
+
+.. image:: image/unousb5vsch.JPG 
+   :width: 400 px
+
+
+.. figure:: image/espPowerschem.png
+    :width: 500 px
+    :figwidth: 100%
+    :align: center
+
+    ESP WEMOS D1 MINI power supply schem 
+
+**Above solution aborted**.
+
+With a Schotky diode
+----------------------------------------------------------------------------------------------------
+
+Schotky diode : B5817W 0.45V @ 1A
+
+A possible power supply will be a 5.5V `AC/DC converter from ebay like this one`_
+
+.. image:: image/miniAlmiAliExpress5V0.7A_size.JPG 
+   :width: 300 px
+
+
+.. _`AC/DC converter from ebay like this one` : https://www.ebay.com/itm/263722458020
+
+With this solution one schottky iss necessary for each line of powered : one for esp, one for Arduino
+Nano and not for attiny wathdog (it can work correctly up to 5.5V) 
+
+An another candidate: SS26
+
+SS26 tested Vd = 0.3V I=90mA with 1 channel actif.
+
+:download:`SS26 datasheet<fichiersJoints/ss22_26_datasheet.pdf>`
+
+
+
+ESP 5V = 
+mesured before diode 4.17V after 3.85v delta 0.32V
+
+Strange why 4.17V juste à AD/DC output there is 4.97V i forget the diode !!!!
+
+New measurement : at AC/DC converter : 4.97V,  at ESP5V input : 4.62V delta u : 0.35V
+
+with a 5.5V AC/DC will be output : 5.15V
+
+.. NOTE:: For ESP8266 it is no matter the real level of the 5V input because of the 3.3V embedded regulator
+   :class: without-title
 
 ====================
 Watchdog function
@@ -260,14 +407,14 @@ On the maquette there is an ATTiny programmed. It run perfectly @ 9600 bauds on 
 But when I program a new component with the design that site on my hard drive, I can't obtain a 
 functional one.
 
-The ATtniy programmed work @1200bds when I set 1MHz for ATTiny in ARDUINO IDE
+The ATtiny programmed work @1200bds when I set 1MHz for ATTiny in ARDUINO IDE
 
 I decide to conduct more test en check the size of the bit on serial. Short explain: in the design
 there is a special lib for serial that it is more lower than the official one but manually tuned.
 
-fisrt test : with the functional one (the master) check on oscillo the serial bit duration.
+First test : with the functional one (the master) check on oscillo the serial bit duration.
 
-bit size 102us (putty @9600 bd works perfectly)
+Bit size 102us (putty @9600 bd works perfectly)
 
 Test program with  8MHz as cpu clock in ADUINO IDE : Serial comm is at 1200 bauds but timer1s is about 6s duration !
 
@@ -281,7 +428,7 @@ With what tools ? Visual Atmel, AVRdude
 
 - avrdude : in ``C:\Program Files (x86)\Arduino\hardware\tools\avr\bin``
 
-Sonde::
+Probe::
 
     AVRMKII
     USBasp
@@ -306,10 +453,10 @@ Micro task:
 
 - install driver usbasp_pinning : necessary ? nothing in  "Le journal de manip" **OK**
 - wire it on a breadboard
--  componentread wrong
-    - read hex file composant
-    - read fuses 
-- read the right component
+- read wrong component **OK**
+    - read hex file composant **OK**
+    - read fuses **OK**
+- read the right component **OK**
 
 **avrdude and its conf file on e:** !!!!
 
@@ -317,9 +464,15 @@ avrdude command send by Arduino IDE to the ARDUINO as ISP::
 
     avrdude -v -pattiny85 -cstk500v1 -PCOM12 -b19200 -Uflash:r:TinyI2CWatchdog_nonFonctionnel.hex:i
 
-Command clean of the fullpath
+Above commands are cleaned of the fullpath
 
-First diff right component Lfuse = E2 wrong one Lfuse = 62 meaning thet right comp is clock at 8Mhz
+First diff right component Lfuse = E2 and wrong one Lfuse = 62 meaning that the right comp is clocked at 8Mhz
+
+After a lot of time spend on this expertise **I decide to stop it without solution** !
+
+I keep binary files from days the right component as a master to program others components !
+
+----------------------------------------------------------------------------------------------------
 
 MAX1232 integration (aborted)
 ----------------------------------------------------------------------------------------------------

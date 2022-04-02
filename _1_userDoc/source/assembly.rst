@@ -4,6 +4,7 @@ IoT Electrical Power Strip Assembly manual
 
 :Auteur: J.Soranzo
 :Date: December 2019
+:update: 09/03/2022
 :Societe: VoLAB
 :Entity: VoRoBoTics
 
@@ -11,7 +12,14 @@ IoT Electrical Power Strip Assembly manual
     :backlinks: top
 
 
+====================================================================================================
+Prepare relay board
+====================================================================================================
 
+joint command pin 2 by 2
+
+.. NOTE:: To be completed with pictures (09/03/2022)
+   :class: without-title
 
 ================================
 Solder components onto the board
@@ -21,10 +29,12 @@ Progressive assembly and test
 To check the board fonctionnality, we need all I2C components:
 
 - on the board:
+
   - ATtiny watch dog (programmed)
   - Nano I2C IO expander (programmed)
 
 - out of the board
+
   - RTC
   - oled screen (not absolutly necessary for test but very usefull)
 

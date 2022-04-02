@@ -3,5 +3,9 @@
 		{
 			"path": "."
 		}
-	]
+	],
+	"settings": {
+		"esbonio.sphinx.confDir": "${workspaceFolder}\\_1_userDoc\\source",
+		"esbonio.server.enabled": false
+	}
 }

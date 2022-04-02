@@ -7,6 +7,11 @@
 IoT_EPS's documentation!
 +++++++++++++++++++++++++++++++++++++++++++
 
+.. image:: image/logo/logo_projet.png
+   :width: 400 px
+   :align: right
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents

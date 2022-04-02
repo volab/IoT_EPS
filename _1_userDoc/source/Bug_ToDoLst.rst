@@ -40,6 +40,20 @@ Model Type
 ====================================================================================================
 Open bugs
 ====================================================================================================
+**BUG** :  
+----------------------------------------------------------------------------------------------------
+
+    :Date de saisie:    13/03/2022    
+    :Date de traitemant:    
+    :Cible:             firmware
+    :Status:            **OPEN**    
+    :Problem:           after a power off/power on plugs are in ON state. Opérations made with
+                        web browser in ap mode 
+                        
+                        
+    :Traitement:        In Main loop ligne 582 : if ( !mainPowerSwitchState) in this if there is no
+                        call to jsonData.storeJson(); and yield function wait for a restart !!!!
+
 
 **BUG** : Manual after cycle ON Hfin 
 ----------------------------------------------------------------------------------------------------

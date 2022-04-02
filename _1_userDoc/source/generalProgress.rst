@@ -18,47 +18,14 @@ Task list (merged todo list hard and soft : preferred order)
 ====================================================================================================
 Don't forget the todo list of the **doxygen documentation** and **git history**:
 
-- two of the 6 todo From Bug_ToDoLst file
-    - change behavior on fatal error
-        - analyze :  :ref:`see sofDev.rst<newErrorHandling2022>`
-        
-    - oled display error
+
+Logo
+----------------------------------------------------------------------------------------------------
+- add the 3Dprinted or CNC crafted logo see :ref:`here<3dLogoDesign>`
 
 
-- Error handling improvement (todo display low error with LED ? Which one : power led ?)
-  A lot of work : change behavior on fatal error : do not sabord system but enable debug only with serial
-  - switch to special branch : newErrorHandling **OK**
-
-- add the 3Dprinted or CNC crafted logo
-
-
-
-- Tracking bug ``untimely switching``
-    - reset all counter **OK**
-    - activate red and bleu cycle and manual off on yellow and green (never switch this 2 plugs) **OK**
-    - Check after long period of time if yellow and green counter stay at 0 
-
-- treat 5 BUG From Bug_ToDoLst file
-    - wrong global table refresh
-    - cfgpage / cfgsend : configuration page (see Bug_ToDOList.rst)
-    - clone pause
-    - untimely switching **10%**
-    - push button permuted on yellow and green
-
-
-- treat 6 TODO From Bug_ToDoLst file
-    - oled display error
-
-    - Pause display
-    - minify javascripts
-    - doxy HTML js
-    - file names coherence
-
-
-
-- complete testToBeConduted see :ref:`here<testToBeConducted>`
-    - exhaustive test of hebdo mode : **95%**
-- write index special page for softAP Mode with local boostrap or other light js.framework **5%**
+Doc
+----------------------------------------------------------------------------------------------------
 - Create an infographic that summarize features and needs 
     - choose tool
     - choose Size
@@ -69,12 +36,32 @@ Don't forget the todo list of the **doxygen documentation** and **git history**:
     - buy and groups components
     - oder pcb
 
+bugs and todos
+----------------------------------------------------------------------------------------------------
+- Tracking bug ``untimely switching``
+    - reset all counter **OK**
+    - activate red and bleu cycle and manual off on yellow and green (never switch this 2 plugs) **OK**
+    - Check after long period of time if yellow and green counter stay at 0 
+
+- treat 5 BUG From Bug_ToDoLst file
+    - wrong global table refresh
+    - cfgpage / cfgsend : configuration page (see Bug_ToDOList.rst)
+    - clone pause
+    - untimely switching **10%**
+    - push button permuted on yellow and green (hardware)
 
 
-- UML and classes documentation 10% - web and json **ABORTED**
+- treat 6 TODO From Bug_ToDoLst file
+    - Pause display
+    - minify javascripts
+    - doxy HTML js
+    - file names coherence
 
-
-
+Others task
+----------------------------------------------------------------------------------------------------
+- complete testToBeConduted see :ref:`here<testToBeConducted>`
+    - exhaustive test of hebdo mode : **95%**
+- write index special page for softAP Mode with local boostrap or other light js.framework **5%**
 
 
 - Minifier all files if possible of course and reduce the size of the images
@@ -84,7 +71,7 @@ Don't forget the todo list of the **doxygen documentation** and **git history**:
 
 - try gz files
 
-- improve json file managment **2 points need work**
+- improve json file management **2 points need work**
     - write process
         - test **ok**
             - environnement conda test **ok**
@@ -103,41 +90,8 @@ Don't forget the todo list of the **doxygen documentation** and **git history**:
 
 - packaging study
 - integration
-- replace relais by MOSFET on general power relay to switch them all in one time on power off
-    - choose components (irf530 and irf9530, 2x 10k resistor see personal notes public ``hardware/analog``) 
-        - IRF9530 : ok buy to mouser on 21 june  **OK**
-        - but no irf530 test with 2N7000  **OK**
-    - buy or find the components  **OK**
-    - store components in safe place : a box
-    - prototype this solution
-        - cut vero board
-        - solder components
-        - prepare test
-        - conduct the test
-    - integrate the solution into the plugs
-    - test it
-- solve the usb vs main 5v power on esp8266
-    - search and eval shottky diode solution (1N5820 has a typical vf of 0.5V its to high)
-    - aop and mos solution
-        - from the arduino model
-            - list component : LM358, FDN340P, 2x 10k
-            - buy or find components
-                - LM358 ok mouse cde OK
-                - FDN340P : **nok** MOSFET canal P 20V 2A SOT23 cdés sur AliExp arrivée prévue **Dec03**
-                - 2x 10k ok
-            - group and store components
-            - prototype it
-                - define the solution veroboard/pcb/cnc machining
-                - solder components
-                - prepare the test
-                - conduct the test
-            - IF it is the choosen solution add it to the schematic
-- new pcb
-    - add above solution
-    - replace through hole component by cms version every time it's possible
-    - brainstorm connector solutions: reduce the number of pins and best placement
-    - reroute pcb to reduce the size
-    - don't forget to switch D2 and D3 on U1
+
+
 
 
 
@@ -164,6 +118,94 @@ Task done (for memory)
 
     0044-Iot_ESP_PPlug/projet/_3_software/IoT_EPS/doc/logo_alpha2_reduced.png perdu !
 
+- UML and classes documentation 10% - web and json **ABORTED**
+
+- two of the 6 todo From Bug_ToDoLst file **CLOSED**
+    - change behavior on fatal error **CLOSED**
+        - analyze :  :ref:`see sofDev.rst<newErrorHandling2022>`
+        
+    - oled display error **CLOSED**
+
+
+- Error handling improvement (todo display low error with LED ? Which one : power led ?)
+  A lot of work : change behavior on fatal error : do not sabord system but enable debug only with serial
+  - switch to special branch : newErrorHandling **OK**
+
+New pcb
+----------------------------------------------------------------------------------------------------
+
+- solve the usb vs main 5v power on esp8266 **OK**
+    - search and eval shottky diode solution (1N5820 has a typical vf of 0.5V its to high) SS26 Solution **OK**
+    - aop and mos solution **ABORTED**
+        - from the arduino model
+            - list component : LM358, FDN340P, 2x 10k
+            - buy or find components
+                - LM358 **OK** Mouser cde **OK**
+                - FDN340P : MOSFET canal P 20V 2A SOT23 cdés sur AliExp arrivée prévue **OK**
+                    - store near the prototype on 13/02/2022 **OK**
+                - 2x 10k ok
+            - group and store components
+            - prototype it **OK**
+                - define the solution veroboard/pcb/cnc machining **OK**
+                - solder components **OK**
+                - prepare the test **OK**
+                - conduct the test **OK**
+            - IF it is the choosen solution add it to the schematic
+
+- replace relais by MOSFET on general power relay to switch them all in one time on power off **OK**                                                                                              
+    - choose components (irf530 and irf9530, 2x 10k resistor see personal notes public ``hardware/analog``) **OK**
+        - IRF9530 : ok buy to Mouser on 21 june  **OK**
+        - but no irf530 test with 2N7000  **OK**
+        - 2N7000 in SOT-23 to buy from RS **OK**
+            -  due to the end test and verification ther is no need but already asked from Radiospares **OK**
+    - buy or find the components **OK**
+        - buy 2N7000 from RS in sot23 package **OK**
+    - store components in safe place : a box  **OK**
+    - prototype this solution see :ref:`here<refRelayMainPowerSwitch>`  **OK**
+        - cut vero board **OK**
+        - solder components **OK**
+        - prepare test **OK**
+        - conduct the test **OK**
+    - integrate the solution into the plugs **OK**
+    - test it **OK**
+
+- new pcb **OK**
+
+    - in the schematics **OK**
+        - add above solutions **OK**
+            - SS26 **OK**
+            - FDN30P **OK**
+        - replace through hole component by cms version every time it's possible **OK**
+            - Q1 to Q4 2N7000 in SOT-23 **OK**
+            - R1 to R12 in R0805 **OK**
+            - move R5 to R8 on hot wire to reduce pin count **OK**
+            - J1 remove 6 pins **OK**
+            - P5 LED remove 3 pins **OK**
+        - don't forget to switch D4 and D3 on U1 **OK**
+        - rtc connector reduce 2 pin **OK**
+        - group wifi led and power led on same connector and place R on signal and a common gnd **OK**
+  
+    - On the place and route stage **OK**
+        - brainstorm connector solutions: reduce the number of pins and best placement **OK**
+            - no connector near the lower edge of the board (minimum distance 10mm) **OK**
+            - no connector near the upper edge of the board (minimum 8mm min) **OK**
+            - prefered position for connector on right edge **OK**
+            - at left edge no connector and no other hight components below main switch (on a 16mm 
+              place of the pcb) **OK**
+            - rtc connector on upper right **OK**
+            - P7 mainpowswitch connector : on left side **OK**
+            - P6 special PB : on upper side **OK**
+            - J1 relays commands connector : on right side **OK**
+            - perhaps turn right side connector in horizontal position **NO**
+            - keep ARDUINO and ESP @ same place.  **OK**
+            - no hight component near the edges of the PCB **OK**
+            - double check the size of the footprint of SS26 **OK**
+            - check the size of the footprint of FDN340P Q5 **OK**
+            - check pinout of FDN340P **OK**
+            - check footprint of the 2N7002 same size as Q5 **OK**
+            - One unrouted 5V on 5V Transistor corrected **OK**
+
+    - reroute pcb to reduce the size **OK**
 
 ====================================================================================================
 General
@@ -174,7 +216,7 @@ But with the help of tortoise git to configure **CORRECTED**
 ====================================================================================================
 PCB equipment
 ====================================================================================================
-Equiped and tested in may/2021
+Version 1 : Equipped and tested in may/2021
 
 .. ATTENTION::
 

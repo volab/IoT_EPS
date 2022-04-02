@@ -234,7 +234,8 @@ Another example::
 
 .. _`Web server with esp8266 and esp32` : https://www.mischianti.org/2020/11/02/web-server-with-esp8266-and-esp32-multi-purpose-generic-web-server-3/
 
-
+Above solution work nicely and implemented on january 2022. It speed up the response of the web 
+browser !
 
 ====================================================================================================
 Watchdog bug 
