@@ -923,6 +923,9 @@ Second : set cycle mode ON/OFF 1mn/1mn
 
 Wait plug switch off and set manual mode to ON, it stay dureeoff = 1 mn
 
+.. image:: image/setcycleOnOff1mn_valueNotReseted.jpg 
+
+
 In the file dureeOn and dureeOff are not reseted::
 
     "bluePlug": {
@@ -962,6 +965,160 @@ See in cpowerplug.cpp line 376::
 If dureeOff is not valid in the html request we need to set it to 0 !
 
 branch : bugDureeOnOffReset
+
+.. _refCorBugMainPowerOff:
+
+====================================================================================================
+Bug Main PowerOff
+====================================================================================================
+Bug reproduction :
+
+set plug with webbrowser to different states and switch off with the main power switch. Wait for 
+sutdown cycle. Switch main power switch to ON, wait for start. See the json file. Cut the power with
+the main plug not with the switch and reconnect you sould see the plug in theirs previous state.
+
+This suggest one more bug : when main power switch is set to On the json file is not read !
+
+::
+
+    {
+        "jsonTag": "IoTEps",
+        "general": {
+            "emplacement": "salon",
+            "numberOfPlugs": "4",
+            "allLedsOnTime": "-1",
+            "ledsGlobalLuminosity": "5",
+            "powerLedEconomyMode": "OFF",
+            "firstBoot": "OFF",
+            "hostName": "PowerStrip01",
+            "startInAPMode": "OFF",
+            "softAP_IP": "192.168.95.42",
+            "softAP_port": "80",
+            "dhcp_mode": "ON",
+            "staIP": "192.168.1.5",
+            "staGateway": "192.168.1.254",
+            "macAdd": "11:22:33:44:55:66",
+            "softAP_macAdd": "11:22:33:44:55:66",
+            "STAmaxWifiConnectionRetry": "30",
+            "ntpError": "OFF"
+        },
+        "redPlug": {
+            "nickName": "",
+            "State": "OFF",
+            "Pause": "OFF",
+            "Mode": "Cyclique",
+            "hDebut": "",
+            "hFin": "",
+            "dureeOn": "2",
+            "dureeOff": "3",
+            "Jours": [
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF"
+            ],
+            "clonedPlug": "",
+            "onOffCount": "1666",
+            "nextTimeToSwitch": "1649541267"
+        },
+        "greenPlug": {
+            "nickName": "",
+            "State": "ON",
+            "Pause": "OFF",
+            "Mode": "Manuel",
+            "hDebut": "",
+            "hFin": "",
+            "dureeOn": "",
+            "dureeOff": "",
+            "Jours": [
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF"
+            ],
+            "clonedPlug": "",
+            "onOffCount": "23",
+            "nextTimeToSwitch": "0"
+        },
+        "bluePlug": {
+            "nickName": "",
+            "State": "OFF",
+            "Pause": "OFF",
+            "Mode": "Manuel",
+            "hDebut": "",
+            "hFin": "",
+            "dureeOn": "",
+            "dureeOff": "",
+            "Jours": [
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF"
+            ],
+            "clonedPlug": "",
+            "onOffCount": "1968",
+            "nextTimeToSwitch": "0"
+        },
+        "yellowPlug": {
+            "nickName": "",
+            "State": "ON",
+            "Pause": "OFF",
+            "Mode": "Manuel",
+            "hDebut": "",
+            "hFin": "",
+            "dureeOn": "",
+            "dureeOff": "",
+            "Jours": [
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF",
+            "OFF"
+            ],
+            "clonedPlug": "",
+            "onOffCount": "14",
+            "nextTimeToSwitch": "0"
+        },
+        "jsonVersion": "v5.1"
+    }
+
+
+See in main loop around line 582
+
+.. code:: cpp
+
+    if ( !mainPowerSwitchState) { //main power switch change state
+        DSPL( dPrompt + F("main power switched OFF and all plugs return in manual state.") );
+        for ( int i = 0; i < NBRPLUGS ; i++ ){
+            plugs[i].off();
+            plugs[i].handleBpLongClic(); // to set all plug in manual state
+            plugs[i].setMainPow( false );
+            colorLeds[i] = CRGB::Black;
+        }            
+        FastLED.show();
+        wifiLed.low();
+        //watchdog.enableRefresh( false ); //doesn't work crash json file
+        sysIoteps.oledDsiplayShutDown();
+        watchdog.setTimeout( 2 );
+        while( 1 )yield(); //another way to stop AtinyWD refresh.
+        //ESP.restart();
+    }
+
+
+in this portion of code there is no call to a function to save data in the json file
+
+Just added on line : ``jsonData.storeJson();``
 
 ===============================
 Usefull Documentation

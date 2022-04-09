@@ -40,43 +40,33 @@ Model Type
 ====================================================================================================
 Open bugs
 ====================================================================================================
-**BUG** :  
+**BUG** :  Bug Main PowerOff
 ----------------------------------------------------------------------------------------------------
 
     :Date de saisie:    13/03/2022    
-    :Date de traitemant:    
+    :Date de traitement:    start on 9/4/2022 see :ref:`here<refCorBugMainPowerOff>`
+    
     :Cible:             firmware
-    :Status:            **OPEN**    
+    :Status:            [CLOSED]   
     :Problem:           after a power off/power on plugs are in ON state. Opérations made with
                         web browser in ap mode 
                         
                         
     :Traitement:        In Main loop ligne 582 : if ( !mainPowerSwitchState) in this if there is no
                         call to jsonData.storeJson(); and yield function wait for a restart !!!!
+                        One lien added !
 
 
-**BUG** : Manual after cycle ON Hfin 
-----------------------------------------------------------------------------------------------------
-
-    :Date de saisie:    22/01/2022    
-    :Date de traitemant:    start on 09/04/2022 see :ref:`here<refBugCorrectionManualCycleHfin>`
-    
-    :Cible:             firmware
-    :Status:            **OPEN**    
-    :Problematique:     Set manual mode ON after a cycle mode Hfin param not set to 0 or the right 
-                        value
-                        
-    :Traitement:        
 
 
 **BUG** : untimely switching
 ----------------------------------------------------------------------------------------------------
 
     :Date de saisie:    18/01/2022    
-    :Date de traitemant:    
+    :Date de traitement:    
     :Cible:             firmware
     :Status:            **OPEN**    
-    :Problematique:     during a long test blue plug cycle on/off 3mn sudenly yellow and green 
+    :Problématique:     during a long test blue plug cycle on/off 3mn sudenly yellow and green 
                         switch on but in JSON there are in manual off state
     :Traitement:        Le touche F5 n'est pas une solution, renvoie également la dernière commande !
                         
@@ -291,7 +281,7 @@ Closed bug
     :Date de saisie:    08/01/2022    
     :Date de traitemant: 15/01/2022
     :Cible:             firmware
-    :Status:            [CLOSED<<<<)>>>>   
+    :Status:            [closed]   
     :Problematique:     after somme tests values of all counter are very stranges. only those in the configFile3
                         seams to be right. I don't know exactly when.
     :Traitement:        git branch "bug_on_off_count"
@@ -309,7 +299,7 @@ Closed bug
     :Date de saisie:        21/08/21
     :Date de traitemant:    16/10/21
     :Cible:                 firmware
-    :Status:                closed
+    :Status:                [closed]
     :Problematique:         /cfgpage : faile to load json param!
     :Traitement:
     
@@ -325,7 +315,7 @@ Closed bug
     :Date de saisie:        210627      
     :Date de traitemant:    210630
     :Cible:                 firmware
-    :Status:                closed
+    :Status:                [closed]
     :Problematique:         Soft AP fails
     :Traitement:            Set Arduino IDE/ESP in Wifi debug mode has correct the problem !!!
 
@@ -362,6 +352,20 @@ Closed bug
 
 ----------------------------------------------------------------------------------------------------
 
+**BUG** : Manual after cycle ON Hfin 
+----------------------------------------------------------------------------------------------------
+
+    :Date de saisie:    22/01/2022    
+    :Date de traitemant:    start on 09/04/2022 see :ref:`here<refBugCorrectionManualCycleHfin>`
+    
+    :Cible:             firmware
+    :Status:            [CLOSED]   
+    :Problematique:     Set manual mode ON after a cycle mode Hfin param not set to 0 or the right 
+                        value
+                        
+    :Traitement:        in ``void CPowerPlug::handleHtmlReq( String allRecParam )`` 
+
+----------------------------------------------------------------------------------------------------
 
 ====================================================================================================
 Closed todo
