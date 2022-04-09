@@ -356,6 +356,11 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
         DSPL( dPrompt + F("Manual mode actions ") );
         //manual mode parameters :
         //State
+        _nextTimeToSwitch = 0;
+        _hFin.setValue( "" );
+        _hDebut.setValue("");
+        _dureeOn.setValue("");
+        _dureeOff.setValue("");
         if ( mode != prevMode ) bp.acquit(); //to reset previously memorised pushed bp
         param = JSON_PARAMNAME_STATE;
         state = CServerWeb::extractParamFromHtmlReq( allRecParam, param );
@@ -379,8 +384,10 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
 
                     _dureeOff.setValue( dureeOff.getStringVal() );
                     _nextTimeToSwitch = dureeOff.computeNextTime();
-                    _jsonWriteRequest = true;
-                } else _jsonWriteRequest = true;
+                } else {
+                    _dureeOff.setValue("");
+                } 
+                _jsonWriteRequest = true;
                 /////////////////////////////////////////////////////////////////////////////
                 //    Compute MANUAL MODE  : hFin                                          //
                 /////////////////////////////////////////////////////////////////////////////
@@ -402,6 +409,7 @@ void CPowerPlug::handleHtmlReq( String allRecParam ){
             }else { //state == "OFF"
                 _nextTimeToSwitch = 0;
                 _hFin.setValue( "" );
+                _hDebut.setValue("");
                 _dureeOn.setValue("");
                 _dureeOff.setValue("");
                 _jsonWriteRequest = true;

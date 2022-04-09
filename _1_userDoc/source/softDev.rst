@@ -961,6 +961,8 @@ See in cpowerplug.cpp line 376::
 
 If dureeOff is not valid in the html request we need to set it to 0 !
 
+branch : bugDureeOnOffReset
+
 ===============================
 Usefull Documentation
 ===============================
