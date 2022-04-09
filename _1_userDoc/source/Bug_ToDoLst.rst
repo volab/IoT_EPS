@@ -59,7 +59,8 @@ Open bugs
 ----------------------------------------------------------------------------------------------------
 
     :Date de saisie:    22/01/2022    
-    :Date de traitemant:    
+    :Date de traitemant:    start on 09/04/2022 see :ref:`here<refBugCorrectionManualCycleHfin>`
+    
     :Cible:             firmware
     :Status:            **OPEN**    
     :Problematique:     Set manual mode ON after a cycle mode Hfin param not set to 0 or the right 

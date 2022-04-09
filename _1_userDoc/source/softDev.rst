@@ -907,6 +907,60 @@ last update : 05/05/2021
  
 .. _`nanoI2CIOExpLib` : https://www.hackster.io/MajorLeeDuVoLAB/nano-i2c-io-expander-3e76fc
 
+.. _refBugCorrectionManualCycleHfin:
+
+====================================================================================================
+Bug Manual after cycle ON Hfin correction
+====================================================================================================
+bug reproduction:
+
+First try to reproduct the bug : plug is in cycle mode ON with the web interface set the plug to 
+manual mode off and cut power (not switch off but cut the power brutaly). Right behavior !
+
+Second : set cycle mode ON/OFF 1mn/1mn
+
+.. image:: image/setcycleOnOff1mn.jpg
+
+Wait plug switch off and set manual mode to ON, it stay dureeoff = 1 mn
+
+In the file dureeOn and dureeOff are not reseted::
+
+    "bluePlug": {
+        "nickName": "",
+        "State": "ON",
+        "Pause": "OFF",
+        "Mode": "Manuel",
+        "hDebut": "",
+        "hFin": "",
+        "dureeOn": "1",
+        "dureeOff": "1",
+        "Jours": [
+        "OFF",
+        "OFF",
+        "OFF",
+        "OFF",
+        "OFF",
+        "OFF",
+        "OFF"
+        ],
+        "clonedPlug": "",
+        "onOffCount": "1963",
+        "nextTimeToSwitch": "0"
+    },
+
+See in cpowerplug.cpp line 376::
+
+    if (dureeOff.isValid){
+        DSPL( dPrompt + _plugName + " : extracted dureeoff in seconds = " + \
+            (String)dureeOff.getSeconds() );
+
+        _dureeOff.setValue( dureeOff.getStringVal() );
+        _nextTimeToSwitch = dureeOff.computeNextTime();
+        _jsonWriteRequest = true;
+    } else _jsonWriteRequest = true;
+
+If dureeOff is not valid in the html request we need to set it to 0 !
+
 ===============================
 Usefull Documentation
 ===============================

@@ -22,10 +22,20 @@ Don't forget the todo list of the **doxygen documentation** and **git history**:
 Logo
 ----------------------------------------------------------------------------------------------------
 - add the 3Dprinted or CNC crafted logo see :ref:`here<3dLogoDesign>`
+    - design **OK**
+    - print
+    - paint
+    - glue in place
+
+
 
 
 Doc
 ----------------------------------------------------------------------------------------------------
+- active github pages for the project
+    - upload documentation on github pages
+    - create page on the volab wiki
+
 - Create an infographic that summarize features and needs 
     - choose tool
     - choose Size
