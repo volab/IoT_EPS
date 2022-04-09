@@ -130,10 +130,28 @@ transfered
 .. _3dLogoDesign:
 
 ====================================================================================================
-3D printed Logo Desing
+3D printed Logo Design
 ====================================================================================================
+On Inkscape
 
+.. image:: image/logo/logo_projet.png
+   :width: 600 px
 
+Final width goal : 32mm 
+
+Some notes:
+
+in Inskape choose right dimension and place on 0.0 0.0
+
+In Freecad : 
+
+#. separate the design in multiple svg files
+#. direct in root of the new doc import svg
+#. in part (not partdesign) union of the imported splines
+#. in draft from curve to sketch
+#. in part protusion
+
+A lots of try with multiple comme and go between Freecad and Inkscape !
 
 ====================================================================================================
 PCB bug BP2 and 3
