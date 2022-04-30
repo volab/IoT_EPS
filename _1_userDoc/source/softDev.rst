@@ -977,7 +977,8 @@ set plug with webbrowser to different states and switch off with the main power 
 sutdown cycle. Switch main power switch to ON, wait for start. See the json file. Cut the power with
 the main plug not with the switch and reconnect you sould see the plug in theirs previous state.
 
-This suggest one more bug : when main power switch is set to On the json file is not read !
+This suggest one more bug : when main power switch is set to On the json file is not read ! Not realy
+if all plugs are in OFF state in the file there are off in real world.
 
 ::
 

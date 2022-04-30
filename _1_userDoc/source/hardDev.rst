@@ -123,7 +123,8 @@ Terminated
 In progress
 ----------------------------------------------------------------------------------------------------
 
-transfered
+Transferred to :ref:`main todo list<mainTodoList>`
+
 
 ####
 
@@ -835,15 +836,15 @@ ACS70331
 Current Sensing Aborted
 ----------------------------------------------------------------------------------------------------
 For now, we abort the idea of sensing the curent in each chanel of the IoT EPS because we can't find
-a goog solution that match the main criteria:
+a good solution that match the main criteria:
 
 - ability to measure low and high current from 0.01A to 10A True RMS on AC240V suply without neutral
   reference.
 
-So we decide to go on the rest of the project without this feature but we keep it in mind.
+So we decide to continue the rest of the project without this feature but we keep it in mind.
 
 For remembering, current measurment covers 2  needs:
-#. check if the 2 relais on one channel have swtich correctly
+#. check if the 2 relais on one channel have switched correctly
 #. provide power consumption to the user
 
 For the first one we can measure voltage with a module like this :
@@ -1137,6 +1138,19 @@ Tools : `EasyEDA.com`_
 .. _`EasyEDA.com` : https://easyeda.com/editor#id=69115a0a3c0e4fc9a7f6cf54611fa6d4|2b73c76a246e4b2a8ebcf58152a8890c
 
 :download:`Schéma<../../_4_PCB/easyeda/Schematic_IoT Electrical Power Strip_Sheet_1_20200208225752.pdf>`
+
+
+.. _refDetect220VPres:
+
+====================================================================================================
+Easy check 220V presence
+====================================================================================================
+
+With a SFH6206 see `How can I detect a power outage with a microcontroller?`_
+
+This technique générate an high to low when ac cross the zero. 
+
+An other possibility mentionned in this article will be MID400.
 
 
 

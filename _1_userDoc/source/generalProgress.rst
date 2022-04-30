@@ -23,11 +23,25 @@ Logo
 ----------------------------------------------------------------------------------------------------
 - add the 3Dprinted or CNC crafted logo see :ref:`here<3dLogoDesign>`
     - design **OK**
-    - print
+    - print V2
     - paint
+        - fill cavities with paint
+        - scratch excess of paint
     - glue in place
 
-
+New PCB
+----------------------------------------------------------------------------------------------------
+- print schematic from easyEda site **OK**
+- edit BOM **OK**
+- group components **OK**
+- solder components **OK**
+- Programme watch dog component
+- use ESP and nano from old pcb
+- test it
+- integrate in the plug
+    - question a new plug or the old one adapted ? old not enought time for a new plug **OK**
+    - for a new plug buy plugs
+    - 
 
 
 Doc
@@ -51,7 +65,39 @@ bugs and todos
 - Tracking bug ``untimely switching``
     - reset all counter **OK**
     - activate red and bleu cycle and manual off on yellow and green (never switch this 2 plugs) **OK**
-    - Check after long period of time if yellow and green counter stay at 0 
+    - Check after long period of time if yellow and green counter stay at 0
+    - prepare only 2 220V tracker for not in used plugs ( yellow and green for example)
+        - it is possible to connect them outside the box directly on power plugs
+        - group components
+            - list components see here :ref:`here<refDetect220VPres>`
+        - build it
+        - test it
+        - connect to the plugs
+        
+    - switch to a **special software git branch**
+        - perhaps remove some debug messages...
+        - add function to read the 2 surveyed analog inputs from io expander
+            - test it
+        - add a new survey functionality in main loop
+        - if this 2 plugs switch to ON 
+            - send on serial debug ALERT message
+            - display this 2 plugs states variables
+            - display json file content
+    - conduct long test
+        - place the 2 unused plugs in manual off states
+        - place the 2 others plugs in cycle mode
+            - one with 1 mn on 2 mn off : 3mn total cycle
+            - the others with 4 mn on 3 mn off : 7 mn total cycle
+        - record debug serial line
+        - find the right serial tool to do this job
+    - find the cause
+        - possible i2c wrong command to io expander
+        - io expander bug
+        - json file corruption : check json file content in the logs
+        - wrong data write in json file : check plug states in th logs
+
+
+
 
 - treat 5 BUG From Bug_ToDoLst file
     - wrong global table refresh
@@ -231,6 +277,8 @@ Version 1 : Equipped and tested in may/2021
 .. ATTENTION::
 
     Warning for test WD is not connected
+
+Version 2: equiped on 18/04/2022
 
 ====================================================================================================
 IHM
