@@ -643,6 +643,10 @@ NTP server configuration ? not configurable for now only in IoT_EPS.h
 
 RTC on error strategy, No RTC component
 
+
+.. index::
+    pair: Adresses;  I2C
+
 ====================================================================================================
 I2C address
 ====================================================================================================

@@ -307,6 +307,10 @@ with a 5.5V AC/DC will be output : 5.15V
 .. NOTE:: For ESP8266 it is no matter the real level of the 5V input because of the 3.3V embedded regulator
    :class: without-title
 
+
+.. index::
+    single: Watchdog; Présentation
+
 ====================
 Watchdog function
 ====================
@@ -417,6 +421,9 @@ Only for my eyes the code sits in ::
     0044-Iot_ESP_PPlug\projet\_3_software\etudeDeCode (not pushed in github).
 
 
+.. index::
+    single: Watchdog; Problème
+
 ATTiny watchdog expertise
 ----------------------------------------------------------------------------------------------------
 Date: 20/11/2021: I can't reproduce watchdog component with the data that I have.
@@ -477,7 +484,10 @@ Micro task:
     - read fuses **OK**
 - read the right component **OK**
 
-**avrdude and its conf file on e:** !!!!
+**avrdude and its conf file on E:\avrdude** !!!! Otherwise it reports errors:: 
+
+    avrdude: can't open config file "": Invalid argument
+    avrdude: error reading system wide configuration file ""
 
 avrdude command send by Arduino IDE to the ARDUINO as ISP::
 
@@ -489,7 +499,132 @@ First diff right component Lfuse = E2 and wrong one Lfuse = 62 meaning that the 
 
 After a lot of time spend on this expertise **I decide to stop it without solution** !
 
-I keep binary files from days the right component as a master to program others components !
+I keep binary files from the right component as a master to program others components !
+
+.. index::
+    single: Watchdog; Program from bin files
+
+.. _refWatchdogProg:
+
+Program Attiny85 from binary files
+----------------------------------------------------------------------------------------------------
+Use ARDUINO as ISP as in the Heliox video see her above. The wiring diagram is a 2:11 in the video.
+
+And after this preparation, we can program component directly with avrdude in command line.
+Without ARDUINO IDE. There is only one constraint: the avrdude.conf file need to resid in the same
+directory than our .hex master file.
+
+read fuse with avrdude::
+
+    
+    avrdude -v -pattiny85 -cstk500v1 -PCOM16 -b19200 -U lfuse:r:-:i
+
+    -U <memtype>:r|w|v:<filename>[:format]
+                                Memory operation specification.
+                                Multiple -U options are allowed, each request
+                                is performed in the order specified.
+
+    v for verification
+    memtype : lfuse, efuse, hfuse, signature, flash, eeprom
+    format: i for intel hex there is a lots of other formats
+
+https://www.nongnu.org/avrdude/user-manual/avrdude_3.html#Option-Descriptions
+
+above commnd produce::
+
+    avrdude: Version 6.3-20171130
+            Copyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/
+            Copyright (c) 2007-2014 Joerg Wunsch
+
+            System wide configuration file is "C:\Users\jojo\Documents\jojoBag\perso\0044-Iot_ESP_PPlug\projet\_3_software\ESPEasySlaves\avrdude.conf"
+
+            Using Port                    : COM16
+            Using Programmer              : stk500v1
+            Overriding Baud Rate          : 19200
+            AVR Part                      : ATtiny85
+            Chip Erase delay              : 400000 us
+            PAGEL                         : P00
+            BS2                           : P00
+            RESET disposition             : possible i/o
+            RETRY pulse                   : SCK
+            serial program mode           : yes
+            parallel program mode         : yes
+            Timeout                       : 200
+            StabDelay                     : 100
+            CmdexeDelay                   : 25
+            SyncLoops                     : 32
+            ByteDelay                     : 0
+            PollIndex                     : 3
+            PollValue                     : 0x53
+            Memory Detail                 :
+
+                                    Block Poll               Page                       Polled
+            Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+            ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+            eeprom        65    12     4    0 no        512    4      0  4000  4500 0xff 0xff
+            flash         65     6    32    0 yes      8192   64    128 30000 30000 0xff 0xff
+            signature      0     0     0    0 no          3    0      0     0     0 0x00 0x00
+            lock           0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+            lfuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+            hfuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+            efuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+            calibration    0     0     0    0 no          1    0      0     0     0 0x00 0x00
+
+            Programmer Type : STK500
+            Description     : Atmel STK500 Version 1.x firmware
+            Hardware Version: 2
+            Firmware Version: 1.18
+            Topcard         : Unknown
+            Vtarget         : 0.0 V
+            Varef           : 0.0 V
+            Oscillator      : Off
+            SCK period      : 0.1 us
+
+    avrdude: AVR device initialized and ready to accept instructions
+
+    Reading | ################################################## | 100% 0.04s
+
+    avrdude: Device signature = 0x1e930b (probably t85)
+    avrdude: safemode: lfuse reads as E2
+    avrdude: safemode: hfuse reads as DF
+    avrdude: safemode: efuse reads as FF
+    avrdude: reading lfuse memory:
+
+    Reading | ################################################## | 100% 0.01s
+
+    avrdude: writing output file "<stdout>"
+    :01000000E21D
+    :00000001FF
+
+    avrdude: safemode: lfuse reads as E2
+    avrdude: safemode: hfuse reads as DF
+    avrdude: safemode: efuse reads as FF
+    avrdude: safemode: Fuses OK (E:FF, H:DF, L:E2)
+
+    avrdude done.  Thank you.
+
+Fuse for a clean component::
+
+    avrdude: safemode: lfuse reads as 62
+    avrdude: safemode: hfuse reads as DF
+    avrdude: safemode: efuse reads as FF
+    avrdude: safemode: Fuses OK (E:FF, H:DF, L:62)
+
+For right comp::
+
+    avrdude: safemode: lfuse reads as E2
+    avrdude: safemode: hfuse reads as DF
+    avrdude: safemode: efuse reads as FF
+    avrdude: safemode: Fuses OK (E:FF, H:DF, L:E2)
+
+Command to write lfuse::
+
+    avrdude -v -pattiny85 -cstk500v1 -PCOM16 -b19200 -U lfuse:w:0xE2:m
+    note m format as ``immediate mode; actual byte values specified on the command line``
+
+Command to write binary file::
+
+    avrdude -v -pattiny85 -cstk500v1 -PCOM7 -b19200 -U flash:w:TinyI2CWatchdog_rightComponent211127_2223.hex:i   
 
 ----------------------------------------------------------------------------------------------------
 
@@ -1152,7 +1287,18 @@ This technique générate an high to low when ac cross the zero.
 
 An other possibility mentionned in this article will be MID400.
 
+I have SFH620A-2. :download:`datasheet of the component<fichiersJoints/sfh620a.pdf>`
 
+
+Protection resistor calculations:
+
+If = +/-60mA Vf = 1.25V
+
+Collector curent : 50mA
+
+Check Resistor power dissipation
+
+Check Resitor breakdown voltage
 
 =============
 Weblinks

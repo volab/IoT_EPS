@@ -23,9 +23,11 @@ Logo
 ----------------------------------------------------------------------------------------------------
 - add the 3Dprinted or CNC crafted logo see :ref:`here<3dLogoDesign>`
     - design **OK**
-    - print V2
+    - print V2 logo004.stl
+        - x130% in Chitubox **OK**
+        - 6.18ml of resin 0h48 to print **OK**
     - paint
-        - fill cavities with paint
+        - fill cavities with paint **OK**
         - scratch excess of paint
     - glue in place
 
@@ -36,12 +38,37 @@ New PCB
 - group components **OK**
 - solder components **OK**
 - Programme watch dog component
-- use ESP and nano from old pcb
+    - solder a new one on adaptator board with small pin **OK**
+    - programm it with avrdude commands see :ref:`here<refWatchdogProg>` **OK**
+    - test it
+- use ESP, watchdog and nano from old pcb **NO**
+    - reprogram attiny 85 WD **OK**
+        - and test it **OK**
+    - reprogram new esp8266
+        - upload data **OK**
+    - reprogram new arduino nano **OK**
+    - test it
+        - I2C acces to reg(9) of nano IO expander !
+        - I2C pull-up ? Probably on DS3231 board
+        - I2C scan return the right adress 0X58 ! **OK**
+        - try with rtc connected **OK**
+            - returned add are ok **OK**
+    - write a special program to test specifically communication with the nano
+    - 
 - test it
 - integrate in the plug
     - question a new plug or the old one adapted ? old not enought time for a new plug **OK**
-    - for a new plug buy plugs
-    - 
+    - make modification to pass from old pcb to new pcb
+        - PBHEADER : no change (perhaps PB2 PB2 switched)
+        - ONOFF HEADER : **no change**
+        - SPECIAL BP : **no change**
+        - WIFI AND POW LED : groupe on the same connector 
+        - I2C HEADER : **no change**
+        - change relay connector from 10 pin to 6
+        - RTC HEADER : *no change*
+        - 4COLOR LED HEADER : *no change*
+    - for a new plug : buy plugs
+
 
 
 Doc
@@ -59,6 +86,9 @@ Doc
     - mechanical parts
     - buy and groups components
     - oder pcb
+    - ARDUINO NANO programming
+        - write where to find the precious code ! from github
+        - choose ARDUINO NANO old boot, set com port and download
 
 bugs and todos
 ----------------------------------------------------------------------------------------------------
