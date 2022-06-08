@@ -1287,12 +1287,12 @@ modification to pass from old pcb to new pcb (v2):
     - RTC HEADER : *no change*
     - 4COLOR LED HEADER : *no change* 
     - WIFI AND POW LED : groupe on the same connector
-        - 1 : 
+        - 1 = 
     - red LEDHEADER : from 8 to 5 **OK**
-        - pin are in the same order 1 to 1, 3 to 2, 5 to 3, 7 to 4 and 8 to 5 
-        - remove résistors directly connected to the leds in front panel !
+        - pin are in the same order 1 to 1, 3 to 2, 5 to 3, 7 to 4 and 8 to 5 **OK**
+        - remove résistors directly connected to the leds in front panel ! **OK**
     - change relay connector from 10 pin to 6 **OK**
-        - 1 to 1, 2 to 2, 4 to 3, 6 to 4, 8 to 5, 10 to 6 (GND)
+        - 1 to 1, 2 to 2, 4 to 3, 6 to 4, 8 to 5, 10 to 6 (GND) **OK**
 
 .. _refDetect220VPres:
 

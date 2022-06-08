@@ -18,126 +18,6 @@ Task list (merged todo list hard and soft : preferred order)
 ====================================================================================================
 Don't forget the todo list of the **doxygen documentation** and **git history**:
 
-
-Logo
-----------------------------------------------------------------------------------------------------
-- add the 3Dprinted or CNC crafted logo see :ref:`here<3dLogoDesign>`
-    - design **OK**
-    - print V2 logo004.stl
-        - x130% in Chitubox **OK**
-        - 6.18ml of resin 0h48 to print **OK**
-    - paint
-        - fill cavities with paint **OK**
-        - scratch excess of paint
-    - glue in place
-
-New PCB
-----------------------------------------------------------------------------------------------------
-- print schematic from easyEda site **OK**
-- edit BOM **OK**
-- group components **OK**
-- solder components **OK**
-- Programme watch dog component
-    - solder a new one on adaptator board with small pin **OK**
-    - programm it with avrdude commands see :ref:`here<refWatchdogProg>` **OK**
-    - test it
-- use ESP, watchdog and nano from old pcb **NO**
-    - reprogram attiny 85 WD **OK**
-        - and test it **OK**
-    - reprogram new esp8266
-        - upload data **OK**
-    - reprogram new arduino nano **OK**
-    - test it
-        - I2C acces to reg(9) of nano IO expander !
-        - I2C pull-up ? Probably on DS3231 board
-        - I2C scan return the right adress 0X58 ! **OK**
-        - try with rtc connected **OK**
-            - returned add are ok **OK**
-    - write a special program to test specifically communication with the nano
-        - working dir  ``\_3_software\etudeDeCode\specialPcbV2\testDirectEspNano`` **OK**
-        - not versionned on git, github **OK**
-        - ``testDirectEspNano.ino``
-
-
-results with only nano and esp on a bread board::
-
-    Sketch started
-    Init = ko
-    Write 0x10 to 1
-    Write 0x12 to 2
-    Read of reg 1 = f1
-    Read of reg 2 = f1
-
-on nano side::
-
-    <Volab IOExpander setup : > NANO version : 2.1 : BUILD May 28 2022 19:35:26
-    <Volab I2C ADD builder : > add pin number = 13
-    <Volab I2C ADD builder : > D13 = LOW
-    <Volab IOExpander setup : > I2C adresse : 58
-    <Volab IOExpander setup : > registers[0] = 2
-    <Volab IOExpander setup : > registers[1] = 0
-    <Volab IOExpander setup : > registers[2] = 0
-    <Volab IOExpander setup : > registers[3] = 55
-    <Volab IOExpander setup : > registers[4] = 0
-    <Volab IOExpander setup : > registers[5] = a5
-    <Volab IOExpander setup : > registers[6] = 1
-    <Volab IOExpander setup : > registers[7] = 0
-    <Volab IOExpander setup : > registers[8] = 0
-    <Volab IOExpander setup : > registers[9] = 0
-    <Volab IOExpander setup : > registers[a] = 0
-    <Volab IOExpander setup : > registers[b] = a5
-    <Volab IOExpander setup : > registers[c] = a5
-    <Volab IOExpander setup : > registers[d] = a5
-    <Volab IOExpander setup : > registers[e] = a5
-    <Volab IOExpander setup : > registers[f] = a5
-    <Volab IOExpander setup : > registers[10] = a5
-    <Volab IOExpander setup : > registers[11] = a5
-    <Volab IOExpander setup : > registers[12] = a5
-    <Volab IOExpander setup : > registers[13] = a5
-    <Volab IOExpander setup : > registers[14] = a5
-    <Volab IOExpander setup : > registers[15] = a5
-    <Volab IOExpander setup : > registers[16] = a5
-    <Volab IOExpander setup : > registers[17] = a5
-    <Volab IOExpander setup : > registers[18] = ca
-    <Volab IOExpander setup : > registers[19] = fe
-    <Volab IOExpander setup : > registers[1a] = fe
-    <Volab IOExpander setup : > registers[1b] = ca
-    <Volab IOExpander setup : > registers[1c] = a5
-    <Volab IOExpander setup : > registers[1d] = a5
-    <Volab IOExpander setup : > registers[1e] = a5
-    <Volab IOExpander setup : > registers[1f] = a5
-    <Volab Receiver : > Bytes rec : 1
-    <Volab Receiver : > reg = 1
-    <Volab Receiver : > registers[reg] = 10
-
-
-Strange nano receive only one read request ! no just rs lign is too slow to display all requests. 
-Nano Debug is suitable for slow access on at a time not for operational access.
-
-The replacement of the esp doesn't correct the pb. A bug in the Nano expander.
-
-
-- test it **OK**
-    - P2 : 5V power **OK**
-    - Screen oled **OK**
-    - DS3231 RTC **OK**
-    - watch dog **OK**
-    - WIFI connection **OK**
-    - not tested : led and bp and relay cde... **OK**
-- integrate in the plug
-    - question a new plug or the old one adapted ? old not enought time for a new plug **OK**
-    - make modification to pass from old pcb to new pcb
-        - PBHEADER : no change (perhaps PB2 PB2 switched)
-        - ONOFF HEADER : **no change**
-        - SPECIAL BP : **no change**
-        - I2C HEADER : **no change**
-        - RTC HEADER : *no change*
-        - 4COLOR LED HEADER : *no change* 
-        - WIFI AND POW LED : groupe on the same connector
-        - red LEDHEADER : from 8 to 5 **OK**
-            - pin are in the same order 1 to 1, 3 to 2, 5 to 3, 7 to 4 and 8 to 5 
-        - change relay connector from 10 pin to 6
-
     - for a new plug : buy plugs
 
 
@@ -205,7 +85,7 @@ bugs and todos
     - cfgpage / cfgsend : configuration page (see Bug_ToDOList.rst)
     - clone pause
     - untimely switching **10%**
-    - push button permuted on yellow and green (hardware)
+    - push button permuted on yellow and green (hardware) **OK**
 
 
 - treat 6 TODO From Bug_ToDoLst file
@@ -229,7 +109,7 @@ Others task
 - try gz files
 
 - improve json file management **2 points need work**
-    - write process
+    - write process **OK**
         - test **ok**
             - environnement conda test **ok**
             - write python script to log boot sequence to a file: in progress ``projet\_3_software\outilPythonSpecial`` **ok**
@@ -247,11 +127,6 @@ Others task
 
 - packaging study
 - integration
-
-
-
-
-
 
 - continue this list ;-)
 
@@ -291,6 +166,30 @@ Task done (for memory)
 New pcb
 ----------------------------------------------------------------------------------------------------
 
+- print schematic from easyEda site **OK**
+- edit BOM **OK**
+- group components **OK**
+- solder components **OK**
+- Programme watch dog component
+    - solder a new one on adaptator board with small pin **OK**
+    - programm it with avrdude commands see :ref:`here<refWatchdogProg>` **OK**
+    - test it
+- use ESP, watchdog and nano from old pcb **NO**
+    - reprogram attiny 85 WD **OK**
+        - and test it **OK**
+    - reprogram new esp8266
+        - upload data **OK**
+    - reprogram new arduino nano **OK**
+    - test it
+        - I2C acces to reg(9) of nano IO expander !
+        - I2C pull-up ? Probably on DS3231 board
+        - I2C scan return the right adress 0X58 ! **OK**
+        - try with rtc connected **OK**
+            - returned add are ok **OK**
+    - write a special program to test specifically communication with the nano
+        - working dir  ``\_3_software\etudeDeCode\specialPcbV2\testDirectEspNano`` **OK**
+        - not versionned on git, github **OK**
+        - ``testDirectEspNano.ino``
 - solve the usb vs main 5v power on esp8266 **OK**
     - search and eval shottky diode solution (1N5820 has a typical vf of 0.5V its to high) SS26 Solution **OK**
     - aop and mos solution **ABORTED**
@@ -363,6 +262,31 @@ New pcb
             - One unrouted 5V on 5V Transistor corrected **OK**
 
     - reroute pcb to reduce the size **OK**
+
+- test it **OK**
+    - P2 : 5V power **OK**
+    - Screen oled **OK**
+    - DS3231 RTC **OK**
+    - watch dog **OK**
+    - WIFI connection **OK**
+    - not tested : led and bp and relay cde... **OK**
+- integrate in the plug **OK**
+    - question a new plug or the old one adapted ? old not enought time for a new plug **OK**
+    - make modification to pass from old pcb to new pcb **OK**
+        - remove serial resistor with LED on the wire (hide by heat shrink tube)
+
+
+Logo
+----------------------------------------------------------------------------------------------------
+- add the 3Dprinted or CNC crafted logo see :ref:`here<3dLogoDesign>`
+    - design **OK**
+    - print V2 logo004.stl **OK**
+        - x130% in Chitubox **OK**
+        - 6.18ml of resin 0h48 to print **OK**
+    - paint **OK**
+        - fill cavities with paint **OK**
+        - scratch excess of paint **OK**
+    - glue in place **OK**
 
 ====================================================================================================
 General

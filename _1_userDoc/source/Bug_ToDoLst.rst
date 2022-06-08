@@ -40,24 +40,6 @@ Model Type
 ====================================================================================================
 Open bugs
 ====================================================================================================
-**BUG** :  Bug Main PowerOff
-----------------------------------------------------------------------------------------------------
-
-    :Date de saisie:    13/03/2022    
-    :Date de traitement:    start on 9/4/2022 see :ref:`here<refCorBugMainPowerOff>`
-    
-    :Cible:             firmware
-    :Status:            [CLOSED]   
-    :Problem:           after a power off/power on plugs are in ON state. Opérations made with
-                        web browser in ap mode 
-                        
-                        
-    :Traitement:        In Main loop ligne 582 : if ( !mainPowerSwitchState) in this if there is no
-                        call to jsonData.storeJson(); and yield function wait for a restart !!!!
-                        One lien added !
-
-
-
 
 **BUG** : untimely switching
 ----------------------------------------------------------------------------------------------------
@@ -66,14 +48,12 @@ Open bugs
     :Date de traitement:    
     :Cible:             firmware
     :Status:            **OPEN**    
-    :Problématique:     during a long test blue plug cycle on/off 3mn sudenly yellow and green 
-                        switch on but in JSON there are in manual off state
-    :Traitement:        Le touche F5 n'est pas une solution, renvoie également la dernière commande !
+    :Problématique:     during a long test blue plug cycle on/off 3mn suddenly yellow and green 
+                        switch ON but in JSON there are in manual off state
+    :Traitement:        
                         
 
 ------------------------------------------------------------------------------------------
-
-
 
 **BUG** : wrong global table refresh
 ----------------------------------------------------------------------------------------------------
@@ -87,10 +67,6 @@ Open bugs
                         
 
 ------------------------------------------------------------------------------------------
-
-
-
-
 
 **BUG** : cfgpage / cfgsend
 ----------------------------------------------------------------------------------------------------
@@ -125,20 +101,6 @@ Open bugs
         test pause before to call on or off method (about line 601) write
         if (_state && !_pause) but move line ``_pause = clonedPlug.getPause();``
         before
-
-----------------------------------------------------------------------------------------------------
-
-**BUG** : push button permuted on yellow and green
-----------------------------------------------------------------------------------------------------
-
-    :Date de saisie:    08/01/2022    
-    :Date de traitemant: 15/01/2022
-    :Cible:             hardware
-    :Status:            **OPEN** almost closed   
-    :Problematique:     cabling is good !
-
-    :Traitement:        **reroute the board** 
-
 
 ----------------------------------------------------------------------------------------------------
 
@@ -243,6 +205,33 @@ ToDo : file names coherence
 ====================================================================================================
 Closed bug
 ====================================================================================================
+**BUG** :  Bug Main PowerOff
+----------------------------------------------------------------------------------------------------
+
+    :Date de saisie:    13/03/2022    
+    :Date de traitement:    start on 9/4/2022 see :ref:`here<refCorBugMainPowerOff>`
+    
+    :Cible:             firmware
+    :Status:            [CLOSED]   
+    :Problem:           after a power off/power on plugs are in ON state. Opérations made with
+                        web browser in ap mode 
+                        
+                        
+    :Traitement:        In Main loop ligne 582 : if ( !mainPowerSwitchState) in this if there is no
+                        call to jsonData.storeJson(); and yield function wait for a restart !!!!
+                        One lien added !
+
+**BUG** : push button permuted on yellow and green
+----------------------------------------------------------------------------------------------------
+
+    :Date de saisie:    08/01/2022    
+    :Date de traitemant: 08/06/2022
+    :Cible:             hardware
+    :Status:            [CLOSED]   
+    :Problematique:     cabling is good !
+
+    :Traitement:        **reroute the board**  
+
 
 **BUG** : Allumage intempestif 
 ----------------------------------------------------------------------------------------------------
