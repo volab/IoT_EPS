@@ -54,19 +54,90 @@ New PCB
         - try with rtc connected **OK**
             - returned add are ok **OK**
     - write a special program to test specifically communication with the nano
-    - 
-- test it
+        - working dir  ``\_3_software\etudeDeCode\specialPcbV2\testDirectEspNano`` **OK**
+        - not versionned on git, github **OK**
+        - ``testDirectEspNano.ino``
+
+
+results with only nano and esp on a bread board::
+
+    Sketch started
+    Init = ko
+    Write 0x10 to 1
+    Write 0x12 to 2
+    Read of reg 1 = f1
+    Read of reg 2 = f1
+
+on nano side::
+
+    <Volab IOExpander setup : > NANO version : 2.1 : BUILD May 28 2022 19:35:26
+    <Volab I2C ADD builder : > add pin number = 13
+    <Volab I2C ADD builder : > D13 = LOW
+    <Volab IOExpander setup : > I2C adresse : 58
+    <Volab IOExpander setup : > registers[0] = 2
+    <Volab IOExpander setup : > registers[1] = 0
+    <Volab IOExpander setup : > registers[2] = 0
+    <Volab IOExpander setup : > registers[3] = 55
+    <Volab IOExpander setup : > registers[4] = 0
+    <Volab IOExpander setup : > registers[5] = a5
+    <Volab IOExpander setup : > registers[6] = 1
+    <Volab IOExpander setup : > registers[7] = 0
+    <Volab IOExpander setup : > registers[8] = 0
+    <Volab IOExpander setup : > registers[9] = 0
+    <Volab IOExpander setup : > registers[a] = 0
+    <Volab IOExpander setup : > registers[b] = a5
+    <Volab IOExpander setup : > registers[c] = a5
+    <Volab IOExpander setup : > registers[d] = a5
+    <Volab IOExpander setup : > registers[e] = a5
+    <Volab IOExpander setup : > registers[f] = a5
+    <Volab IOExpander setup : > registers[10] = a5
+    <Volab IOExpander setup : > registers[11] = a5
+    <Volab IOExpander setup : > registers[12] = a5
+    <Volab IOExpander setup : > registers[13] = a5
+    <Volab IOExpander setup : > registers[14] = a5
+    <Volab IOExpander setup : > registers[15] = a5
+    <Volab IOExpander setup : > registers[16] = a5
+    <Volab IOExpander setup : > registers[17] = a5
+    <Volab IOExpander setup : > registers[18] = ca
+    <Volab IOExpander setup : > registers[19] = fe
+    <Volab IOExpander setup : > registers[1a] = fe
+    <Volab IOExpander setup : > registers[1b] = ca
+    <Volab IOExpander setup : > registers[1c] = a5
+    <Volab IOExpander setup : > registers[1d] = a5
+    <Volab IOExpander setup : > registers[1e] = a5
+    <Volab IOExpander setup : > registers[1f] = a5
+    <Volab Receiver : > Bytes rec : 1
+    <Volab Receiver : > reg = 1
+    <Volab Receiver : > registers[reg] = 10
+
+
+Strange nano receive only one read request ! no just rs lign is too slow to display all requests. 
+Nano Debug is suitable for slow access on at a time not for operational access.
+
+The replacement of the esp doesn't correct the pb. A bug in the Nano expander.
+
+
+- test it **OK**
+    - P2 : 5V power **OK**
+    - Screen oled **OK**
+    - DS3231 RTC **OK**
+    - watch dog **OK**
+    - WIFI connection **OK**
+    - not tested : led and bp and relay cde... **OK**
 - integrate in the plug
     - question a new plug or the old one adapted ? old not enought time for a new plug **OK**
     - make modification to pass from old pcb to new pcb
         - PBHEADER : no change (perhaps PB2 PB2 switched)
         - ONOFF HEADER : **no change**
         - SPECIAL BP : **no change**
-        - WIFI AND POW LED : groupe on the same connector 
         - I2C HEADER : **no change**
-        - change relay connector from 10 pin to 6
         - RTC HEADER : *no change*
-        - 4COLOR LED HEADER : *no change*
+        - 4COLOR LED HEADER : *no change* 
+        - WIFI AND POW LED : groupe on the same connector
+        - red LEDHEADER : from 8 to 5 **OK**
+            - pin are in the same order 1 to 1, 3 to 2, 5 to 3, 7 to 4 and 8 to 5 
+        - change relay connector from 10 pin to 6
+
     - for a new plug : buy plugs
 
 

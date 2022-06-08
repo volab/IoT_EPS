@@ -1274,6 +1274,25 @@ Tools : `EasyEDA.com`_
 
 :download:`Schéma<../../_4_PCB/easyeda/Schematic_IoT Electrical Power Strip_Sheet_1_20200208225752.pdf>`
 
+2 versions of the PCB :
+
+RED one and Blue one lol
+
+modification to pass from old pcb to new pcb (v2):
+
+    - PBHEADER : no change (perhaps PB2 PB2 switched)
+    - ONOFF HEADER : **no change**
+    - SPECIAL BP : **no change**
+    - I2C HEADER : **no change**
+    - RTC HEADER : *no change*
+    - 4COLOR LED HEADER : *no change* 
+    - WIFI AND POW LED : groupe on the same connector
+        - 1 : 
+    - red LEDHEADER : from 8 to 5 **OK**
+        - pin are in the same order 1 to 1, 3 to 2, 5 to 3, 7 to 4 and 8 to 5 
+        - remove résistors directly connected to the leds in front panel !
+    - change relay connector from 10 pin to 6 **OK**
+        - 1 to 1, 2 to 2, 4 to 3, 6 to 4, 8 to 5, 10 to 6 (GND)
 
 .. _refDetect220VPres:
 

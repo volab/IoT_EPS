@@ -122,7 +122,11 @@ You need also esptools to program SPIFFS
 
     ESP8266 Arduino IDE conf 
 
-Program ESP8266 data
+Transfert data folder to ESP8266
+
+.. image:: image/transfertDataMenuIDE.jpg 
+   :width: 500 px
+
 
 Programm sktech
 
@@ -345,6 +349,9 @@ In serial monitor you should see
 Program Arduino nano
 ====================================================================================================
 With nanoI2CIOExpander project
+
+.. image:: image/debugModeInNanoExpender.JPG 
+   :width: 300 px
 
 
 With ligne 19 in the file debugSerialPort.h uncommented Nano display debug info like this @9600 
