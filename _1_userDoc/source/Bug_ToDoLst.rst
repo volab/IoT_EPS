@@ -41,6 +41,24 @@ Model Type
 Open bugs
 ====================================================================================================
 
+**BUG** : on Web Page Hebdo mode H-fin
+----------------------------------------------------------------------------------------------------
+
+    :Date de saisie:    11/06/2022    
+    :Date de traitement:    
+    :Cible:             Web interface
+    :Status:            **OPEN**    
+    :Problématique:     in hebdo Mode hebdo on the web page  On time nor off time do not diplay 
+                        
+    :Traitement:        
+                        
+.. image:: image/bugDisplayHebdoMode.jpg 
+   :width: 600 px
+
+
+
+------------------------------------------------------------------------------------------
+
 **BUG** : untimely switching
 ----------------------------------------------------------------------------------------------------
 
