@@ -1287,7 +1287,7 @@ modification to pass from old pcb to new pcb (v2):
     - RTC HEADER : *no change*
     - 4COLOR LED HEADER : *no change* 
     - WIFI AND POW LED : groupe on the same connector
-        - 1 = 
+        - 1 = is Wifi, 2 power led and 3 GND **OK**
     - red LEDHEADER : from 8 to 5 **OK**
         - pin are in the same order 1 to 1, 3 to 2, 5 to 3, 7 to 4 and 8 to 5 **OK**
         - remove résistors directly connected to the leds in front panel ! **OK**
