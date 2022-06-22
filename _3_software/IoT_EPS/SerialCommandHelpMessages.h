@@ -18,7 +18,7 @@
     #define JJ_HLP_MSG "<J _jsonFileNumber 0..2> for display config.json or one of its copy\n"
     //K
     #define LL_HLP_MSG "<L> _newSoftAP_SSID> write SoftAP SSID in credentials WARNING\n"
-    //M
+    #define MM_HLP_MSG "<M> display states of the plug in memory not in json files\n"
     #define NN_HLP_MSG "<N> nano IO expander test\n"
     #define OO_HLP_MSG "<O> nano out test HIGH\n"   
     #define PP_HLP_MSG "<P key value> write config parameter in json WARNING\n"

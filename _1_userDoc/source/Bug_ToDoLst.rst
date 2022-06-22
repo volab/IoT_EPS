@@ -41,6 +41,17 @@ Model Type
 Open bugs
 ====================================================================================================
 
+**BUG** : change time zone
+----------------------------------------------------------------------------------------------------
+
+    :Date de saisie:    15/06/2022    
+    :Date de traitement:    
+    :Cible:             firmware
+    :Status:            **CLOSED**    
+    :Problématique:     When i change summer time display time  error by command <C> is 3600 and 
+                        DS3231 time is not updated 
+                        
+    :Traitement:        it is not a bug DS3231 update period is #define RTC_UPDATE_PERIOD 15 //every 15mn
 
 
 **BUG** : on Web Page Hebdo mode H-fin
@@ -65,12 +76,13 @@ Open bugs
 ----------------------------------------------------------------------------------------------------
 
     :Date de saisie:    18/01/2022    
-    :Date de traitement:    
+    :Date de traitement:    15/06/2022
     :Cible:             firmware
     :Status:            **OPEN**    
     :Problématique:     during a long test blue plug cycle on/off 3mn suddenly yellow and green 
                         switch ON but in JSON there are in manual off state
-    :Traitement:        
+    :Traitement:        see :ref:`here<refBugUntimelySwitching>`
+    
                         
 
 ------------------------------------------------------------------------------------------

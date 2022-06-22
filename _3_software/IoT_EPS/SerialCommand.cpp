@@ -59,6 +59,7 @@ return see in the code for all informations.
 extern int __heap_start, *__brkval;
 extern ConfigParam cParam; /**< @brief to display wifi mode non static member ! */
 // extern CNanoI2CIOExpander ioexp;
+extern CPowerPlug *plugs;
 
 void i2c_scan();
 // void i2c_recovery();
@@ -110,6 +111,8 @@ char v[40];
 int n;
 DateTime now;
 String date;
+
+int analogValue;
 
 CNanoI2CIOExpander nanoI2C;
 // bool nineState; unused warning
@@ -234,9 +237,26 @@ FSInfo filseSystemInfo;
             } else {
                 INTERFACE.println("Warning this command riquires only ONE parameter !");
             }			
+            break;
+        case 'M': // for memory state
+            INTERFACE.println(F("Check State of plugs in memory"));
+            INTERFACE.println(String("Red plug : ") + String(plugs[0].getState()?"ON":"OFF") );
+            INTERFACE.println(String("Green plug : ") +  String(plugs[1].getState()?"ON":"OFF") );
+            INTERFACE.println(String("Bleue plug : ") +  String(plugs[2].getState()?"ON":"OFF") );
+            INTERFACE.println(String("Yellow plug : ") + String(plugs[3].getState()?"ON":"OFF") );
             break;            
         case 'N': //nano I2C IO expander test
             nanoI2C.test();
+            // due to an error of wiring red plug is analog 3, green 2...
+            // plug is on when we read 0
+            analogValue = nanoI2C.analogRead( 3 );
+            INTERFACE.println("Analog Red value : " + String( analogValue>300?"OFF":"ON" ));
+            analogValue = nanoI2C.analogRead( 2 );
+            INTERFACE.println("Analog Green value : " + String( analogValue>300?"OFF":"ON" )); 
+            analogValue = nanoI2C.analogRead( 1 );
+            INTERFACE.println("Analog Bleue value : " + String( analogValue>300?"OFF":"ON" ));
+            analogValue = nanoI2C.analogRead( 0 );
+            INTERFACE.println("Analog Yellow value : " + String( analogValue>300?"OFF":"ON" ));
             break;
         case 'O': //nano I2C IO expander test
             INTERFACE.println("D11 out test HIGH");           
@@ -397,7 +417,7 @@ void SerialCommand::displayCommandsList(){
     list += F(JJ_HLP_MSG);
     //K
     list += F(LL_HLP_MSG);
-    //M
+    list += F(MM_HLP_MSG);
     list += F(NN_HLP_MSG);
     list += F(OO_HLP_MSG);   
     list += F(PP_HLP_MSG);
@@ -461,6 +481,7 @@ void SerialCommand::displayCommandsThematicList(){
     list += F(ZZ_HLP_MSG);
     list += F(BB_HLP_MSG);
     list += F(B_HLP_MSG);
+    list += F(MM_HLP_MSG);
 
 
     list += F("\n");

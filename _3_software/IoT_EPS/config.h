@@ -17,8 +17,8 @@
 #define JSON_VERSION "v5.1"
 
 #define NTPSERVER "fr.pool.ntp.org"
-//#define OFFSET_HEURE 2 //ETE
-#define OFFSET_HEURE 1 //Hiver
+#define OFFSET_HEURE 2 //ETE
+//#define OFFSET_HEURE 1 //Hiver
 
 #define DEFAULT_LED_LUMINOSITY 15
 #define FLASH_ERROR_PERIODE 500 //ms

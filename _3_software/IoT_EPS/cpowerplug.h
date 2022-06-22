@@ -98,6 +98,7 @@ class CPowerPlug : public CNano {
         void manageLeds( bool ledState );
         void setMainPow( bool mainP ){ _mainPower = mainP; }
         
+        
     private:
         bool _flashLed = false;
         static const String modes[5];

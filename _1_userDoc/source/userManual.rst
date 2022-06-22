@@ -75,8 +75,10 @@ FTP server dosen't work very well
 In csysstat.cpp et csysstat.h files, variable _forceSystemStartOnFatalError allow to disable the
 sabordage behavior.
 
-Special html pages
+Special html pages (removed)
 ----------------------------------------------------------------------------------------------------
+due to a lack of memory this pages was removed.
+
 .. code::
 
     /time
@@ -85,7 +87,10 @@ Special html pages
 
     /list (just list files in json form) same as <D> serial command
     
-
+Restaure data directory
+----------------------------------------------------------------------------------------------------
+.. WARNING:: Don't foget to put watchdog in 4mn15s wait with <Z> command
+   :class: without-title
 
 =========================================
 Obtaine IP addresse of the Power strip 

@@ -1125,6 +1125,43 @@ in this portion of code there is no call to a function to save data in the json 
 
 Just added on line : ``jsonData.storeJson();``
 
+
+.. _refBugUntimelySwitching:
+
+====================================================================================================
+Bug untimely switching
+====================================================================================================
+New branch to treat this bug : untimlySwitchBug
+
+First of all restaure data directory in the plug with all plugs onoffcount = 0
+(don't forget watchdog !!!!!)
+
+Put RED and BLEUE in cycle mode
+Check that for Green and yellow onoffcount stay at 0 (never switch this plugs)
+
+Creat a new help command to display plug's state in memory <M> command **OK**
+
+Creat a new method in plugs to check physical real states 
+
+On relay board there is places on connector that we can connect to P10 on the board to read physical
+plug states
+
+Question : how to use analogread from nano i2C expander ? 
+
+- 0 A0
+- 1 A1
+- 2 A2
+- 3 A3
+
+First use <N> with some little modifications to call analogread **OK**
+
+After put it in the CPowerPlug class
+
+.. NOTE:: A possible treatment will be to call CPowerPlug::updateOutputs( bool writeToJsonCount ) with false
+   :class: without-title
+
+   at the end of thee main loop function
+
 ===============================
 Usefull Documentation
 ===============================
