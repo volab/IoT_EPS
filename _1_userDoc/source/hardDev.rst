@@ -785,12 +785,12 @@ Great youtube video on this subject from Andreas Spiess (the guy with the swiss 
 
 
 
-INA219 et INA220
+INA219 et INA220 : NOT KEPT : bus voltage to low
 ----------------------------------------------------------------------------------------------------
 
 - impossible "bus voltage 0-26V"
 
-ACS712
+ACS712 : ANALOG OUTPUT
 ----------------------------------------------------------------------------------------------------
 
 - "Output voltage proportional to AC or DC currents"
@@ -820,7 +820,7 @@ On Banggood there are :
     With a 20A value it means that we have 14.14A with 100mV/A factor it risk to be very low
     mesurement for small curent values. for exemple: for a 100mA we need to mesure 10mV.
 
-ACS764
+ACS764 : NOT KEPT : DC
 ----------------------------------------------------------------------------------------------------
 I can't find rail to rail max  voltage
 
@@ -900,7 +900,7 @@ on pcb to connect directly large wires for 30A curent. the size oh this holes is
 
 .. _`another one` : https://fr.aliexpress.com/item/32649182582.html?spm=a2g0o.productlist.0.0.66ea5b1eF7t2X4&algo_pvid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc&algo_expid=1b39f4cd-fbad-4e1e-9dde-36822b81eafc-26&btsid=b1b106c8-8af6-4248-a717-bc9083416f7d&ws_ab_test=searchweb0_0,searchweb201602_1,searchweb201603_52   
 
-First test
+First test with ACS712
 ----------------------------------------------------------------------------------------------------
 With my new received ACS712 5A breakout board, i made a first test with oscilloscope, multimeter
 and a motor as a charge ( with the drill press of the lab).
@@ -927,7 +927,7 @@ Multimeter measure 0.793A
 For 5A it give 5x185 = 925mV above and under 2.5V
 
    
-New ASC723
+New ASC723 : to try
 ----------------------------------------------------------------------------------------------------
 Replacement part for ACS712 find on the Allegro web site
 
@@ -941,7 +941,7 @@ But... It is not very widespread. It is available only on SPARKFUN and distribut
 
 `at MOUSER`_
 
-I find an another problème : the price ! Tips : breakout board for ACS712 should be compatible !
+I find an another problème : the price 4.65€ an we need 4 ! Tips : breakout board for ACS712 should be compatible !
 
 The component alone is available `on Radiospares site`_.
 
@@ -959,7 +959,7 @@ An other improvment there is a +/-10A version ACS723LLCTR-10AB-T but it is very 
 
 .. _`on Radiospares site` : https://fr.rs-online.com/web/p/capteurs-de-courant/8660760/
 
-TMCS1100 from ti
+TMCS1100 from ti : NOT KEPT : no breakoutboard t test it
 ----------------------------------------------------------------------------------------------------
 
 No breakout board on the net !
@@ -979,8 +979,9 @@ a good solution that match the main criteria:
 So we decide to continue the rest of the project without this feature but we keep it in mind.
 
 For remembering, current measurment covers 2  needs:
+
 #. check if the 2 relais on one channel have switched correctly
-#. provide power consumption to the user
+#. provide power consumption informations to the user
 
 For the first one we can measure voltage with a module like this :
 

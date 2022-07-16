@@ -4,7 +4,7 @@ Software development documentation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Others related pages
+   :caption: Sub chapters
    :titlesonly:
 
    firstboot
@@ -15,8 +15,10 @@ Software development documentation
    variable
    testToBeConducted
    jsonImprovment
+   pythonTools
+   
 
-.. contents:: Table of Contents
+.. contents:: Contents of this chapter
     :backlinks: top
 
 .. |clearer|  raw:: html
@@ -1155,12 +1157,24 @@ Question : how to use analogread from nano i2C expander ?
 
 First use <N> with some little modifications to call analogread **OK**
 
+**Now <N> debug command display also the physical states of the relay**
+
 After put it in the CPowerPlug class
 
 .. NOTE:: A possible treatment will be to call CPowerPlug::updateOutputs( bool writeToJsonCount ) with false
    :class: without-title
 
    at the end of thee main loop function
+
+
+From here I have 2 commands that allow to check plugs states <M> in memory state and 
+<N> physical state and if tnecessery there is <J0> command to check the states of plugs in the json
+file.
+
+So with a Python script it should be possible to automaticaly track this bug... See :ref:`here<refPythonToolUntimelySwitching>`
+
+
+
 
 ===============================
 Usefull Documentation

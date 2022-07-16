@@ -46,11 +46,12 @@ bugs and todos
 - Tracking bug ``untimely switching``
     - reset all counter **OK**
     - activate red and bleu cycle and manual off on yellow and green (never switch this 2 plugs) **OK**
+    - a little turn in the resolution if this bug see :ref:`here<refBugUntimelySwitching>`   
     - Check after long period of time if yellow and green counter stay at 0
     - prepare only 2 220V tracker for not in used plugs ( yellow and green for example)
         - it is possible to connect them outside the box directly on power plugs
         - group components
-            - list components see here :ref:`here<refDetect220VPres>`
+            - list components see :ref:`here<refDetect220VPres>`
         - build it
         - test it
         - connect to the plugs
