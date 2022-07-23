@@ -27,24 +27,24 @@ class GuiFrameDisplay(tk.Frame):
             relief=tk.GROOVE, width=100, height= self.ZONE_DE_TEXT_HAUTEUR)
         self.msgZone.grid(row=1, column=1, padx=genPad , pady=genPad, sticky=tk.NW, columnspan=2)
 
-        self.msgZone.insert(tk.END, "Texte initial")
+        # self.msgZone.insert(tk.END, "Texte initial")
         s=tk.Scrollbar(self)
         s.grid(row=1, column=3, sticky=tk.N+tk.S)
         s.config(command=self.msgZone.yview)
         self.msgZone.config(yscrollcommand=s.set)
 
+        self.clearBtn = tk.Button( self, text='CLEAR', command=self.clearCmd )  
+        self.clearBtn.grid(row=2,column=1, 
+                    padx=GEN_PADDING, pady=GEN_PADDING, sticky=tk.N+tk.W)  
+
         # self.dataBaroFrame = FBaro.GuiFrameBaro( self, 2, 1, self.GEN_PADDING)
-        # self.dataMagFrame  = FMag.GuiFrameMag(self, 2, 2, self.GEN_PADDING)
-        # self.dataPitoFrame = FPit.GuiFramePitot(self, 3, 1, self.GEN_PADDING)
-        # self.dataTlmFrame  = FTlm.GuiFrameTlm(self, 3, 2, self.GEN_PADDING)
-        # self.dataAlimFrame = FAlim.GuiFrameAlim(self, 4, 2, self.GEN_PADDING)
+
     
     # def updateDataCapteur(self, trameDecoupee ):
     #     self.dataBaroFrame.displayDataCapteur_O( trameDecoupee )
-    #     self.dataMagFrame.displayDataCapteur_O( trameDecoupee ) 
-    #     self.dataPitoFrame.displayDataCapteur_O( trameDecoupee )
-    #     self.dataTlmFrame.displayDataCapteur_O( trameDecoupee )
-    #     self.dataAlimFrame.displayDataCapteur_O( trameDecoupee )
+
+    def clearCmd(self):
+        self.msgZone.delete('1.0',tk.END)
 
 
 import os

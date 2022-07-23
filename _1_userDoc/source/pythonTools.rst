@@ -728,7 +728,7 @@ Simplified GUI Template
      - |aliasImage3_uiPythonSerialTemplate|
 
 - Python GUI template packed : pytemplt_sav220713_1924.zip **OK**
-- RS link recption test
+- RS link recption test **OK**
 - RS message analyse
 
 

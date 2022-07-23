@@ -19,15 +19,15 @@ class GuiFrameDisplay(tk.Frame):
         self.FEN_HAUTEUR = fenHeight
         self.ZONE_DE_TEXT_HAUTEUR = ztxHeigh
     
-        tk.Frame.__init__(self, master, height=self.FEN_HAUTEUR ,  width=500 , relief=tk.GROOVE, bg="gray", bd=5, class_='CframeOfContrl', **kwargs)
+        tk.Frame.__init__(self, master, height=self.FEN_HAUTEUR ,  width=850 , relief=tk.GROOVE, bg="gray", bd=5, class_='CframeOfContrl', **kwargs)
         self.grid(row=1, column=2, padx=self.GEN_PADDING, pady=self.GEN_PADDING)
 
 
         self.msgZone=tk.Text(self, bd=5, padx=genPad , pady=genPad , 
-            relief=tk.GROOVE, width=57, height= self.ZONE_DE_TEXT_HAUTEUR)
+            relief=tk.GROOVE, width=100, height= self.ZONE_DE_TEXT_HAUTEUR)
         self.msgZone.grid(row=1, column=1, padx=genPad , pady=genPad, sticky=tk.NW, columnspan=2)
 
-        self.msgZone.insert(tk.END, "Texte initial")
+        # self.msgZone.insert(tk.END, "Texte initial")
         s=tk.Scrollbar(self)
         s.grid(row=1, column=3, sticky=tk.N+tk.S)
         s.config(command=self.msgZone.yview)

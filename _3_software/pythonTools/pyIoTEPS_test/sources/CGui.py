@@ -46,6 +46,9 @@ class mainUi:
     A noter que cette classe ne contient pas d'autotest.
     
     """
+
+
+    
     def __init__(self, master):
         self.FEN_HAUTEUR = CST.FEN_HAUTEUR
         self.GEN_PADDING = CST.GEN_PADDING
@@ -54,6 +57,7 @@ class mainUi:
         # self.BTN_QUIT_ROW = 6
         # self.LABEL_VERT_POS = 2
         self.tramesErrorCpt = 0
+        
     
         self.cpt = 0
         """ Compteur qui s'affiche dans la zone du port série lorsqu'on est pas connecté"""
@@ -76,10 +80,16 @@ class mainUi:
 
         self.frameDisplay = FrameDisplay.GuiFrameDisplay(master, self.GEN_PADDING, self.FEN_HAUTEUR, CST.ZONE_DE_TEXTE_HAUTEUR)
         self.frameDisplay.grid_propagate(0)
+        self.trame = Tr.Trame( self.frameCtrl.serialPort )
         
-        
-        self.statBar=tk.Label(master, width=20, anchor=tk.W, text="etat")
+        self.statBar=tk.Label(master, width=20, anchor=tk.W)
         self.statBar.grid(row=2, column=1, columnspan= 2, sticky=tk.E+tk.W+tk.N+tk.S)
+
+        self.statBarLeft=tk.Label(self.statBar, width=20, anchor=tk.W, text="etat", background= '#CCCCCC', padx = 5)
+        self.statBarLeft.grid(row=0, column=0, padx = 5)
+
+        self.statBarMid=tk.Label(self.statBar, width=20, anchor=tk.W, text="etat", background= '#CCCCCC', padx = 2)
+        self.statBarMid.grid(row=0, column=1, padx = 5)
 
 
     def rsHandler(self):
@@ -97,23 +107,27 @@ class mainUi:
             self.tramesErrorCpt = 0
         else:
             #Port serie ouvert
-            trame = Tr.Trame( self.frameCtrl.serialPort, self.SIZE_OF_FRAME )
-            trame.recevoirTrame()
+            # trame = Tr.Trame( self.frameCtrl.serialPort, self.SIZE_OF_FRAME )
+            self.trame.recevoirTrame()
+            self.trame.analyzeTrame()
             # if trame.lastFrameOnError:
             #     self.tramesErrorCpt += 1
             # if len(trame.trameBrute) != 0:
             #     #Trame reçue
             # self.frameDisplay.msgZone.delete('1.0',tk.END)
             self.frameDisplay.msgZone.insert('1.0',\
-                    trame.pourAffichage())
-            #     trame.trameDecoupee.dataMag.offset.x = self.magOffset.x
-            #     trame.trameDecoupee.dataMag.offset.y = self.magOffset.y
-            #     trame.trameDecoupee.dataMag.offset.z = self.magOffset.z                
+                    self.trame.pourAffichage())
+            if self.frameCtrl.logBtn.recordOn:
+                self.statBarMid.config(text="record" )
+            else:
+                self.statBarMid.config(text="etat" )
+            
+            self.frameCtrl.logBtn.logManager( self.trame.pourEnregistrement() )
             #     self.frameDisplay.updateDataCapteur( trame.trameDecoupee )
 
-        
+            self.trame.trameBrute = b'0' #prêt pour recevoir une nouvelle trame après tous les traitements.
             
-        self.statBar.config(text="Erreurs de trame : {}".format(self.tramesErrorCpt ) )
+        self.statBarLeft.config(text="Cpt commut : {}".format(self.trame.cptCommut ) )
         self.master.after(self.RS_HANDLER_PERIOD, self.rsHandler)
 
 import os

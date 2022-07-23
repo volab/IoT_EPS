@@ -5,14 +5,14 @@ Contante de l'application XXXX IHM de template
 '''
 
 
-IHM_TITLE = "Serial Test template IHM"
+IHM_TITLE = "IoTEPS Serial Test tool"
 FEN_HAUTEUR = 510
 GEN_PADDING = 2
 SIZE_OF_FRAME = 64 #6/01/2021 ajout de la version
 CAPT_STRUCT_FRAME_SIZE = 11 #Taille de la structure de donnée de chaque capteur
-RS_HANDLER_PERIOD = 9 # ms
+RS_HANDLER_PERIOD = 25 # ms
 ZONE_DE_TEXTE_HAUTEUR = 15 #attention c'est en nombre de ligne
-BARO_FRAME_BASE_IDX = 5 #6/01/2021 ajout de la version
+# BARO_FRAME_BASE_IDX = 5 #6/01/2021 ajout de la version
 
 # LIS3MDL_SCALE = "16g"
 

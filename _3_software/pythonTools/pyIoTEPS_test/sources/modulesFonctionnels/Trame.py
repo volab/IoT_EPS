@@ -18,81 +18,45 @@ class Trame:
     """
     Classe qui englobe les données de la trame reçue
     """
+    # cptCommut = 0
 
-    def __init__( self, serialPort, frameSize ):
-        #self.LIS3MDL_SCALE = "16g" # ne devait pas être ici à revoir 19/11/2020
+    def __init__( self, serialPort ):
         self.serialPort = serialPort
-        # self.trameBrute = list()
-        self.trameBrute = b'0'
+        self.trameBrute = b'0'      
+        self.cptCommut = 0
         
-        self.frameSize = frameSize
-        # self.CAPT_STRUCT_FRAME_SIZE = CST.CAPT_STRUCT_FRAME_SIZE
-        # self.BARO_FRAME_BASE_IDX = CST.BARO_FRAME_BASE_IDX
-        # self.ALIM_FRAME_BASE_IDX = self.MAG_FRAME_BASE_IDX  + self.CAPT_STRUCT_FRAME_SIZE
-        # self.trameDecoupee = TrameDecoupee( self.BARO_FRAME_BASE_IDX \
-        #                                 , self.ALIM_FRAME_BASE_IDX \
-        #                                 , self.frameSize )
-        self.timeout=False
-        self.lastFrameOnError = False
 
     def recevoirTrame(self):
         if self.serialPort.in_waiting:
             line = self.serialPort.readline()
             self.trameBrute = line
-            # print(line.decode().rstrip('\n'))
-            # self.trameBrute.append( line )
-            # print(line.decode('utf').rstrip('\n'))
-
-        # oneChar=0x00
-        # # timeout=False
-
-        # while (oneChar != b'R' and not self.timeout): #preambule
-        #     oneChar=self.serialPort.read(size=1)
-        #     if len(oneChar)==0:
-        #         self.timeout=True
-
-        # if self.timeout:
-        #     return
-
- 
-        # cpt=0
-        # if not self.timeout:
-            # octet = ord( oneChar )
-            # self.trameBrute.append(octet)
-            # while( cpt < self.frameSize-3): 
-            #     nbCar=self.serialPort.inWaiting()
-            #     if nbCar!=0:
-            #         octet=ord( self.serialPort.read(size=1) )
-            #         self.trameBrute.append(octet)
-            #         cpt +=1
-            # self.lastFrameOnError = self.checkCS()
-            # if not self.lastFrameOnError:
-                
-            #     self.trameDecoupee.populate( self.trameBrute  )
 
     def checkCS( self ):
         pass
 
     def pourAffichage(self, prefixe = '', separateur = ' '):
         trameChaine=""
-        # for i in self.trameBrute:
-        #     trameChaine += "{}{:02X}{}".format(prefixe,i,separateur)
-        # trameChaine = trameChaine[:-len(separateur)]
         if self.trameBrute != b'0':
-            # trameChaine = self.trameBrute.decode().rstrip('\n')
             trameChaine = self.trameBrute.decode()
         return trameChaine
 
-    def pourEnregistrement( self, separateur = ',' ):
+    def pourEnregistrement( self ):
         """
         Méthode de mise en forme des données au format ascci avec unité et tout
         """
         trameChaine = ""
-        # trameChaine = self.trameDecoupee.dataBaro.pourEnregistrement(separateur)
-        # trameChaine += separateur + self.trameDecoupee.dataAlim.pourEnregistrement(separateur)
+        if self.trameBrute != b'0':
+            trameChaine = self.trameBrute.decode().rstrip('\n')
         return trameChaine
         
-
+    def analyzeTrame(self):
+        if self.trameBrute != b'0':
+            if self.trameBrute.decode().find('<Volab in the loop > It is time for :') != -1:
+                # Trame.cptCommut += 1
+                self.cptCommut += 1
+                self.serialPort.write(b'<M>\n')
+                # print("Cpt commutation : {}".format(Trame.cptCommut) )
+                # print("Cpt commutation : {}".format(self.cptCommut) )
 
 def main():
     import os

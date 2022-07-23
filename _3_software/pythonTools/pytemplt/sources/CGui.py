@@ -103,9 +103,9 @@ class mainUi:
             #     self.tramesErrorCpt += 1
             # if len(trame.trameBrute) != 0:
             #     #Trame reçue
-            self.frameDisplay.msgZone.delete('1.0',tk.END)
-            # self.frameDisplay.msgZone.insert('1.0',\
-            #         trame.pourAffichage())
+            # self.frameDisplay.msgZone.delete('1.0',tk.END)
+            self.frameDisplay.msgZone.insert('1.0',\
+                    trame.pourAffichage())
             #     trame.trameDecoupee.dataMag.offset.x = self.magOffset.x
             #     trame.trameDecoupee.dataMag.offset.y = self.magOffset.y
             #     trame.trameDecoupee.dataMag.offset.z = self.magOffset.z                

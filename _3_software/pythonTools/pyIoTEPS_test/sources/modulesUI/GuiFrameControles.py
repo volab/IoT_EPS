@@ -18,13 +18,15 @@ from tkinter import messagebox
 # import GuiFrameRecord as Frec
 # import GuiFrameCalMag as FCalMag
 
+
 import os
 import sys
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0,os.path.dirname(SCRIPT_DIR))
 
 from constantes import BAUD_RATE
-
+# import constantes
+import modulesUI.guiRecBtn as RecBtn
 
 class CFrameControles(tk.Frame):
     '''
@@ -124,8 +126,15 @@ class CFrameControles(tk.Frame):
 
         widgetsVertPos += 1
         #********************************************************************************
-        # Frame config
-        # self.frameConfig = FConfig.GuiFrameConfig( self, widgetsVertPos, 0, GEN_PADDING, 4, FrameLargeur)
+        self.helpBtn = tk.Button( self, text='Help', command=self.sendHelpCmd, state = tk.DISABLED )
+        self.helpBtn.grid(row=widgetsVertPos,column=0, 
+                    padx=GEN_PADDING, pady=GEN_PADDING, sticky=tk.N)
+        self.ds3231dateBtn = tk.Button( self, text='CHECK CLK', command=self.sendCheckClkCmd, state = tk.DISABLED )
+        self.ds3231dateBtn.grid(row=widgetsVertPos,column=1, 
+                    padx=GEN_PADDING, pady=GEN_PADDING, sticky=tk.N)
+        # self.logBtn = RecBtn( self, text='CHECK CLK', command=self.logCmd, state = tk.DISABLED )
+        self.logBtn = RecBtn.RecBtn( self,  widgetsVertPos, 2, GEN_PADDING)
+               
 
         widgetsVertPos += 1
         #********************************************************************************
@@ -133,8 +142,7 @@ class CFrameControles(tk.Frame):
         # self.separateur( widgetsVertPos )
         # widgetsVertPos += 1
         #********************************************************************************
-        # Frame record
-        # self.frameRecord = Frec.GuiFrameRecord( self, widgetsVertPos, 0, GEN_PADDING, 4, FrameLargeur)
+
 
         # widgetsVertPos += 1
         #********************************************************************************
@@ -142,8 +150,7 @@ class CFrameControles(tk.Frame):
         # self.separateur( widgetsVertPos )
         # widgetsVertPos += 1
         #********************************************************************************
-        # Frame calibration magnétomètre
-        # self.frameCalMag = FCalMag.GuiFrameCalMag( self, widgetsVertPos, 0, GEN_PADDING, 4, FrameLargeur)
+
 
         # self.listeDesPortsSerie=serial_ports()
         listeDesPortsSerie=serial.tools.list_ports.comports()
@@ -205,26 +212,34 @@ class CFrameControles(tk.Frame):
             else:
                 self.serialPortIsOpen=True
                 self.etqPortOpen.config(text=self.portCom)
-                # self.frameConfig.btnEnvoi.config( state=tk.NORMAL )
-                # self.frameRecord.btnRec.config( state=tk.NORMAL )
-                # self.frameCalMag.btnCal.config( state=tk.NORMAL )
+                self.comCloseBtn.config( state = tk.ACTIVE )
+                self.helpBtn.config( state = tk.ACTIVE )
+                self.ds3231dateBtn.config( state = tk.ACTIVE )
+                self.logBtn.config( state = tk.ACTIVE )
+                self.comOpenBtn.config( state = tk.DISABLED)
+
 
     def comClose(self):
         if self.serialPort.is_open:
             self.serialPort.close()
             self.serialPortIsOpen = False
-            # self.frameConfig.btnEnvoi.config( state=tk.DISABLED )
-            # self.frameRecord.btnRec.config( state=tk.DISABLED )
-            # self.frameCalMag.btnCal.config( state=tk.DISABLED )
-            # self.frameRecord.recordOn = False
-            # self.frameCalMag.calOn =False
+            self.comOpenBtn.config( state = tk.ACTIVE)
+            self.comCloseBtn.config( state = tk.DISABLED ) 
+            self.helpBtn.config( state = tk.DISABLED )
+            self.logBtn.config( state = tk.DISABLED )
+            self.ds3231dateBtn.config( state = tk.DISABLED )
             print("COM close")
 
-    # def calMagneto(self):
-    #     """
-    #     Méthode associée au bouton calMAG permettant de passer en mode calibration magnétomètre
-    #     """
-    #     pass
+    def sendHelpCmd(self):
+        self.serialPort.write(b'<H>\n')
+
+    def sendCheckClkCmd(self):
+        self.serialPort.write(b'<C>\n')
+
+    def logCmd(self):
+        pass
+
+
 
 
 import os

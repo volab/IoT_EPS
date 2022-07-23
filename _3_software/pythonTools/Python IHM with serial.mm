@@ -127,6 +127,7 @@
 </node>
 <node TEXT="A noter également que chacune des ces classe hérite de tk.LabelFrame" ID="ID_1266021847" CREATED="1656230757021" MODIFIED="1656231054664">
 <icon BUILTIN="idea"/>
+<node TEXT="mais pour quelle raison ?" ID="ID_1098244347" CREATED="1658598976279" MODIFIED="1658598987729"/>
 </node>
 </node>
 </node>
@@ -179,6 +180,11 @@
 <node TEXT="Archi resumee" POSITION="right" ID="ID_1757654639" CREATED="1656195056785" MODIFIED="1656195064051">
 <edge COLOR="#00ffff"/>
 <node TEXT="main" ID="ID_55214438" CREATED="1656195066519" MODIFIED="1656195070393">
+<node TEXT="Aspect fondamental" ID="ID_1629314400" CREATED="1658599019828" MODIFIED="1658599028071">
+<node TEXT="L&apos;architecture avec GUIs et homologues à du sens seulement parceque la trame est fixe et composée de champs bien délimités" ID="ID_812971591" CREATED="1658599030858" MODIFIED="1658599102442" COLOR="#ff0000">
+<font SIZE="12"/>
+</node>
+</node>
 <node TEXT="start gui.rshandler" ID="ID_69038417" CREATED="1656195088138" MODIFIED="1656195100763">
 <node TEXT="RS_HANDLER_PERIOD = 9 # ms" ID="ID_235575375" CREATED="1656195202158" MODIFIED="1656195207150"/>
 </node>
@@ -220,7 +226,7 @@
 </node>
 </node>
 </node>
-<node TEXT="guiControle &amp; guiDisplay" FOLDED="true" ID="ID_406048120" CREATED="1656195717358" MODIFIED="1656230545818" ICON_SIZE="28 pt">
+<node TEXT="guiControle &amp; guiDisplay" ID="ID_406048120" CREATED="1656195717358" MODIFIED="1656230545818" ICON_SIZE="28 pt">
 <icon BUILTIN="messagebox_warning"/>
 <richcontent CONTENT-TYPE="xml/" TYPE="DETAILS">
 <html>
@@ -233,12 +239,12 @@
     </p>
   </body>
 </html></richcontent>
-<node TEXT="guiControls" ID="ID_976463840" CREATED="1656229967923" MODIFIED="1656230004027">
+<node TEXT="guiControls" FOLDED="true" ID="ID_976463840" CREATED="1656229967923" MODIFIED="1656230004027">
 <node TEXT="" ID="ID_1892429324" CREATED="1656230011733" MODIFIED="1656230019175">
 <hook URI="images/guiControls.JPG" SIZE="1.0" NAME="ExternalObject"/>
 </node>
 </node>
-<node TEXT="guiDisplays" ID="ID_148807233" CREATED="1656230023849" MODIFIED="1656230029545">
+<node TEXT="guiDisplays" FOLDED="true" ID="ID_148807233" CREATED="1656230023849" MODIFIED="1656230029545">
 <node TEXT="" ID="ID_1169529501" CREATED="1656230097810" MODIFIED="1656230106739">
 <hook URI="images/guiDisplays.JPG" SIZE="1.0" NAME="ExternalObject"/>
 </node>

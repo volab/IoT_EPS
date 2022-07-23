@@ -109,10 +109,10 @@ class CFrameControles(tk.Frame):
 
         #********************************************************************************
         # Btn Port COM Close
-        self.comCloseBtn = tk.Button(self, text="Close com", command=self.comClose)
+        self.comCloseBtn = tk.Button(self, text="Close com", command=self.comClose) #, state = 'disabled')
         self.comCloseBtn.grid(row=widgetsVertPos,column=0, 
                     padx=GEN_PADDING, pady=GEN_PADDING, sticky=tk.N)
-
+        self.comCloseBtn.configure( state = tk.DISABLED )
         # self.btnCalMag = tk.Button(self, text="Cal MAG", state=tk.DISABLED, command=self.calMagneto)
         # self.btnCalMag.grid(row=widgetsVertPos, column=2, padx=GEN_PADDING,
         #                     pady=GEN_PADDING, sticky=tk.W)           
@@ -126,6 +126,7 @@ class CFrameControles(tk.Frame):
         #********************************************************************************
         # Frame config
         # self.frameConfig = FConfig.GuiFrameConfig( self, widgetsVertPos, 0, GEN_PADDING, 4, FrameLargeur)
+
 
         widgetsVertPos += 1
         #********************************************************************************
@@ -186,7 +187,7 @@ class CFrameControles(tk.Frame):
 
         ''' Ouverture du canal de communication
         Fonction associee au bouton OPEN'''
-        # global serialPort,serialPortIsOpen, portCom
+
         if self.comList.current()==-1:
             msg="Choisir un port"
             print("Etat du port serie : {}".format(self.serialPort.is_open) )
@@ -205,26 +206,20 @@ class CFrameControles(tk.Frame):
             else:
                 self.serialPortIsOpen=True
                 self.etqPortOpen.config(text=self.portCom)
-                # self.frameConfig.btnEnvoi.config( state=tk.NORMAL )
-                # self.frameRecord.btnRec.config( state=tk.NORMAL )
-                # self.frameCalMag.btnCal.config( state=tk.NORMAL )
+                self.comCloseBtn.config( state = tk.ACTIVE )
+
+                self.comOpenBtn.config( state = tk.DISABLED)
 
     def comClose(self):
         if self.serialPort.is_open:
             self.serialPort.close()
             self.serialPortIsOpen = False
-            # self.frameConfig.btnEnvoi.config( state=tk.DISABLED )
-            # self.frameRecord.btnRec.config( state=tk.DISABLED )
-            # self.frameCalMag.btnCal.config( state=tk.DISABLED )
-            # self.frameRecord.recordOn = False
-            # self.frameCalMag.calOn =False
+            self.comOpenBtn.config( state = tk.ACTIVE)
+            self.comCloseBtn.config( state = tk.DISABLED )
+
             print("COM close")
 
-    # def calMagneto(self):
-    #     """
-    #     Méthode associée au bouton calMAG permettant de passer en mode calibration magnétomètre
-    #     """
-    #     pass
+
 
 
 import os
