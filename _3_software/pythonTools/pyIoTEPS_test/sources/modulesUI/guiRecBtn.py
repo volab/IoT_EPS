@@ -7,7 +7,7 @@ from time import strftime, localtime
 
 class RecBtn( tk.Button ):
 
-    def __init__( self, master, posRow, posCol, padding ):
+    def __init__( self, master, posRow, posCol, padding, recBasePath ):
 
         self.etiquetteBouton = tk.StringVar()
         self.etiquetteBouton.set("Enregistrer")
@@ -22,6 +22,7 @@ class RecBtn( tk.Button ):
         self.recordOn = False
         self.enregistrementEncours = False
         self.f = 0 # handler fichier de log
+        self.recBasePath = recBasePath
 
 
     def logToggle( self ):
@@ -39,7 +40,8 @@ class RecBtn( tk.Button ):
         if self.recordOn:
             if not(self.enregistrementEncours):
                 print("ouverture fichier")
-                baseChemin = os.path.dirname(__file__)
+                # baseChemin = os.path.dirname(__file__)
+                baseChemin = self.recBasePath
                 prefixe = strftime("%y%m%d_%H%M" , localtime() )
                 # print("Prefixe du fichier de log : " + prefixe)
                 try:
@@ -49,7 +51,7 @@ class RecBtn( tk.Button ):
                     # chemin =  os.path.join( chemin, fileName)
                     # self.f = open(chemin, 'w')
                     fileName = prefixe + ".log"
-                    chemin =  os.path.join( baseChemin, "data")
+                    chemin =  os.path.join( baseChemin, "datum")
                     chemin =  os.path.join( chemin, fileName)
                     # print("===> Chemin : {}".format( chemin ) )
                     self.f = open(chemin, 'w', encoding="utf-8")                            

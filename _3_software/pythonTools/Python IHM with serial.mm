@@ -128,6 +128,7 @@
 <node TEXT="A noter également que chacune des ces classe hérite de tk.LabelFrame" ID="ID_1266021847" CREATED="1656230757021" MODIFIED="1656231054664">
 <icon BUILTIN="idea"/>
 <node TEXT="mais pour quelle raison ?" ID="ID_1098244347" CREATED="1658598976279" MODIFIED="1658598987729"/>
+<node TEXT="Pour disposer d&apos;une zone avec titre et cadre autour pour y mettre des boutons" ID="ID_1945712367" CREATED="1658601645555" MODIFIED="1658601670860"/>
 </node>
 </node>
 </node>

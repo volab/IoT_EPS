@@ -37,6 +37,45 @@ human interface is mode responsive due to boostrap CDN usage.
 In station mode, user can address all its iot plugs from its internet browser of its Mac, PC 
 or Android device.
 
+====================================================================================================
+Set SSIDs
+====================================================================================================
+With Web interface in AP mode
+----------------------------------------------------------------------------------------------------
+- connect to the access point (see ip address on OLED screen)
+- from AP mode main page, choose "Enter new credentials"
+
+.. figure:: image/apModeMainPage.jpg
+    :figwidth: 100%
+    :align: center
+
+    AP Mode main page 
+
+- set credentials and clic send
+
+.. figure:: image/apModeNewCredPage.jpg
+    :figwidth: 100%
+    :align: center
+
+    AP mode new credentials page 
+
+.. NOTE:: Empty field are not change in the plug's credential file
+   :class: without-title
+
+
+With serial debug interface
+----------------------------------------------------------------------------------------------------
+For Station mode credentials, use :
+
+- <I _newSSID> write SSID in credentials WARNING
+- <i _wifiPass> write password in credentials WARNING
+
+commands
+
+And for AP mode credentials, use :
+
+- <L> _newSoftAP_SSID> write SoftAP SSID in credentials WARNING
+- <l> _wifiPass> write soft AP password in credentials WARNING
 
 ================================
 Boutons
@@ -98,6 +137,10 @@ Obtaine IP addresse of the Power strip
 Use serial connexion <a> command if possible or an IP scanner like `AngryIP scanner`_
 
 .. _`AngryIP scanner` : https://angryip.org/
+
+Or read on OLED screen.
+
+
 
 =========
 Weblinks

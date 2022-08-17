@@ -694,7 +694,18 @@ Some internet search:
 
 geometry manager used : grid()
 
-Avancement
+Conception tips
+----------------------------------------------------------------------------------------------------
+main gui class mainUi from CGui.py, creat trame instance of Trame from Trame.py
+
+Trame has 4 plugs instances so from mainGui we can access to plugs data with trame.redplug.color 
+for example.
+
+mainGui has also a frameDisplay instance with plugGui inside. So that is in mainGui that we can connect
+trame.plugs with framDisplay.guiPlugs and more precisly in the rs handler !
+
+
+Progress
 ----------------------------------------------------------------------------------------------------
 Simplified GUI Template
 
@@ -729,7 +740,13 @@ Simplified GUI Template
 
 - Python GUI template packed : pytemplt_sav220713_1924.zip **OK**
 - RS link recption test **OK**
-- RS message analyse
+- RS message analyze **OK**
+- gui : creat gui for plugs **OK**
+
+.. image:: image/pythonToools_fullAppTrackingbugUntimelySwitching.jpg 
+   :align: center
+
+
 
 
 ====================================================================================================

@@ -35,9 +35,9 @@ import constantes as CST
 
 class mainUi:
     """
-    Classe qui fait le regrouppement des 2 classes d'interface graphique principale du logiciel.
+    Classe qui fait le regroupement des 2 classes d'interface graphique principale du logiciel.
 
-    Elle instancie la partie de gauche : les controles, et la partie de droite : les affichages
+    Elle instancie la partie de gauche : les contrôles, et la partie de droite : les affichages
 
     Via les classes CFrameControles et GuiFrameDisplay
 
@@ -57,7 +57,7 @@ class mainUi:
         # self.BTN_QUIT_ROW = 6
         # self.LABEL_VERT_POS = 2
         self.tramesErrorCpt = 0
-        
+        self.baseChemin = os.path.dirname(__file__)
     
         self.cpt = 0
         """ Compteur qui s'affiche dans la zone du port série lorsqu'on est pas connecté"""
@@ -75,7 +75,7 @@ class mainUi:
         self.master = master
         self.master.title( CST.IHM_TITLE )
 
-        self.frameCtrl = FrameControles.CFrameControles(master, self.GEN_PADDING, self.FEN_HAUTEUR)
+        self.frameCtrl = FrameControles.CFrameControles(master, self.GEN_PADDING, self.FEN_HAUTEUR, self.baseChemin)
         self.frameCtrl.grid_propagate(0)
 
         self.frameDisplay = FrameDisplay.GuiFrameDisplay(master, self.GEN_PADDING, self.FEN_HAUTEUR, CST.ZONE_DE_TEXTE_HAUTEUR)
@@ -88,9 +88,11 @@ class mainUi:
         self.statBarLeft=tk.Label(self.statBar, width=20, anchor=tk.W, text="etat", background= '#CCCCCC', padx = 5)
         self.statBarLeft.grid(row=0, column=0, padx = 5)
 
-        self.statBarMid=tk.Label(self.statBar, width=20, anchor=tk.W, text="etat", background= '#CCCCCC', padx = 2)
+        self.statBarMid=tk.Label(self.statBar, width=20, anchor=tk.W, text="rec off", background= '#CCCCCC', padx = 2)
         self.statBarMid.grid(row=0, column=1, padx = 5)
 
+        self.statBarRight=tk.Label(self.statBar, width=25, anchor=tk.W, text="waiting", background= '#CCCCCC', padx = 2)
+        self.statBarRight.grid(row=0, column=2, padx = 5)
 
     def rsHandler(self):
         """
@@ -117,17 +119,27 @@ class mainUi:
             # self.frameDisplay.msgZone.delete('1.0',tk.END)
             self.frameDisplay.msgZone.insert('1.0',\
                     self.trame.pourAffichage())
+
+            # affichage des résultats
+            self.frameDisplay.redPlug.updateDisplay( self.trame.redPlug )
+            self.frameDisplay.greenPlug.updateDisplay( self.trame.greenPlug )
+            self.frameDisplay.bluePlug.updateDisplay( self.trame.bluePlug )
+            self.frameDisplay.yellowPlug.updateDisplay( self.trame.yellowPlug )
+
+
             if self.frameCtrl.logBtn.recordOn:
                 self.statBarMid.config(text="record" )
             else:
-                self.statBarMid.config(text="etat" )
+                self.statBarMid.config(text="rec off" )
             
             self.frameCtrl.logBtn.logManager( self.trame.pourEnregistrement() )
             #     self.frameDisplay.updateDataCapteur( trame.trameDecoupee )
 
             self.trame.trameBrute = b'0' #prêt pour recevoir une nouvelle trame après tous les traitements.
-            
+
+
         self.statBarLeft.config(text="Cpt commut : {}".format(self.trame.cptCommut ) )
+        self.statBarRight.config(text="Last commut : {}".format(self.trame.lastPlugSwitched.color ) )
         self.master.after(self.RS_HANDLER_PERIOD, self.rsHandler)
 
 import os

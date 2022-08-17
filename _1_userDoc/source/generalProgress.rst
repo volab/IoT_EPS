@@ -46,42 +46,44 @@ bugs and todos
 - Tracking bug ``untimely switching``
     - reset all counter **OK**
     - activate red and bleu cycle and manual off on yellow and green (never switch this 2 plugs) **OK**
-    - a little turn in the resolution if this bug see :ref:`here<refBugUntimelySwitching>`   
+    - a little turn in the resolution if this bug see :ref:`update plug state in every loop<refBugUntimelySwitching>`   
     - Check after long period of time if yellow and green counter stay at 0
-    - prepare only 2 220V tracker for not in used plugs ( yellow and green for example)
-        - it is possible to connect them outside the box directly on power plugs
-        - group components
-            - list components see :ref:`here<refDetect220VPres>`
-        - build it
-        - test it
-        - connect to the plugs
+    - prepare only 2 220V tracker for not in used plugs ( yellow and green for example) **ABORTED**
+        - it is possible to connect them outside the box directly on power plugs **ABORTED**
+        - group components **ABORTED**
+            - list components see :ref:`here<refDetect220VPres>` **ABORTED**
+        - build it **ABORTED**
+        - test it **ABORTED**
+        - connect to the plugs **ABORTED**
         
-    - switch to a **special software git branch**
-        - perhaps remove some debug messages...
-        - add function to read the 2 surveyed analog inputs from io expander
-            - test it
-        - add a new survey functionality in main loop
-        - if this 2 plugs switch to ON 
-            - send on serial debug ALERT message
-            - display this 2 plugs states variables
-            - display json file content
+    - switch to a **special software git branch** **ABORTED**
+        - perhaps remove some debug messages... **ABORTED**
+        - add function to read the 2 surveyed analog inputs from io expander **OK**
+            - test it **OK**
+        - add a new survey functionality in main loop **ABORTED**
+        - if this 2 plugs switch to ON **ABORTED**
+            - send on serial debug ALERT message **ABORTED**
+            - display this 2 plugs states variables **ABORTED**
+            - display json file content **ABORTED**
     - conduct long test
-        - place the 2 unused plugs in manual off states
-        - place the 2 others plugs in cycle mode
-            - one with 1 mn on 2 mn off : 3mn total cycle
-            - the others with 4 mn on 3 mn off : 7 mn total cycle
-        - record debug serial line
-        - find the right serial tool to do this job
+        - place the 2 unused plugs in manual off states **OK**
+        - place the 2 others plugs in cycle mode **OK**
+            - one with 1 mn on 2 mn off : 3mn total cycle **OK**
+            - the others with 4 mn on 3 mn off : 7 mn total cycle **OK**
+        - record debug serial line **OK**
+        - find the right serial tool to do this job **I develop it**
     - find the cause
         - possible i2c wrong command to io expander
         - io expander bug
         - json file corruption : check json file content in the logs
         - wrong data write in json file : check plug states in th logs
+    - finaly i develop a tools that check serial line in Python and with tk-inter **OK**
+        - 
 
 
 
 
-- treat 5 BUG From Bug_ToDoLst file
+- treat 6 BUG From Bug_ToDoLst file
     - wrong global table refresh
     - cfgpage / cfgsend : configuration page (see Bug_ToDOList.rst)
     - clone pause

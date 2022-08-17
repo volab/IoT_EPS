@@ -7,6 +7,11 @@ from tkinter import ttk
 # import GuiFrameTlm as FTlm
 # import GuiFrameAlim as FAlimzTxtHight
 
+import os
+import sys
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0,os.path.dirname(SCRIPT_DIR))
+import modulesUI.guiPlugs as plug
 
 
 
@@ -38,8 +43,18 @@ class GuiFrameDisplay(tk.Frame):
                     padx=GEN_PADDING, pady=GEN_PADDING, sticky=tk.N+tk.W)  
 
         # self.dataBaroFrame = FBaro.GuiFrameBaro( self, 2, 1, self.GEN_PADDING)
+        self.redPlug = plug.GuiPlugs(self, GEN_PADDING, "red")
+        self.redPlug.grid(row = 3, column = 1, columnspan=2, sticky=tk.NW)
 
-    
+        self.greenPlug = plug.GuiPlugs(self, GEN_PADDING, "green")
+        self.greenPlug.grid(row = 4, column = 1, columnspan=2, sticky=tk.NW)
+
+        self.bluePlug = plug.GuiPlugs(self, GEN_PADDING, "blue")
+        self.bluePlug.grid(row = 5, column = 1, columnspan=2, sticky=tk.NW)
+
+        self.yellowPlug = plug.GuiPlugs(self, GEN_PADDING, "yellow")
+        self.yellowPlug.grid(row = 6, column = 1, columnspan=2, sticky=tk.NW)
+
     # def updateDataCapteur(self, trameDecoupee ):
     #     self.dataBaroFrame.displayDataCapteur_O( trameDecoupee )
 

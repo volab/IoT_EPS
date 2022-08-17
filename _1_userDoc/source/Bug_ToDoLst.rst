@@ -61,7 +61,7 @@ Open bugs
     :Date de traitement:    
     :Cible:             Web interface
     :Status:            **OPEN**    
-    :Problématique:     in hebdo Mode hebdo on the web page  On time nor off time do not diplay 
+    :Problématique:     in hebdo Mode hebdo on the web page  On time nor off time are not displayed 
                         
     :Traitement:        
                         
@@ -117,6 +117,21 @@ Open bugs
 
 
 ----------------------------------------------------------------------------------------------------
+
+**BUG** : Change SSID in APmode from web page
+----------------------------------------------------------------------------------------------------
+
+    :Detection date:   03/08/22
+    :Resolution date:  
+    :Target:           Web interface
+    :Status:           **OPEN**
+    :Problem:         After send credential : return to the page index of the station mode
+    :Traitement:
+    
+
+
+----------------------------------------------------------------------------------------------------
+
 
 **BUG** : clone pause
 ----------------------------------------------------------------------------------------------------

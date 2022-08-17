@@ -39,7 +39,7 @@ class CFrameControles(tk.Frame):
     :param: master handler de la fenêtre parent
     :param: genPad padding général entre les éléments graphiques
     '''
-    def __init__(self, master, genPad, fenHeight,**kwargs):
+    def __init__(self, master, genPad, fenHeight, recordBasePath, **kwargs):
     
         FEN_HAUTEUR = fenHeight #pour pas tout ré-écrire
         GEN_PADDING = genPad #pour pas tout ré-écrire
@@ -132,8 +132,8 @@ class CFrameControles(tk.Frame):
         self.ds3231dateBtn = tk.Button( self, text='CHECK CLK', command=self.sendCheckClkCmd, state = tk.DISABLED )
         self.ds3231dateBtn.grid(row=widgetsVertPos,column=1, 
                     padx=GEN_PADDING, pady=GEN_PADDING, sticky=tk.N)
-        # self.logBtn = RecBtn( self, text='CHECK CLK', command=self.logCmd, state = tk.DISABLED )
-        self.logBtn = RecBtn.RecBtn( self,  widgetsVertPos, 2, GEN_PADDING)
+
+        self.logBtn = RecBtn.RecBtn( self,  widgetsVertPos, 2, GEN_PADDING, recordBasePath)
                
 
         widgetsVertPos += 1
@@ -236,8 +236,6 @@ class CFrameControles(tk.Frame):
     def sendCheckClkCmd(self):
         self.serialPort.write(b'<C>\n')
 
-    def logCmd(self):
-        pass
 
 
 
