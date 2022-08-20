@@ -1,6 +1,13 @@
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-Interface WEB
+WEB interface behavior spécification (Old document 2019)
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+:Auteur: J.Soranzo
+:Date: Ocotbre 2020
+:update: 17/08/2022
+:Societe: VoRoBoTics
+:Entity: VoLAB
+
 
 Prestation des différents comportement de l'interface WEB
 
@@ -8,6 +15,16 @@ Prestation des différents comportement de l'interface WEB
     :backlinks: top
 
 ####
+
+====================================================================================================
+Presentation
+====================================================================================================
+Follow a presentation of web interface behavior goals.
+
+.. NOTE:: From autor in 2022 : the following lines are written at the beginning of the project and 
+    :class: without-title
+
+    should be considered as goals.
 
 ====================================================================================================
 Comportement

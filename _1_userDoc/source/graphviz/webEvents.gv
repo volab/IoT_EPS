@@ -29,16 +29,13 @@ digraph webEvents {
     "return softApIndex.htm file"[shape=none]
     "/" -> handleSoftAPIndex 
     handleSoftAPIndex ->"return softApIndex.htm file"[label="simple op." style=dashed dir=back arrowhead=none arrowtail=none ]
-    "/time" -> displayTime
-    "/list"-> handleFileList
+
+
     "/plugonoff" -> handlePlugOnOff
     "/help" -> handleHelp
     "return help.htm file"[shape=none]
     handleHelp -> "return help.htm file"[label="simple op." style=dashed dir=back arrowhead=none arrowtail=none]
-    "/edit" -> handleEdit
-    "/edit" ->handleFileCreate
-    "/edit" -> htmlOkResponse
-    "/edit" -> handleFileDelete
+
     "/cfgpage" -> handelIOTESPConfPage
     "/cfgsend" -> handleIOTESPConfiguration
     "/ChangeCred" -> handleNewCred

@@ -129,19 +129,19 @@
 #define NECESSARY_FILE_NBR 11
 
 const String necessaryFileList[ NECESSARY_FILE_NBR ] ={
-      "/index.html"
+      "/index.html.gz"
     , "/config4.json"
     , "/config4copie1.json"
     , "/config4copie2.json"
     /** @todo [NECESSARY] only one of the 3 json file is necessary to run !!!*/
-    , "/firstboot.html"
+    , "/firstboot.htm"
     // and why no credentials file ? because on firstboot we creat it
     // and after ???
     /** @todo [NECESSARY to check]possible bug if credentials disapear - in case of change cred we check
 if file exist and tag an fsErr if not */
     // , "config.html"
     , "/js/main.js"
-    , "/js/plug.js"
+    , "/js/plug.js.gz"
     , "/js/regExPatern.js"
     , "/js/table.js"
     // , "/js/jquery-3.3.1.min.js"

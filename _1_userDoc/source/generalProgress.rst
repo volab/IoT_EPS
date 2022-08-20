@@ -4,7 +4,7 @@ General progress of IOT Electrical Power Strip
 
 :Auteur: J.Soranzo
 :Date: 04/2021
-:last update: 18/07/2021
+:last update: 17/08/2022
 :Societe: VoRoBoTics
 :Entity: VoLAB
 
@@ -18,9 +18,13 @@ Task list (merged todo list hard and soft : preferred order)
 ====================================================================================================
 Don't forget the todo list of the **doxygen documentation** and **git history**:
 
-    - for a new plug : buy plugs
+- To build a new plug : buy plugs
 
+Web interface work
+----------------------------------------------------------------------------------------------------
+- in AP mode
 
+- in station Mode
 
 Doc
 ----------------------------------------------------------------------------------------------------
@@ -83,12 +87,15 @@ bugs and todos
 
 
 
-- treat 6 BUG From Bug_ToDoLst file
+- treat 7 BUG From Bug_ToDoLst file
+    - change time zone
+    - on Web Page Hebdo mode H-fin
     - wrong global table refresh
     - cfgpage / cfgsend : configuration page (see Bug_ToDOList.rst)
     - clone pause
-    - untimely switching **10%**
-    - push button permuted on yellow and green (hardware) **OK**
+    - untimely switching **80%**
+    - Change SSID in APmode from web page
+    
 
 
 - treat 6 TODO From Bug_ToDoLst file
@@ -96,6 +103,9 @@ bugs and todos
     - minify javascripts
     - doxy HTML js
     - file names coherence
+
+- in wifiwebinternet.rst update Web events handlers to remove unused mode like /time /edit /list **OK**
+
 
 Others task
 ----------------------------------------------------------------------------------------------------

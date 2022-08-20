@@ -323,35 +323,35 @@ String CServerWeb::extractParamFromHtmlReq(String allRecParam, String param){
  
  This function is provided by core spiffs example
 */
-void CServerWeb::handleFileList(){
-    //usage exemple ipaddr/list?dir=/
-    if (!server->hasArg("dir")) {
-        server->send(500, "text/plain", "BAD ARGS");
-        return;
-    }
+// void CServerWeb::handleFileList(){
+//     //usage exemple ipaddr/list?dir=/
+//     if (!server->hasArg("dir")) {
+//         server->send(500, "text/plain", "BAD ARGS");
+//         return;
+//     }
 
-    String path = server->arg("dir");
-    DEBUGPORT.println("handleFileList: " + path);
-    Dir dir = SPIFFS.openDir(path);
-    path = String();
+//     String path = server->arg("dir");
+//     DEBUGPORT.println("handleFileList: " + path);
+//     Dir dir = SPIFFS.openDir(path);
+//     path = String();
 
-    String output = "[";
-    while (dir.next()) {
-        File entry = dir.openFile("r");
-        if (output != "[")
-            output += ",\n";
-        bool isDir = false;
-        output += "{\"type\":\"";
-        output += (isDir) ? "dir" : "file";
-        output += "\",\"name\":\"";
-        output += String(entry.name()).substring(1);
-        output += "\"}";
-        entry.close();
-    }
+//     String output = "[";
+//     while (dir.next()) {
+//         File entry = dir.openFile("r");
+//         if (output != "[")
+//             output += ",\n";
+//         bool isDir = false;
+//         output += "{\"type\":\"";
+//         output += (isDir) ? "dir" : "file";
+//         output += "\",\"name\":\"";
+//         output += String(entry.name()).substring(1);
+//         output += "\"}";
+//         entry.close();
+//     }
 
-    output += "]";
-    server->send(200, "text/json", output);
-}
+//     output += "]";
+//     server->send(200, "text/json", output);
+// }
 
 /**
  * @brief Juste to send help.html file
@@ -366,70 +366,70 @@ void CServerWeb::handleHelp(){
  * @brief Handler that open edit.htm
  * 
  */
-void CServerWeb::handleEdit(){
-    DEFDPROMPT("Handle edit");
-    DSPL(dPrompt);
-    if (!handleFileRead("/edit.htm"))
-        server->send(404, "text/plain", "FileNotFound");
-}
+// void CServerWeb::handleEdit(){
+//     DEFDPROMPT("Handle edit");
+//     DSPL(dPrompt);
+//     if (!handleFileRead("/edit.htm"))
+//         server->send(404, "text/plain", "FileNotFound");
+// }
 
-void CServerWeb::handleFileCreate(){
-    DEFDPROMPT("Handle file creat");
-    DSPL(dPrompt);
-    if (server->args() == 0)
-        return server->send(500, "text/plain", "BAD ARGS");
-    String path = server->arg(0);
-    DEBUGPORT.println("handleFileCreate: " + path);
-    if (path == "/")
-        return server->send(500, "text/plain", "BAD PATH");
-    if (SPIFFS.exists(path))
-        return server->send(500, "text/plain", "FILE EXISTS");
-    File file = SPIFFS.open(path, "w");
-    if (file)
-        file.close();
-    else
-        return server->send(500, "text/plain", "CREATE FAILED");
-    server->send(200, "text/plain", "");
-    path = String();
-}
+// void CServerWeb::handleFileCreate(){
+//     DEFDPROMPT("Handle file creat");
+//     DSPL(dPrompt);
+//     if (server->args() == 0)
+//         return server->send(500, "text/plain", "BAD ARGS");
+//     String path = server->arg(0);
+//     DEBUGPORT.println("handleFileCreate: " + path);
+//     if (path == "/")
+//         return server->send(500, "text/plain", "BAD PATH");
+//     if (SPIFFS.exists(path))
+//         return server->send(500, "text/plain", "FILE EXISTS");
+//     File file = SPIFFS.open(path, "w");
+//     if (file)
+//         file.close();
+//     else
+//         return server->send(500, "text/plain", "CREATE FAILED");
+//     server->send(200, "text/plain", "");
+//     path = String();
+// }
 
-void CServerWeb::handleFileUpload(){
-    if (server->uri() != "/edit")
-        return;
-    HTTPUpload& upload = server->upload();
-    if (upload.status == UPLOAD_FILE_START) {
-        String filename = upload.filename;
-        if (!filename.startsWith("/"))
-            filename = "/" + filename;
-        DEBUGPORT.print("handleFileUpload Name: ");
-        DEBUGPORT.println(filename);
-        _fsUploadFile = SPIFFS.open(filename, "w");
-        filename = String();
-    } else if (upload.status == UPLOAD_FILE_WRITE) {
-        //DEBUGPORT.print("handleFileUpload Data: "); DEBUGPORT.println(upload.currentSize);
-        if (_fsUploadFile)
-            _fsUploadFile.write(upload.buf, upload.currentSize);
-    } else if (upload.status == UPLOAD_FILE_END) {
-        if (_fsUploadFile)
-            _fsUploadFile.close();
-        DEBUGPORT.print("handleFileUpload Size: ");
-        DEBUGPORT.println(upload.totalSize);
-    }
-}
+// void CServerWeb::handleFileUpload(){
+//     if (server->uri() != "/edit")
+//         return;
+//     HTTPUpload& upload = server->upload();
+//     if (upload.status == UPLOAD_FILE_START) {
+//         String filename = upload.filename;
+//         if (!filename.startsWith("/"))
+//             filename = "/" + filename;
+//         DEBUGPORT.print("handleFileUpload Name: ");
+//         DEBUGPORT.println(filename);
+//         _fsUploadFile = SPIFFS.open(filename, "w");
+//         filename = String();
+//     } else if (upload.status == UPLOAD_FILE_WRITE) {
+//         //DEBUGPORT.print("handleFileUpload Data: "); DEBUGPORT.println(upload.currentSize);
+//         if (_fsUploadFile)
+//             _fsUploadFile.write(upload.buf, upload.currentSize);
+//     } else if (upload.status == UPLOAD_FILE_END) {
+//         if (_fsUploadFile)
+//             _fsUploadFile.close();
+//         DEBUGPORT.print("handleFileUpload Size: ");
+//         DEBUGPORT.println(upload.totalSize);
+//     }
+// }
 
-void CServerWeb::handleFileDelete(){
-    if (server->args() == 0)
-        return server->send(500, "text/plain", "BAD ARGS");
-    String path = server->arg(0);
-    DEBUGPORT.println("handleFileDelete: " + path);
-    if (path == "/")
-        return server->send(500, "text/plain", "BAD PATH");
-    if (!SPIFFS.exists(path))
-        return server->send(404, "text/plain", "FileNotFound");
-    SPIFFS.remove(path);
-    server->send(200, "text/plain", "");
-    path = String();
-}
+// void CServerWeb::handleFileDelete(){
+//     if (server->args() == 0)
+//         return server->send(500, "text/plain", "BAD ARGS");
+//     String path = server->arg(0);
+//     DEBUGPORT.println("handleFileDelete: " + path);
+//     if (path == "/")
+//         return server->send(500, "text/plain", "BAD PATH");
+//     if (!SPIFFS.exists(path))
+//         return server->send(404, "text/plain", "FileNotFound");
+//     SPIFFS.remove(path);
+//     server->send(200, "text/plain", "");
+//     path = String();
+// }
 
 /** 
  @fn void CServerWeb::handleIndex()

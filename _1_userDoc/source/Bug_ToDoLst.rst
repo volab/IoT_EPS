@@ -49,7 +49,8 @@ Open bugs
     :Cible:             firmware
     :Status:            **CLOSED**    
     :Problématique:     When i change summer time display time  error by command <C> is 3600 and 
-                        DS3231 time is not updated 
+                        DS3231 time is not updated. command <s> can be used to force ds3231 update 
+                        by NTP
                         
     :Traitement:        it is not a bug DS3231 update period is #define RTC_UPDATE_PERIOD 15 //every 15mn
 
@@ -118,6 +119,8 @@ Open bugs
 
 ----------------------------------------------------------------------------------------------------
 
+
+
 **BUG** : Change SSID in APmode from web page
 ----------------------------------------------------------------------------------------------------
 
@@ -154,6 +157,31 @@ Open bugs
 ====================================================================================================
 Open todo
 ====================================================================================================
+
+ToDo : timezone
+----------------------------------------------------------------------------------------------------
+
+    :Date de saisie:        17/08/2022
+    :Date de traitemant:    
+    :Cible:                 firmware/web
+    :Status:                **OPEN**
+    :Problematique:         provide a way in the config page to select timezone. 
+    :Traitement:            
+
+------------------------------------------------------------------------------------------
+
+ToDo : Automatic adaptation to summer time
+----------------------------------------------------------------------------------------------------
+
+    :Date de saisie:        17/08/2022
+    :Date de traitemant:    
+    :Cible:                 firmware/web
+    :Status:                **OPEN**
+    :Problematique:         Auto adapt to summer/winter time. 
+    :Traitement:            
+
+------------------------------------------------------------------------------------------
+
 
 ToDo : clear all led at the beginning of setup()
 ----------------------------------------------------------------------------------------------------

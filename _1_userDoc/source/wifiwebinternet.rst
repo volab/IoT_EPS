@@ -4,11 +4,21 @@ Wifi, Web and internet
 
 :Auteur: J.Soranzo
 :Date: Ocotbre 2020
+:update: 17/08/2022
 :Societe: VoRoBoTics
 :Entity: VoLAB
 
+.. toctree::
+    :maxdepth: 2
+    :caption: Sub content
+    :titlesonly:
+
+    interface_Web
+
 .. contents::
     :backlinks: top
+
+
 
 
 ====================================================================================================
@@ -35,11 +45,11 @@ No WiFi
 ----------------------------------------------------------------------------------------------------
 Also called simpleManualMode
 
-When power on (by the wall plug not by the power switch) the powerStrip, maintain Push button plug 1
+When power on the powerStrip (by the wall plug not by the power switch), maintain push button of redPlug
 
 Power strip start in this mode independently of Json configured mode.
 
-4 Big color LED flasf 20 times in purple.
+4 Big color LED flash 20 times in purple.
 
 In this very simple poor mode, powerstrip works only in manual mode with BP actions ON/OFF.
 
@@ -75,9 +85,9 @@ AP and non DHCP IP address are class C address (subnet mask is 255.255.255.0 har
 ==================
 WIFI LED behavior
 ==================
-In Station mode, fast flashing (20 times 100ms, 100ms) before to try connection
+In Station mode, fast flashing (30 - parametric value in config4.json -  times 100ms, 100ms) before to try connection
 and after slow flashing while waiting for connection.
-(500ms with a 20 times time out - new in 24/12/2018). If no connection detected afte 20 tries
+(500ms with a 30 times time out - new in 24/12/2018). If no connection detected after 30 (STAmaxWifiConnectionRetry parameter) tries
 Automatically switch in SoftAP mode.
 
 In Access Point LED FLash quickly (20 times 100ms-500ms) and 
@@ -99,7 +109,7 @@ This is : simpleManualMode (see above). To return to normal mode power off the s
 (not by the power on/off button but by removing the strip from the wall plug)
 
 ===========================================
-ESP8266 and its wifi managment !
+ESP8266 and its wifi management !
 ===========================================
 ESP8266 store credentials information in FLASH but how to access to them ???
 And how to control them
@@ -107,7 +117,7 @@ And how to control them
 Question how to erase wifi flash param ?
 
 Memory mapping is not provided. Some peace of informations
-like in SPIFFS description that provide the order of memory big blocks but not their respective add
+like in SPIFFS description that provide the order of memory big blocks but not their respective address.
 
 Second question : how to directly access to flash memory ?
 
@@ -235,22 +245,26 @@ Possible plugonoff requests:
 
 Other request:
 
-- /time
-- /list
-- /edit
+- /time **obsolète**
+- /list **obsolète**
+- /edit **obsolète**
 - /cfgpage
 - /cfgsen?lots of parameter...
 - /ChangeCred?ssid=xxxx&pass=yyyy&softApSsid=ssidOfSoftApMode&softApPass=123456789
-
 
 
 NTP server name
 ----------------------------------------------------------------------------------------------------
 The name reside in the IoT_EPS.h file and is not a config param through web config page
 
-====================
+It is : "fr.pool.ntp.org" on ``#define NTPSERVER`` macro
+
+
+
+
+====================================================================================================
 Serveur html ESP8266
-====================
+====================================================================================================
 Copy from example provided in ARDUINO IDE : ESP8266WebServer/FSBrowser
 
 This example provide a lot of functions that managed file sending as css, jpg and so on
@@ -268,9 +282,9 @@ One possible source (but not really the same) :
 https://github.com/gmag11/FSBrowser/blob/master/data/edit.html
 
 
-================================
+====================================================================================================
 HTML IHM integration
-================================
+====================================================================================================
 Start on March 2019
 
 Used technologies:
@@ -301,8 +315,86 @@ bugs found :
 - minuterie (timer mode) no default value for the ratio immediat start or differed start - corrected
 - bug in ESP source side effect of main power switch  ?
 
-improvments:
+improvements:
 - add tips on main page : To refresh this page press F5
+
+====================================================================================================
+HTML rework in 2022
+====================================================================================================
+2 problèmes :
+
+- AP mode
+- Station mode
+
+html extension vs htm : preference of Pierre just for estetic reason
+
+SPIFFS total bytes : 2949250 : 2.8Mo
+SPIFFS used bytes : 317515 310ko
+
+Reduce image (red.png, green.png...) size 124x124 to win 80ko
+
+minify index.html win 30ko
+
+Bootstrap size : `primaryobjects/css-comparison.csv`_
+
+.. _`primaryobjects/css-comparison.csv` : https://gist.github.com/primaryobjects/64a4e7e3351c646f51eee07949215ad4
+
+
+État des lieux
+----------------------------------------------------------------------------------------------------
+- bootstrap.css
+- jquery-3.3.1.js
+- jquery-ui.js
+- font awesome :solid.js, fontawesome.js
+- popper.min.js
+- bootstrap.min.js
+
+
+gzipper : `Free Online Converter Convert to GZIP`_
+
+.. _`Free Online Converter Convert to GZIP` : https://online-converting.com/archives/convert-to-gzip/
+
+Liste des fichiers avant les travaux::
+
+    /apmodeindex.htm / 1303
+    /config.htm / 3405
+    /config_tag.htm / 3279
+    /credentials.json / 170
+    /css/apmode.css / 1074
+    /css/sidebar.css / 2021
+    /css/style.css / 3738
+    /defConfig.json / 1407
+    /edit.htm / 7890
+    /firstboot.htm / 5384
+    /firstboot.html / 5289
+    /helloWorld.htm / 1275
+    /help.htm / 1246
+    /help.html / 0
+    /img/align_justify.svg / 701
+    /img/blue.png / 12473
+    /img/green.png / 27773
+    /img/logo_alpha.png / 32887
+    /img/red.png / 28171
+    /img/yellow.png / 30460
+    /index.html / 48741
+    /index.html.minify / 16109
+    /js/main.js / 13904
+    /js/myLog.js / 712
+    /js/plug.js / 18959
+    /js/regExPatern.js / 8724
+    /js/table.js / 8425
+    /newcred.htm / 1380
+    /page2.htm / 12531
+    /volab.ico / 198
+    /config4copie2.json / 1408
+    /config4.json / 1419
+    /config4copie1.json / 1419
+    SPIFFS total bytes : 2949250
+    SPIFFS used bytes : 317515
+    SPIFFS max open files : 5
+    SPIFFS max path lenght : 32
+
+
 
 ====================================================================================================
 Weblinks

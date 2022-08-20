@@ -23,7 +23,6 @@ IoT_EPS's documentation!
    Bug_ToDoLst
    assembly
    userManual
-   interface_Web
    pitch
    chronogram
 
