@@ -1,37 +1,37 @@
-/apmodeindex.htm / 1303
-/config.htm / 3405
-/config_tag.htm / 3279
-/credentials.json / 170
-/css/apmode.css / 1074
-/css/sidebar.css / 2021
-/css/style.css / 3738
-/defConfig.json / 1407
-/edit.htm / 7890
-/firstboot.htm / 5384
-/firstboot.html / 5289
-/helloWorld.htm / 1275
-/help.htm / 1246
-/help.html / 0
-/img/align_justify.svg / 701
-/img/blue.png / 12473
-/img/green.png / 27773
-/img/logo_alpha.png / 32887
-/img/red.png / 28171
-/img/yellow.png / 30460
-/index.html / 48741
-/index.html.minify / 16109
-/js/main.js / 13904
-/js/myLog.js / 712
-/js/plug.js / 18959
-/js/regExPatern.js / 8724
-/js/table.js / 8425
-/newcred.htm / 1380
-/page2.htm / 12531
-/volab.ico / 198
-/config4copie2.json / 1408
-/config4.json / 1419
-/config4copie1.json / 1419
-SPIFFS total bytes : 2949250
-SPIFFS used bytes : 317515
-SPIFFS max open files : 5
-SPIFFS max path lenght : 32
+		apmodeindex.htm 	1303					apmodeindex.htm 	1303
+		config.htm 	3405					config.htm 	3405
+		config_tag.htm 	3279					config_tag.htm 	3279
+		credentials.json 	170					credentials.json 	170
+	css	apmode.css 	1074				css	apmode.css 	1074
+	css	sidebar.css 	2021				css	sidebar.css 	2021
+	css	style.css 	3738				css	style.css 	3738
+		defConfig.json 	1407					defConfig.json 	1407
+		edit.htm 	7890						
+		firstboot.htm 	5384					firstboot.htm 	5384
+		firstboot.html 	5289						
+		helloWorld.htm 	1275					helloWorld.htm 	1275
+		help.htm 	1246					help.htm.gz 	722
+		help.html 	0						
+	img	align_justify.svg 	701						
+	img	blue.png 	12473				img	blue.png 	12473
+	img	green.png 	27773				img	green.png 	13317
+	img	logo_alpha.png 	32887				img	logo_alpha.png 	32887
+	img	red.png 	28171				img	red.png 	12775
+	img	yellow.png 	30460				img	yellow.png 	15965
+		index.html 	48741					index.html.gz 	5051
+		index.html.minify 	16109					index.html.minify 	16109
+	js	main.js 	13904				js	main.js 	13904
+	js	myLog.js 	712				js	myLog.js 	712
+	js	plug.js 	18959				js	plug.js.gz 	3120
+	js	regExPatern.js 	8724				js	regExPatern.js 	8724
+	js	table.js 	8425				js	table.js 	8425
+		newcred.htm 	1380					newcred.htm 	1380
+		page2.htm 	12531					page2.htm 	12531
+		volab.ico 	198					volab.ico 	198
+		config4copie2.json 	1408					config4.json 	1408
+		config4.json 	1419					config4copie1.json 	1408
+		config4copie1.json 	1419					config4copie2.json 	1408
+SPIFFS total bytes : 2949250			303875			SPIFFS total bytes : 2949250			
+SPIFFS used bytes : 317515						SPIFFS used bytes : 196784			
+SPIFFS max open files : 5						SPIFFS max open files : 5			
+SPIFFS max path lenght : 32						SPIFFS max path lenght : 32			
