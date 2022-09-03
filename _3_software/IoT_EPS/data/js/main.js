@@ -1,20 +1,25 @@
 $(document).ready( ()=>{
+
+
     // start .ready()
 
-    const log           = new C_MyLog();
-    const regEx         = new C_RexExPatern();
-    const red           = new C_Plug("redPlug");
-    const table         = new C_Table();
-    const v_jsonFile    = 'config4.json';
+    // const log                   = new C_MyLog();
+    const regEx                 = new C_RexExPatern();
+    const red                   = new C_Plug("redPlug");
+    const table                 = new C_Table();
+    const v_jsonFile            = 'config4.json';
 
-    const HOME          = $("div.home");
-    const FIELDSET      = $("fieldset");
-    // const HELP          = $("div.help");
-    // const CFG           = $("div.cfg");
+    const HOME                  = $("div.home");
+    const FIELDSET              = $("fieldset");
+    // const HELP               = $("div.help");
+    // const CFG                = $("div.cfg");
 
-    const menuHome      = $(".home.modeSelector");
-    const menuHelp      = $(".help.modeSelector");
-    const menuCfg      = $(".cfg.modeSelector");
+    const BTN_RST_NOT_MANUEL    = $(".reset:not(:first)");
+    const FORM_NOT_MANUEL       = $(".formRequest:not(:first)");
+
+    const menuHome              = $(".home.modeSelector");
+    const menuHelp              = $(".help.modeSelector");
+    const menuCfg               = $(".cfg.modeSelector");
 
     /*
     * Nettoyage avant usage
@@ -38,47 +43,45 @@ $(document).ready( ()=>{
     f_hideAll();
     f_showOne(HOME);
 
-    /*
-     * Centrage du titre
-     */
-    function f_resize(){
-        let winWidth = $(window).width();
-        let v_jimbotron = $(".jimbotron");
-        let v_headerTitle = $(".headerTitle");
-        let v_headerTitleWidth = v_headerTitle.width();
+    // /*
+    //  * Centrage du titre
+    //  */
+    // function f_resize(){
+    //     let winWidth = $(window).width();
+    //     let v_jimbotron = $(".jimbotron");
+    //     let v_headerTitle = $(".headerTitle");
+    //     let v_headerTitleWidth = v_headerTitle.width();
 
-        let v_offsetTitleTop = v_headerTitle.offset().top;
-        let v_offsetTitleLeft = (winWidth-v_headerTitleWidth)/2;
+    //     let v_offsetTitleTop = v_headerTitle.offset().top;
+    //     let v_offsetTitleLeft = (winWidth-v_headerTitleWidth)/2;
 
 
-        v_jimbotron.width(winWidth);
-        v_jimbotron.css({
-        "margin": "0 1.5% 0 1.5%"
-        });
+    //     v_jimbotron.width(winWidth);
+    //     v_jimbotron.css({
+    //     "margin": "0 1.5% 0 1.5%"
+    //     });
 
-        v_headerTitle.css({
-        "position": "fixed",
-        "top": v_offsetTitleTop,
-        "left": v_offsetTitleLeft
-        });
-    }
+    //     v_headerTitle.css({
+    //     "position": "fixed",
+    //     "top": v_offsetTitleTop,
+    //     "left": v_offsetTitleLeft
+    //     });
+    // }
 
-    f_resize();
+    // f_resize();
 
-    /*
-     * Responcive
-     */
-    $(window).resize(
-        ()=>{
-            f_resize();
-            // console.log("reducteur de tête !")
-        }
-    )
+    // /*
+    //  * Responcive
+    //  */
+    // $(window).resize(
+    //     ()=>{
+    //         f_resize();
+    //     }
+    // )
 
     /*
     * Menu (Hamberger + Sidebar)
     */
-
     var v_sidebar = $('#sidebar');
 
     var toggleSidebar = ()=>{ 
@@ -94,7 +97,6 @@ $(document).ready( ()=>{
     /*
      * Selecteurs sidebar != des prises
      */
-
     menuHome.on(
         "click",
         ()=>{
@@ -119,6 +121,21 @@ $(document).ready( ()=>{
             f_hideAll();
             f_showOne(CFG);
     });
+
+    /*
+     *  Common Events
+     */
+    BTN_RST_NOT_MANUEL.on(
+        "click", 
+        (event)=>{
+            regEx.f_clean();
+            BTN_RST_NOT_MANUEL.each(
+                (i)=>{
+                    FORM_NOT_MANUEL[i].reset();
+                }
+            );
+        }
+    );
 
     /*
     * Events Manuel
@@ -181,41 +198,24 @@ $(document).ready( ()=>{
         }
     );
 
-    // $(red.manuelForm).on(
-    //     "submit",
-    //     (event)=>{
-    //         event.preventDefault();
-    //         let v_target = red.f_getQueryTarget(event);
-    //         let v_data = red.f_getDataForm(v_target);
-    //         console.log(v_data);
-    //         var v_form = $(".Manuel.formRequest");
-    //         var v_url = v_form.attr("action");
-    //         $(event).submit();
-    //         console.log(event);
-    //         log.f_formLog(v_target);
-    //         $(red.manuelForm)[0].reset();
-    //         $.post(v_url, v_data, "ok");
-    //         $.ajax({
-    //             type: "POST",
-    //             url: v_url,
-    //             data: v_data,
-    //             success:(url, data) => {
-    //                 console.log("ok");
-    //             },
-    //             error: () =>{
-    //                 console.log("pas ok");
-    //             },
-    //             datatype: "text"
-    //         })
-    //     }
-    // );
+    red.manuelReset.on(
+        "click",
+        (event)=>{
+            red.f_displayDiv_dureeOff("none");
+            red.f_displayDiv_hFin("none");
+            red.f_displayTypeSelector("none");
+            regEx.f_clean();
+            // INFO : JQuery n'a pas de methode native 'reset()'. Il faut utiliser la methode Javascript
+            red.manuelForm[0].reset();
+        }
+    );
 
     /*
     * Events Minuterie
     */
     $(red.modeMinuterie).on(
         "click", 
-        ()=>{
+        (event)=>{
             regEx.f_clean();
             f_hideAll();
             f_showOne(FIELDSET);
@@ -230,22 +230,12 @@ $(document).ready( ()=>{
             regEx.f_callbackRegEx(event)
         });
 
-    // $(red.minuterieForm).on(
-    //     "submit",
-    //     (event)=>{
-    //         event.preventDefault();
-    //         $(this).submit();
-    //         log.f_formLog( red.f_getQueryTarget(event));
-    //         $(red.minuterieForm)[0].reset();
-    //     }
-    // );
-
     /*
     * Events Cyclique
     */
     $(red.modeCyclique).on(
         "click", 
-        function(){
+        function(event){
             regEx.f_clean();
             f_hideAll();
             f_showOne(FIELDSET);
@@ -291,31 +281,18 @@ $(document).ready( ()=>{
         }
     );    
 
-    // $(red.cycliqueForm).on(
-    //     "submit",
-    //     (event)=>{
-    //         event.preventDefault();
-    //         $(this).submit();
-    //         log.f_formLog( red.f_getQueryTarget(event));
-    //         if (!red.cycliquePauseBool){
-    //             $(red.cycliqueForm)[0].reset();
-    //         }
-    //     }
-    // );
-
     /* 
     * event Hebdomadaire
     */
-
     $(red.modeHedbomadaire).on(
         "click", 
-        ()=>{
+        (event)=>{
             regEx.f_clean();
             f_hideAll();
-        f_showOne(FIELDSET);
-            red.f_displayHebdomadaireDiv("block");
-            toggleSidebar();
-            red.f_switchClass(event.target);
+            f_showOne(FIELDSET);
+                red.f_displayHebdomadaireDiv("block");
+                toggleSidebar();
+                red.f_switchClass(event.target);
         });
 
     $(red.hebdmadaireAllDays).on(
@@ -369,22 +346,9 @@ $(document).ready( ()=>{
         }
     );    
 
-    // $(red.hebdomadaireForm).on(
-    //     "submit",
-    //     (event)=>{
-    //         event.preventDefault();
-    //         $(this).submit();
-    //         log.f_formLog( red.f_getQueryTarget(event));
-    //         if (!red.hebdomadairePauseBool){
-    //             $(red.hebdomadaireForm)[0].reset();
-    //         }
-    //     }
-    // );
-
     /* 
     * event Clone
     */
-
     $(red.modeClone).on(
         "click", 
         (event)=>{
@@ -433,23 +397,12 @@ $(document).ready( ()=>{
         }
     )
 
-    // $(red.cloneForm).on(
-    //     "submit",
-    //     (event)=>{
-    //         event.preventDefault();
-    //         console.log("form Submit");
-    //         $(this).submit();
-    //         log.f_formLog( red.f_getQueryTarget(event));
-    //         $(red.cloneForm)[0].reset();
-    //     }
-    // );
-
     /*
     * Traitemant Json
     */
 
     /* 
-    * la fonction loadJson à été piqué ici:
+    * la fonction loadJson à été piquée ici:
     * http://www.askyb.com/javascript/load-json-file-locally-by-js-without-jquery/comment-page-1/#comment-4130
     */
     function f_loadJSON(v_file, callback) { 
@@ -466,9 +419,10 @@ $(document).ready( ()=>{
 
     function f_populateTitle( v_hostname ){
         /* permet de modifier le titre de la page (Onglet) */
-        $("#autoTitle").text(v_hostname)};
+        $("#autoTitle").text(v_hostname)
+    };
 
-    f_loadJSON(v_jsonFile, function(response) {
+    function f_callbackJSON(response) {
         let jsonresponse = JSON.parse(response);
 
         /* general */
@@ -498,8 +452,17 @@ $(document).ready( ()=>{
                 table.f_populateTable();
             };
         }
+    }
 
-    });
+    f_loadJSON(v_jsonFile, f_callbackJSON);
+
+    $(table.btnUPD).on(
+        "click",
+        (event)=>{
+            table.f_removeTbody();
+            f_loadJSON(v_jsonFile, f_callbackJSON);
+        }
+    );
 
 // .ready() end
 });
@@ -507,27 +470,54 @@ $(document).ready( ()=>{
 /*
  * ## TODO
  *
- * #. Finir les fonction "clear". Les appliquer sur chaque chagement de mode, changement de prise
- *    et entre chaque action du mode manuel
- *
- * ####
- *  
- * #. Gestion de la transition entre les DIV (jqueryui .effect "drop" et "slide")
- * 
- * 
- * ####
- * 
  * #. Ajouter un fieldset ou un div pour l'aide
  *    ==> ne plus utiliser la page "help.html"
  * 
  *  ####
  * 
- * #. Ajouter un fieldset ou un div pour la personnalisation
- *    (toujours sur la même page)
+ * #. Création d'une page de configuration
+ * 
+ *    - Ajouter un tableau de résumer de la configuration à l'accueil de la page de configuration
+ *    - Nom des prises
+ *    - Le mot clef de l'action Interface / serveur : "cfgsend"
+ *    - Emplacemet des prises
+ *    - Les informations de config4.json sont à traiter.
+ *      N.B :   ne pas renseigner les valeurs par défaut dans le placeholder de chaque Item car cette 
+ *              valeur st remplacer depuis le serveur par le véritable paramètre renseigner dans le JSON
+ *      "general": {
+ *          "emplacement": "salon",             --> Défini l'emplacement de la prise (50 char, pas d'accent et pas *                                                  d'espace)
+ *          "hostName": "PowerStrip01",         --> Nom de l'EPS
+ *          "startInAPMode": "OFF",             --> Pour choisir de démarrer en mode AP en mode réseau
+ *                                                  (attaché à un accès wifi)
+ *          "firstBoot": "OFF",                 --> Si ON, on fait un reset usine
+ *          "numberOfPlugs": "4",               --> Ne pas afficher car non configurable
+ *          "rtcValidity": "true",              --> Ne pas afficher car non configurable
+ *          "softAP_IP": "192.168.95.42",       --> IP en mode AP
+ *                                                  Prévoir une IP Fixe pour le mode réseau
+ *          "softAP_port": "80",                --> port de connexion en http pour le mode AP
+ *          "allLedsOnTime": "30",              --> Délais avant exctinction des LEDs
+ *          "ledsGlobalLuminosity": "5",        --> Réglages de l'intensité lumineuse des LEDs (valeur de 0 à 255)
+ *          "powerLedEconomyMode": "OFF",       --> Alumer ou eteindre le témoin de mise sous tension
+ *          "STAmaxWifiConnexionRetry": "30"    --> Nombre maximum de tentative de connexion avant passage en mode AP
+ *          },
+ * 
+ *      "redPlug": {
+ *          "nickName": "Aquarium",             --> Correspond au nom de l'équipement branché
+ * 
+ *      - Les informations de credential.json sont à traiter
+ *        "general": {
+            "ssid" : "VoLab",
+            "pass" : "V0L@b42net",
+            "softApSsid" : "powerStrip01_mac",
+            "softApPass" : "plusDe8c"
+            }
  * 
  * ####
  * 
- * #. Mode responcive, vérfier le bon affichage sur chacun des modes de la prise
+ * #. Générer la documentation automatique du code
+ * 
+ *      * voir JSDOC
+ *      * Sphinx-js
  * 
  * ## TODO
  */

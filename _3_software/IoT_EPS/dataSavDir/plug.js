@@ -15,7 +15,6 @@ class C_Plug{
         this.targetClassList            = null;
 
         /* définition des radio 'modeSelector' */
-        this.divLeft                    = null;
         this.modeManuel                 = null;
         this.modeMinuterie              = null;
         this.modeCyclique               = null;
@@ -39,9 +38,10 @@ class C_Plug{
             //sub div colone 3 (2/2)
         this.manuelDiv_dureeOff         = null;
         this.manuel_dureeOff            = null;
-            //submit
+            //submit, Reset
         this.manuelForm                 = null;
         this.manuelSubmit               = null;
+        this.manuelReset                = null;
 
         /* Mode Minuterie */
             //Time Selector
@@ -124,9 +124,6 @@ class C_Plug{
 
     f_setQueryModeSelector(v_colorPlug){
         /* Permet d'initialiser les QuerySelector des boutons radio pour le 'modeSelector */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
-
-        this.divLeft            = $(`.div_left`);
         this.modeManuel         = $(`.modeSelector.Manuel`);
         this.modeMinuterie      = $(`.modeSelector.Minuterie`);
         this.modeCyclique       = $(`.modeSelector.Cyclique`);
@@ -136,8 +133,6 @@ class C_Plug{
 
     f_setQueryManuel(v_colorPlug){
         /* Permet d'initialiser les QerySelector pour le mode Manuel */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
-
         this.manuelDiv = $(`.Manuel.div_subSummary`);
             //sub div colone 1
         this.manuelDiv_on_off  = $(`.Manuel .on_off`);
@@ -153,15 +148,14 @@ class C_Plug{
             //sub div colone 3 (2/2)
         this.manuelDiv_dureeOff  = $(`.Manuel.div_dureeOff`);
         this.manuel_dureeOff  = $(`.Manuel.dureeOff`);
-        //Submit
+        //Submit, Reset
         this.manuelForm = $(`.Manuel.formRequest`);
         this.manuelSubmit = $(`.Manuel.submit`);
+        this.manuelReset = $(".Manuel.reset");
     }
 
     f_setQueryMinuterie(v_colorPlug){
         /* Permet d'initialiser les QerySelector pour le mode Minuterie */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
-        
         this.minuterieDiv = $(`.Minuterie.div_subSummary`);
         this.minuterie_dureeOn = $(`.Minuterie.dureeOn`);
         this.minuterieForm = $(`.Minuterie.formRequest`);
@@ -170,8 +164,6 @@ class C_Plug{
 
     f_setQueryCyclique(v_colorPlug){
         /* Permet d'intialiser les QuerySelector pour le mode Cyclique */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
-
         this.cycliqueDiv = $(`.Cyclique.div_subSummary`);
         this.cyclique_dureeOn = $(`.Cyclique.dureeOn`);
         this.cyclique_dureeOff = $(`.Cyclique.dureeOff`);
@@ -184,7 +176,6 @@ class C_Plug{
 
     f_setQueryHebdomadaire(v_colorPlug){
         /* Permet d'intialiser les QuerySelector pour le mode Hebdomadaire */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
             //DIV
         this.hebdomadaireDiv = $(`.Hebdomadaire.div_subSummary`);
             //QuerySelectorAll (liste d'objet)
@@ -210,8 +201,6 @@ class C_Plug{
 
     f_setQueryClone(v_colorPlug){
         /* Permet d'initialiser les QuerySelector pour le mode Clone */
-        // v_colorPlug = v_colorPlug ? v_colorPlug : this.v_colorPlug;
-
         this.cloneDiv               = $(`.Clone.div_subSummary`);
         this.cloneInputHide         = $(`input[name="clonedPlug"]`)
         this.cloneToRed             = $(`.Clone.Red`);
@@ -235,7 +224,6 @@ class C_Plug{
     f_displayNoneAll(){
         /* Permet de masquer tous les DIV à l'intérieur des FILDSET */
         //mode Manuel
-        this.divLeft.css("display", "none");
         this.manuelDiv.css("display", "none");
         this.manuelDivDiffTypeSelector.css("display", "none");
         this.manuelDiv_hFin.css("display", "none");
@@ -398,7 +386,7 @@ class C_Plug{
         let BLUEPLUG    = "bluePlug";
         let YELLOWPLUG  = "yellowPlug";
         // let HELP        = "help";
-        // let CFG         = "cfg";
+        let CFG         = "cfg";
 
         let v_target = $(v_eventTarget);
         let v_fieldset = $("fieldset");
@@ -450,14 +438,15 @@ class C_Plug{
         //     v_hiddenInput.each( (i)=>{
         //         $(v_hiddenInput[i]).val(HELP);
         //     } );
-        // } else if (v_target.hasClass(CFG)){
-        //     v_fieldset.toggleClass(`${v_fieldsetClass} ${CFG}`);
-        //     $("h2").text("Configuration");
-
-        //     v_hiddenInput.each( (i)=>{
-        //         $(v_hiddenInput[i]).val(CFG);
-        //     } );
         // }
+        else if (v_target.hasClass(CFG)){
+            v_fieldset.toggleClass(`${v_fieldsetClass} ${CFG}`);
+            $("h2").text("Configuration");
+
+            v_hiddenInput.each( (i)=>{
+                $(v_hiddenInput[i]).val(CFG);
+            } );
+        }
     }
 
     f_getDataForm(v_target){

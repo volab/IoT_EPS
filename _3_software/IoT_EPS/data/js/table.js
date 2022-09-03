@@ -6,27 +6,29 @@
  */
 class C_Table{
     constructor(){
-        this.jsonOBJ            = "";
-        this.v_item             = "";
-        this.v_tableColor       = "";
-        this.v_pauseOn          = "";
-        this.v_detail           = "";
-        this.v_uth              = "";
+        this.btnUPD             = $(".home.upd-btn")
+        // this.jsonOBJ            = "";
+        // this.v_item             = "";
+        // this.v_tableColor       = "";
+        // this.v_pauseOn          = "";
+        // this.v_detail           = "";
+        // this.v_uth              = "";
 
-        this.v_nicName          = "";
-        this.v_emplacement      = "";
-        this.v_state            = "";
-        this.v_pause            = "";
-        this.v_mode             = "";
-        this.v_hDebut           = "";
-        this.v_hFin             = "";
-        this.v_dureeOn          = "";
-        this.v_dureeOff         = "";
-        this.v_Jours            = "";
-        this.v_nextTimeToSwitch = "";
-        this.v_clonedPlug       = "";
+        // this.v_nicName          = "";
+        // this.v_emplacement      = "";
+        // this.v_state            = "";
+        // this.v_pause            = "";
+        // this.v_mode             = "";
+        // this.v_hDebut           = "";
+        // this.v_hFin             = "";
+        // this.v_dureeOn          = "";
+        // this.v_dureeOff         = "";
+        // this.v_Jours            = "";
+        // this.v_nextTimeToSwitch = "";
+        // this.v_clonedPlug       = "";
 
-        this.v_modeCloned       = "";
+        // this.v_modeCloned       = "";
+        this.f_resetData();
 
     }
 
@@ -209,7 +211,7 @@ class C_Table{
         /* rempli le tableau de la page d'accueil avec les informations contenues dans le ficier JSON */
         let v_tbody = $(".home.tBody");
         let v_body = `
-            <tr class="${this.v_tableColor}">
+            <tr class="${this.v_tableColor} trBody">
                 <td>${this.v_nicName}<br/>
                     (${this.v_emplacement})
                 </td>
@@ -232,6 +234,12 @@ class C_Table{
         this.f_ifPause();
         this.f_setDetail();
         this.f_setHumanTimeFormat();
+    }
+
+    f_removeTbody(){
+        /* Permet de retirer / supprimer le corps du tableau */
+        let v_trBody = $(".trBody");
+        $(v_trBody).remove();
     }
 
 }

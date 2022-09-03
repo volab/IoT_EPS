@@ -45,7 +45,7 @@ __pycache__
 ## Packages
 *.7z
 *.dmg
-*.gz
+#*.gz
 *.iso
 *.jar
 *.rar
@@ -90,3 +90,4 @@ Thumbs.db
 /_3_software/copieEcranSortieMonitor
 /_1_userDoc/source/_build
 /_3_software/outilPythonSpecial/historique211027_2241.txt
+/_3_software/webDesign

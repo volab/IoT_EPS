@@ -1,0 +1,36 @@
+/apmodeindex.htm / 1303
+/config.htm / 11966
+/credentials.json / 170
+/css/apmode.css / 1074
+/css/bootstrap.min.css / 140942
+/css/sidebar.css / 2027
+/css/style.css / 5183
+/defConfig.json / 1407
+/firstboot.htm / 7053
+/helloWorld.htm / 1275
+/help.htm.gz / 722
+/img/align_justify.svg / 701
+/img/blue.png / 28607
+/img/green.png / 27773
+/img/logo_alpha.png / 84044
+/img/red.png / 28171
+/img/yellow.png / 30460
+/index.html.gz / 4952
+/js/bootstrap.min.js / 51045
+/js/jquery-3.3.1.min.js / 86929
+/js/main.js / 14770
+/js/myLog.js / 712
+/js/plug.js / 18462
+/js/plug.js.gz / 3120
+/js/regExPatern.js / 8724
+/js/table.js / 8737
+/newcred.htm / 1380
+/page2.htm / 12531
+/volab.ico / 198
+/config4.json / 1412
+/config4copie1.json / 1412
+/config4copie2.json / 1412
+SPIFFS total bytes : 2949250
+SPIFFS used bytes : 603404
+SPIFFS max open files : 5
+SPIFFS max path lenght : 32

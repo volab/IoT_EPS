@@ -326,7 +326,7 @@ HTML rework in 2022
 - AP mode
 - Station mode
 
-html extension vs htm : preference of Pierre just for estetic reason
+html extension vs htm : preference of Pierre just for esthetic reason
 
 SPIFFS total bytes : 2949250 : 2.8Mo
 SPIFFS used bytes : 317515 310ko
@@ -340,7 +340,7 @@ Bootstrap size : `primaryobjects/css-comparison.csv`_
 .. _`primaryobjects/css-comparison.csv` : https://gist.github.com/primaryobjects/64a4e7e3351c646f51eee07949215ad4
 
 
-État des lieux
+Inventory before running
 ----------------------------------------------------------------------------------------------------
 - bootstrap.css
 - jquery-3.3.1.js
@@ -354,7 +354,7 @@ gzipper : `Free Online Converter Convert to GZIP`_
 
 .. _`Free Online Converter Convert to GZIP` : https://online-converting.com/archives/convert-to-gzip/
 
-Liste des fichiers avant les travaux::
+List of files before work::
 
     /apmodeindex.htm / 1303
     /config.htm / 3405
@@ -394,7 +394,29 @@ Liste des fichiers avant les travaux::
     SPIFFS max open files : 5
     SPIFFS max path lenght : 32
 
+gzipped files
+----------------------------------------------------------------------------------------------------
+- plug.js.gz
+- help.htm.gz
+- index.html.gz
 
+CDN files
+----------------------------------------------------------------------------------------------------
+HTML pages use CDN associate with js files
+
+Liste of used files:
+
+- ``stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css``
+- ``code.jquery.com/jquery-3.3.1.js``
+- ``code.jquery.com/ui/1.12.1/jquery-ui.js``
+- ``use.fontawesome.com/releases/v5.0.13/js/solid.js``
+- ``use.fontawesome.com/releases/v5.0.13/js/fontawesome.js``
+- ``cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js``
+- ``stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js``
+
+Local replacement file and size:
+
+- css/bootstrap.min.css
 
 ====================================================================================================
 Weblinks
