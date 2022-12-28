@@ -2,20 +2,20 @@
 IoT_EPS User Manual
 ++++++++++++++++++++++++++++++++
 
-:Auteur: J.Soranzo
+.. include:: volabid.rst
+
 :Date: Décembre 2019
-:Societe: VoLAB
-:Entity: VoRoBoTics
+:last update: 28/12/2022
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents
    :titlesonly:
    
-   userManualAnex.rst
+   documentationWriting
+   userManualAnex
 
-.. contents::
-    :backlinks: top
+
 
 ================================
 First connection

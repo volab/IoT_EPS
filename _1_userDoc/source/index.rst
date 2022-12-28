@@ -1,10 +1,5 @@
-.. IoT_EPS documentation master file, created by
-   sphinx-quickstart on Sun Oct 14 10:39:43 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 +++++++++++++++++++++++++++++++++++++++++++
-IoT_EPS's documentation!
+IoT_EPS's documentation
 +++++++++++++++++++++++++++++++++++++++++++
 
 .. image:: image/logo/logo_projet.png
@@ -14,7 +9,7 @@ IoT_EPS's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents
+   :caption: Chapters and sub chapters of this documentation
    :titlesonly:
    
    generalProgress
@@ -26,9 +21,11 @@ IoT_EPS's documentation!
    pitch
    chronogram
 
+
+
 .. CAUTION::
 
-   texte
+   This is only chapters and sub-chapters of the doc. Go in them to see their full table of contents
 
 .. NOTE::
 

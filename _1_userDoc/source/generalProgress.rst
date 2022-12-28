@@ -2,14 +2,11 @@
 General progress of IOT Electrical Power Strip
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-:Auteur: J.Soranzo
-:Date: 04/2021
-:last update: 17/08/2022
-:Societe: VoRoBoTics
-:Entity: VoLAB
+.. include:: volabid.rst
 
-.. contents::
-    :backlinks: top
+:Date: 04/2021
+:last update: 28/12/2022
+
 
 .. _mainTodoList:
 
@@ -26,11 +23,28 @@ Web interface work
 
 - in station Mode
 
+- A big New chapter GUI design start in 08/2022 **in progress**
+    - old screen
+    - new design
+    - design GUI in Inkscape **OK**
+    - learn REACT **OK**
+    - code the GUI
+        - create a simulator with node.js and express.js **in progress**
+
 Doc
 ----------------------------------------------------------------------------------------------------
+- Create an Visual Style Guide for documentation purpose **in progress**
+    - in ``projet\_1_userDoc\visualStyleGuide221228_1549.svg``
+    - retrieve source of the logo : see in ``documentation/image/logo`` **OK**
+
+
+
 - active github pages for the project
     - upload documentation on github pages
     - create page on the volab wiki
+
+- try other time server that provide direct time zone
+    - try http://worldtimeapi.org/api/timezone/Europe/Paris in json
 
 - Create an infographic that summarize features and needs 
     - choose tool

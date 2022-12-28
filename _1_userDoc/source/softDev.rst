@@ -2,6 +2,10 @@
 Software development documentation
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+.. include:: volabid.rst
+
+:last update: 28/12/2022
+
 .. toctree::
    :maxdepth: 2
    :caption: Sub chapters
@@ -17,9 +21,6 @@ Software development documentation
    jsonImprovment
    pythonTools
    
-
-.. contents:: Contents of this chapter
-    :backlinks: top
 
 .. |clearer|  raw:: html
 

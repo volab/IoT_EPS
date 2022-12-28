@@ -350,9 +350,7 @@ Inventory before running
 - bootstrap.min.js
 
 
-gzipper : `Free Online Converter Convert to GZIP`_
 
-.. _`Free Online Converter Convert to GZIP` : https://online-converting.com/archives/convert-to-gzip/
 
 List of files before work::
 
@@ -396,13 +394,17 @@ List of files before work::
 
 gzipped files
 ----------------------------------------------------------------------------------------------------
+gzipper : `Free Online Converter Convert to GZIP`_
+
+.. _`Free Online Converter Convert to GZIP` : https://online-converting.com/archives/convert-to-gzip/
+
 - plug.js.gz
 - help.htm.gz
 - index.html.gz
 
 CDN files
 ----------------------------------------------------------------------------------------------------
-HTML pages use CDN associate with js files
+HTML pages use Boostrap CDN associate with js files
 
 Liste of used files:
 
@@ -416,7 +418,76 @@ Liste of used files:
 
 Local replacement file and size:
 
-- css/bootstrap.min.css
+- css/bootstrap.min.css 150ko
+- js/jquery-3.3.1.min.js 85ko
+- js/jquery-ui.1.12.1.min.js 248ko
+- js/solid.5.0.13.js 343ko
+- js/fontawesome.5.0.13.js 27ko
+- js/popper.1.14.6.min.js 22ko
+- js/bootstrap.4.2.1.min.js 56ko
+
+jquery, jquery.ui
+----------------------------------------------------------------------------------------------------
+
+popper
+----------------------------------------------------------------------------------------------------
+
+
+bootstrap.js
+----------------------------------------------------------------------------------------------------
+
+
+Special js files
+----------------------------------------------------------------------------------------------------
+- main.js
+- myLog.js
+- plug.js
+- regExPatern.js
+- table.js
+
+
+====================================================================================================
+What is wrong with this first (Pierre) version of the IHM
+====================================================================================================
+one page html page : adapted if we use a js framework like react ou vu.js (Pierre's answer)
+
+pseudo responsive design
+
+color and general page design
+
+I wonder if a js framework is very necessary.
+
+====================================================================================================
+A learn phase
+====================================================================================================
+
+A learn phase start now for me : study courses...
+
+- Traversy media Boostrap4 `Twitter Bootstrap play list`_
+
+.. _`Twitter Bootstrap play list` : https://www.youtube.com/playlist?list=PLillGF-RfqbZ7b9ytQhLqLvWO2Q_3Ph7S
+
+And after vuejs on Traversy or on Udemy
+
+First study : `Développement d’interfaces Web : les Frameworks JS à connaître`_
+
+.. _`Développement d’interfaces Web : les Frameworks JS à connaître` : https://blog-ux.com/les-frameworks-js-a-connaitre/
+
+and
+
+`[TUTO] Vue JS : les bases en 35 minutes !`_ on youtube chanel : La Tech avec Bertrand
+
+.. _`[TUTO] Vue JS : les bases en 35 minutes !` : https://www.youtube.com/watch?v=D3oivlcoEvw&t=32s
+
+`Tutoriel VueJS : Vue.js 3.2`_ on Grafikart.fr yt chan
+
+.. _`Tutoriel VueJS : Vue.js 3.2` : https://www.youtube.com/watch?v=TWE6NVVPNcc
+
+[Projet Vue JS] `Créer une interface utilisateur avec Vuejs`_ on "From Scratch - Le développement Web de zéro"
+
+.. _`Créer une interface utilisateur avec Vuejs` : https://www.youtube.com/watch?v=siy9ETx68NU
+
+
 
 ====================================================================================================
 Weblinks

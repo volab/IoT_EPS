@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="420mm"
+   height="297mm"
+   viewBox="0 0 420 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="visualStyleGuide.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-bbox="true"
+     inkscape:snap-page="true"
+     inkscape:zoom="0.37059484"
+     inkscape:cx="608.48122"
+     inkscape:cy="317.05784"
+     inkscape:current-layer="g9528">
+    <sodipodi:guide
+       position="210,297"
+       orientation="-1,0"
+       id="guide9517"
+       inkscape:label=""
+       inkscape:locked="false"
+       inkscape:color="rgb(0,0,255)" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:8.46667px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
+       x="17.134619"
+       y="22.132212"
+       id="text1552"><tspan
+         sodipodi:role="line"
+         id="tspan1550"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.46667px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';stroke-width:0.264583"
+         x="17.134619"
+         y="22.132212">IoT Esp Visual Style Guide</tspan></text>
+    <g
+       id="g9533">
+      <text
+         xml:space="preserve"
+         style="font-size:6.35px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
+         x="12.493991"
+         y="63.183891"
+         id="text9521"><tspan
+           sodipodi:role="line"
+           id="tspan9519"
+           style="stroke-width:0.264583"
+           x="12.493991"
+           y="63.183891">LOGO</tspan></text>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.281506px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="M 13.117106,53.545905 198.02895,53.902412"
+         id="path9523" />
+    </g>
+    <g
+       id="g9528"
+       transform="translate(-0.356971)">
+      <text
+         xml:space="preserve"
+         style="font-size:6.35px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
+         x="12.850962"
+         y="126.36778"
+         id="text11711"><tspan
+           sodipodi:role="line"
+           id="tspan11709"
+           style="stroke-width:0.264583"
+           x="12.850962"
+           y="126.36778">COLOR</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-size:6.35px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;stroke-width:0.264583"
+         x="11.423077"
+         y="219.18028"
+         id="text7660"><tspan
+           sodipodi:role="line"
+           id="tspan7658"
+           style="stroke-width:0.264583"
+           x="11.423077"
+           y="219.18028">FONT</tspan></text>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.281506px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 13.474077,116.7298 184.911843,0.35651"
+         id="path11713" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.281506px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 12.046192,209.5423 184.911848,0.35651"
+         id="path9515" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.337772px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 209.999,17.13255 -0.35497,267.37552"
+       id="path9433" />
+  </g>
+</svg>
